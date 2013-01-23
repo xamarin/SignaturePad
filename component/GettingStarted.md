@@ -30,12 +30,17 @@ On Android:
 using SignaturePad;
 ...
 
-var signature = new SignaturePadView (context) {
-	BackgroundColor = Color.White,
-	StrokeColor = Color.Black,
-	LineWidth = 3f
-};
-signature.Layout (10, 10, Width - 10, Height - 50);
+protected override void OnCreate (Bundle bundle)
+{
+	base.OnCreate (bundle);
+
+	var signature = new SignaturePadView (context) {
+		BackgroundColor = Color.White,
+		StrokeColor = Color.Black,
+		LineWidth = 3f
+	};
+	AddContentView (signature, new ViewGroup.LayoutParams (200, 200));
+}
 ```
 
 ### Getting the signature as an image

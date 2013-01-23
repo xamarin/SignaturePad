@@ -21,8 +21,17 @@ Adding a `SignaturePad` to your Android app:
 using SignaturePad;
 ...
 
-var signature = new SignaturePadView (context);
-signature.Layout (10, 10, Width - 10, Height - 50);
+protected override void OnCreate (Bundle bundle)
+{
+	base.OnCreate (bundle);
+
+	var signature = new SignaturePadView (context) {
+		BackgroundColor = Color.White,
+		StrokeColor = Color.Black,
+		LineWidth = 3f
+	};
+	AddContentView (signature, new ViewGroup.LayoutParams (200, 200));
+}
 ```
 
 To capture the user's signature as an image:
