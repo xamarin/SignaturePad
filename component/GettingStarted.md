@@ -1,9 +1,9 @@
-`SignaturePad` makes capturing, saving, exporting, and displaying
+Signature Pad makes capturing, saving, exporting, and displaying
 signatures extremely simple.
 
 ## Examples
 
-### Displaying the `SignaturePad`
+### Displaying the `SignaturePadView`
 
 On iOS:
 
@@ -11,17 +11,16 @@ On iOS:
 using SignaturePad;
 ...
 
-var signature = new SignaturePadView (new RectangleF (10, 10, Bounds.Width - 20, Bounds.Height - 60)) {
-	// Default BackgroundColor is UIColor.White.
-	BackgroundColor = UIColor.Black,
-
-	// Default StrokeColor is UIColor.Black.
-	StrokeColor = UIColor.White,
-
-	// Default LineWidth is 2.
-	LineWidth = 3f
-};
-AddSubview (signature);
+public override void ViewDidLoad ()
+{
+	...
+	var signature = new SignaturePadView (View.Frame) {
+		BackgroundColor = UIColor.Black,
+		StrokeColor = UIColor.White,
+		LineWidth = 3f
+	};
+	View.AddSubview (signature);
+}
 ```
 
 On Android:

@@ -1,7 +1,7 @@
-`SignaturePad` makes capturing, saving, exporting, and displaying
+Signature Pad makes capturing, saving, exporting, and displaying
 signatures extremely simple.
 
-Adding a `SignaturePad` to your iOS app:
+Adding a `SignaturePadView` to your iOS app:
 
 ```csharp
 using SignaturePad;
@@ -15,7 +15,7 @@ public override void ViewDidLoad ()
 }
 ```
 
-Adding a `SignaturePad` to your Android app:
+Adding a `SignaturePadView` to your Android app:
 
 ```csharp
 using SignaturePad;
