@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.iOS", "SignaturePad.iOS\SignaturePad.iOS.csproj", "{1E112A81-4384-42E3-84CF-CDEDC5FD1B24}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Debug|iPhoneSimulator = Debug|iPhoneSimulator
+		Release|iPhoneSimulator = Release|iPhoneSimulator
+		Debug|iPhone = Debug|iPhone
+		Release|iPhone = Release|iPhone
+		Ad-Hoc|iPhone = Ad-Hoc|iPhone
+		AppStore|iPhone = AppStore|iPhone
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1E112A81-4384-42E3-84CF-CDEDC5FD1B24}.Ad-Hoc|iPhone.ActiveCfg = Debug|Any CPU
+		{1E112A81-4384-42E3-84CF-CDEDC5FD1B24}.Ad-Hoc|iPhone.Build.0 = Debug|Any CPU
+		{1E112A81-4384-42E3-84CF-CDEDC5FD1B24}.AppStore|iPhone.ActiveCfg = Debug|Any CPU
+		{1E112A81-4384-42E3-84CF-CDEDC5FD1B24}.AppStore|iPhone.Build.0 = Debug|Any CPU
+		{1E112A81-4384-42E3-84CF-CDEDC5FD1B24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E112A81-4384-42E3-84CF-CDEDC5FD1B24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E112A81-4384-42E3-84CF-CDEDC5FD1B24}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{1E112A81-4384-42E3-84CF-CDEDC5FD1B24}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{1E112A81-4384-42E3-84CF-CDEDC5FD1B24}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{1E112A81-4384-42E3-84CF-CDEDC5FD1B24}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{1E112A81-4384-42E3-84CF-CDEDC5FD1B24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E112A81-4384-42E3-84CF-CDEDC5FD1B24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E112A81-4384-42E3-84CF-CDEDC5FD1B24}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{1E112A81-4384-42E3-84CF-CDEDC5FD1B24}.Release|iPhone.Build.0 = Release|Any CPU
+		{1E112A81-4384-42E3-84CF-CDEDC5FD1B24}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{1E112A81-4384-42E3-84CF-CDEDC5FD1B24}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = SignaturePad.iOS\SignaturePad.iOS.csproj
+	EndGlobalSection
+EndGlobal

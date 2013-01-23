@@ -1,0 +1,14 @@
+version: 1.2
+name: Signature Pad
+summary: Easily capture user's signatures
+publisher: Timothy Risi
+publisher-url: http://risiapps.blogspot.com/
+screencast: http://www.youtube.com/watch?v=EpzL1vtEDLU
+screenshots:
+  - component/signature-ios.png
+libraries:
+  ios: src/SignaturePad.iOS/bin/Release/SignaturePad.iOS.dll
+  android: src/SignaturePad.Android/bin/Release/SignaturePad.Android.dll
+samples:
+  "iOS Sample": samples/Sample.iOS/Sample.iOS.sln
+  "Android Sample": samples/Sample.Android/Sample.Android.sln
