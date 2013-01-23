@@ -1,4 +1,4 @@
-`SignaturePad` makes capturing, exporting, storing, and displaying
+`SignaturePad` makes capturing, saving, exporting, and displaying
 signatures extremely simple.
 
 Adding a `SignaturePad` to your iOS app:
