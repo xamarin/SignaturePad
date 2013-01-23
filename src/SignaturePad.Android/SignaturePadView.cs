@@ -12,8 +12,8 @@ using Android.Views;
 using Android.Widget;
 using Android.Graphics;
 
-namespace Xamarin.Controls {
-	public class SignaturePad : FrameLayout {
+namespace SignaturePad {
+	public class SignaturePadView : FrameLayout {
 		#region UI Controls
 		TextView lblSign;
 		View signatureLine;
@@ -94,19 +94,19 @@ namespace Xamarin.Controls {
 			}
 		}
 
-		public SignaturePad (Context context) : base (context)
+		public SignaturePadView (Context context) : base (context)
 		{
 			this.context = context;
 			Initialize ();
 		}
 
-		public SignaturePad (Context context, IAttributeSet attrs) : base (context, attrs)
+		public SignaturePadView (Context context, IAttributeSet attrs) : base (context, attrs)
 		{
 			this.context = context;
 			Initialize ();
 		}
 
-		public SignaturePad (Context context, IAttributeSet attrs, int defStyle) :
+		public SignaturePadView (Context context, IAttributeSet attrs, int defStyle) :
 			base (context, attrs, defStyle)
 		{
 			this.context = context;

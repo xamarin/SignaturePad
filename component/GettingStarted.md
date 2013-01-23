@@ -8,10 +8,10 @@ signatures extremely simple.
 On iOS:
 
 ```csharp
-using Xamarin.Controls;
+using SignaturePad;
 ...
 
-var signature = new SignaturePad (new RectangleF (10, 10, Bounds.Width - 20, Bounds.Height - 60)) {
+var signature = new SignaturePadView (new RectangleF (10, 10, Bounds.Width - 20, Bounds.Height - 60)) {
 	// Default BackgroundColor is UIColor.White.
 	BackgroundColor = UIColor.Black,
 
@@ -27,10 +27,10 @@ AddSubview (signature);
 On Android:
 
 ```csharp
-using Xamarin.Controls;
+using SignaturePad;
 ...
 
-var signature = new SignaturePad (context) {
+var signature = new SignaturePadView (context) {
 	BackgroundColor = Color.White,
 	StrokeColor = Color.Black,
 	LineWidth = 3f

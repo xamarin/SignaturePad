@@ -1,7 +1,8 @@
 using System;
-using Xamarin.Controls;
 using NUnit.Framework;
 using MonoTouch.UIKit;
+
+using SignaturePad;
 
 namespace SignaturePadTests {
 	[TestFixture]
@@ -9,7 +10,7 @@ namespace SignaturePadTests {
 		[Test]
 		public void StrokeColorChanges ()
 		{
-			SignaturePad signature = new SignaturePad ();
+			SignaturePadView signature = new SignaturePadView ();
 			signature.StrokeColor = UIColor.Green;
 			Assert.That (signature.StrokeColor == UIColor.Green);
 		}
@@ -17,7 +18,7 @@ namespace SignaturePadTests {
 		[Test]
 		public void NullStrokeColorDoesntChange ()
 		{
-			SignaturePad signature = new SignaturePad ();
+			SignaturePadView signature = new SignaturePadView ();
 			signature.StrokeColor = UIColor.Green;
 			signature.StrokeColor = null;
 			Assert.That (signature.StrokeColor == UIColor.Green);

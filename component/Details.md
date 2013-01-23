@@ -4,13 +4,13 @@ signatures extremely simple.
 Adding a `SignaturePad` to your iOS app:
 
 ```csharp
-using Xamarin.Controls;
+using SignaturePad;
 ...
 
 public override void ViewDidLoad ()
 {
 	...
-	var signature = new SignaturePad (View.Frame);
+	var signature = new SignaturePadView (View.Frame);
 	View.AddSubview (signature);
 }
 ```
@@ -18,10 +18,10 @@ public override void ViewDidLoad ()
 Adding a `SignaturePad` to your Android app:
 
 ```csharp
-using Xamarin.Controls;
+using SignaturePad;
 ...
 
-var signature = new SignaturePad (context);
+var signature = new SignaturePadView (context);
 signature.Layout (10, 10, Width - 10, Height - 50);
 ```
 

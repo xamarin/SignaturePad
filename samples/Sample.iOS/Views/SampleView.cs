@@ -1,5 +1,5 @@
 //
-// SampleView.cs: View to display a sample of the SignaturePad.
+// SampleView.cs: View to display a sample of the SignaturePadView.
 //
 // Author:
 //   Timothy Risi (timothy.risi@gmail.com)
@@ -9,11 +9,12 @@
 using System;
 using System.Drawing;
 using MonoTouch.UIKit;
-using Xamarin.Controls;
+
+using SignaturePad;
 
 namespace Sample {
 	public class SampleView : UIView {
-		SignaturePad signature { get; set; }
+		SignaturePadView signature { get; set; }
 		UIImageView imageView;
 		UIButton btnSave, btnLoad;
 		PointF [] points;
@@ -34,7 +35,7 @@ namespace Sample {
 					signature.LoadPoints (points);
 			};
 
-			signature = new SignaturePad ();
+			signature = new SignaturePadView ();
 
 			//Using different layouts for the iPhone and iPad, so setup device specific requirements here.
 			if (UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone) {

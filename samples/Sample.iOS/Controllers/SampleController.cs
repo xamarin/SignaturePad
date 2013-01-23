@@ -1,5 +1,5 @@
 //
-// SampleController.cs: View Controller to display a sample of the SignaturePad.
+// SampleController.cs: View Controller to display a sample of the SignaturePadView.
 //
 // Author:
 //   Timothy Risi (timothy.risi@gmail.com)

@@ -6,7 +6,7 @@
     android:minWidth="25px"
     android:minHeight="25px"
     android:background="#ff777777">
-    <xamarin.controls.SignaturePad
+    <xamarin.controls.SignaturePadView
         android:id="@+id/signatureView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

@@ -7,7 +7,8 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Android.Graphics;
-using Xamarin.Controls;
+
+using SignaturePad;
 
 namespace Sample.Android {
 	[Activity (Label = "Sample.Android", MainLauncher = true)]
@@ -21,7 +22,7 @@ namespace Sample.Android {
 			// Set our view from the "main" layout resource
 			SetContentView (Resource.Layout.Main);
 
-			SignaturePad signature = FindViewById<SignaturePad> (Resource.Id.signatureView);
+			SignaturePadView signature = FindViewById<SignaturePadView> (Resource.Id.signatureView);
 
 			// Get our button from the layout resource,
 			// and attach an event to it

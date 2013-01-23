@@ -1,5 +1,5 @@
 //
-// SignaturePad.cs: UIView subclass for MonoTouch to allow users to draw their signature on the device
+// SignaturePadView.cs: UIView subclass for MonoTouch to allow users to draw their signature on the device
 // 		     to be captured as an image or vector.
 //
 // Author:
@@ -17,9 +17,9 @@ using MonoTouch.CoreGraphics;
 using MonoTouch.OpenGLES;
 using MonoTouch.CoreImage;
 
-namespace Xamarin.Controls {
-	[Register("SignaturePad")]
-	public class SignaturePad : UIView {
+namespace SignaturePad {
+	[Register("SignaturePadView")]
+	public class SignaturePadView : UIView {
 		#region UI Controls
 		UILabel lblSign;
 		UIView signatureLine;
@@ -78,22 +78,22 @@ namespace Xamarin.Controls {
 			}
 		}
 
-		public SignaturePad ()
+		public SignaturePadView ()
 		{
 			Initialize ();
 		}
 
-		public SignaturePad (NSCoder coder) : base (coder)
+		public SignaturePadView (NSCoder coder) : base (coder)
 		{
 			Initialize ();
 		}
 
-		public SignaturePad (IntPtr ptr) : base (ptr)
+		public SignaturePadView (IntPtr ptr) : base (ptr)
 		{
 			Initialize ();
 		}
 
-		public SignaturePad (RectangleF frame)
+		public SignaturePadView (RectangleF frame)
 		{
 			Frame = frame;
 			Initialize ();

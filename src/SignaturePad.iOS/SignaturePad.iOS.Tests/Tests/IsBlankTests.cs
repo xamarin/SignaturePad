@@ -1,7 +1,8 @@
 using System;
-using Xamarin.Controls;
 using NUnit.Framework;
 using System.Drawing;
+
+using SignaturePad;
 
 namespace SignaturePadTests {
 	[TestFixture]
@@ -9,14 +10,14 @@ namespace SignaturePadTests {
 		[Test]
 		public void ReturnsTrueIfNoPoints ()
 		{
-			SignaturePad signature = new SignaturePad ();
+			SignaturePadView signature = new SignaturePadView ();
 			Assert.That (signature.IsBlank);
 		}
 
 		[Test]
 		public void ReturnsFalseIfPointsExist ()
 		{
-			SignaturePad signature = new SignaturePad ();
+			SignaturePadView signature = new SignaturePadView ();
 			signature.LoadPoints (new PointF [] { new PointF (0, 30) });
 			Assert.That (!signature.IsBlank);
 		}

@@ -1,9 +1,10 @@
 using System;
 using System.Linq;
-using Xamarin.Controls;
 using NUnit.Framework;
 using MonoTouch.UIKit;
 using System.Drawing;
+
+using SignaturePad;
 
 namespace SignaturePadTests {
 	[TestFixture]
@@ -11,7 +12,7 @@ namespace SignaturePadTests {
 		[Test]
 		public void ValidPointsArrayDoesGetLoaded ()
 		{
-			SignaturePad signature = new SignaturePad ();
+			SignaturePadView signature = new SignaturePadView ();
 			PointF [] points = new PointF [] { new PointF (0, 0), new PointF (10, 30), new PointF (50, 70) };
 			signature.LoadPoints (points);
 			Assert.That (signature.Points.Count () > 0);
@@ -20,7 +21,7 @@ namespace SignaturePadTests {
 		[Test]
 		public void NullPointsArrayDoesntChangeAnything ()
 		{
-			SignaturePad signature = new SignaturePad ();
+			SignaturePadView signature = new SignaturePadView ();
 			PointF [] points = new PointF [] { new PointF (0, 0), new PointF (10, 30), new PointF (50, 70) };
 			signature.LoadPoints (points);
 			signature.LoadPoints (null);
@@ -30,7 +31,7 @@ namespace SignaturePadTests {
 		[Test]
 		public void EmptyPointsArrayDoesntChangeAnything ()
 		{
-			SignaturePad signature = new SignaturePad ();
+			SignaturePadView signature = new SignaturePadView ();
 			PointF [] points = new PointF [] { new PointF (0, 0), new PointF (10, 30), new PointF (50, 70) };
 			signature.LoadPoints (points);
 			signature.LoadPoints (new PointF [0]);

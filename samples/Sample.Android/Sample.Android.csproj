@@ -58,4 +58,10 @@
     <AndroidResource Include="Resources\drawable\Icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\SignaturePad.Android\SignaturePad.Android.csproj">
+      <Project>{F1A16CB9-A759-42C8-8F0B-3C9698A55336}</Project>
+      <Name>SignaturePad.Android</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
