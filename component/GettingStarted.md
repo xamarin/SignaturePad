@@ -3,7 +3,7 @@ signatures extremely simple.
 
 ## Examples
 
-### Displaying the `SignaturePadView`
+### Displaying a signature pad
 
 On iOS:
 
