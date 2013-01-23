@@ -108,4 +108,7 @@
       <Name>SignaturePad.iOS</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Default-586h%402x-568h%402x.png" />
+  </ItemGroup>
 </Project>
