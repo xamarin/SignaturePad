@@ -25,11 +25,7 @@ protected override void OnCreate (Bundle bundle)
 {
 	base.OnCreate (bundle);
 
-	var signature = new SignaturePadView (context) {
-		BackgroundColor = Color.White,
-		StrokeColor = Color.Black,
-		LineWidth = 3f
-	};
+	var signature = new SignaturePadView (context);
 	AddContentView (signature, new ViewGroup.LayoutParams (200, 200));
 }
 ```
