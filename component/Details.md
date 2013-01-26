@@ -35,3 +35,5 @@ To capture the user's signature as an image:
 ```csharp
 var image = signature.GetImage ();
 ```
+
+*Screenshot created with [PlaceIt](http://placeit.breezi.com).*
