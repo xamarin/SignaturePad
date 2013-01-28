@@ -2,8 +2,7 @@ version: 1.2
 name: Signature Pad
 summary: Makes capturing, saving, and displaying signatures extremely simple.
 publisher: Timothy Risi
-publisher-url: http://risiapps.blogspot.com/
-screencast: http://www.youtube.com/watch?v=EpzL1vtEDLU
+publisher-url: http://www.risiapps.com
 screenshots:
   - component/signature-ios.png
 libraries:
