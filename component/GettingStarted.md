@@ -15,8 +15,6 @@ public override void ViewDidLoad ()
 {
 	...
 	var signature = new SignaturePadView (View.Frame) {
-		BackgroundColor = UIColor.Black,
-		StrokeColor = UIColor.White,
 		LineWidth = 3f
 	};
 	View.AddSubview (signature);
@@ -34,8 +32,6 @@ protected override void OnCreate (Bundle bundle)
 	base.OnCreate (bundle);
 
 	var signature = new SignaturePadView (context) {
-		BackgroundColor = Color.White,
-		StrokeColor = Color.Black,
 		LineWidth = 3f
 	};
 	AddContentView (signature, new ViewGroup.LayoutParams (200, 200));
