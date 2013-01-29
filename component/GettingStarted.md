@@ -31,7 +31,7 @@ protected override void OnCreate (Bundle bundle)
 {
 	base.OnCreate (bundle);
 
-	var signature = new SignaturePadView (context) {
+	var signature = new SignaturePadView (this) {
 		LineWidth = 3f
 	};
 	AddContentView (signature, new ViewGroup.LayoutParams (200, 200));

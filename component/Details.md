@@ -25,7 +25,7 @@ protected override void OnCreate (Bundle bundle)
 {
 	base.OnCreate (bundle);
 
-	var signature = new SignaturePadView (context);
+	var signature = new SignaturePadView (this);
 	AddContentView (signature, new ViewGroup.LayoutParams (200, 200));
 }
 ```
