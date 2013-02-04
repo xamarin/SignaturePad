@@ -19,7 +19,7 @@ namespace SignaturePad {
 		View signatureLine;
 		TextView xLabel;
 		TextView lblClear;
-		ImageView imageView;
+		ClearingImageView imageView;
 		#endregion
 
 		Context context;
@@ -131,7 +131,7 @@ namespace SignaturePad {
 			#region Add Subviews
 			//Add an image that covers the entire signature view, used to display already drawn
 			//elements instead of having to redraw them every time the user touches the screen.
-			imageView = new ImageView (context);
+			imageView = new ClearingImageView (context);
 			imageView.SetBackgroundColor (Color.Transparent);
 			AddView (imageView);
 

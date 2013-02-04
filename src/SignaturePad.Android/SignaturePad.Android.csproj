@@ -43,5 +43,6 @@
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
     <Compile Include="SignaturePadView.cs" />
+    <Compile Include="ClearingImageView.cs" />
   </ItemGroup>
 </Project>
