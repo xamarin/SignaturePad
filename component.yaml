@@ -4,7 +4,7 @@ summary: Makes capturing, saving, and displaying signatures extremely simple.
 publisher: Timothy Risi
 publisher-url: http://www.risiapps.com
 screenshots:
-  - component/signature-ios.png
+  - component/signature-ios.jpg
 libraries:
   ios: src/SignaturePad.iOS/bin/Release/SignaturePad.iOS.dll
   android: src/SignaturePad.Android/bin/Release/SignaturePad.Android.dll
