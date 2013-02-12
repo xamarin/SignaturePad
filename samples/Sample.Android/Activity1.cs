@@ -18,6 +18,7 @@ namespace Sample.Android {
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
+			RequestedOrientation = global::Android.Content.PM.ScreenOrientation.Landscape;
 
 			// Set our view from the "main" layout resource
 			SetContentView (Resource.Layout.Main);
