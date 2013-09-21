@@ -29,7 +29,7 @@ namespace Sample
 			controller = new SampleController ();
 			window.RootViewController = controller;
 			window.MakeKeyAndVisible ();
-			
+
 			return true;
 		}
 	}

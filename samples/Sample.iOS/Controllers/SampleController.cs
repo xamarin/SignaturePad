@@ -19,8 +19,23 @@ namespace Sample {
 
 		public override void LoadView ()
 		{
+			base.LoadView ();
+
 			view = new SampleView();
 			View = view;
+		}
+
+		public override void ViewDidLoad ()
+		{
+			base.ViewDidLoad ();
+
+			if (new Version (MonoTouch.Constants.Version) >= new Version (7, 0)) {
+				UIApplication.SharedApplication.StatusBarStyle = UIStatusBarStyle.LightContent;
+			}
+
+			// Customize the font.
+			view.Signature.Caption.Text = "Authorization Signature";
+			view.Signature.Caption.Font = UIFont.FromName ("Marker Felt", 16f);
 		}
 	}
 }

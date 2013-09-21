@@ -78,6 +78,39 @@ namespace SignaturePad {
 			}
 		}
 
+		/// <summary>
+		/// The prompt displayed at the beginning of the signature line.
+		/// </summary>
+		/// <remarks>
+		/// Text value defaults to 'X'.
+		/// </remarks>
+		/// <value>The signature prompt.</value>
+		public UILabel SignaturePrompt {
+			get { return xLabel; }
+			set { xLabel = value; }
+		}
+
+		/// <summary>
+		/// The caption displayed under the signature line.
+		/// </summary>
+		/// <remarks>
+		/// Text value defaults to 'Sign here.'
+		/// </remarks>
+		/// <value>The caption.</value>
+		public UILabel Caption {
+			get { return lblSign; }
+			set { lblSign = value; }
+		}
+
+		/// <summary>
+		/// The color of the signature line.
+		/// </summary>
+		/// <value>The color of the signature line.</value>
+		public UIColor SignatureLineColor {
+			get { return signatureLine.BackgroundColor; }
+			set { signatureLine.BackgroundColor = value; }
+		}
+
 		public SignaturePadView ()
 		{
 			Initialize ();
@@ -449,7 +482,7 @@ namespace SignaturePad {
 					float ttt = tt * t;
 
 					//Intermediate point
-					PointF mid;
+					PointF mid = default(PointF);
 					mid.X = 0.5f * (2f * p1.X + (p2.X - p0.X) * t + 
 						(2f * p0.X - 5f * p1.X + 4f * p2.X - p3.X) * tt + 
 						(3f * p1.X - p0.X - 3f * p2.X + p3.X) * ttt);
@@ -545,10 +578,13 @@ namespace SignaturePad {
 		public override void LayoutSubviews ()
 		{
 			imageView.Frame = new RectangleF (0, 0, Bounds.Width, Bounds.Height);
-			lblSign.Frame = new RectangleF (Bounds.Width / 2 - 27, Bounds.Height - 19, 54, 14);
-			signatureLine.Frame = new RectangleF (10, Bounds.Height - 25, Bounds.Width - 20, 1);
-			xLabel.Frame = new RectangleF (10, Bounds.Height - 50, 14, 24);
-			btnClear.Frame = new RectangleF (Bounds.Width - 41, 10, 31, 14);
+
+			var lblSignTextSize = ((NSString)lblSign.Text).StringSize(lblSign.Font);
+			lblSign.Frame = new RectangleF ((Bounds.Width / 2) - (lblSignTextSize.Width / 2), Bounds.Height - lblSignTextSize.Height - 3, lblSignTextSize.Width, lblSignTextSize.Height);
+
+			signatureLine.Frame = new RectangleF (10, Bounds.Height - signatureLine.Frame.Height - 5 - lblSignTextSize.Height, Bounds.Width - 20, 1);
+			xLabel.Frame = new RectangleF (10, Bounds.Height - xLabel.Frame.Height - signatureLine.Frame.Height - 2 - lblSignTextSize.Height, 14, 24);
+			btnClear.Frame = new RectangleF (Bounds.Width - 41 - lblSignTextSize.Height, 10, 31, 14);
 		}
 	}
 }
