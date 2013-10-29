@@ -580,10 +580,14 @@ namespace SignaturePad {
 			imageView.Frame = new RectangleF (0, 0, Bounds.Width, Bounds.Height);
 
 			var lblSignTextSize = ((NSString)lblSign.Text).StringSize(lblSign.Font);
-			lblSign.Frame = new RectangleF ((Bounds.Width / 2) - (lblSignTextSize.Width / 2), Bounds.Height - lblSignTextSize.Height - 3, lblSignTextSize.Width, lblSignTextSize.Height);
+			lblSign.Frame = new RectangleF ((Bounds.Width / 2) - (lblSignTextSize.Width / 2), Bounds.Height - lblSignTextSize.Height - 3, 
+			                                lblSignTextSize.Width, lblSignTextSize.Height);
 
 			signatureLine.Frame = new RectangleF (10, Bounds.Height - signatureLine.Frame.Height - 5 - lblSignTextSize.Height, Bounds.Width - 20, 1);
-			xLabel.Frame = new RectangleF (10, Bounds.Height - xLabel.Frame.Height - signatureLine.Frame.Height - 2 - lblSignTextSize.Height, 14, 24);
+
+			var xlblTextSize = ((NSString)xLabel.Text).StringSize (xLabel.Font);
+			xLabel.Frame = new RectangleF (10, Bounds.Height - xLabel.Frame.Height - signatureLine.Frame.Height - 2 - lblSignTextSize.Height, 
+			                               xlblTextSize.Width, xlblTextSize.Height);
 			btnClear.Frame = new RectangleF (Bounds.Width - 41 - lblSignTextSize.Height, 10, 31, 14);
 		}
 	}
