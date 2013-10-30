@@ -111,6 +111,13 @@ namespace SignaturePad {
 			set { signatureLine.BackgroundColor = value; }
 		}
 
+		/// <summary>
+		///  An image view that may be used as a watermark or as a texture
+		///  for the signature pad.
+		/// </summary>
+		/// <value>The background image view.</value>
+		public UIImageView BackgroundImageView { get; private set; }
+
 		public SignaturePadView ()
 		{
 			Initialize ();
@@ -144,6 +151,9 @@ namespace SignaturePad {
 			Layer.ShadowRadius = 2f;
 
 			#region Add Subviews
+			BackgroundImageView = new UIImageView ();
+			AddSubview (BackgroundImageView);
+
 			//Add an image that covers the entire signature view, used to display already drawn
 			//elements instead of having to redraw them every time the user touches the screen.
 			imageView = new UIImageView ();
