@@ -10,5 +10,8 @@ libraries:
   ios: src/SignaturePad.iOS/bin/Release/SignaturePad.iOS.dll
   android: src/SignaturePad.Android/bin/Release/SignaturePad.Android.dll
 samples:
-  "iOS Sample": samples/Sample.iOS/Sample.iOS.sln
-  "Android Sample": samples/Sample.Android/Sample.Android.sln
+  - name: "Android Sample"
+    path: samples/Sample.Android/Sample.Android.sln
+  - name: "iOS Sample"
+    path: samples/Sample.iOS/Sample.iOS.sln
+    configuration: "Release|iPhone"
