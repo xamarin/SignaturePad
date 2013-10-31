@@ -18,12 +18,15 @@ namespace Sample.Android {
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
-			RequestedOrientation = global::Android.Content.PM.ScreenOrientation.Landscape;
+			//RequestedOrientation = global::Android.Content.PM.ScreenOrientation.Landscape;
 
 			// Set our view from the "main" layout resource
 			SetContentView (Resource.Layout.Main);
 
 			SignaturePadView signature = FindViewById<SignaturePadView> (Resource.Id.signatureView);
+
+			signature.BackgroundImageView.SetImageResource (Resource.Drawable.logo_galaxy_black_64);
+			signature.BackgroundImageView.Layout (20, 20, 276, 276);
 
 			// Get our button from the layout resource,
 			// and attach an event to it

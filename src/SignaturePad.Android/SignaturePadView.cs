@@ -15,6 +15,7 @@ using Android.Graphics;
 namespace SignaturePad {
 	public class SignaturePadView : FrameLayout {
 		#region UI Controls
+		SignatureCanvasView canvasView;
 		TextView lblSign;
 		View signatureLine;
 		TextView xLabel;
@@ -23,9 +24,11 @@ namespace SignaturePad {
 		#endregion
 
 		Context context;
-		Paint paint;
+		Paint _paint;
+		Paint paint { get { return _paint; } set { canvasView.Paint = _paint = value; } }
 
-		Path currentPath;
+		Path _currentPath;
+		Path currentPath { get { return _currentPath; } set { canvasView.Path = _currentPath = value; } }
 		List<Path> paths;
 		List<System.Drawing.PointF> currentPoints;
 		List<System.Drawing.PointF []> points;
@@ -58,6 +61,10 @@ namespace SignaturePad {
 			get { return Points.Count () == 0; }
 		}
 
+		/// <summary>
+		/// Gets or sets the color of the strokes for the signature.
+		/// </summary>
+		/// <value>The color of the stroke.</value>
 		Color strokeColor;
 		public Color StrokeColor {
 			get { return strokeColor; }
@@ -81,6 +88,10 @@ namespace SignaturePad {
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the width in pixels of the strokes for the signature.
+		/// </summary>
+		/// <value>The width of the line.</value>
 		float lineWidth;
 		public float LineWidth {
 			get { return lineWidth; }
@@ -93,6 +104,49 @@ namespace SignaturePad {
 					imageView.SetImageBitmap (GetImage (false));
 			}
 		}
+
+		/// <summary>
+		/// The prompt displayed at the beginning of the signature line.
+		/// </summary>
+		/// <remarks>
+		/// Text value defaults to 'X'.
+		/// </remarks>
+		/// <value>The signature prompt.</value>
+		public TextView SignaturePrompt {
+			get { return xLabel; }
+			set { xLabel = value; }
+		}
+
+		/// <summary>
+		/// The caption displayed under the signature line.
+		/// </summary>
+		/// <remarks>
+		/// Text value defaults to 'Sign here.'
+		/// </remarks>
+		/// <value>The caption.</value>
+		public TextView Caption {
+			get { return lblSign; }
+			set { lblSign = value; }
+		}
+
+		/// <summary>
+		/// The color of the signature line.
+		/// </summary>
+		/// <value>The color of the signature line.</value>
+		protected Color signatureLineColor;
+		public Color SignatureLineColor {
+			get { return signatureLineColor; }
+			set { 
+				signatureLineColor = value; 
+				signatureLine.SetBackgroundColor (value);
+			}
+		}
+
+		/// <summary>
+		/// Gets the background image view.
+		/// </summary>
+		/// <value>The background image view.</value>
+		public ImageView BackgroundImageView { get; private set; }
 
 		public SignaturePadView (Context context) : base (context)
 		{
@@ -119,6 +173,8 @@ namespace SignaturePad {
 			strokeColor = Color.White;
 			lineWidth = 2f;
 
+			canvasView = new SignatureCanvasView (this.context);
+
 			//Set the attributes for painting the lines on the screen.
 			paint = new Paint ();
 			paint.Color = strokeColor;
@@ -129,6 +185,9 @@ namespace SignaturePad {
 			paint.AntiAlias = true;
 
 			#region Add Subviews
+			BackgroundImageView = new ImageView (this.context);
+			AddView (BackgroundImageView);
+
 			//Add an image that covers the entire signature view, used to display already drawn
 			//elements instead of having to redraw them every time the user touches the screen.
 			imageView = new ClearingImageView (context);
@@ -149,6 +208,8 @@ namespace SignaturePad {
 			xLabel.Text = "X";
 			xLabel.SetTypeface (null, TypefaceStyle.Bold);
 			AddView (xLabel);
+
+			AddView (canvasView);
 
 			lblClear = new TextView (context);
 			lblClear.Text = "Clear";
@@ -491,16 +552,9 @@ namespace SignaturePad {
 			currentPoints.Add (touch);
 		}
 
-		protected override void OnDraw (Canvas canvas)
-		{
-			if (currentPath == null || currentPath.IsEmpty)
-				return;
-
-			canvas.DrawPath (currentPath, paint);
-		}
-
 		protected override void OnLayout (bool changed, int l, int t, int r, int b)
 		{
+			canvasView.Layout (0, 0, Width, Height);
 			imageView.Layout (0, 0, Width, Height);
 			signatureLine.Layout (10, Height - 35, Width - 10, Height - 34);
 			lblClear.Layout (Width - 70, 10, Width - 10, 40);
