@@ -195,29 +195,38 @@ namespace SignaturePad {
 			AddView (imageView);
 
 			lblSign = new TextView (context);
+			lblSign.SetIncludeFontPadding (true);
 			lblSign.Text = "Sign Here";
+			lblSign.LayoutParameters = new FrameLayout.LayoutParams (FrameLayout.LayoutParams.WrapContent, FrameLayout.LayoutParams.WrapContent);
+			lblSign.SetPadding (0, 0, 0, 6);
 			AddView (lblSign);
 
 			//Display the base line for the user to sign on.
 			signatureLine = new View (context);
 			signatureLine.SetBackgroundColor (Color.Gray);
+			signatureLine.LayoutParameters = new FrameLayout.LayoutParams (FrameLayout.LayoutParams.WrapContent, 1);
+			signatureLine.SetPadding (10, 0, 10, 5);
 			AddView (signatureLine);
 
 			//Display the X on the left hand side of the line where the user signs.
 			xLabel = new TextView (context);
 			xLabel.Text = "X";
 			xLabel.SetTypeface (null, TypefaceStyle.Bold);
+			xLabel.LayoutParameters = new FrameLayout.LayoutParams (FrameLayout.LayoutParams.WrapContent, FrameLayout.LayoutParams.WrapContent);
+			xLabel.SetPadding (11, 0, 0, 0);
 			AddView (xLabel);
 
 			AddView (canvasView);
 
 			lblClear = new TextView (context);
 			lblClear.Text = "Clear";
+			lblClear.LayoutParameters = new FrameLayout.LayoutParams (FrameLayout.LayoutParams.WrapContent, FrameLayout.LayoutParams.WrapContent);
+			lblClear.SetPadding (0, 10, 22, 0);
+			lblClear.Visibility = ViewStates.Invisible;
 			lblClear.Click += (object sender, EventArgs e) => {
 				Clear ();
 			};
 			AddView (lblClear);
-			lblClear.Visibility = ViewStates.Invisible;
 			#endregion
 
 			paths = new List<Path> ();
@@ -225,6 +234,19 @@ namespace SignaturePad {
 			currentPoints = new List<System.Drawing.PointF> ();
 
 			dirtyRect = new RectF ();
+		}
+		
+		protected override void OnLayout (bool changed, int l, int t, int r, int b)
+		{
+ 			canvasView.Layout (0, 0, Width, Height);
+			imageView.Layout (0, 0, Width, Height);
+			signatureLine.Layout (signatureLine.PaddingLeft, Height - lblSign.MeasuredHeight - signatureLine.MeasuredHeight,
+			                      Width - signatureLine.PaddingRight, Height - lblSign.MeasuredHeight);
+			lblClear.Layout (Width - lblClear.MeasuredWidth, 0, Width, lblClear.MeasuredHeight);
+			lblSign.Layout ((Width - lblSign.MeasuredWidth) / 2, Height - lblSign.MeasuredHeight, 
+			                (Width + lblSign.MeasuredWidth) / 2, Height);
+			xLabel.Layout (0, Height - lblSign.MeasuredHeight - signatureLine.MeasuredHeight - xLabel.MeasuredHeight, 
+			               xLabel.MeasuredWidth, Height - lblSign.MeasuredHeight - signatureLine.MeasuredHeight);
 		}
 
 		//Delete the current signature.
@@ -550,16 +572,6 @@ namespace SignaturePad {
 
 			currentPath.LineTo (touchX, touchY);
 			currentPoints.Add (touch);
-		}
-
-		protected override void OnLayout (bool changed, int l, int t, int r, int b)
-		{
-			canvasView.Layout (0, 0, Width, Height);
-			imageView.Layout (0, 0, Width, Height);
-			signatureLine.Layout (10, Height - 35, Width - 10, Height - 34);
-			lblClear.Layout (Width - 70, 10, Width - 10, 40);
-			lblSign.Layout (Width / 2 - 45, Height - 35, Width / 2 + 45, Height);
-			xLabel.Layout (11, Height - 65, 30, Height - 40);
 		}
 
 		Path smoothedPathWithGranularity (int granularity, out List<System.Drawing.PointF> smoothedPoints)
