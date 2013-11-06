@@ -37,4 +37,50 @@ To capture the user's signature as an image:
 var image = signature.GetImage ();
 ```
 
+Customization
+-------------
+
+You can change some of the positioning, colors, fonts and the background image of the SignaturePad
+using a few interfaces that the control provides and standard techniques provided by the platform.
+
+### SignaturePad customization interface
+
+The class for both iOS and Android expose some of its internal elements to allow text, font, color and positioning manipulation from your code:
+
+`StrokeColor` Sets the color of the signature input.
+
+`StrokeWidth` Sets the width of the signature input.
+
+`BackgroundColor` Sets the color for the whole signature pad.
+
+`SignatureLineColor` The color of the horizontal line.
+
+`SignaturePrompt` The text label containing the symbol or text that goes under the horizontal line (Default "X").
+
+`Caption` The text label that goes under the horizontal line.
+
+`SignatureLine` The view that is used to render the horizontal line.
+
+`ClearLabel` The view that when clicked clears the pad.
+
+`BackgroundImageView` An optional image rendered below the input strokes that can be used as a texture, logo or watermark.
+
+### iOS customization
+
+Check the sample for ideas on how to manipulate the layout to get the desired effects and color.
+
+You can alter the subviews Frames to reposition elments within the pad, and the BackgroundColors (including UIColor.Clear for a transparent view).
+
+BackgroundImageView cannot be set, but its Image member can, so you can assign a bitmap pulled from a resource or wherever you may get its data. Change the Alpha to make it semi-transparent to get a watermark effect or create a texture using a bitmap with the same dimensions as the pad.
+
+SignaturePad.Layer can be manipulated to generate or remove the shadow from the control or alter its thickness or roundness.
+
+### Android customization
+
+Check the sample for ideas on how to manipulate the layout to get the desired effects and color.
+
+Under Android, the control inherits from RelativeLayout, which provides a good amount of flexibility for repositioning of the child views within the pad. Assign for the children the LayoutParameters property with new RelativeLayout.LayoutParams to move the elements around or resize them using relative positioning policies. All of the elements within the pad have Ids already set so you can establish relative positions between them easily.
+
+BackgroundImageView cannot be set, but you can assign it new data using the SetImage* methods and then aler it with SetAlpha to make it semi-transparent and get a watermark effect or create a texture effect (remember to resize it to the full extent of its parent, the SignaturePad).
+
 *Screenshot created with [PlaceIt](http://placeit.breezi.com).*
