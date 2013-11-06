@@ -13,7 +13,7 @@ using Android.Widget;
 using Android.Graphics;
 
 namespace SignaturePad {
-	public class SignaturePadView : FrameLayout {
+	public class SignaturePadView : RelativeLayout {
 		#region UI Controls
 		SignatureCanvasView canvasView;
 		TextView lblSign;
@@ -167,6 +167,19 @@ namespace SignaturePad {
 			Initialize ();
 		}
 
+		static Random rndId = new Random ();
+		protected int generateId ()
+		{
+			int id;
+			for (;;) {
+				id = rndId.Next (1, 0x00FFFFFF);
+				if (FindViewById<View> (id) != null) {
+					continue;
+				}
+				return id;
+			}
+		}
+
 		void Initialize ()
 		{
 			BackgroundColor = Color.Black;
@@ -174,6 +187,7 @@ namespace SignaturePad {
 			lineWidth = 2f;
 
 			canvasView = new SignatureCanvasView (this.context);
+			canvasView.LayoutParameters = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.FillParent);
 
 			//Set the attributes for painting the lines on the screen.
 			paint = new Paint ();
@@ -185,43 +199,64 @@ namespace SignaturePad {
 			paint.AntiAlias = true;
 
 			#region Add Subviews
+			RelativeLayout.LayoutParams layout;
+
 			BackgroundImageView = new ImageView (this.context);
+			BackgroundImageView.Id = generateId ();
 			AddView (BackgroundImageView);
 
 			//Add an image that covers the entire signature view, used to display already drawn
 			//elements instead of having to redraw them every time the user touches the screen.
 			imageView = new ClearingImageView (context);
 			imageView.SetBackgroundColor (Color.Transparent);
+			imageView.LayoutParameters = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.FillParent);
 			AddView (imageView);
 
 			lblSign = new TextView (context);
+			lblSign.Id = generateId ();
 			lblSign.SetIncludeFontPadding (true);
 			lblSign.Text = "Sign Here";
-			lblSign.LayoutParameters = new FrameLayout.LayoutParams (FrameLayout.LayoutParams.WrapContent, FrameLayout.LayoutParams.WrapContent);
+			layout = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.WrapContent, RelativeLayout.LayoutParams.WrapContent);
+			layout.AlignWithParent = true;
+			layout.BottomMargin = 6;
+			layout.AddRule (LayoutRules.AlignBottom);
+			layout.AddRule (LayoutRules.CenterHorizontal);
+			lblSign.LayoutParameters = layout;
 			lblSign.SetPadding (0, 0, 0, 6);
 			AddView (lblSign);
 
 			//Display the base line for the user to sign on.
 			signatureLine = new View (context);
+			signatureLine.Id = generateId ();
 			signatureLine.SetBackgroundColor (Color.Gray);
-			signatureLine.LayoutParameters = new FrameLayout.LayoutParams (FrameLayout.LayoutParams.WrapContent, 1);
-			signatureLine.SetPadding (10, 0, 10, 5);
+			layout = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.MatchParent, 1);
+			layout.SetMargins (10, 0, 10, 5);
+			layout.AddRule (LayoutRules.Above, lblSign.Id);
+            signatureLine.LayoutParameters = layout;
 			AddView (signatureLine);
 
 			//Display the X on the left hand side of the line where the user signs.
 			xLabel = new TextView (context);
+			xLabel.Id = generateId ();
 			xLabel.Text = "X";
 			xLabel.SetTypeface (null, TypefaceStyle.Bold);
-			xLabel.LayoutParameters = new FrameLayout.LayoutParams (FrameLayout.LayoutParams.WrapContent, FrameLayout.LayoutParams.WrapContent);
-			xLabel.SetPadding (11, 0, 0, 0);
+			layout = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.WrapContent, RelativeLayout.LayoutParams.WrapContent);
+			layout.LeftMargin = 11;
+			layout.AddRule (LayoutRules.Above, signatureLine.Id);
+			xLabel.LayoutParameters = layout;
 			AddView (xLabel);
 
 			AddView (canvasView);
 
 			lblClear = new TextView (context);
+			lblClear.Id = generateId ();
 			lblClear.Text = "Clear";
-			lblClear.LayoutParameters = new FrameLayout.LayoutParams (FrameLayout.LayoutParams.WrapContent, FrameLayout.LayoutParams.WrapContent);
-			lblClear.SetPadding (0, 10, 22, 0);
+			layout = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.WrapContent, RelativeLayout.LayoutParams.WrapContent);
+			layout.SetMargins (0, 10, 22, 0);
+			layout.AlignWithParent = true;
+			layout.AddRule (LayoutRules.AlignRight);
+			layout.AddRule (LayoutRules.AlignTop);
+			lblClear.LayoutParameters = layout;
 			lblClear.Visibility = ViewStates.Invisible;
 			lblClear.Click += (object sender, EventArgs e) => {
 				Clear ();
@@ -234,19 +269,6 @@ namespace SignaturePad {
 			currentPoints = new List<System.Drawing.PointF> ();
 
 			dirtyRect = new RectF ();
-		}
-		
-		protected override void OnLayout (bool changed, int l, int t, int r, int b)
-		{
- 			canvasView.Layout (0, 0, Width, Height);
-			imageView.Layout (0, 0, Width, Height);
-			signatureLine.Layout (signatureLine.PaddingLeft, Height - lblSign.MeasuredHeight - signatureLine.MeasuredHeight,
-			                      Width - signatureLine.PaddingRight, Height - lblSign.MeasuredHeight);
-			lblClear.Layout (Width - lblClear.MeasuredWidth, 0, Width, lblClear.MeasuredHeight);
-			lblSign.Layout ((Width - lblSign.MeasuredWidth) / 2, Height - lblSign.MeasuredHeight, 
-			                (Width + lblSign.MeasuredWidth) / 2, Height);
-			xLabel.Layout (0, Height - lblSign.MeasuredHeight - signatureLine.MeasuredHeight - xLabel.MeasuredHeight, 
-			               xLabel.MeasuredWidth, Height - lblSign.MeasuredHeight - signatureLine.MeasuredHeight);
 		}
 
 		//Delete the current signature.
