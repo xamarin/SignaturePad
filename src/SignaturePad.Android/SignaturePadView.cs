@@ -92,13 +92,13 @@ namespace SignaturePad {
 		/// Gets or sets the width in pixels of the strokes for the signature.
 		/// </summary>
 		/// <value>The width of the line.</value>
-		float lineWidth;
-		public float LineWidth {
-			get { return lineWidth; }
+		float strokeWidth;
+		public float StrokeWidth {
+			get { return strokeWidth; }
 			set {
-				lineWidth = value;
+				strokeWidth = value;
 				if (paint != null)
-					paint.StrokeWidth = lineWidth;
+					paint.StrokeWidth = strokeWidth;
 
 				if (!IsBlank)
 					imageView.SetImageBitmap (GetImage (false));
@@ -148,6 +148,22 @@ namespace SignaturePad {
 		/// <value>The background image view.</value>
 		public ImageView BackgroundImageView { get; private set; }
 
+		/// <summary>
+		/// Gets the label that clears the pad when clicked.
+		/// </summary>
+		/// <value>The clear label.</value>
+		public TextView ClearLabel {
+			get { return lblClear; }
+		}
+
+		/// <summary>
+		/// Gets the horizontal line that goes in the lower part of the pad.
+		/// </summary>
+		/// <value>The signature line.</value>
+		public View SignatureLine {
+			get { return signatureLine; }
+		}
+
 		public SignaturePadView (Context context) : base (context)
 		{
 			this.context = context;
@@ -184,7 +200,7 @@ namespace SignaturePad {
 		{
 			BackgroundColor = Color.Black;
 			strokeColor = Color.White;
-			lineWidth = 2f;
+			StrokeWidth = 2f;
 
 			canvasView = new SignatureCanvasView (this.context);
 			canvasView.LayoutParameters = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.FillParent);
@@ -192,7 +208,7 @@ namespace SignaturePad {
 			//Set the attributes for painting the lines on the screen.
 			paint = new Paint ();
 			paint.Color = strokeColor;
-			paint.StrokeWidth = lineWidth;
+			paint.StrokeWidth = StrokeWidth;
 			paint.SetStyle (Paint.Style.Stroke);
 			paint.StrokeJoin = Paint.Join.Round;
 			paint.StrokeCap = Paint.Cap.Round;
@@ -402,10 +418,10 @@ namespace SignaturePad {
 
 		RectF getCroppedRectangle()
 		{
-			var xMin = Points.Where (point => !point.IsEmpty).Min (point => point.X) - LineWidth / 2;
-			var xMax = Points.Where (point => !point.IsEmpty).Max (point => point.X) + LineWidth / 2;
-			var yMin = Points.Where (point => !point.IsEmpty).Min (point => point.Y) - LineWidth / 2;
-			var yMax = Points.Where (point => !point.IsEmpty).Max (point => point.Y) + LineWidth / 2;
+			var xMin = Points.Where (point => !point.IsEmpty).Min (point => point.X) - strokeWidth / 2;
+			var xMax = Points.Where (point => !point.IsEmpty).Max (point => point.X) + strokeWidth / 2;
+			var yMin = Points.Where (point => !point.IsEmpty).Min (point => point.Y) - strokeWidth / 2;
+			var yMax = Points.Where (point => !point.IsEmpty).Max (point => point.Y) + strokeWidth / 2;
 
 			xMin = Math.Max (xMin, 0);
 			xMax = Math.Min (xMax, Width);

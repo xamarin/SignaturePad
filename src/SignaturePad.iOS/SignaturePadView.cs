@@ -68,11 +68,11 @@ namespace SignaturePad {
 			}
 		}
 
-		float lineWidth;
-		public float LineWidth {
-			get { return lineWidth; }
+		float strokeWidth;
+		public float StrokeWidth {
+			get { return strokeWidth; }
 			set {
-				lineWidth = value;
+				strokeWidth = value;
 				if (!IsBlank)
 					imageView.Image = GetImage (false);
 			}
@@ -118,6 +118,22 @@ namespace SignaturePad {
 		/// <value>The background image view.</value>
 		public UIImageView BackgroundImageView { get; private set; }
 
+		/// <summary>
+		/// Gets the label that clears the pad when clicked.
+		/// </summary>
+		/// <value>The clear label.</value>
+		public UIButton ClearLabel {
+			get { return btnClear; }
+		}
+
+		/// <summary>
+		/// Gets the horizontal line that goes in the lower part of the pad.
+		/// </summary>
+		/// <value>The signature line.</value>
+		public UIView SignatureLine {
+			get { return signatureLine; }
+		}
+
 		public SignaturePadView ()
 		{
 			Initialize ();
@@ -143,7 +159,7 @@ namespace SignaturePad {
 		{
 			BackgroundColor = UIColor.FromRGB(225, 225, 225);
 			strokeColor = UIColor.Black;
-			lineWidth = 2f;
+			StrokeWidth = 2f;
 
 			Layer.ShadowColor = UIColor.Black.CGColor;
 			Layer.ShadowOffset = new SizeF (2, 2);
@@ -297,7 +313,7 @@ namespace SignaturePad {
 			context.SetFillColor (fillColor.CGColor);
 			context.FillRect (new RectangleF (0, 0, uncroppedSize.Width, uncroppedSize.Height));
 			context.SetStrokeColor (strokeColor.CGColor);
-			context.SetLineWidth (lineWidth);
+			context.SetLineWidth (StrokeWidth);
 			context.SetLineCap (CGLineCap.Round);
 			context.SetLineJoin (CGLineJoin.Round);
 			context.ScaleCTM (uncroppedScale, uncroppedScale);
@@ -339,10 +355,10 @@ namespace SignaturePad {
 
 		RectangleF getCroppedRectangle()
 		{
-			var xMin = Points.Where (point => !point.IsEmpty).Min (point => point.X) - LineWidth / 2;
-			var xMax = Points.Where (point => !point.IsEmpty).Max (point => point.X) + LineWidth / 2;
-			var yMin = Points.Where (point => !point.IsEmpty).Min (point => point.Y) - LineWidth / 2;
-			var yMax = Points.Where (point => !point.IsEmpty).Max (point => point.Y) + LineWidth / 2;
+			var xMin = Points.Where (point => !point.IsEmpty).Min (point => point.X) - strokeWidth / 2;
+			var xMax = Points.Where (point => !point.IsEmpty).Max (point => point.X) + strokeWidth / 2;
+			var yMin = Points.Where (point => !point.IsEmpty).Min (point => point.Y) - strokeWidth / 2;
+			var yMax = Points.Where (point => !point.IsEmpty).Max (point => point.Y) + strokeWidth / 2;
 
 			xMin = Math.Max (xMin, 0);
 			xMax = Math.Min (xMax, Bounds.Width);
@@ -388,7 +404,7 @@ namespace SignaturePad {
 			do {
 				//Create a new path and set the line options
 				currentPath = UIBezierPath.Create ();
-				currentPath.LineWidth = lineWidth;
+				currentPath.LineWidth = StrokeWidth;
 				currentPath.LineJoinStyle = CGLineJoin.Round;
 
 				currentPoints = new List<PointF> ();
@@ -468,7 +484,7 @@ namespace SignaturePad {
 
 			//Create a new bezier path to hold the smoothed path.
 			UIBezierPath smoothedPath = UIBezierPath.Create ();
-			smoothedPath.LineWidth = lineWidth;
+			smoothedPath.LineWidth = StrokeWidth;
 			smoothedPath.LineJoinStyle = CGLineJoin.Round;
 
 			//Duplicate the first and last points as control points.
@@ -521,7 +537,7 @@ namespace SignaturePad {
 		{
 			//Create a new path and set the options.
 			currentPath = UIBezierPath.Create ();
-			currentPath.LineWidth = lineWidth;
+			currentPath.LineWidth = StrokeWidth;
 			currentPath.LineJoinStyle = CGLineJoin.Round;
 			
 			currentPoints.Clear ();
