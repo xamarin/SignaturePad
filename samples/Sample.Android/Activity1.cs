@@ -40,7 +40,11 @@ namespace Sample.Android {
 
 				signature.BackgroundImageView.SetImageResource (Resource.Drawable.logo_galaxy_black_64);
 				signature.BackgroundImageView.SetAlpha (16);
-				signature.BackgroundImageView.Layout (20, 20, 276, 276);
+				signature.BackgroundImageView.SetAdjustViewBounds (true);
+				var layout = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.FillParent);
+				layout.AddRule (LayoutRules.CenterInParent);
+				layout.SetMargins (20, 20, 20, 20);
+				signature.BackgroundImageView.LayoutParameters = layout;
 
 				// You can change paddings for positioning...
 				var caption = signature.Caption;
