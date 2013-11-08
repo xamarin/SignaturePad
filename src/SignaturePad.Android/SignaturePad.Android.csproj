@@ -32,7 +32,6 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
-    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -44,5 +43,6 @@
   <ItemGroup>
     <Compile Include="SignaturePadView.cs" />
     <Compile Include="ClearingImageView.cs" />
+    <Compile Include="SignatureCanvasView.cs" />
   </ItemGroup>
 </Project>

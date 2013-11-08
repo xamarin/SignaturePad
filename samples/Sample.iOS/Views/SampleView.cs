@@ -14,7 +14,7 @@ using SignaturePad;
 
 namespace Sample {
 	public class SampleView : UIView {
-		SignaturePadView signature { get; set; }
+		public SignaturePadView Signature { get; set; }
 		UIImageView imageView;
 		UIButton btnSave, btnLoad;
 		PointF [] points;
@@ -32,58 +32,78 @@ namespace Sample {
 			btnLoad.SetTitle ("Load Last", UIControlState.Normal);
 			btnLoad.TouchUpInside += (sender, e) => {
 				if (points != null)
-					signature.LoadPoints (points);
+					Signature.LoadPoints (points);
 			};
 
-			signature = new SignaturePadView ();
+			Frame = UIScreen.MainScreen.ApplicationFrame;
 
+			Signature = new SignaturePadView ();
 			//Using different layouts for the iPhone and iPad, so setup device specific requirements here.
 			if (UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone) {
-				//iPhone uses Landscape, but ApplicationFrame still returns Portrait values, so 
-				//reverse them for creating the view's frame.
-				Frame = new RectangleF (0, 20, UIScreen.MainScreen.ApplicationFrame.Height, 
-				                        UIScreen.MainScreen.ApplicationFrame.Width);
 
 				//iPhone version simply saves the vector of points in an instance variable.
 				btnSave.TouchUpInside += (sender, e) => {
-					if (signature.IsBlank)
+					if (Signature.IsBlank)
 						new UIAlertView ("", "No signature to save.", null, "Okay", null).Show ();
 					else {
-						points = signature.Points;
+						points = Signature.Points;
 						new UIAlertView ("", "Vector Saved.", null, "Okay", null).Show ();
 					}
 				};
 			} else {
-				Frame = UIScreen.MainScreen.ApplicationFrame;
 
 				//iPad version saves the vector of points as well as retrieving the UIImage to display
 				//in a UIImageView.
 				btnSave.TouchUpInside += (sender, e) => {
 					//if (signature.IsBlank)
 					//	new UIAlertView ("", "No signature to save.", null, "Okay", null).Show ();
-					imageView.Image = signature.GetImage ();
-					points = signature.Points;
+					imageView.Image = Signature.GetImage ();
+					points = Signature.Points;
 				};
 
 				//Create the UIImageView to display a saved signature.
 				imageView = new UIImageView();
 				AddSubview(imageView);
 			}
+			TranslatesAutoresizingMaskIntoConstraints = false;
 
 			//Add the subviews.
-			AddSubview (signature);
+			AddSubview (Signature);
 			AddSubview (btnSave);
 			AddSubview (btnLoad);
 		}
 
 		public override void LayoutSubviews ()
 		{
+			if (new Version(MonoTouch.Constants.Version) >= new Version (7, 0))
+			{
+				var frame = Frame;
+
+				var width = UIApplication.SharedApplication.StatusBarOrientation.HasFlag(UIDeviceOrientation.Portrait)
+					? frame.Size.Width
+						: frame.Size.Width - UIApplication.SharedApplication.StatusBarFrame.Width ;
+
+				var height = UIApplication.SharedApplication.StatusBarOrientation.HasFlag (UIDeviceOrientation.Portrait)
+					? frame.Size.Height - UIApplication.SharedApplication.StatusBarFrame.Height 
+						: frame.Size.Height;
+
+				var x = UIApplication.SharedApplication.StatusBarOrientation.HasFlag (UIDeviceOrientation.Portrait)
+					? 0
+						: frame.Location.X + UIApplication.SharedApplication.StatusBarFrame.Width;
+
+				var y = UIApplication.SharedApplication.StatusBarOrientation.HasFlag (UIDeviceOrientation.Portrait)
+					? frame.Location.Y + UIApplication.SharedApplication.StatusBarFrame.Height
+						: 0;
+
+				Frame = new RectangleF (x, y, width, height);
+			}
+
 			///Using different layouts for the iPhone and iPad, so setup device specific requirements here.
 			if (UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone)
-				signature.Frame = new RectangleF (10, 10, Bounds.Width - 20, Bounds.Height - 60);
+				Signature.Frame = new RectangleF (10, 10, Bounds.Width - 20, Bounds.Height - 60);
 			else {
-				signature.Frame = new RectangleF (84, 84, Bounds.Width - 168, Bounds.Width / 2);
-				imageView.Frame = new RectangleF (84, signature.Frame.Height + 168,
+				Signature.Frame = new RectangleF (84, 84, Bounds.Width - 168, Bounds.Width / 2);
+				imageView.Frame = new RectangleF (84, Signature.Frame.Height + 168,
 				                                   Frame.Width - 168, Frame.Width / 2);
 			}
 

@@ -68,14 +68,70 @@ namespace SignaturePad {
 			}
 		}
 
-		float lineWidth;
-		public float LineWidth {
-			get { return lineWidth; }
+		float strokeWidth;
+		public float StrokeWidth {
+			get { return strokeWidth; }
 			set {
-				lineWidth = value;
+				strokeWidth = value;
 				if (!IsBlank)
 					imageView.Image = GetImage (false);
 			}
+		}
+
+		/// <summary>
+		/// The prompt displayed at the beginning of the signature line.
+		/// </summary>
+		/// <remarks>
+		/// Text value defaults to 'X'.
+		/// </remarks>
+		/// <value>The signature prompt.</value>
+		public UILabel SignaturePrompt {
+			get { return xLabel; }
+			set { xLabel = value; }
+		}
+
+		/// <summary>
+		/// The caption displayed under the signature line.
+		/// </summary>
+		/// <remarks>
+		/// Text value defaults to 'Sign here.'
+		/// </remarks>
+		/// <value>The caption.</value>
+		public UILabel Caption {
+			get { return lblSign; }
+			set { lblSign = value; }
+		}
+
+		/// <summary>
+		/// The color of the signature line.
+		/// </summary>
+		/// <value>The color of the signature line.</value>
+		public UIColor SignatureLineColor {
+			get { return signatureLine.BackgroundColor; }
+			set { signatureLine.BackgroundColor = value; }
+		}
+
+		/// <summary>
+		///  An image view that may be used as a watermark or as a texture
+		///  for the signature pad.
+		/// </summary>
+		/// <value>The background image view.</value>
+		public UIImageView BackgroundImageView { get; private set; }
+
+		/// <summary>
+		/// Gets the label that clears the pad when clicked.
+		/// </summary>
+		/// <value>The clear label.</value>
+		public UIButton ClearLabel {
+			get { return btnClear; }
+		}
+
+		/// <summary>
+		/// Gets the horizontal line that goes in the lower part of the pad.
+		/// </summary>
+		/// <value>The signature line.</value>
+		public UIView SignatureLine {
+			get { return signatureLine; }
 		}
 
 		public SignaturePadView ()
@@ -103,7 +159,7 @@ namespace SignaturePad {
 		{
 			BackgroundColor = UIColor.FromRGB(225, 225, 225);
 			strokeColor = UIColor.Black;
-			lineWidth = 2f;
+			StrokeWidth = 2f;
 
 			Layer.ShadowColor = UIColor.Black.CGColor;
 			Layer.ShadowOffset = new SizeF (2, 2);
@@ -111,6 +167,9 @@ namespace SignaturePad {
 			Layer.ShadowRadius = 2f;
 
 			#region Add Subviews
+			BackgroundImageView = new UIImageView ();
+			AddSubview (BackgroundImageView);
+
 			//Add an image that covers the entire signature view, used to display already drawn
 			//elements instead of having to redraw them every time the user touches the screen.
 			imageView = new UIImageView ();
@@ -254,7 +313,7 @@ namespace SignaturePad {
 			context.SetFillColor (fillColor.CGColor);
 			context.FillRect (new RectangleF (0, 0, uncroppedSize.Width, uncroppedSize.Height));
 			context.SetStrokeColor (strokeColor.CGColor);
-			context.SetLineWidth (lineWidth);
+			context.SetLineWidth (StrokeWidth);
 			context.SetLineCap (CGLineCap.Round);
 			context.SetLineJoin (CGLineJoin.Round);
 			context.ScaleCTM (uncroppedScale, uncroppedScale);
@@ -296,10 +355,10 @@ namespace SignaturePad {
 
 		RectangleF getCroppedRectangle()
 		{
-			var xMin = Points.Where (point => !point.IsEmpty).Min (point => point.X) - LineWidth / 2;
-			var xMax = Points.Where (point => !point.IsEmpty).Max (point => point.X) + LineWidth / 2;
-			var yMin = Points.Where (point => !point.IsEmpty).Min (point => point.Y) - LineWidth / 2;
-			var yMax = Points.Where (point => !point.IsEmpty).Max (point => point.Y) + LineWidth / 2;
+			var xMin = Points.Where (point => !point.IsEmpty).Min (point => point.X) - strokeWidth / 2;
+			var xMax = Points.Where (point => !point.IsEmpty).Max (point => point.X) + strokeWidth / 2;
+			var yMin = Points.Where (point => !point.IsEmpty).Min (point => point.Y) - strokeWidth / 2;
+			var yMax = Points.Where (point => !point.IsEmpty).Max (point => point.Y) + strokeWidth / 2;
 
 			xMin = Math.Max (xMin, 0);
 			xMax = Math.Min (xMax, Bounds.Width);
@@ -345,7 +404,7 @@ namespace SignaturePad {
 			do {
 				//Create a new path and set the line options
 				currentPath = UIBezierPath.Create ();
-				currentPath.LineWidth = lineWidth;
+				currentPath.LineWidth = StrokeWidth;
 				currentPath.LineJoinStyle = CGLineJoin.Round;
 
 				currentPoints = new List<PointF> ();
@@ -425,7 +484,7 @@ namespace SignaturePad {
 
 			//Create a new bezier path to hold the smoothed path.
 			UIBezierPath smoothedPath = UIBezierPath.Create ();
-			smoothedPath.LineWidth = lineWidth;
+			smoothedPath.LineWidth = StrokeWidth;
 			smoothedPath.LineJoinStyle = CGLineJoin.Round;
 
 			//Duplicate the first and last points as control points.
@@ -449,15 +508,13 @@ namespace SignaturePad {
 					float ttt = tt * t;
 
 					//Intermediate point
-					PointF mid;
-					var x = 0.5f * (2f * p1.X + (p2.X - p0.X) * t + 
+					PointF mid = default(PointF);
+					mid.X = 0.5f * (2f * p1.X + (p2.X - p0.X) * t + 
 						(2f * p0.X - 5f * p1.X + 4f * p2.X - p3.X) * tt + 
 						(3f * p1.X - p0.X - 3f * p2.X + p3.X) * ttt);
-					var y = 0.5f * (2 * p1.Y + (p2.Y - p0.Y) * t + 
+					mid.Y = 0.5f * (2 * p1.Y + (p2.Y - p0.Y) * t + 
 						(2 * p0.Y - 5 * p1.Y + 4 * p2.Y - p3.Y) * tt + 
 						(3 * p1.Y - p0.Y - 3 * p2.Y + p3.Y) * ttt);
-
-					mid = new PointF (x, y);
 
 					smoothedPath.AddLineTo (mid);
 					smoothedPoints.Add (mid);
@@ -480,7 +537,7 @@ namespace SignaturePad {
 		{
 			//Create a new path and set the options.
 			currentPath = UIBezierPath.Create ();
-			currentPath.LineWidth = lineWidth;
+			currentPath.LineWidth = StrokeWidth;
 			currentPath.LineJoinStyle = CGLineJoin.Round;
 			
 			currentPoints.Clear ();
@@ -546,11 +603,20 @@ namespace SignaturePad {
 
 		public override void LayoutSubviews ()
 		{
+			lblSign.SizeToFit ();
+			xLabel.SizeToFit ();
+			btnClear.SizeToFit ();
+
 			imageView.Frame = new RectangleF (0, 0, Bounds.Width, Bounds.Height);
-			lblSign.Frame = new RectangleF (Bounds.Width / 2 - 27, Bounds.Height - 19, 54, 14);
-			signatureLine.Frame = new RectangleF (10, Bounds.Height - 25, Bounds.Width - 20, 1);
-			xLabel.Frame = new RectangleF (10, Bounds.Height - 50, 14, 24);
-			btnClear.Frame = new RectangleF (Bounds.Width - 41, 10, 31, 14);
+
+			lblSign.Frame = new RectangleF ((Bounds.Width / 2) - (lblSign.Frame.Width / 2), Bounds.Height - lblSign.Frame.Height - 3, 
+			                                lblSign.Frame.Width, lblSign.Frame.Height);
+
+			signatureLine.Frame = new RectangleF (10, Bounds.Height - signatureLine.Frame.Height - 5 - lblSign.Frame.Height, Bounds.Width - 20, 1);
+
+			xLabel.Frame = new RectangleF (10, Bounds.Height - xLabel.Frame.Height - signatureLine.Frame.Height - 2 - lblSign.Frame.Height, 
+			                               xLabel.Frame.Width, xLabel.Frame.Height);
+			btnClear.Frame = new RectangleF (Bounds.Width - 41 - lblSign.Frame.Height, 10, 31, 14);
 		}
 	}
 }

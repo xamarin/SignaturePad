@@ -22,9 +22,10 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
     <MtouchDebug>True</MtouchDebug>
-    <MtouchProfiling>True</MtouchProfiling>
     <MtouchLink>None</MtouchLink>
     <MtouchArch>ARMv7</MtouchArch>
+    <MtouchI18n>
+    </MtouchI18n>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -110,5 +111,6 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Default-586h%402x-568h%402x.png" />
+    <BundleResource Include="Resources\logo-galaxy-black-64.png" />
   </ItemGroup>
 </Project>

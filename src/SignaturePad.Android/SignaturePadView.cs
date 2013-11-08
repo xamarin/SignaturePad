@@ -13,8 +13,9 @@ using Android.Widget;
 using Android.Graphics;
 
 namespace SignaturePad {
-	public class SignaturePadView : FrameLayout {
+	public class SignaturePadView : RelativeLayout {
 		#region UI Controls
+		SignatureCanvasView canvasView;
 		TextView lblSign;
 		View signatureLine;
 		TextView xLabel;
@@ -23,9 +24,11 @@ namespace SignaturePad {
 		#endregion
 
 		Context context;
-		Paint paint;
+		Paint _paint;
+		Paint paint { get { return _paint; } set { canvasView.Paint = _paint = value; } }
 
-		Path currentPath;
+		Path _currentPath;
+		Path currentPath { get { return _currentPath; } set { canvasView.Path = _currentPath = value; } }
 		List<Path> paths;
 		List<System.Drawing.PointF> currentPoints;
 		List<System.Drawing.PointF []> points;
@@ -58,6 +61,10 @@ namespace SignaturePad {
 			get { return Points.Count () == 0; }
 		}
 
+		/// <summary>
+		/// Gets or sets the color of the strokes for the signature.
+		/// </summary>
+		/// <value>The color of the stroke.</value>
 		Color strokeColor;
 		public Color StrokeColor {
 			get { return strokeColor; }
@@ -81,17 +88,80 @@ namespace SignaturePad {
 			}
 		}
 
-		float lineWidth;
-		public float LineWidth {
-			get { return lineWidth; }
+		/// <summary>
+		/// Gets or sets the width in pixels of the strokes for the signature.
+		/// </summary>
+		/// <value>The width of the line.</value>
+		float strokeWidth;
+		public float StrokeWidth {
+			get { return strokeWidth; }
 			set {
-				lineWidth = value;
+				strokeWidth = value;
 				if (paint != null)
-					paint.StrokeWidth = lineWidth;
+					paint.StrokeWidth = strokeWidth;
 
 				if (!IsBlank)
 					imageView.SetImageBitmap (GetImage (false));
 			}
+		}
+
+		/// <summary>
+		/// The prompt displayed at the beginning of the signature line.
+		/// </summary>
+		/// <remarks>
+		/// Text value defaults to 'X'.
+		/// </remarks>
+		/// <value>The signature prompt.</value>
+		public TextView SignaturePrompt {
+			get { return xLabel; }
+			set { xLabel = value; }
+		}
+
+		/// <summary>
+		/// The caption displayed under the signature line.
+		/// </summary>
+		/// <remarks>
+		/// Text value defaults to 'Sign here.'
+		/// </remarks>
+		/// <value>The caption.</value>
+		public TextView Caption {
+			get { return lblSign; }
+			set { lblSign = value; }
+		}
+
+		/// <summary>
+		/// The color of the signature line.
+		/// </summary>
+		/// <value>The color of the signature line.</value>
+		protected Color signatureLineColor;
+		public Color SignatureLineColor {
+			get { return signatureLineColor; }
+			set { 
+				signatureLineColor = value; 
+				signatureLine.SetBackgroundColor (value);
+			}
+		}
+
+		/// <summary>
+		/// Gets the background image view.
+		/// </summary>
+		/// <value>The background image view.</value>
+		public ImageView BackgroundImageView { get; private set; }
+
+		/// <summary>
+		/// Gets the label that clears the pad when clicked.
+		/// </summary>
+		/// <value>The clear label.</value>
+		public TextView ClearLabel {
+			get { return lblClear; }
+		}
+
+		/// <summary>
+		/// Gets the horizontal line that goes in the lower part of the pad.
+		/// </summary>
+		/// <value>The signature line.</value>
+		public View SignatureLine {
+			get { return signatureLine; }
 		}
 
 		public SignaturePadView (Context context) : base (context)
@@ -113,50 +183,101 @@ namespace SignaturePad {
 			Initialize ();
 		}
 
+		static Random rndId = new Random ();
+		protected int generateId ()
+		{
+			int id;
+			for (;;) {
+				id = rndId.Next (1, 0x00FFFFFF);
+				if (FindViewById<View> (id) != null) {
+					continue;
+				}
+				return id;
+			}
+		}
+
 		void Initialize ()
 		{
 			BackgroundColor = Color.Black;
 			strokeColor = Color.White;
-			lineWidth = 2f;
+			StrokeWidth = 2f;
+
+			canvasView = new SignatureCanvasView (this.context);
+			canvasView.LayoutParameters = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.FillParent);
 
 			//Set the attributes for painting the lines on the screen.
 			paint = new Paint ();
 			paint.Color = strokeColor;
-			paint.StrokeWidth = lineWidth;
+			paint.StrokeWidth = StrokeWidth;
 			paint.SetStyle (Paint.Style.Stroke);
 			paint.StrokeJoin = Paint.Join.Round;
 			paint.StrokeCap = Paint.Cap.Round;
 			paint.AntiAlias = true;
 
 			#region Add Subviews
+			RelativeLayout.LayoutParams layout;
+
+			BackgroundImageView = new ImageView (this.context);
+			BackgroundImageView.Id = generateId ();
+			AddView (BackgroundImageView);
+
 			//Add an image that covers the entire signature view, used to display already drawn
 			//elements instead of having to redraw them every time the user touches the screen.
 			imageView = new ClearingImageView (context);
 			imageView.SetBackgroundColor (Color.Transparent);
+			imageView.LayoutParameters = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.FillParent);
 			AddView (imageView);
 
 			lblSign = new TextView (context);
+			lblSign.Id = generateId ();
+			lblSign.SetIncludeFontPadding (true);
 			lblSign.Text = "Sign Here";
+			layout = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.WrapContent, RelativeLayout.LayoutParams.WrapContent);
+			layout.AlignWithParent = true;
+			layout.BottomMargin = 6;
+			layout.AddRule (LayoutRules.AlignBottom);
+			layout.AddRule (LayoutRules.CenterHorizontal);
+			lblSign.LayoutParameters = layout;
+			lblSign.SetPadding (0, 0, 0, 6);
 			AddView (lblSign);
 
 			//Display the base line for the user to sign on.
 			signatureLine = new View (context);
+			signatureLine.Id = generateId ();
 			signatureLine.SetBackgroundColor (Color.Gray);
+			layout = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.MatchParent, 1);
+			layout.SetMargins (10, 0, 10, 5);
+			layout.AddRule (LayoutRules.Above, lblSign.Id);
+            signatureLine.LayoutParameters = layout;
 			AddView (signatureLine);
 
 			//Display the X on the left hand side of the line where the user signs.
 			xLabel = new TextView (context);
+			xLabel.Id = generateId ();
 			xLabel.Text = "X";
 			xLabel.SetTypeface (null, TypefaceStyle.Bold);
+			layout = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.WrapContent, RelativeLayout.LayoutParams.WrapContent);
+			layout.LeftMargin = 11;
+			layout.AddRule (LayoutRules.Above, signatureLine.Id);
+			xLabel.LayoutParameters = layout;
 			AddView (xLabel);
 
+			AddView (canvasView);
+
 			lblClear = new TextView (context);
+			lblClear.Id = generateId ();
 			lblClear.Text = "Clear";
+			layout = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.WrapContent, RelativeLayout.LayoutParams.WrapContent);
+			layout.SetMargins (0, 10, 22, 0);
+			layout.AlignWithParent = true;
+			layout.AddRule (LayoutRules.AlignRight);
+			layout.AddRule (LayoutRules.AlignTop);
+			lblClear.LayoutParameters = layout;
+			lblClear.Visibility = ViewStates.Invisible;
 			lblClear.Click += (object sender, EventArgs e) => {
 				Clear ();
 			};
 			AddView (lblClear);
-			lblClear.Visibility = ViewStates.Invisible;
 			#endregion
 
 			paths = new List<Path> ();
@@ -297,10 +418,10 @@ namespace SignaturePad {
 
 		RectF getCroppedRectangle()
 		{
-			var xMin = Points.Where (point => !point.IsEmpty).Min (point => point.X) - LineWidth / 2;
-			var xMax = Points.Where (point => !point.IsEmpty).Max (point => point.X) + LineWidth / 2;
-			var yMin = Points.Where (point => !point.IsEmpty).Min (point => point.Y) - LineWidth / 2;
-			var yMax = Points.Where (point => !point.IsEmpty).Max (point => point.Y) + LineWidth / 2;
+			var xMin = Points.Where (point => !point.IsEmpty).Min (point => point.X) - strokeWidth / 2;
+			var xMax = Points.Where (point => !point.IsEmpty).Max (point => point.X) + strokeWidth / 2;
+			var yMin = Points.Where (point => !point.IsEmpty).Min (point => point.Y) - strokeWidth / 2;
+			var yMax = Points.Where (point => !point.IsEmpty).Max (point => point.Y) + strokeWidth / 2;
 
 			xMin = Math.Max (xMin, 0);
 			xMax = Math.Min (xMax, Width);
@@ -489,23 +610,6 @@ namespace SignaturePad {
 
 			currentPath.LineTo (touchX, touchY);
 			currentPoints.Add (touch);
-		}
-
-		protected override void OnDraw (Canvas canvas)
-		{
-			if (currentPath == null || currentPath.IsEmpty)
-				return;
-
-			canvas.DrawPath (currentPath, paint);
-		}
-
-		protected override void OnLayout (bool changed, int l, int t, int r, int b)
-		{
-			imageView.Layout (0, 0, Width, Height);
-			signatureLine.Layout (10, Height - 35, Width - 10, Height - 34);
-			lblClear.Layout (Width - 70, 10, Width - 10, 40);
-			lblSign.Layout (Width / 2 - 45, Height - 35, Width / 2 + 45, Height);
-			xLabel.Layout (11, Height - 65, 30, Height - 40);
 		}
 
 		Path smoothedPathWithGranularity (int granularity, out List<System.Drawing.PointF> smoothedPoints)
