@@ -133,7 +133,7 @@
     <BundleResource Include="Resources\Default-586h%402x-Landscape%402x.png" />
   </ItemGroup>
   <ItemGroup>
-    <ITunesArtwork Include="iTunesArtwork" />
-    <ITunesArtwork Include="iTunesArtwork%402x" />
+    <ITunesArtwork Include="iTunesArtwork.png" />
+    <ITunesArtwork Include="iTunesArtwork%402x.png" />
   </ItemGroup>
 </Project>
