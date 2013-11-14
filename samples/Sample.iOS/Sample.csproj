@@ -112,5 +112,28 @@
   <ItemGroup>
     <BundleResource Include="Resources\Default-586h%402x-568h%402x.png" />
     <BundleResource Include="Resources\logo-galaxy-black-64.png" />
+    <BundleResource Include="Resources\Icon.png" />
+    <BundleResource Include="Resources\Icon%402x.png" />
+    <BundleResource Include="Resources\Icon-60%402x.png" />
+    <BundleResource Include="Resources\Icon-72.png" />
+    <BundleResource Include="Resources\Icon-72%402x.png" />
+    <BundleResource Include="Resources\Icon-76.png" />
+    <BundleResource Include="Resources\Icon-76%402x.png" />
+    <BundleResource Include="Resources\Icon-Small.png" />
+    <BundleResource Include="Resources\Icon-Small%402x.png" />
+    <BundleResource Include="Resources\Icon-Small-50.png" />
+    <BundleResource Include="Resources\Icon-Small-50%402x.png" />
+    <BundleResource Include="Resources\Icon-Small-40.png" />
+    <BundleResource Include="Resources\Icon-Small-40%402x.png" />
+    <BundleResource Include="Resources\Default-586h%402x.png" />
+    <BundleResource Include="Resources\Default-586h%402x%402x.png" />
+    <BundleResource Include="Resources\Default-586h%402x-Portrait.png" />
+    <BundleResource Include="Resources\Default-586h%402x-Portrait%402x.png" />
+    <BundleResource Include="Resources\Default-586h%402x-Landscape.png" />
+    <BundleResource Include="Resources\Default-586h%402x-Landscape%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ITunesArtwork Include="iTunesArtwork" />
+    <ITunesArtwork Include="iTunesArtwork%402x" />
   </ItemGroup>
 </Project>
