@@ -40,8 +40,10 @@ namespace SignaturePad {
 			if (imageBitmap != null)
 			{
 				imageBitmap.Recycle ();
+				imageBitmap.Dispose ();
 			}
 			imageBitmap = bm;
+			System.GC.Collect ();
 		}
 	}
 }
