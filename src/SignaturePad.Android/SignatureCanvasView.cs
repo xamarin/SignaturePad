@@ -55,7 +55,6 @@ namespace SignaturePad
 
 			canvas.DrawPath (this.currentPath, this.currentPaint);
 		}
-
 	}
 }
 

@@ -43,7 +43,7 @@ namespace SignaturePad {
 				imageBitmap.Dispose ();
 			}
 			imageBitmap = bm;
-			System.GC.Collect ();
+			GC.Collect ();
 		}
 	}
 }
