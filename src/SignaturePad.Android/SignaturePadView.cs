@@ -557,7 +557,7 @@ namespace SignaturePad {
 				return true;
 			case MotionEventActions.Move:
 				handleTouch (e);
-				Invalidate(
+				canvasView.Invalidate(
 					(int) (dirtyRect.Left - 1),
 					(int) (dirtyRect.Top - 1),
 					(int) (dirtyRect.Right + 1),
@@ -574,7 +574,7 @@ namespace SignaturePad {
 				//Get an image of the current signature and display it so that the entire set of paths
 				//doesn't have to be redrawn every time.
 				imageView.SetImageBitmap (GetImage (false));
-				Invalidate ();
+				canvasView.Invalidate ();
 				break;
 			default:
 				return false;
