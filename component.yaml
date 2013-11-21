@@ -2,7 +2,7 @@ version: 1.3
 name: Signature Pad
 summary: Makes capturing, saving, and displaying signatures extremely simple.
 id: signature-pad
-publisher: Xamarin
+publisher: Xamarin, Inc.
 publisher-url: http://xamarin.com/
 screenshots:
   - component/signature-ios.jpg
