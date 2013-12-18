@@ -75,7 +75,7 @@ namespace SignaturePad {
 					paint.Color = strokeColor;
 
 				if (!IsBlank)
-					imageView.SetImageBitmap (GetImage(false));
+					DrawStrokes ();
 			}
 		}
 
@@ -101,7 +101,7 @@ namespace SignaturePad {
 					paint.StrokeWidth = strokeWidth;
 
 				if (!IsBlank)
-					imageView.SetImageBitmap (GetImage (false));
+					DrawStrokes ();
 			}
 		}
 
@@ -385,11 +385,8 @@ namespace SignaturePad {
 			                                    Bitmap.Config.Argb8888);
 			Canvas canvas = new Canvas (image);
 			canvas.Scale (uncroppedScale, uncroppedScale);
-			paint.Color = strokeColor;
-			canvas.DrawColor (fillColor);
 
-			foreach (var path in paths)
-				canvas.DrawPath (path, paint);
+			DrawStrokesOnCanvas (canvas, strokeColor, fillColor);
 	
 			if (shouldCrop && Points.Count () != 0) {
 				croppedRectangle = getCroppedRectangle ();
@@ -412,8 +409,49 @@ namespace SignaturePad {
 				                             (int) scaledRectangle.Width (),
 				                             (int) scaledRectangle.Height ());
 			}
-			paint.Color = this.strokeColor;
 			return image;
+		}
+
+		private void DrawStrokesOnCanvas (Canvas canvas, Color strokeColor, Color fillColor) {
+			canvas.DrawColor (fillColor);
+
+			paint.Color = strokeColor;
+			foreach (var path in paths)
+				canvas.DrawPath (path, paint);
+			paint.Color = this.strokeColor;
+		}
+
+		// Bitmap buffer off by default since memory is a limited resource.
+		private bool _useBitmapBuffer = false;
+		public bool UseBitmapBuffer {
+			get { return _useBitmapBuffer; }
+			set {
+				_useBitmapBuffer = value;
+				if (_useBitmapBuffer) {
+					DrawStrokes ();
+				} else {
+					imageView.SetImageBitmap (null);
+				}
+			}
+		}
+
+		private void DrawStrokes ()
+		{
+			if (UseBitmapBuffer) {
+				//Get an image of the current signature and display it so that the entire set of paths
+				//doesn't have to be redrawn every time.
+				this.imageView.SetImageBitmap (this.GetImage (false));
+			}
+		}
+
+		public override void Draw (Canvas canvas)
+		{
+			base.Draw (canvas);
+
+			if (!UseBitmapBuffer) {
+				//Bitmap not in use: redraw all of the paths.
+				DrawStrokesOnCanvas (canvas, this.strokeColor, Color.Transparent);
+			}
 		}
 
 		RectF getCroppedRectangle()
@@ -497,8 +535,7 @@ namespace SignaturePad {
 					emptyIndex = startIndex;
 			} while (startIndex < emptyIndex);
 			
-			//Obtain the image for the imported signature and display it in the image view.
-			imageView.SetImageBitmap (GetImage (false));
+			DrawStrokes ();
 
 			//Display the clear button.
 			lblClear.Visibility = ViewStates.Visible; 
@@ -571,9 +608,7 @@ namespace SignaturePad {
 				paths.Add (currentPath);
 				points.Add (currentPoints.ToArray ());
 
-				//Get an image of the current signature and display it so that the entire set of paths
-				//doesn't have to be redrawn every time.
-				imageView.SetImageBitmap (GetImage (false));
+				DrawStrokes ();
 				canvasView.Invalidate ();
 				break;
 			default:

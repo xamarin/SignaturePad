@@ -29,6 +29,10 @@ namespace Sample.Android {
 				View root = FindViewById<View> (Resource.Id.rootView);
 				root.SetBackgroundColor (Color.White);
 
+				// Activate this to internally use a bitmap to store the strokes
+				// (good for frequent-redraw situations, bad for memory footprint)
+				// signature.UseBitmapBuffer = true;
+
 				signature.Caption.Text = "Authorization Signature";
 				signature.Caption.SetTypeface (Typeface.Serif, TypefaceStyle.BoldItalic);
 				signature.Caption.SetTextSize (global::Android.Util.ComplexUnitType.Sp, 16f);
