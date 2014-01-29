@@ -297,7 +297,8 @@ namespace SignaturePad {
 			imageView.SetImageBitmap (null);
 			lblClear.Visibility = ViewStates.Invisible;
 			GC.Collect ();
-			
+
+			canvasView.Invalidate ();
 			Invalidate ();
 		}
 
@@ -441,6 +442,8 @@ namespace SignaturePad {
 				//Get an image of the current signature and display it so that the entire set of paths
 				//doesn't have to be redrawn every time.
 				this.imageView.SetImageBitmap (this.GetImage (false));
+			} else {
+				Invalidate ();
 			}
 		}
 
