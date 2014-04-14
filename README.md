@@ -1,7 +1,7 @@
 Signature Pad makes capturing, saving, exporting, and displaying
 signatures extremely simple.
 
-[[component/signature-ios.jpg]]
+![Screenshot](/component/signature-ios.jpg)
 
 
 ### Displaying a Signature Pad on iOS
