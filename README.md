@@ -1,5 +1,7 @@
+# Signature Pad
+
 Signature Pad makes capturing, saving, exporting, and displaying
-signatures extremely simple.
+signatures extremely simple on Xamarin.iOS, Xamarin.Android and WIndows Phone.
 
 ![Screenshot](/component/signature-ios.jpg)
 
