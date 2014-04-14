@@ -1,7 +1,7 @@
 Signature Pad makes capturing, saving, exporting, and displaying
 signatures extremely simple.
 
-![<SignaturePad Screenshot>](https://raw.githubusercontent.com/xamarin/SignaturePad/master/component/signature-ios.jpg)
+[[component/signature-ios.jpg]]
 
 
 ### Displaying a Signature Pad on iOS
