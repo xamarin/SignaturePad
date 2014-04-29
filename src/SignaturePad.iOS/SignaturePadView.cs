@@ -26,6 +26,7 @@ namespace SignaturePad {
 		UILabel xLabel;
 		UIButton btnClear;
 		UIImageView imageView;
+		UIImageView backgroundImageView;
 		#endregion
 
 		UIBezierPath currentPath;
@@ -87,7 +88,11 @@ namespace SignaturePad {
 		/// <value>The signature prompt.</value>
 		public UILabel SignaturePrompt {
 			get { return xLabel; }
-			set { xLabel = value; }
+			set { 
+				xLabel = value; 
+				if (xLabel.Superview == null)
+					AddSubview (xLabel);
+			}
 		}
 
 		/// <summary>
@@ -99,7 +104,11 @@ namespace SignaturePad {
 		/// <value>The caption.</value>
 		public UILabel Caption {
 			get { return lblSign; }
-			set { lblSign = value; }
+			set { 
+				lblSign = value; 
+				if (lblSign.Superview == null)
+					AddSubview (lblSign);
+			}
 		}
 
 		/// <summary>
@@ -116,7 +125,14 @@ namespace SignaturePad {
 		///  for the signature pad.
 		/// </summary>
 		/// <value>The background image view.</value>
-		public UIImageView BackgroundImageView { get; private set; }
+		public UIImageView BackgroundImageView { 
+			get { return backgroundImageView; }
+			set {
+				backgroundImageView = value;
+				if (backgroundImageView.Superview == null)
+					AddSubview (backgroundImageView);
+			}
+		}
 
 		/// <summary>
 		/// Gets the label that clears the pad when clicked.
@@ -167,8 +183,8 @@ namespace SignaturePad {
 			Layer.ShadowRadius = 2f;
 
 			#region Add Subviews
-			BackgroundImageView = new UIImageView ();
-			AddSubview (BackgroundImageView);
+			backgroundImageView = new UIImageView ();
+			AddSubview (backgroundImageView);
 
 			//Add an image that covers the entire signature view, used to display already drawn
 			//elements instead of having to redraw them every time the user touches the screen.
