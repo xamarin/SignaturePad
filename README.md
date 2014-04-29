@@ -18,7 +18,7 @@ public override void ViewDidLoad ()
 {
 	...
 	var signature = new SignaturePadView (View.Frame) {
-		LineWidth = 3f
+		StrokeWidth = 3f
 	};
 	View.AddSubview (signature);
 }
@@ -36,7 +36,7 @@ protected override void OnCreate (Bundle bundle)
 	base.OnCreate (bundle);
 
 	var signature = new SignaturePadView (this) {
-		LineWidth = 3f
+		StrokeWidth = 3f
 	};
 	AddContentView (signature,
 		new ViewGroup.LayoutParams (ViewGroup.LayoutParams.FillParent, ViewGroup.LayoutParams.FillParent));
