@@ -619,20 +619,24 @@ namespace SignaturePad {
 
 		public override void LayoutSubviews ()
 		{
+			var w = Bounds.Width;
+			var h = Bounds.Height;
+
 			lblSign.SizeToFit ();
 			xLabel.SizeToFit ();
 			btnClear.SizeToFit ();
 
-			imageView.Frame = new RectangleF (0, 0, Bounds.Width, Bounds.Height);
+			imageView.Frame = new RectangleF (0, 0, w, h);
 
-			lblSign.Frame = new RectangleF ((Bounds.Width / 2) - (lblSign.Frame.Width / 2), Bounds.Height - lblSign.Frame.Height - 3, 
+			lblSign.Frame = new RectangleF ((w / 2) - (lblSign.Frame.Width / 2), h - lblSign.Frame.Height - 3, 
 			                                lblSign.Frame.Width, lblSign.Frame.Height);
+			backgroundImageView.Frame = imageView.Frame;
 
-			signatureLine.Frame = new RectangleF (10, Bounds.Height - signatureLine.Frame.Height - 5 - lblSign.Frame.Height, Bounds.Width - 20, 1);
+			signatureLine.Frame = new RectangleF (10, h - signatureLine.Frame.Height - 5 - lblSign.Frame.Height, w - 20, 1);
 
-			xLabel.Frame = new RectangleF (10, Bounds.Height - xLabel.Frame.Height - signatureLine.Frame.Height - 2 - lblSign.Frame.Height, 
+			xLabel.Frame = new RectangleF (10, h - xLabel.Frame.Height - signatureLine.Frame.Height - 2 - lblSign.Frame.Height, 
 			                               xLabel.Frame.Width, xLabel.Frame.Height);
-			btnClear.Frame = new RectangleF (Bounds.Width - 41 - lblSign.Frame.Height, 10, 31, 14);
+			btnClear.Frame = new RectangleF (w - 41 - lblSign.Frame.Height, 10, 31, 14);
 		}
 	}
 }
