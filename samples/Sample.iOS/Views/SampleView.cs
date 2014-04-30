@@ -23,21 +23,33 @@ namespace Sample {
 		{
 			BackgroundColor = UIColor.White;
 
+			Frame = UIScreen.MainScreen.ApplicationFrame;
+
+			var padding = 10f;
+			if (UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Pad)
+				padding = 84f;
+
+			Signature = new SignaturePadView ();
+			Signature.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
+			Signature.Frame = new RectangleF(padding, padding + 20, Frame.Width - (2 * padding), Frame.Height - 46 - (2 * padding));
+
+
 			//Create the save button
 			btnSave = UIButton.FromType (UIButtonType.RoundedRect);
+			btnSave.Frame = new RectangleF (30, Frame.Height - 40, 100f, 44f);
+			btnSave.AutoresizingMask = UIViewAutoresizing.FlexibleRightMargin | UIViewAutoresizing.FlexibleTopMargin;
 			btnSave.SetTitle ("Save", UIControlState.Normal);
 
 			//Create the load button
 			btnLoad = UIButton.FromType (UIButtonType.RoundedRect);
+			btnLoad.Frame = new RectangleF (Frame.Width - 130, Frame.Height - 40, 100f, 44f);
+			btnLoad.AutoresizingMask = UIViewAutoresizing.FlexibleLeftMargin | UIViewAutoresizing.FlexibleTopMargin;
 			btnLoad.SetTitle ("Load Last", UIControlState.Normal);
 			btnLoad.TouchUpInside += (sender, e) => {
 				if (points != null)
 					Signature.LoadPoints (points);
-			};
+			};		
 
-			Frame = UIScreen.MainScreen.ApplicationFrame;
-
-			Signature = new SignaturePadView ();
 			//Using different layouts for the iPhone and iPad, so setup device specific requirements here.
 			if (UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone) {
 
@@ -63,6 +75,8 @@ namespace Sample {
 
 				//Create the UIImageView to display a saved signature.
 				imageView = new UIImageView();
+				imageView.Frame = Signature.Frame;
+
 				AddSubview(imageView);
 			}
 			TranslatesAutoresizingMaskIntoConstraints = false;
@@ -71,46 +85,6 @@ namespace Sample {
 			AddSubview (Signature);
 			AddSubview (btnSave);
 			AddSubview (btnLoad);
-		}
-
-		public override void LayoutSubviews ()
-		{
-			if (new Version(MonoTouch.Constants.Version) >= new Version (7, 0))
-			{
-				var frame = Frame;
-
-				var width = UIApplication.SharedApplication.StatusBarOrientation.HasFlag(UIDeviceOrientation.Portrait)
-					? frame.Size.Width
-						: frame.Size.Width - UIApplication.SharedApplication.StatusBarFrame.Width ;
-
-				var height = UIApplication.SharedApplication.StatusBarOrientation.HasFlag (UIDeviceOrientation.Portrait)
-					? frame.Size.Height - UIApplication.SharedApplication.StatusBarFrame.Height 
-						: frame.Size.Height;
-
-				var x = UIApplication.SharedApplication.StatusBarOrientation.HasFlag (UIDeviceOrientation.Portrait)
-					? 0
-						: frame.Location.X + UIApplication.SharedApplication.StatusBarFrame.Width;
-
-				var y = UIApplication.SharedApplication.StatusBarOrientation.HasFlag (UIDeviceOrientation.Portrait)
-					? frame.Location.Y + UIApplication.SharedApplication.StatusBarFrame.Height
-						: 0;
-
-				Frame = new RectangleF (x, y, width, height);
-			}
-
-			///Using different layouts for the iPhone and iPad, so setup device specific requirements here.
-			if (UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone)
-				Signature.Frame = new RectangleF (10, 10, Bounds.Width - 20, Bounds.Height - 60);
-			else {
-				Signature.Frame = new RectangleF (84, 84, Bounds.Width - 168, Bounds.Width / 2);
-				imageView.Frame = new RectangleF (84, Signature.Frame.Height + 168,
-				                                   Frame.Width - 168, Frame.Width / 2);
-			}
-
-			//Button locations are based on the Frame, so must have their own frames set after the view's
-			//Frame has been set.
-			btnSave.Frame = new RectangleF (10, Bounds.Height - 40, 120, 37);
-			btnLoad.Frame = new RectangleF (Bounds.Width - 130, Bounds.Height - 40, 120, 37);
 		}
 	}
 }
