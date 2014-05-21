@@ -16,14 +16,13 @@ using MonoTouch.Foundation;
 using MonoTouch.CoreGraphics;
 using MonoTouch.OpenGLES;
 using MonoTouch.CoreImage;
+using System.ComponentModel;
 
 namespace SignaturePad {
 	[Register("SignaturePadView")]
 	public class SignaturePadView : UIView {
 		#region UI Controls
-		UILabel lblSign;
 		UIView signatureLine;
-		UILabel xLabel;
 		UIButton btnClear;
 		UIImageView imageView;
 		#endregion
@@ -59,6 +58,7 @@ namespace SignaturePad {
 		}
 
 		UIColor strokeColor;
+		[Export, Browsable(true)]
 		public UIColor StrokeColor {
 			get { return strokeColor; }
 			set {
@@ -69,6 +69,7 @@ namespace SignaturePad {
 		}
 
 		float strokeWidth;
+		[Export, Browsable(true)]
 		public float StrokeWidth {
 			get { return strokeWidth; }
 			set {
@@ -85,10 +86,20 @@ namespace SignaturePad {
 		/// Text value defaults to 'X'.
 		/// </remarks>
 		/// <value>The signature prompt.</value>
-		public UILabel SignaturePrompt {
-			get { return xLabel; }
-			set { xLabel = value; }
+		[Export, Browsable(true)]
+		public string SignaturePrompt {
+			get { return SignaturePromptLabel.Text; }
+			set { SignaturePromptLabel.Text = value; }
 		}
+
+		/// <summary>
+		/// The native label for the SignaturePrompt.
+		/// </summary>
+		/// <remarks>
+		/// Text value defaults to 'X'.
+		/// </remarks>
+		/// <value>The signature prompt label.</value>
+		public UILabel SignaturePromptLabel { get; set; }
 
 		/// <summary>
 		/// The caption displayed under the signature line.
@@ -97,15 +108,26 @@ namespace SignaturePad {
 		/// Text value defaults to 'Sign here.'
 		/// </remarks>
 		/// <value>The caption.</value>
-		public UILabel Caption {
-			get { return lblSign; }
-			set { lblSign = value; }
+		[Export, Browsable(true)]
+		public string Caption { 
+			get { return CaptionLabel.Text; }
+			set { CaptionLabel.Text = value; }
 		}
+
+		/// <summary>
+		/// The native label for the caption.
+		/// </summary>
+		/// <remarks>
+		/// Text value defaults to 'Sign here.'
+		/// </remarks>
+		/// <value>The caption label.</value>
+		public UILabel CaptionLabel { get; set; }
 
 		/// <summary>
 		/// The color of the signature line.
 		/// </summary>
 		/// <value>The color of the signature line.</value>
+		[Export, Browsable(true)]
 		public UIColor SignatureLineColor {
 			get { return signatureLine.BackgroundColor; }
 			set { signatureLine.BackgroundColor = value; }
@@ -175,12 +197,12 @@ namespace SignaturePad {
 			imageView = new UIImageView ();
 			AddSubview (imageView);
 
-			lblSign = new UILabel ();
-			lblSign.Text = "Sign here.";
-			lblSign.Font = UIFont.BoldSystemFontOfSize (11f);
-			lblSign.BackgroundColor = UIColor.Clear;
-			lblSign.TextColor = UIColor.Gray;
-			AddSubview (lblSign);
+			CaptionLabel = new UILabel ();
+			CaptionLabel.Text = "Sign here.";
+			CaptionLabel.Font = UIFont.BoldSystemFontOfSize (11f);
+			CaptionLabel.BackgroundColor = UIColor.Clear;
+			CaptionLabel.TextColor = UIColor.Gray;
+			AddSubview (CaptionLabel);
 
 			//Display the base line for the user to sign on.
 			signatureLine = new UIView ();
@@ -188,12 +210,12 @@ namespace SignaturePad {
 			AddSubview (signatureLine);
 
 			//Display the X on the left hand side of the line where the user signs.
-			xLabel = new UILabel ();
-			xLabel.Text = "X";
-			xLabel.Font = UIFont.BoldSystemFontOfSize (20f);
-			xLabel.BackgroundColor = UIColor.Clear;
-			xLabel.TextColor = UIColor.Gray;
-			AddSubview (xLabel);
+			SignaturePromptLabel = new UILabel ();
+			SignaturePromptLabel.Text = "X";
+			SignaturePromptLabel.Font = UIFont.BoldSystemFontOfSize (20f);
+			SignaturePromptLabel.BackgroundColor = UIColor.Clear;
+			SignaturePromptLabel.TextColor = UIColor.Gray;
+			AddSubview (SignaturePromptLabel);
 
 			btnClear = UIButton.FromType (UIButtonType.Custom);
 			btnClear.SetTitle ("Clear", UIControlState.Normal);
@@ -603,20 +625,20 @@ namespace SignaturePad {
 
 		public override void LayoutSubviews ()
 		{
-			lblSign.SizeToFit ();
-			xLabel.SizeToFit ();
+			CaptionLabel.SizeToFit ();
+			SignaturePromptLabel.SizeToFit ();
 			btnClear.SizeToFit ();
-
+			var bottomOffset = Bounds.Height - Bounds.Height / 10;
 			imageView.Frame = new RectangleF (0, 0, Bounds.Width, Bounds.Height);
 
-			lblSign.Frame = new RectangleF ((Bounds.Width / 2) - (lblSign.Frame.Width / 2), Bounds.Height - lblSign.Frame.Height - 3, 
-			                                lblSign.Frame.Width, lblSign.Frame.Height);
+			CaptionLabel.Frame = new RectangleF ((Bounds.Width / 2) - (CaptionLabel.Frame.Width / 2), bottomOffset - CaptionLabel.Frame.Height - 3, 
+			                                CaptionLabel.Frame.Width, CaptionLabel.Frame.Height);
 
-			signatureLine.Frame = new RectangleF (10, Bounds.Height - signatureLine.Frame.Height - 5 - lblSign.Frame.Height, Bounds.Width - 20, 1);
+			signatureLine.Frame = new RectangleF (10, bottomOffset - signatureLine.Frame.Height - 5 - CaptionLabel.Frame.Height, Bounds.Width - 20, 1);
 
-			xLabel.Frame = new RectangleF (10, Bounds.Height - xLabel.Frame.Height - signatureLine.Frame.Height - 2 - lblSign.Frame.Height, 
-			                               xLabel.Frame.Width, xLabel.Frame.Height);
-			btnClear.Frame = new RectangleF (Bounds.Width - 41 - lblSign.Frame.Height, 10, 31, 14);
+			SignaturePromptLabel.Frame = new RectangleF (10, bottomOffset - SignaturePromptLabel.Frame.Height - signatureLine.Frame.Height - 2 - CaptionLabel.Frame.Height, 
+			                               SignaturePromptLabel.Frame.Width, SignaturePromptLabel.Frame.Height);
+			btnClear.Frame = new RectangleF (Bounds.Width - 41 - CaptionLabel.Frame.Height, 10, 31, 14);
 		}
 	}
 }
