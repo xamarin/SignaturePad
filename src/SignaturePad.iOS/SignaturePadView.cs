@@ -628,15 +628,15 @@ namespace SignaturePad {
 			CaptionLabel.SizeToFit ();
 			SignaturePromptLabel.SizeToFit ();
 			btnClear.SizeToFit ();
-
+			var bottomOffset = Bounds.Height - Bounds.Height / 10;
 			imageView.Frame = new RectangleF (0, 0, Bounds.Width, Bounds.Height);
 
-			CaptionLabel.Frame = new RectangleF ((Bounds.Width / 2) - (CaptionLabel.Frame.Width / 2), Bounds.Height - CaptionLabel.Frame.Height - 3, 
+			CaptionLabel.Frame = new RectangleF ((Bounds.Width / 2) - (CaptionLabel.Frame.Width / 2), bottomOffset - CaptionLabel.Frame.Height - 3, 
 			                                CaptionLabel.Frame.Width, CaptionLabel.Frame.Height);
 
-			signatureLine.Frame = new RectangleF (10, Bounds.Height - signatureLine.Frame.Height - 5 - CaptionLabel.Frame.Height, Bounds.Width - 20, 1);
+			signatureLine.Frame = new RectangleF (10, bottomOffset - signatureLine.Frame.Height - 5 - CaptionLabel.Frame.Height, Bounds.Width - 20, 1);
 
-			SignaturePromptLabel.Frame = new RectangleF (10, Bounds.Height - SignaturePromptLabel.Frame.Height - signatureLine.Frame.Height - 2 - CaptionLabel.Frame.Height, 
+			SignaturePromptLabel.Frame = new RectangleF (10, bottomOffset - SignaturePromptLabel.Frame.Height - signatureLine.Frame.Height - 2 - CaptionLabel.Frame.Height, 
 			                               SignaturePromptLabel.Frame.Width, SignaturePromptLabel.Frame.Height);
 			btnClear.Frame = new RectangleF (Bounds.Width - 41 - CaptionLabel.Frame.Height, 10, 31, 14);
 		}
