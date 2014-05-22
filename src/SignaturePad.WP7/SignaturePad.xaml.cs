@@ -36,7 +36,7 @@ namespace Xamarin.Controls
 		{
 			get
 			{
-				if (points == null || points.Count () == 0)
+				if (points == null || points.Count == 0)
 					return new Point [0];
 
 				List<Point> pointsList = points [0].ToList ();
@@ -52,7 +52,7 @@ namespace Xamarin.Controls
 
 		public bool IsBlank
 		{
-			get { return Points.Count () == 0; }
+			get { return Points.Length == 0; }
 		}
 
 		Color strokeColor;
@@ -229,7 +229,7 @@ namespace Xamarin.Controls
 			Size uncroppedSize;
 			Rect croppedRectangle;
 
-			if (shouldCrop && Points.Count () > 0) {
+			if (shouldCrop && Points.Length > 0) {
 				croppedRectangle = getCroppedRectangle ();
 				double scaleX = croppedRectangle.Width / size.Width;
 				double scaleY = croppedRectangle.Height / size.Height;
@@ -459,14 +459,14 @@ namespace Xamarin.Controls
 		//lines indicated by a PointF.Empty in the array.
 		public void LoadPoints (Point [] loadedPoints)
 		{
-			if (loadedPoints == null || loadedPoints.Count () == 0)
+			if (loadedPoints == null || loadedPoints.Length == 0)
 				return;
 
 			var startIndex = 0;
 			var emptyIndex = loadedPoints.ToList ().IndexOf (new Point (-10000, -10000));
 
 			if (emptyIndex == -1)
-				emptyIndex = loadedPoints.Count ();
+				emptyIndex = loadedPoints.Length;
 
 			//Clear any existing paths or points.
 			strokes = new List<Stroke> ();
@@ -499,11 +499,11 @@ namespace Xamarin.Controls
 
 				//Obtain the indices for the next line to be drawn.
 				startIndex = emptyIndex + 1;
-				if (startIndex < loadedPoints.Count () - 1) {
+				if (startIndex < loadedPoints.Length - 1) {
 					emptyIndex = loadedPoints.ToList ().IndexOf (new Point (-10000, -10000), startIndex);
 
 					if (emptyIndex == -1)
-						emptyIndex = loadedPoints.Count ();
+						emptyIndex = loadedPoints.Length;
 				} else
 					emptyIndex = startIndex;
 			} while (startIndex < emptyIndex);
