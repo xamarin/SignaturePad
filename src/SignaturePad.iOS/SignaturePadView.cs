@@ -40,7 +40,7 @@ namespace SignaturePad {
 		//to indicate a new line.
 		public PointF[] Points {
 			get { 
-				if (points == null || points.Count () == 0)
+				if (points == null || points.Count == 0)
 					return new PointF [0];
 
 				List<PointF> pointsList = points [0].ToList ();
@@ -55,7 +55,7 @@ namespace SignaturePad {
 		}
 
 		public bool IsBlank {
-			get { return Points.Count () == 0; }
+			get { return Points.Length == 0; }
 		}
 
 		UIColor strokeColor;
@@ -292,7 +292,7 @@ namespace SignaturePad {
 			SizeF uncroppedSize;
 			RectangleF croppedRectangle;
 
-			if (shouldCrop && Points.Count () > 0) {
+			if (shouldCrop && Points.Length > 0) {
 				croppedRectangle = getCroppedRectangle ();
 				float scaleX = croppedRectangle.Width / Bounds.Width;
 				float scaleY = croppedRectangle.Height / Bounds.Height;
@@ -327,7 +327,7 @@ namespace SignaturePad {
 
 			UIImage image = UIGraphics.GetImageFromCurrentImageContext ();
 
-			if (shouldCrop && Points.Count () > 0) {
+			if (shouldCrop && Points.Length > 0) {
 				croppedRectangle = getCroppedRectangle ();
 				RectangleF scaledRectangle;
 				scaledRectangle = new RectangleF (croppedRectangle.X * uncroppedScale, 
@@ -388,14 +388,14 @@ namespace SignaturePad {
 		//lines indicated by a PointF.Empty in the array.
 		public void LoadPoints (PointF[] loadedPoints)
 		{
-			if (loadedPoints == null || loadedPoints.Count () == 0)
+			if (loadedPoints == null || loadedPoints.Length == 0)
 				return;
 
 			var startIndex = 0;
 			var emptyIndex = loadedPoints.ToList ().IndexOf (PointF.Empty);
 
 			if (emptyIndex == -1)
-				emptyIndex = loadedPoints.Count ();
+				emptyIndex = loadedPoints.Length;
 
 			//Clear any existing paths or points.
 			paths = new List<UIBezierPath> ();
@@ -427,11 +427,11 @@ namespace SignaturePad {
 
 				//Obtain the indices for the next line to be drawn.
 				startIndex = emptyIndex + 1;
-				if (startIndex < loadedPoints.Count () - 1) {
+				if (startIndex < loadedPoints.Length - 1) {
 					emptyIndex = loadedPoints.ToList ().IndexOf (PointF.Empty, startIndex);
 
 					if (emptyIndex == -1)
-						emptyIndex = loadedPoints.Count ();
+						emptyIndex = loadedPoints.Length;
 				} else
 					emptyIndex = startIndex;
 			} while (startIndex < emptyIndex);
