@@ -8,7 +8,18 @@
 //
 using System;
 using System.Drawing;
+
+
+#if __UNIFIED__
+using UIKit;
+using CoreGraphics;
+using ObjCRuntime;
+#else
 using MonoTouch.UIKit;
+using Constants = MonoTouch.Constants;
+using CGPoint = global::System.Drawing.PointF;
+using CGRect = global::System.Drawing.RectangleF;
+#endif
 
 using SignaturePad;
 
@@ -17,7 +28,7 @@ namespace Sample {
 		public SignaturePadView Signature { get; set; }
 		UIImageView imageView;
 		UIButton btnSave, btnLoad;
-		PointF [] points;
+		CGPoint [] points;
 
 		public SampleView ()
 		{
@@ -75,7 +86,7 @@ namespace Sample {
 
 		public override void LayoutSubviews ()
 		{
-			if (new Version(MonoTouch.Constants.Version) >= new Version (7, 0))
+			if (new Version(Constants.Version) >= new Version (7, 0))
 			{
 				var frame = Frame;
 
@@ -95,22 +106,22 @@ namespace Sample {
 					? frame.Location.Y + UIApplication.SharedApplication.StatusBarFrame.Height
 						: 0;
 
-				Frame = new RectangleF (x, y, width, height);
+				Frame = new CGRect (x, y, width, height);
 			}
 
 			///Using different layouts for the iPhone and iPad, so setup device specific requirements here.
 			if (UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone)
-				Signature.Frame = new RectangleF (10, 10, Bounds.Width - 20, Bounds.Height - 60);
+				Signature.Frame = new CGRect (10, 10, Bounds.Width - 20, Bounds.Height - 60);
 			else {
-				Signature.Frame = new RectangleF (84, 84, Bounds.Width - 168, Bounds.Width / 2);
-				imageView.Frame = new RectangleF (84, Signature.Frame.Height + 168,
+				Signature.Frame = new CGRect (84, 84, Bounds.Width - 168, Bounds.Width / 2);
+				imageView.Frame = new CGRect (84, Signature.Frame.Height + 168,
 				                                   Frame.Width - 168, Frame.Width / 2);
 			}
 
 			//Button locations are based on the Frame, so must have their own frames set after the view's
 			//Frame has been set.
-			btnSave.Frame = new RectangleF (10, Bounds.Height - 40, 120, 37);
-			btnLoad.Frame = new RectangleF (Bounds.Width - 130, Bounds.Height - 40, 120, 37);
+			btnSave.Frame = new CGRect (10, Bounds.Height - 40, 120, 37);
+			btnLoad.Frame = new CGRect (Bounds.Width - 130, Bounds.Height - 40, 120, 37);
 		}
 	}
 }

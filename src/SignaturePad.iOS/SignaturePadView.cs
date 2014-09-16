@@ -9,13 +9,33 @@
 //
 using System;
 using System.Linq;
-using System.Drawing;
 using System.Collections.Generic;
+
+#if __UNIFIED__
+using UIKit;
+using Foundation;
+using CoreGraphics;
+using OpenGLES;
+using CoreImage;
+
+#else
+using System.Drawing;
 using MonoTouch.UIKit;
 using MonoTouch.Foundation;
 using MonoTouch.CoreGraphics;
 using MonoTouch.OpenGLES;
 using MonoTouch.CoreImage;
+using Foundation = MonoTouch.Foundation;
+
+// Type Mappings Unified to monotouch.dll
+using CGRect = global::System.Drawing.RectangleF;
+using CGSize = global::System.Drawing.SizeF;
+using CGPoint = global::System.Drawing.PointF;
+
+using nfloat = global::System.Single;
+using nint = global::System.Int32;
+using nuint = global::System.UInt32;
+#endif
 
 namespace SignaturePad {
 	[Register("SignaturePadView")]
@@ -30,23 +50,23 @@ namespace SignaturePad {
 
 		UIBezierPath currentPath;
 		List<UIBezierPath> paths;
-		List<PointF> currentPoints;
-		List<PointF[]> points;
+		List<CGPoint> currentPoints;
+		List<CGPoint[]> points;
 
 		//Used to determine rectangle that needs to be redrawn.
-		float minX, minY, maxX, maxY;
+		nfloat minX, minY, maxX, maxY;
 
-		//Create an array containing all of the points used to draw the signature.  Uses PointF.Empty
+		//Create an array containing all of the points used to draw the signature.  Uses CGPoint.Empty
 		//to indicate a new line.
-		public PointF[] Points {
+		public CGPoint[] Points {
 			get { 
 				if (points == null || points.Count () == 0)
-					return new PointF [0];
+					return new CGPoint [0];
 
-				List<PointF> pointsList = points [0].ToList ();
+				List<CGPoint> pointsList = points [0].ToList ();
 
 				for (var i = 1; i < points.Count; i++) {
-					pointsList.Add (PointF.Empty);
+					pointsList.Add (CGPoint.Empty);
 					pointsList = pointsList.Concat (points [i]).ToList ();
 				}
 
@@ -149,7 +169,7 @@ namespace SignaturePad {
 			Initialize ();
 		}
 
-		public SignaturePadView (RectangleF frame)
+		public SignaturePadView (CGRect frame)
 		{
 			Frame = frame;
 			Initialize ();
@@ -162,7 +182,7 @@ namespace SignaturePad {
 			StrokeWidth = 2f;
 
 			Layer.ShadowColor = UIColor.Black.CGColor;
-			Layer.ShadowOffset = new SizeF (2, 2);
+			Layer.ShadowOffset = new CGSize (2, 2);
 			Layer.ShadowOpacity = 1f;
 			Layer.ShadowRadius = 2f;
 
@@ -211,8 +231,8 @@ namespace SignaturePad {
 			#endregion
 
 			paths = new List<UIBezierPath> ();
-			points = new List<PointF[]> ();
-			currentPoints = new List<PointF> ();
+			points = new List<CGPoint[]> ();
+			currentPoints = new List<CGPoint> ();
 		}
 
 		//Delete the current signature.
@@ -220,7 +240,7 @@ namespace SignaturePad {
 		{
 			paths = new List<UIBezierPath> ();
 			currentPath = UIBezierPath.Create ();
-			points = new List<PointF[]> ();
+			points = new List<CGPoint[]> ();
 			currentPoints.Clear ();
 			imageView.Image = null;
 			btnClear.Hidden = true;
@@ -236,12 +256,12 @@ namespace SignaturePad {
 			                 UIScreen.MainScreen.Scale, shouldCrop);
 		}
 		
-		public UIImage GetImage (SizeF size, bool shouldCrop = true)
+		public UIImage GetImage (CGSize size, bool shouldCrop = true)
 		{
 			return GetImage (strokeColor, UIColor.Clear, size, getScaleFromSize (size, Bounds), shouldCrop);
 		}
 
-		public UIImage GetImage (float scale, bool shouldCrop = true)
+		public UIImage GetImage (nfloat scale, bool shouldCrop = true)
 		{
 			return GetImage (strokeColor, UIColor.Clear, getSizeFromScale(scale, Bounds), scale, shouldCrop);
 		}
@@ -254,12 +274,12 @@ namespace SignaturePad {
 			                 UIScreen.MainScreen.Scale, shouldCrop);
 		}
 		
-		public UIImage GetImage (UIColor strokeColor, SizeF size, bool shouldCrop = true)
+		public UIImage GetImage (UIColor strokeColor, CGSize size, bool shouldCrop = true)
 		{
 			return GetImage (strokeColor, UIColor.Clear, size, getScaleFromSize (size, Bounds), shouldCrop);
 		}
 
-		public UIImage GetImage (UIColor strokeColor, float scale, bool shouldCrop = true)
+		public UIImage GetImage (UIColor strokeColor, nfloat scale, bool shouldCrop = true)
 		{
 			return GetImage (strokeColor, UIColor.Clear, getSizeFromScale(scale, Bounds), scale, shouldCrop);
 		}
@@ -272,34 +292,34 @@ namespace SignaturePad {
 			                 UIScreen.MainScreen.Scale, shouldCrop);
 		}
 
-		public UIImage GetImage (UIColor strokeColor, UIColor fillColor, SizeF size, bool shouldCrop = true)
+		public UIImage GetImage (UIColor strokeColor, UIColor fillColor, CGSize size, bool shouldCrop = true)
 		{
 			return GetImage (strokeColor, fillColor, size, getScaleFromSize (size, Bounds), shouldCrop);
 		}
 
-		public UIImage GetImage (UIColor strokeColor, UIColor fillColor, float scale, bool shouldCrop = true)
+		public UIImage GetImage (UIColor strokeColor, UIColor fillColor, nfloat scale, bool shouldCrop = true)
 		{
 			return GetImage (strokeColor, fillColor, getSizeFromScale(scale, Bounds), scale, shouldCrop);
 		}
 
-		UIImage GetImage (UIColor strokeColor, UIColor fillColor, SizeF size, float scale, bool shouldCrop = true)
+		UIImage GetImage (UIColor strokeColor, UIColor fillColor, CGSize size, nfloat scale, bool shouldCrop = true)
 		{
 			if (size.Width == 0 || size.Height == 0 || scale <= 0 || strokeColor == null ||
 			    fillColor == null)
 				return null;
 
-			float uncroppedScale;
-			SizeF uncroppedSize;
-			RectangleF croppedRectangle;
+			nfloat uncroppedScale;
+			CGSize uncroppedSize;
+			CGRect croppedRectangle;
 
 			if (shouldCrop && Points.Count () > 0) {
 				croppedRectangle = getCroppedRectangle ();
-				float scaleX = croppedRectangle.Width / Bounds.Width;
-				float scaleY = croppedRectangle.Height / Bounds.Height;
-				uncroppedScale = 1 / Math.Max (scaleX, scaleY);
+				nfloat scaleX = croppedRectangle.Width / Bounds.Width;
+				nfloat scaleY = croppedRectangle.Height / Bounds.Height;
+				uncroppedScale = 1 / (nfloat)Math.Max (scaleX, scaleY);
 				//uncroppedScale = 1 / getScaleFromSize (croppedRectangle.Size, Bounds);
 				uncroppedSize = getSizeFromScale (uncroppedScale, 
-				                                  new RectangleF (new Point (0, 0), size));
+				                                  new CGRect (new CGPoint (0, 0), size));
 			} else {
 				uncroppedScale = scale;
 				uncroppedSize = size;
@@ -311,7 +331,7 @@ namespace SignaturePad {
 			//Create context and set the desired options
 			CGContext context = UIGraphics.GetCurrentContext ();
 			context.SetFillColor (fillColor.CGColor);
-			context.FillRect (new RectangleF (0, 0, uncroppedSize.Width, uncroppedSize.Height));
+			context.FillRect (new CGRect (0, 0, uncroppedSize.Width, uncroppedSize.Height));
 			context.SetStrokeColor (strokeColor.CGColor);
 			context.SetLineWidth (StrokeWidth);
 			context.SetLineCap (CGLineCap.Round);
@@ -329,8 +349,8 @@ namespace SignaturePad {
 
 			if (shouldCrop && Points.Count () > 0) {
 				croppedRectangle = getCroppedRectangle ();
-				RectangleF scaledRectangle;
-				scaledRectangle = new RectangleF (croppedRectangle.X * uncroppedScale, 
+				CGRect scaledRectangle;
+				scaledRectangle = new CGRect (croppedRectangle.X * uncroppedScale, 
 				                                  croppedRectangle.Y * uncroppedScale, 
 				                                  size.Width, 
 				                                  size.Height);
@@ -353,53 +373,53 @@ namespace SignaturePad {
 			return image;
 		}
 
-		RectangleF getCroppedRectangle()
+		CGRect getCroppedRectangle()
 		{
 			var xMin = Points.Where (point => !point.IsEmpty).Min (point => point.X) - strokeWidth / 2;
 			var xMax = Points.Where (point => !point.IsEmpty).Max (point => point.X) + strokeWidth / 2;
 			var yMin = Points.Where (point => !point.IsEmpty).Min (point => point.Y) - strokeWidth / 2;
 			var yMax = Points.Where (point => !point.IsEmpty).Max (point => point.Y) + strokeWidth / 2;
 
-			xMin = Math.Max (xMin, 0);
-			xMax = Math.Min (xMax, Bounds.Width);
-			yMin = Math.Max (yMin, 0);
-			yMax = Math.Min (yMax, Bounds.Height);
+			xMin = (nfloat)Math.Max (xMin, 0);
+			xMax = (nfloat)Math.Min (xMax, Bounds.Width);
+			yMin = (nfloat)Math.Max (yMin, 0);
+			yMax = (nfloat)Math.Min (yMax, Bounds.Height);
 
-			return new RectangleF (xMin, yMin, xMax - xMin, yMax - yMin);
+			return new CGRect (xMin, yMin, xMax - xMin, yMax - yMin);
 		}
 
-		float getScaleFromSize (SizeF size, RectangleF rectangle)
+		nfloat getScaleFromSize (CGSize size, CGRect rectangle)
 		{
-			float scaleX = size.Width / rectangle.Width;
-			float scaleY = size.Height / rectangle.Height;
+			nfloat scaleX = size.Width / rectangle.Width;
+			nfloat scaleY = size.Height / rectangle.Height;
 
-			return Math.Min (scaleX, scaleY);
+			return (nfloat)Math.Min (scaleX, scaleY);
 		}
 
-		SizeF getSizeFromScale (float scale, RectangleF rectangle)
+		CGSize getSizeFromScale (nfloat scale, CGRect rectangle)
 		{
-			float width = rectangle.Width * scale;
-			float height = rectangle.Height * scale;
+			nfloat width = rectangle.Width * scale;
+			nfloat height = rectangle.Height * scale;
 
-			return new SizeF (width, height);
+			return new CGSize (width, height);
 		}
 
 		//Allow the user to import an array of points to be used to draw a signature in the view, with new
-		//lines indicated by a PointF.Empty in the array.
-		public void LoadPoints (PointF[] loadedPoints)
+		//lines indicated by a CGPoint.Empty in the array.
+		public void LoadPoints (CGPoint[] loadedPoints)
 		{
 			if (loadedPoints == null || loadedPoints.Count () == 0)
 				return;
 
 			var startIndex = 0;
-			var emptyIndex = loadedPoints.ToList ().IndexOf (PointF.Empty);
+			var emptyIndex = loadedPoints.ToList ().IndexOf (CGPoint.Empty);
 
 			if (emptyIndex == -1)
 				emptyIndex = loadedPoints.Count ();
 
 			//Clear any existing paths or points.
 			paths = new List<UIBezierPath> ();
-			points = new List<PointF[]> ();
+			points = new List<CGPoint[]> ();
 
 			do {
 				//Create a new path and set the line options
@@ -407,7 +427,7 @@ namespace SignaturePad {
 				currentPath.LineWidth = StrokeWidth;
 				currentPath.LineJoinStyle = CGLineJoin.Round;
 
-				currentPoints = new List<PointF> ();
+				currentPoints = new List<CGPoint> ();
 
 				//Move to the first point and add that point to the current_points array.
 				currentPath.MoveTo (loadedPoints [startIndex]);
@@ -428,7 +448,7 @@ namespace SignaturePad {
 				//Obtain the indices for the next line to be drawn.
 				startIndex = emptyIndex + 1;
 				if (startIndex < loadedPoints.Count () - 1) {
-					emptyIndex = loadedPoints.ToList ().IndexOf (PointF.Empty, startIndex);
+					emptyIndex = loadedPoints.ToList ().IndexOf (CGPoint.Empty, startIndex);
 
 					if (emptyIndex == -1)
 						emptyIndex = loadedPoints.Count ();
@@ -444,7 +464,7 @@ namespace SignaturePad {
 		}
 
 		//Update the bounds for the rectangle to be redrawn if necessary for the given point.
-		void updateBounds (PointF point)
+		void updateBounds (CGPoint point)
 		{
 			if (point.X < minX + 1)
 				minX = point.X - 1;
@@ -457,7 +477,7 @@ namespace SignaturePad {
 		}
 
 		//Set the bounds for the rectangle that will need to be redrawn to show the drawn path.
-		void resetBounds (PointF point)
+		void resetBounds (CGPoint point)
 		{
 			minX = point.X - 1;
 			maxX = point.X + 1;
@@ -471,10 +491,10 @@ namespace SignaturePad {
 		 *http://stackoverflow.com/questions/8702696/drawing-smooth-curves-methods-needed.
 		 *Also outputs a List of the points corresponding to the smoothed path.
 		 */
-		UIBezierPath smoothedPathWithGranularity (int granularity, out List<PointF> smoothedPoints)
+		UIBezierPath smoothedPathWithGranularity (int granularity, out List<CGPoint> smoothedPoints)
 		{
-			List<PointF> pointsArray = currentPoints;
-			smoothedPoints = new List<PointF> ();
+			List<CGPoint> pointsArray = currentPoints;
+			smoothedPoints = new List<CGPoint> ();
 
 			//Not enough points to smooth effectively, so return the original path and points.
 			if (pointsArray.Count < 4) {
@@ -496,10 +516,10 @@ namespace SignaturePad {
 			smoothedPoints.Add (pointsArray [0]);
 
 			for (var index = 1; index < pointsArray.Count - 2; index++) {
-				PointF p0 = pointsArray [index - 1];
-				PointF p1 = pointsArray [index];
-				PointF p2 = pointsArray [index + 1];
-				PointF p3 = pointsArray [index + 2];
+				CGPoint p0 = pointsArray [index - 1];
+				CGPoint p1 = pointsArray [index];
+				CGPoint p2 = pointsArray [index + 1];
+				CGPoint p3 = pointsArray [index + 2];
 
 				//Add n points starting at p1 + dx/dy up until p2 using Catmull-Rom splines
 				for (var i = 1; i < granularity; i++) {
@@ -508,7 +528,7 @@ namespace SignaturePad {
 					float ttt = tt * t;
 
 					//Intermediate point
-					PointF mid = default(PointF);
+					CGPoint mid = default(CGPoint);
 					mid.X = 0.5f * (2f * p1.X + (p2.X - p0.X) * t + 
 						(2f * p0.X - 5f * p1.X + 4f * p2.X - p3.X) * tt + 
 						(3f * p1.X - p0.X - 3f * p2.X + p3.X) * ttt);
@@ -533,7 +553,7 @@ namespace SignaturePad {
 		}
 		
 		#region Touch Events
-		public override void TouchesBegan (MonoTouch.Foundation.NSSet touches, UIEvent evt)
+		public override void TouchesBegan (Foundation.NSSet touches, UIEvent evt)
 		{
 			//Create a new path and set the options.
 			currentPath = UIBezierPath.Create ();
@@ -546,7 +566,7 @@ namespace SignaturePad {
 			
 			//Obtain the location of the touch, move the path to that position and add it to the
 			//current_points array.
-			PointF touchLocation = touch.LocationInView (this);
+			CGPoint touchLocation = touch.LocationInView (this);
 			currentPath.MoveTo (touchLocation);
 			currentPoints.Add (touchLocation);
 
@@ -555,19 +575,19 @@ namespace SignaturePad {
 			btnClear.Hidden = false;
 		}
 		
-		public override void TouchesMoved (MonoTouch.Foundation.NSSet touches, UIEvent evt)
+		public override void TouchesMoved (Foundation.NSSet touches, UIEvent evt)
 		{
 			UITouch touch = touches.AnyObject as UITouch;
 			
 			//Obtain the location of the touch and add it to the current path and current_points array.
-			PointF touchLocation = touch.LocationInView (this);
+			CGPoint touchLocation = touch.LocationInView (this);
 			currentPath.AddLineTo (touchLocation);
 			currentPoints.Add (touchLocation);
 			
 			updateBounds (touchLocation);
-			SetNeedsDisplayInRect (new RectangleF (minX, minY, 
-			                                       Math.Abs (maxX - minX), 
-			                                       Math.Abs (maxY - minY)));
+			SetNeedsDisplayInRect (new CGRect (minX, minY, 
+                                                   (nfloat)Math.Abs (maxX - minX), 
+                                                   (nfloat)Math.Abs (maxY - minY)));
 		}
 		
 		public override void TouchesEnded (NSSet touches, UIEvent evt)
@@ -575,7 +595,7 @@ namespace SignaturePad {
 			UITouch touch = touches.AnyObject as UITouch;
 			
 			//Obtain the location of the touch and add it to the current path and current_points array.
-			PointF touchLocation = touch.LocationInView (this);
+			CGPoint touchLocation = touch.LocationInView (this);
 			currentPath.AddLineTo (touchLocation);
 			currentPoints.Add (touchLocation);
 			
@@ -592,7 +612,7 @@ namespace SignaturePad {
 		}
 		#endregion
 
-		public override void Draw (RectangleF rect)
+		public override void Draw (CGRect rect)
 		{
 			if (currentPath == null || currentPath.Empty)
 				return;
@@ -607,16 +627,16 @@ namespace SignaturePad {
 			xLabel.SizeToFit ();
 			btnClear.SizeToFit ();
 
-			imageView.Frame = new RectangleF (0, 0, Bounds.Width, Bounds.Height);
+			imageView.Frame = new CGRect (0, 0, Bounds.Width, Bounds.Height);
 
-			lblSign.Frame = new RectangleF ((Bounds.Width / 2) - (lblSign.Frame.Width / 2), Bounds.Height - lblSign.Frame.Height - 3, 
+			lblSign.Frame = new CGRect ((Bounds.Width / 2) - (lblSign.Frame.Width / 2), Bounds.Height - lblSign.Frame.Height - 3, 
 			                                lblSign.Frame.Width, lblSign.Frame.Height);
 
-			signatureLine.Frame = new RectangleF (10, Bounds.Height - signatureLine.Frame.Height - 5 - lblSign.Frame.Height, Bounds.Width - 20, 1);
+			signatureLine.Frame = new CGRect (10, Bounds.Height - signatureLine.Frame.Height - 5 - lblSign.Frame.Height, Bounds.Width - 20, 1);
 
-			xLabel.Frame = new RectangleF (10, Bounds.Height - xLabel.Frame.Height - signatureLine.Frame.Height - 2 - lblSign.Frame.Height, 
+			xLabel.Frame = new CGRect (10, Bounds.Height - xLabel.Frame.Height - signatureLine.Frame.Height - 2 - lblSign.Frame.Height, 
 			                               xLabel.Frame.Width, xLabel.Frame.Height);
-			btnClear.Frame = new RectangleF (Bounds.Width - 41 - lblSign.Frame.Height, 10, 31, 14);
+			btnClear.Frame = new CGRect (Bounds.Width - 41 - lblSign.Frame.Height, 10, 31, 14);
 		}
 	}
 }

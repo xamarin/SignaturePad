@@ -7,7 +7,14 @@
 // Copyright (C) 2012 Timothy Risi
 //
 using System;
+
+#if __UNIFIED__
+using UIKit;
+using ObjCRuntime;
+#else
 using MonoTouch.UIKit;
+using Constants = MonoTouch.Constants;
+#endif
 
 namespace Sample {
 	public class SampleController : UIViewController {
@@ -29,7 +36,7 @@ namespace Sample {
 		{
 			base.ViewDidLoad ();
 
-			if (new Version (MonoTouch.Constants.Version) >= new Version (7, 0)) {
+			if (new Version (Constants.Version) >= new Version (7, 0)) {
 				UIApplication.SharedApplication.StatusBarStyle = UIStatusBarStyle.LightContent;
 			}
 
