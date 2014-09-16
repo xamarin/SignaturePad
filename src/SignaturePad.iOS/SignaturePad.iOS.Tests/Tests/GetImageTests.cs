@@ -1,9 +1,14 @@
 using System;
 using NUnit.Framework;
-using MonoTouch.UIKit;
 using System.Drawing;
 
 using SignaturePad;
+
+#if __UNIFIED__
+using UIKit;
+#else
+using MonoTouch.UIKit;
+#endif
 
 namespace SignaturePadTests {
 	[TestFixture]

@@ -4,6 +4,13 @@ using System.Drawing;
 
 using SignaturePad;
 
+#if __UNIFIED__
+using CoreGraphics;
+#else
+using MonoTouch.CoreGraphics;
+using CGPoint = global::System.Drawing.PointF;
+#endif
+
 namespace SignaturePadTests {
 	[TestFixture]
 	public class IsBlankTests {
@@ -18,7 +25,7 @@ namespace SignaturePadTests {
 		public void ReturnsFalseIfPointsExist ()
 		{
 			SignaturePadView signature = new SignaturePadView ();
-			signature.LoadPoints (new PointF [] { new PointF (0, 30) });
+			signature.LoadPoints (new CGPoint [] { new CGPoint (0, 30) });
 			Assert.That (!signature.IsBlank);
 		}
 	}

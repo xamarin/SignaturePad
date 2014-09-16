@@ -1,4 +1,4 @@
-version: 1.3.3
+version: 1.3.4
 name: Signature Pad
 summary: Makes capturing, saving, and displaying signatures extremely simple.
 id: signature-pad
@@ -7,11 +7,15 @@ publisher-url: http://xamarin.com/
 screenshots:
   - component/signature-ios.jpg
 libraries:
-  ios: src/SignaturePad.iOS/bin/Release/SignaturePad.iOS.dll
+  ios: src/SignaturePad.iOS/bin/classic/Release/SignaturePad.iOS.dll
+  ios-unified: src/SignaturePad.iOS/bin/unified/Release/SignaturePad.iOS.dll
   android: src/SignaturePad.Android/bin/Release/SignaturePad.Android.dll
 samples:
   - name: "Android Sample"
     path: samples/Sample.Android/Sample.Android.sln
-  - name: "iOS Sample"
+  - name: "iOS Unified Sample"
     path: samples/Sample.iOS/Sample.iOS.sln
+    configuration: "Release|iPhone"
+  - name: "iOS Classic Sample"
+    path: samples/Sample.iOS/Sample.iOS-Classic.sln
     configuration: "Release|iPhone"
