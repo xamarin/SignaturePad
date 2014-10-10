@@ -309,29 +309,39 @@ namespace SignaturePad {
 				return null;
 
 			nfloat uncroppedScale;
-			CGSize uncroppedSize;
-			CGRect croppedRectangle;
+			CGRect croppedRectangle = new CGRect ();
 
 			if (shouldCrop && Points.Count () > 0) {
 				croppedRectangle = getCroppedRectangle ();
+				croppedRectangle.Width /= scale;
+				croppedRectangle.Height /= scale;
+				if (croppedRectangle.X >= 5) {
+					croppedRectangle.X -= 5;
+					croppedRectangle.Width += 5;
+				}
+				if (croppedRectangle.Y >= 5) {
+					croppedRectangle.Y -= 5;
+					croppedRectangle.Height += 5;
+				}
+				if (croppedRectangle.X + croppedRectangle.Width <= size.Width - 5)
+               		croppedRectangle.Width += 5;
+				if (croppedRectangle.Y + croppedRectangle.Height <= size.Height - 5)
+               		croppedRectangle.Height += 5;
+
 				nfloat scaleX = croppedRectangle.Width / Bounds.Width;
 				nfloat scaleY = croppedRectangle.Height / Bounds.Height;
 				uncroppedScale = 1 / (nfloat)Math.Max (scaleX, scaleY);
-				//uncroppedScale = 1 / getScaleFromSize (croppedRectangle.Size, Bounds);
-				uncroppedSize = getSizeFromScale (uncroppedScale, 
-				                                  new CGRect (new CGPoint (0, 0), size));
 			} else {
 				uncroppedScale = scale;
-				uncroppedSize = size;
 			}
 
 			//Make sure the image is scaled to the screen resolution in case of Retina display.
-			UIGraphics.BeginImageContext (uncroppedSize);
+			UIGraphics.BeginImageContext (size);
 
 			//Create context and set the desired options
 			CGContext context = UIGraphics.GetCurrentContext ();
 			context.SetFillColor (fillColor.CGColor);
-			context.FillRect (new CGRect (0, 0, uncroppedSize.Width, uncroppedSize.Height));
+			context.FillRect (new CGRect (0, 0, size.Width, size.Height));
 			context.SetStrokeColor (strokeColor.CGColor);
 			context.SetLineWidth (StrokeWidth);
 			context.SetLineCap (CGLineCap.Round);
@@ -340,36 +350,17 @@ namespace SignaturePad {
 
 			//Obtain all drawn paths from the array
 			foreach (var bezierPath in paths) {
-				CGPath path = bezierPath.CGPath;
+				var tempPath = (UIBezierPath)bezierPath.Copy ();
+				if (shouldCrop)
+					tempPath.ApplyTransform (CGAffineTransform.MakeTranslation (-croppedRectangle.X, -croppedRectangle.Y));
+				CGPath path = tempPath.CGPath;
 				context.AddPath (path);
+				tempPath = null;
 			}
 			context.StrokePath ();
 
 			UIImage image = UIGraphics.GetImageFromCurrentImageContext ();
 
-			if (shouldCrop && Points.Count () > 0) {
-				croppedRectangle = getCroppedRectangle ();
-				CGRect scaledRectangle;
-				scaledRectangle = new CGRect (croppedRectangle.X * uncroppedScale, 
-				                                  croppedRectangle.Y * uncroppedScale, 
-				                                  size.Width, 
-				                                  size.Height);
-				if (scaledRectangle.X >= 5) {
-					scaledRectangle.X -= 5;
-					scaledRectangle.Width += 5;
-				}
-				if (scaledRectangle.Y >= 5) {
-					scaledRectangle.Y -= 5;
-					scaledRectangle.Height += 5;
-				}
-				if (scaledRectangle.X + scaledRectangle.Width <= uncroppedSize.Width - 5)
-					scaledRectangle.Width += 5;
-				if (scaledRectangle.Y + scaledRectangle.Height <= uncroppedSize.Height - 5)
-					scaledRectangle.Height += 5;
-				CGImage croppedImage = image.CGImage.WithImageInRect (scaledRectangle);
-
-				image = new UIImage (croppedImage);
-			}
 			return image;
 		}
 

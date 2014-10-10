@@ -367,58 +367,53 @@ namespace SignaturePad {
 				return null;
 
 			float uncroppedScale;
-			System.Drawing.SizeF uncroppedSize;
-			RectF croppedRectangle;
+			RectF croppedRectangle = new RectF ();
 
 			if (shouldCrop && Points.Count () != 0) {
 				croppedRectangle = getCroppedRectangle ();
+
+				if (croppedRectangle.Left >= 5)
+					croppedRectangle.Left -= 5;
+				if (croppedRectangle.Right <= size.Width - 5)
+					croppedRectangle.Right += 5;
+				if (croppedRectangle.Top >= 5)
+					croppedRectangle.Top -= 5;
+				if (croppedRectangle.Bottom <= size.Height - 5)
+					croppedRectangle.Bottom += 5;
+
 				float scaleX = (croppedRectangle.Right - croppedRectangle.Left) / Width;
 				float scaleY = (croppedRectangle.Bottom - croppedRectangle.Top) / Height;
 				uncroppedScale = 1 / Math.Max (scaleX, scaleY);
-				//uncroppedScale = 1 / getScaleFromSize (croppedRectangle.Size, Bounds);
-				uncroppedSize = getSizeFromScale (uncroppedScale, size.Width, size.Height);
 			} else {
 				uncroppedScale = scale;
-				uncroppedSize = size;
 			}
 
-			Bitmap image = Bitmap.CreateBitmap ((int)uncroppedSize.Width, (int)uncroppedSize.Height, 
+			Bitmap image = Bitmap.CreateBitmap ((int)size.Width, (int)size.Height, 
 			                                    Bitmap.Config.Argb8888);
 			Canvas canvas = new Canvas (image);
 			canvas.Scale (uncroppedScale, uncroppedScale);
 
-			DrawStrokesOnCanvas (canvas, strokeColor, fillColor);
-	
-			if (shouldCrop && Points.Count () != 0) {
-				croppedRectangle = getCroppedRectangle ();
-				RectF scaledRectangle = new RectF (croppedRectangle.Left * uncroppedScale,
-				                                   croppedRectangle.Top * uncroppedScale,
-				                                   croppedRectangle.Right * uncroppedScale,
-				                                   croppedRectangle.Bottom * uncroppedScale);
+			DrawStrokesOnCanvas (canvas, strokeColor, fillColor, shouldCrop, croppedRectangle);
 
-				if (scaledRectangle.Left >= 5)
-					scaledRectangle.Left -= 5;
-				if (scaledRectangle.Right <= uncroppedSize.Width - 5)
-					scaledRectangle.Right += 5;
-				if (scaledRectangle.Top >= 5)
-					scaledRectangle.Top -= 5;
-				if (scaledRectangle.Bottom <= uncroppedSize.Height - 5)
-					scaledRectangle.Bottom += 5;
-				image = Bitmap.CreateBitmap (image, 
-				                             (int) scaledRectangle.Left, 
-				                             (int) scaledRectangle.Top,
-				                             (int) scaledRectangle.Width (),
-				                             (int) scaledRectangle.Height ());
-			}
 			return image;
 		}
 
-		private void DrawStrokesOnCanvas (Canvas canvas, Color strokeColor, Color fillColor) {
+		private void DrawStrokesOnCanvas (Canvas canvas, Color strokeColor, Color fillColor, bool shouldCrop, RectF croppedRectangle = null) {
 			canvas.DrawColor (fillColor);
 
 			paint.Color = strokeColor;
-			foreach (var path in paths)
-				canvas.DrawPath (path, paint);
+			foreach (var path in paths) {
+				var tempPath = new Path (path);
+
+				if (shouldCrop) {
+					var translate = new Matrix ();
+					translate.SetTranslate (-croppedRectangle.Left, -croppedRectangle.Top);
+					tempPath.Transform (translate);
+				}
+				canvas.DrawPath (tempPath, paint);
+
+				tempPath = null;
+			}
 			paint.Color = this.strokeColor;
 		}
 
@@ -453,7 +448,7 @@ namespace SignaturePad {
 
 			if (!UseBitmapBuffer) {
 				//Bitmap not in use: redraw all of the paths.
-				DrawStrokesOnCanvas (canvas, this.strokeColor, Color.Transparent);
+				DrawStrokesOnCanvas (canvas, this.strokeColor, Color.Transparent, false);
 			}
 		}
 
