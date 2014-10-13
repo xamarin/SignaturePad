@@ -226,56 +226,65 @@ namespace Xamarin.Controls
 				return null;
 
 			float uncroppedScale;
-			Size uncroppedSize;
-			Rect croppedRectangle;
+            Rect croppedRectangle = new Rect();
 
 			if (shouldCrop && Points.Count () > 0) {
 				croppedRectangle = getCroppedRectangle ();
+
+                if (croppedRectangle.X >= 5)
+                {
+                    croppedRectangle.X -= 5;
+                    croppedRectangle.Width += 5;
+                }
+                if (croppedRectangle.Y >= 5)
+                {
+                    croppedRectangle.Y -= 5;
+                    croppedRectangle.Height += 5;
+                }
+                if (croppedRectangle.X + croppedRectangle.Width <= size.Width - 5)
+                    croppedRectangle.Width += 5;
+                if (croppedRectangle.Y + croppedRectangle.Height <= size.Height - 5)
+                    croppedRectangle.Height += 5;
+
 				double scaleX = croppedRectangle.Width / size.Width;
 				double scaleY = croppedRectangle.Height / size.Height;
 				uncroppedScale = (float) (1 / Math.Max (scaleX, scaleY));
-				uncroppedSize = getSizeFromScale (uncroppedScale, size);
 			} else {
 				uncroppedScale = scale;
-				uncroppedSize = size;
 			}
 
-			InkPresenter presenter = new InkPresenter () { 
-				Width = ActualWidth, 
-				Height = ActualHeight, 
-				Strokes = new StrokeCollection (),
- 				Background = new SolidColorBrush (fillColor)
-			};
+            InkPresenter presenter = new InkPresenter()
+            {
+                Width = shouldCrop ? size.Width / uncroppedScale : size.Width,
+                Height = shouldCrop ? size.Height / uncroppedScale : size.Height,
+                Strokes = new StrokeCollection(),
+                Background = new SolidColorBrush(fillColor)
+            };
+
 			foreach (Stroke stroke in strokes) {
-				stroke.DrawingAttributes.Color = strokeColor;
-				presenter.Strokes.Add (stroke);
-			}
-			WriteableBitmap bitmap = new WriteableBitmap (presenter, new ScaleTransform () { ScaleX = uncroppedScale, ScaleY = uncroppedScale });
-			
-			if (shouldCrop) {
-				croppedRectangle = getCroppedRectangle ();
-				Rect scaledRectangle;
-				scaledRectangle = new Rect (croppedRectangle.X * uncroppedScale,
-				                            croppedRectangle.Y * uncroppedScale,
-				                            size.Width,
-				                            size.Height);
-				if (scaledRectangle.X >= 5) {
-					scaledRectangle.X -= 5;
-					scaledRectangle.Width += 5;
-				}
-				if (scaledRectangle.Y >= 5) {
-					scaledRectangle.Y -= 5;
-					scaledRectangle.Height += 5;
-				}
-				if (scaledRectangle.X + scaledRectangle.Width <= uncroppedSize.Width - 5)
-					scaledRectangle.Width += 5;
-				if (scaledRectangle.Y + scaledRectangle.Height <= uncroppedSize.Height - 5)
-					scaledRectangle.Height += 5;
+                var collection = new StylusPointCollection();
 
-				
-				bitmap = crop (bitmap, scaledRectangle);
+                var tempStroke = new Stroke ();
+               
+                if (shouldCrop)
+                {
+                    var newCollection = new StylusPointCollection ();
+                    foreach (var point in stroke.StylusPoints)
+                    {
+                        var newPoint = new StylusPoint { X = point.X - croppedRectangle.X, Y = point.Y - croppedRectangle.Y };
+                        newCollection.Add(newPoint);
+                    }
+
+                    tempStroke = new Stroke(newCollection);
+                }
+                
+				tempStroke.DrawingAttributes.Color = strokeColor;
+				presenter.Strokes.Add (shouldCrop ? tempStroke : stroke);
+                tempStroke = null;
 			}
-			
+
+            WriteableBitmap bitmap = new WriteableBitmap(presenter, new ScaleTransform() { ScaleX = uncroppedScale, ScaleY = uncroppedScale });
+
 			return bitmap;
 		}
 		#endregion
