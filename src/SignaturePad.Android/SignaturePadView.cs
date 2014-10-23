@@ -303,65 +303,65 @@ namespace SignaturePad {
 		}
 
 		//Create a UIImage of the currently drawn signature.
-		public Bitmap GetImage (bool shouldCrop = true)
+		public Bitmap GetImage (bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return GetImage (strokeColor, Color.Transparent, new System.Drawing.SizeF (Width, Height), 1,
-			                 shouldCrop);
+			                 shouldCrop, keepAspectRatio);
 		}
 
-		public Bitmap GetImage (System.Drawing.SizeF size, bool shouldCrop = true)
+		public Bitmap GetImage (System.Drawing.SizeF size, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return GetImage (strokeColor, Color.Transparent, size, 
-			                 getScaleFromSize (size, Width, Height), shouldCrop);
+			                 getScaleFromSize (size, Width, Height), shouldCrop, keepAspectRatio);
 		}
 
-		public Bitmap GetImage (float scale, bool shouldCrop = true)
+		public Bitmap GetImage (float scale, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return GetImage (strokeColor, Color.Transparent, getSizeFromScale (scale, Width, Height), 
-			                 scale, shouldCrop);
+			                 scale, shouldCrop, keepAspectRatio);
 		}
 
 		//Create a UIImage of the currently drawn signature with the specified Stroke color.
-		public Bitmap GetImage (Color strokeColor, bool shouldCrop = true)
+		public Bitmap GetImage (Color strokeColor, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return GetImage (strokeColor, Color.Transparent, new System.Drawing.SizeF (Width, Height), 1,
-			                 shouldCrop);
+			                 shouldCrop, keepAspectRatio);
 		}
 
-		public Bitmap GetImage (Color strokeColor, System.Drawing.SizeF size, bool shouldCrop = true)
+		public Bitmap GetImage (Color strokeColor, System.Drawing.SizeF size, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return GetImage (strokeColor, Color.Transparent, size, getScaleFromSize (size, Width, Height), 
-			                 shouldCrop);
+			                 shouldCrop, keepAspectRatio);
 		}
 
-		public Bitmap GetImage (Color strokeColor, float scale, bool shouldCrop = true)
+		public Bitmap GetImage (Color strokeColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return GetImage (strokeColor, Color.Transparent, getSizeFromScale (scale, Width, Height), 
-			                 scale, shouldCrop);
+			                 scale, shouldCrop, keepAspectRatio);
 		}
 
 		//Create a UIImage of the currently drawn signature with the specified Stroke and Fill colors.
-		public Bitmap GetImage (Color strokeColor, Color fillColor, bool shouldCrop = true)
+		public Bitmap GetImage (Color strokeColor, Color fillColor, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return GetImage (strokeColor, fillColor, new System.Drawing.SizeF (Width, Height), 1, 
-			                 shouldCrop);
+			                 shouldCrop, keepAspectRatio);
 		}
 
 		public Bitmap GetImage (Color strokeColor, Color fillColor, System.Drawing.SizeF size, 
-		                        bool shouldCrop = true)
+		                        bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return GetImage (strokeColor, fillColor, size, getScaleFromSize (size, Width, Height), 
-			                 shouldCrop);
+			                 shouldCrop, keepAspectRatio);
 		}
 
-		public Bitmap GetImage (Color strokeColor, Color fillColor, float scale, bool shouldCrop = true)
+		public Bitmap GetImage (Color strokeColor, Color fillColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return GetImage (strokeColor, fillColor, getSizeFromScale (scale, Width, Height), 
-			                 scale, shouldCrop);
+			                 scale, shouldCrop, keepAspectRatio);
 		}
 
 		Bitmap GetImage (Color strokeColor, Color fillColor, System.Drawing.SizeF size, float scale, 
-		                 bool shouldCrop = true)
+		                 bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			if (size.Width == 0 || size.Height == 0 || scale <= 0)
 				return null;
@@ -388,8 +388,13 @@ namespace SignaturePad {
 				uncroppedScale = scale;
 			}
 
-			Bitmap image = Bitmap.CreateBitmap ((int)size.Width, (int)size.Height, 
-			                                    Bitmap.Config.Argb8888);
+			Bitmap image;
+			if (keepAspectRatio)
+				image = Bitmap.CreateBitmap ((int)size.Width, (int)size.Height, 
+					Bitmap.Config.Argb8888);
+			else
+				image = Bitmap.CreateBitmap ((int)(croppedRectangle.Width () * uncroppedScale), (int)(croppedRectangle.Height () * uncroppedScale),
+					Bitmap.Config.Argb8888);
 			Canvas canvas = new Canvas (image);
 			canvas.Scale (uncroppedScale, uncroppedScale);
 
