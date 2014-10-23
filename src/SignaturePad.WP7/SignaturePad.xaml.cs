@@ -136,90 +136,99 @@ namespace Xamarin.Controls
 
 		#region GetImage
 		//Create a WriteableBitmap of the currently drawn signature with default colors.
-		public WriteableBitmap GetImage (bool shouldCrop = true)
+		public WriteableBitmap GetImage (bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return GetImage (strokeColor, 
 				         Colors.Transparent, 
 					 RenderSize,
 					 1, 
-					 shouldCrop);
+					 shouldCrop,
+                     keepAspectRatio);
 		}
 
-		public WriteableBitmap GetImage (Size size, bool shouldCrop = true)
+        public WriteableBitmap GetImage (Size size, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return GetImage (strokeColor, 
 			                 Colors.Transparent, 
 					 size, 
-			                 getScaleFromSize (size, RenderSize), 
-					 shouldCrop);
+			                 getScaleFromSize (size, RenderSize),
+                     shouldCrop,
+                     keepAspectRatio);
 		}
 
-		public WriteableBitmap GetImage (float scale, bool shouldCrop = true)
+        public WriteableBitmap GetImage (float scale, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return GetImage (strokeColor,
 			                 Colors.Transparent, 
 					 getSizeFromScale (scale, RenderSize), 
-					 scale, 
-					 shouldCrop);
+					 scale,
+                     shouldCrop,
+                     keepAspectRatio);
 		}
 
 		//Create a WriteableBitmap of the currently drawn signature with the specified Stroke color.
-		public WriteableBitmap GetImage (Color strokeColor, bool shouldCrop = true)
+        public WriteableBitmap GetImage (Color strokeColor, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return GetImage (strokeColor, 
 			                 Colors.Transparent,
 					 RenderSize,
-					 1, 
-					 shouldCrop);
+					 1,
+                     shouldCrop,
+                     keepAspectRatio);
 		}
 
-		public WriteableBitmap GetImage (Color strokeColor, Size size, bool shouldCrop = true)
+		public WriteableBitmap GetImage (Color strokeColor, Size size, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return GetImage (strokeColor, 
 			                 Colors.Transparent, 
 					 size, 
-					 getScaleFromSize (size, RenderSize), 
-					 shouldCrop);
+					 getScaleFromSize (size, RenderSize),
+                     shouldCrop,
+                     keepAspectRatio);
 		}
 
-		public WriteableBitmap GetImage (Color strokeColor, float scale, bool shouldCrop = true)
+		public WriteableBitmap GetImage (Color strokeColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return GetImage (strokeColor, 
 			                 Colors.Transparent, 
 					 getSizeFromScale (scale, RenderSize), 
-					 scale, 
-					 shouldCrop);
+					 scale,
+                     shouldCrop,
+                     keepAspectRatio);
 		}
 
 		//Create a WriteableBitmap of the currently drawn signature with the specified Stroke and Fill colors.
-		public WriteableBitmap GetImage (Color strokeColor, Color fillColor, bool shouldCrop = true)
+		public WriteableBitmap GetImage (Color strokeColor, Color fillColor, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return GetImage (strokeColor, 
 			                 fillColor,
 			                 RenderSize,
-					 1, 
-					 shouldCrop);
+					 1,
+                     shouldCrop,
+                     keepAspectRatio);
 		}
 
-		public WriteableBitmap GetImage (Color strokeColor, Color fillColor, Size size, bool shouldCrop = true)
+		public WriteableBitmap GetImage (Color strokeColor, Color fillColor, Size size, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return GetImage (strokeColor, 
 			                 fillColor, 
 					 size, 
-					 getScaleFromSize (size, RenderSize), 
-					 shouldCrop);
+					 getScaleFromSize (size, RenderSize),
+                     shouldCrop,
+                     keepAspectRatio);
 		}
 
-		public WriteableBitmap GetImage (Color strokeColor, Color fillColor, float scale, bool shouldCrop = true)
+		public WriteableBitmap GetImage (Color strokeColor, Color fillColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return GetImage (strokeColor,
 			                 fillColor, 
 					 getSizeFromScale (scale, RenderSize), 
-					 scale, 
-					 shouldCrop);
+					 scale,
+                     shouldCrop,
+                     keepAspectRatio);
 		}
 
-		WriteableBitmap GetImage (Color strokeColor, Color fillColor, Size size, float scale, bool shouldCrop = true)
+		WriteableBitmap GetImage (Color strokeColor, Color fillColor, Size size, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			if (size.Width == 0 || size.Height == 0 || scale <= 0 || strokeColor == null ||
 			    fillColor == null)
@@ -253,13 +262,28 @@ namespace Xamarin.Controls
 				uncroppedScale = scale;
 			}
 
-            InkPresenter presenter = new InkPresenter()
+            InkPresenter presenter;
+
+            if (shouldCrop)
             {
-                Width = shouldCrop ? size.Width / uncroppedScale : size.Width,
-                Height = shouldCrop ? size.Height / uncroppedScale : size.Height,
-                Strokes = new StrokeCollection(),
-                Background = new SolidColorBrush(fillColor)
-            };
+                presenter = new InkPresenter()
+                {
+                    Width = keepAspectRatio ? size.Width / uncroppedScale : croppedRectangle.Width,
+                    Height = keepAspectRatio ? size.Height / uncroppedScale : croppedRectangle.Height,
+                    Strokes = new StrokeCollection(),
+                    Background = new SolidColorBrush(fillColor)
+                };
+            }
+            else
+            {
+                presenter = new InkPresenter()
+                {
+                    Width = size.Width,
+                    Height = size.Height,
+                    Strokes = new StrokeCollection(),
+                    Background = new SolidColorBrush(fillColor)
+                };
+            }
 
 			foreach (Stroke stroke in strokes) {
                 var collection = new StylusPointCollection();
