@@ -403,9 +403,11 @@ namespace SignaturePad {
 
 			paint.Color = strokeColor;
 			foreach (var path in paths) {
-				var tempPath = new Path (path);
+				var tempPath = path;
 
 				if (shouldCrop) {
+					tempPath = new Path (path);
+
 					var translate = new Matrix ();
 					translate.SetTranslate (-croppedRectangle.Left, -croppedRectangle.Top);
 					tempPath.Transform (translate);
