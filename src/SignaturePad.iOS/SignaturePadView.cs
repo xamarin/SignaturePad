@@ -249,60 +249,60 @@ namespace SignaturePad {
 		}
 
 		//Create a UIImage of the currently drawn signature with default colors.
-		public UIImage GetImage (bool shouldCrop = true)
+		public UIImage GetImage (bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return GetImage (strokeColor, UIColor.Clear, 
 			                 getSizeFromScale (UIScreen.MainScreen.Scale, Bounds), 
-			                 UIScreen.MainScreen.Scale, shouldCrop);
+			                 UIScreen.MainScreen.Scale, shouldCrop, keepAspectRatio);
 		}
 		
-		public UIImage GetImage (CGSize size, bool shouldCrop = true)
+		public UIImage GetImage (CGSize size, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
-			return GetImage (strokeColor, UIColor.Clear, size, getScaleFromSize (size, Bounds), shouldCrop);
+			return GetImage (strokeColor, UIColor.Clear, size, getScaleFromSize (size, Bounds), shouldCrop, keepAspectRatio);
 		}
 
-		public UIImage GetImage (nfloat scale, bool shouldCrop = true)
+		public UIImage GetImage (nfloat scale, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
-			return GetImage (strokeColor, UIColor.Clear, getSizeFromScale(scale, Bounds), scale, shouldCrop);
+			return GetImage (strokeColor, UIColor.Clear, getSizeFromScale(scale, Bounds), scale, shouldCrop, keepAspectRatio);
 		}
 
 		//Create a UIImage of the currently drawn signature with the specified Stroke color.
-		public UIImage GetImage (UIColor strokeColor, bool shouldCrop = true)
+		public UIImage GetImage (UIColor strokeColor, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return GetImage (strokeColor, UIColor.Clear, 
 			                 getSizeFromScale (UIScreen.MainScreen.Scale, Bounds), 
-			                 UIScreen.MainScreen.Scale, shouldCrop);
+			                 UIScreen.MainScreen.Scale, shouldCrop, keepAspectRatio);
 		}
 		
-		public UIImage GetImage (UIColor strokeColor, CGSize size, bool shouldCrop = true)
+		public UIImage GetImage (UIColor strokeColor, CGSize size, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
-			return GetImage (strokeColor, UIColor.Clear, size, getScaleFromSize (size, Bounds), shouldCrop);
+			return GetImage (strokeColor, UIColor.Clear, size, getScaleFromSize (size, Bounds), shouldCrop, keepAspectRatio);
 		}
 
-		public UIImage GetImage (UIColor strokeColor, nfloat scale, bool shouldCrop = true)
+		public UIImage GetImage (UIColor strokeColor, nfloat scale, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
-			return GetImage (strokeColor, UIColor.Clear, getSizeFromScale(scale, Bounds), scale, shouldCrop);
+			return GetImage (strokeColor, UIColor.Clear, getSizeFromScale(scale, Bounds), scale, shouldCrop, keepAspectRatio);
 		}
 
 		//Create a UIImage of the currently drawn signature with the specified Stroke and Fill colors.
-		public UIImage GetImage (UIColor strokeColor, UIColor fillColor, bool shouldCrop = true)
+		public UIImage GetImage (UIColor strokeColor, UIColor fillColor, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return GetImage (strokeColor, fillColor, 
 			                 getSizeFromScale (UIScreen.MainScreen.Scale, Bounds),
-			                 UIScreen.MainScreen.Scale, shouldCrop);
+			                 UIScreen.MainScreen.Scale, shouldCrop, keepAspectRatio);
 		}
 
-		public UIImage GetImage (UIColor strokeColor, UIColor fillColor, CGSize size, bool shouldCrop = true)
+		public UIImage GetImage (UIColor strokeColor, UIColor fillColor, CGSize size, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
-			return GetImage (strokeColor, fillColor, size, getScaleFromSize (size, Bounds), shouldCrop);
+			return GetImage (strokeColor, fillColor, size, getScaleFromSize (size, Bounds), shouldCrop, keepAspectRatio);
 		}
 
-		public UIImage GetImage (UIColor strokeColor, UIColor fillColor, nfloat scale, bool shouldCrop = true)
+		public UIImage GetImage (UIColor strokeColor, UIColor fillColor, nfloat scale, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
-			return GetImage (strokeColor, fillColor, getSizeFromScale(scale, Bounds), scale, shouldCrop);
+			return GetImage (strokeColor, fillColor, getSizeFromScale(scale, Bounds), scale, shouldCrop, keepAspectRatio);
 		}
 
-		UIImage GetImage (UIColor strokeColor, UIColor fillColor, CGSize size, nfloat scale, bool shouldCrop = true)
+		UIImage GetImage (UIColor strokeColor, UIColor fillColor, CGSize size, nfloat scale, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			if (size.Width == 0 || size.Height == 0 || scale <= 0 || strokeColor == null ||
 			    fillColor == null)
@@ -336,7 +336,10 @@ namespace SignaturePad {
 			}
 
 			//Make sure the image is scaled to the screen resolution in case of Retina display.
-			UIGraphics.BeginImageContext (size);
+			if (keepAspectRatio)
+				UIGraphics.BeginImageContext (size);
+			else
+				UIGraphics.BeginImageContext (new CGSize (croppedRectangle.Width * uncroppedScale, croppedRectangle.Height * uncroppedScale));
 
 			//Create context and set the desired options
 			CGContext context = UIGraphics.GetCurrentContext ();
