@@ -46,19 +46,21 @@ namespace SignaturePad {
 				if (points == null || points.Count () == 0)
 					return new System.Drawing.PointF [0];
 
-				List<System.Drawing.PointF> pointsList = points [0].ToList ();
-				
+				IEnumerable<System.Drawing.PointF> pointsList = points[0];
+
 				for (var i = 1; i < points.Count; i++) {
-					pointsList.Add (System.Drawing.PointF.Empty);
-					pointsList = pointsList.Concat (points [i]).ToList ();
+					pointsList = pointsList.Concat (new [] { System.Drawing.PointF.Empty });
+					pointsList = pointsList.Concat (points [i]);
 				}
-				
+
 				return pointsList.ToArray (); 
 			}
 		}
 
 		public bool IsBlank {
-			get { return Points.Count () == 0; }
+			get { 
+				return points == null || points.Count () == 0 || !(points.Where (p => p.Any ()).Any ());
+			}
 		}
 
 		/// <summary>
@@ -369,8 +371,10 @@ namespace SignaturePad {
 			float uncroppedScale;
 			RectF croppedRectangle = new RectF ();
 
-			if (shouldCrop && Points.Count () != 0) {
-				croppedRectangle = getCroppedRectangle ();
+			System.Drawing.PointF [] cachedPoints;
+
+			if (shouldCrop && (cachedPoints = Points).Any ()) {
+				croppedRectangle = getCroppedRectangle (cachedPoints);
 
 				if (croppedRectangle.Left >= 5)
 					croppedRectangle.Left -= 5;
@@ -459,12 +463,12 @@ namespace SignaturePad {
 			}
 		}
 
-		RectF getCroppedRectangle()
+		RectF getCroppedRectangle(System.Drawing.PointF [] cachedPoints)
 		{
-			var xMin = Points.Where (point => !point.IsEmpty).Min (point => point.X) - strokeWidth / 2;
-			var xMax = Points.Where (point => !point.IsEmpty).Max (point => point.X) + strokeWidth / 2;
-			var yMin = Points.Where (point => !point.IsEmpty).Min (point => point.Y) - strokeWidth / 2;
-			var yMax = Points.Where (point => !point.IsEmpty).Max (point => point.Y) + strokeWidth / 2;
+			var xMin = cachedPoints.Where (point => !point.IsEmpty).Min (point => point.X) - strokeWidth / 2;
+			var xMax = cachedPoints.Where (point => !point.IsEmpty).Max (point => point.X) + strokeWidth / 2;
+			var yMin = cachedPoints.Where (point => !point.IsEmpty).Min (point => point.Y) - strokeWidth / 2;
+			var yMax = cachedPoints.Where (point => !point.IsEmpty).Max (point => point.Y) + strokeWidth / 2;
 
 			xMin = Math.Max (xMin, 0);
 			xMax = Math.Min (xMax, Width);
