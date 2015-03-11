@@ -39,20 +39,20 @@ namespace Xamarin.Controls
 				if (points == null || points.Count () == 0)
 					return new Point [0];
 
-				List<Point> pointsList = points [0].ToList ();
+				IEnumerable<Point> pointsList = points[0];
 
 				for (var i = 1; i < points.Count; i++) {
-					pointsList.Add (new Point (-10000, -10000));
-					pointsList = pointsList.Concat (points [i]).ToList ();
+					pointsList = pointsList.Concat (new [] { new Point (-10000, -10000) });
+					pointsList = pointsList.Concat (points [i]);
 				}
 
-				return pointsList.ToArray ();
+				return pointsList.ToArray (); 
 			}
 		}
 
 		public bool IsBlank
 		{
-			get { return Points.Count () == 0; }
+			get { return points == null || points.Count () == 0 || !(points.Where (p => p.Any ()).Any ()); }
 		}
 
 		Color strokeColor;
@@ -237,8 +237,11 @@ namespace Xamarin.Controls
 			float uncroppedScale;
             Rect croppedRectangle = new Rect();
 
-			if (shouldCrop && Points.Count () > 0) {
-				croppedRectangle = getCroppedRectangle ();
+			Point [] cachedPoints;
+
+			if (shouldCrop && (cachedPoints = Points).Any ()) {
+			
+				croppedRectangle = getCroppedRectangle (cachedPoints);
 
                 if (croppedRectangle.X >= 5)
                 {
@@ -323,12 +326,12 @@ namespace Xamarin.Controls
 			return cropped;
 		}
 
-		Rect getCroppedRectangle ()
+		Rect getCroppedRectangle(Point [] cachedPoints)
 		{
-			var xMin = Points.Where (point => point != new Point (-10000, -10000)).Min (point => point.X) - LineWidth / 2;
-			var xMax = Points.Where (point => point != new Point (-10000, -10000)).Max (point => point.X) + LineWidth / 2;
-			var yMin = Points.Where (point => point != new Point (-10000, -10000)).Min (point => point.Y) - LineWidth / 2;
-			var yMax = Points.Where (point => point != new Point (-10000, -10000)).Max (point => point.Y) + LineWidth / 2;
+			var xMin = cachedPoints.Where (point => point != new Point (-10000, -10000)).Min (point => point.X) - LineWidth / 2;
+			var xMax = cachedPoints.Where (point => point != new Point (-10000, -10000)).Max (point => point.X) + LineWidth / 2;
+			var yMin = cachedPoints.Where (point => point != new Point (-10000, -10000)).Min (point => point.Y) - LineWidth / 2;
+			var yMax = cachedPoints.Where (point => point != new Point (-10000, -10000)).Max (point => point.Y) + LineWidth / 2;
 
 			xMin = Math.Max (xMin, 0);
 			xMax = Math.Min (xMax, ActualWidth);
