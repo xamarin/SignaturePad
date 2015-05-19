@@ -366,6 +366,8 @@ namespace SignaturePad {
 
 			UIImage image = UIGraphics.GetImageFromCurrentImageContext ();
 
+            UIGraphics.EndImageContext ();
+
 			return image;
 		}
 

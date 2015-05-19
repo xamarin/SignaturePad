@@ -90,19 +90,19 @@ namespace Sample {
 			{
 				var frame = Frame;
 
-				var width = UIApplication.SharedApplication.StatusBarOrientation.HasFlag(UIDeviceOrientation.Portrait)
+				var width = UIApplication.SharedApplication.StatusBarOrientation.HasFlag(UIInterfaceOrientation.Portrait)
 					? frame.Size.Width
 						: frame.Size.Width - UIApplication.SharedApplication.StatusBarFrame.Width ;
 
-				var height = UIApplication.SharedApplication.StatusBarOrientation.HasFlag (UIDeviceOrientation.Portrait)
+                var height = UIApplication.SharedApplication.StatusBarOrientation.HasFlag (UIInterfaceOrientation.Portrait)
 					? frame.Size.Height - UIApplication.SharedApplication.StatusBarFrame.Height 
 						: frame.Size.Height;
 
-				var x = UIApplication.SharedApplication.StatusBarOrientation.HasFlag (UIDeviceOrientation.Portrait)
+                var x = UIApplication.SharedApplication.StatusBarOrientation.HasFlag (UIInterfaceOrientation.Portrait)
 					? 0
 						: frame.Location.X + UIApplication.SharedApplication.StatusBarFrame.Width;
 
-				var y = UIApplication.SharedApplication.StatusBarOrientation.HasFlag (UIDeviceOrientation.Portrait)
+                var y = UIApplication.SharedApplication.StatusBarOrientation.HasFlag (UIInterfaceOrientation.Portrait)
 					? frame.Location.Y + UIApplication.SharedApplication.StatusBarFrame.Height
 						: 0;
 
