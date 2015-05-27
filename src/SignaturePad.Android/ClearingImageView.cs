@@ -38,9 +38,16 @@ namespace SignaturePad {
 		{
 			base.SetImageBitmap (bm);
 			if (imageBitmap != null)
-			{
-				imageBitmap.Recycle ();
-				imageBitmap.Dispose ();
+            {
+                try
+                {
+                    imageBitmap.Recycle();
+                    imageBitmap.Dispose();
+                }
+                catch
+                {
+                    // do nothing 
+                }
 			}
 			imageBitmap = bm;
 			GC.Collect ();
