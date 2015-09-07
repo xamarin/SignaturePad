@@ -84,7 +84,7 @@ namespace SignaturePad {
 			set {
 				strokeColor = value ?? strokeColor;
 				if (!IsBlank)
-					imageView.Image = GetImage (false);
+                    			LoadNewImage();
 			}
 		}
 
@@ -94,7 +94,7 @@ namespace SignaturePad {
 			set {
 				strokeWidth = value;
 				if (!IsBlank)
-					imageView.Image = GetImage (false);
+                    			LoadNewImage();
 			}
 		}
 
@@ -242,11 +242,28 @@ namespace SignaturePad {
 			currentPath = UIBezierPath.Create ();
 			points = new List<CGPoint[]> ();
 			currentPoints.Clear ();
-			imageView.Image = null;
+
+			if (imageView.Image != null)
+			{
+				imageView.Image.Dispose();
+				imageView.Image = null;
+			}
+
 			btnClear.Hidden = true;
 
 			SetNeedsDisplay ();
 		}
+		
+	        private void LoadNewImage()
+	        {
+	            if (imageView.Image != null)
+	                imageView.Image.Dispose();
+	
+	            using (UIImage image = GetImage(false))
+	            {
+	                imageView.Image = image;
+	            }
+	        }
 
 		//Create a UIImage of the currently drawn signature with default colors.
 		public UIImage GetImage (bool shouldCrop = true, bool keepAspectRatio = true)
@@ -455,7 +472,7 @@ namespace SignaturePad {
 			} while (startIndex < emptyIndex);
 
 			//Obtain the image for the imported signature and display it in the image view.
-			imageView.Image = GetImage (false);
+            		LoadNewImage();
 			//Display the clear button.
 			btnClear.Hidden = false;
 			SetNeedsDisplay ();
@@ -604,7 +621,7 @@ namespace SignaturePad {
 			points.Add (currentPoints.ToArray ());
 			
 			//Obtain the image for the imported signature and display it in the image view.
-			imageView.Image = GetImage (false);
+            		LoadNewImage();
 			updateBounds (touchLocation);
 			SetNeedsDisplay ();
 		}
