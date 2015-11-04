@@ -587,6 +587,9 @@ namespace SignaturePad {
 
 			switch (e.Action) {
 			case MotionEventActions.Down:
+                // don't allow the event to propagate because we're handling it here
+                Parent.RequestDisallowInterceptTouchEvent(true);
+
 				lastX = touchX;
 				lastY = touchY;
 
@@ -610,7 +613,10 @@ namespace SignaturePad {
 					(int) (dirtyRect.Bottom + 1));
 				break;
 			case MotionEventActions.Up:
-				handleTouch (e);
+                // don't allow the event to propagate because we're handling it here
+                Parent.RequestDisallowInterceptTouchEvent(true);
+
+                handleTouch(e);
 				currentPath = smoothedPathWithGranularity (20, out currentPoints);
 
 				//Add the current path and points to their respective lists.
