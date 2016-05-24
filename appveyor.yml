@@ -13,4 +13,5 @@ build_script:
  - ps: .\build.ps1
   
 artifacts:
+ - path: output\
  - path: output\*.*
