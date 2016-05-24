@@ -41,10 +41,10 @@ namespace Sample {
 			}
 
 			if (true) { // Customization activated.
-				view.Signature.Caption.Text = "Authorization Signature";
-				view.Signature.Caption.Font = UIFont.FromName ("Marker Felt", 16f);
-				view.Signature.SignaturePrompt.Text = "☛";
-				view.Signature.SignaturePrompt.Font = UIFont.FromName ("Helvetica", 32f);
+				view.Signature.Caption = "Authorization Signature";
+				view.Signature.SignaturePrompt = "☛";
+				view.Signature.CaptionLabel.Font = UIFont.FromName ("Marker Felt", 16f);
+				view.Signature.SignaturePromptLabel.Font = UIFont.FromName ("Helvetica", 32f);
 				view.Signature.BackgroundColor = UIColor.FromRGB (255, 255, 200); // a light yellow.
 
 				view.Signature.BackgroundImageView.Image = UIImage.FromBundle ("logo-galaxy-black-64.png");
