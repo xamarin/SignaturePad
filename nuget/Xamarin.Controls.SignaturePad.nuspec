@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Xamarin.Controls.SignaturePad</id>
+    <version>1.3.8.{revision}</version>
+    <authors>Xamarin, Inc.</authors>
+    <owners>Xamarin, Inc.</owners>
+    <licenseUrl>https://github.com/mattleibow/SignaturePad/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/xamarin/SignaturePad</projectUrl>
+    <iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Makes capturing, saving, and displaying signatures extremely simple.</description>
+    <copyright>Copyright (c) Xamarin Inc. 2016</copyright>
+    <tags>xamarin,signature,handwriting,windows,ios,android,windows phone</tags>
+  </metadata>
+  <files>
+    <file src="output/android/SignaturePad.dll" target="lib\MonoAndroid\SignaturePad.dll" />
+    <file src="output/ios/SignaturePad.dll" target="lib\MonoTouch\SignaturePad.dll" />
+    <file src="output/ios-unified/SignaturePad.dll" target="lib\Xamarin.iOS\SignaturePad.dll" />
+    <file src="output/wp8/SignaturePad.dll" target="lib\wp8\SignaturePad.dll" />
+  </files>
+</package>
