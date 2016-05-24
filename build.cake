@@ -9,6 +9,8 @@
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
+var buildNumber = EnvironmentVariable("APPVEYOR_BUILD_NUMBER") ?? "0";
+var buildSha = EnvironmentVariable("APPVEYOR_REPO_COMMIT") ?? "local_build";
 
 //////////////////////////////////////////////////////////////////////
 // PREPARATION
@@ -70,16 +72,20 @@ Task("Build")
     .IsDependentOn("RestorePackages")
     .Does(() =>
 {
+    // replace version numbers
+    ReplaceTextInFiles("./src/SignaturePad/Properties/AssemblyInfo.cs", "{revision}", buildNumber);
+    ReplaceTextInFiles("./src/SignaturePad/Properties/AssemblyInfo.cs", "{sha}", buildSha);
+    
     // build
     Build("./src/SignaturePad.sln");
     
     // copy outputs
     var outputs = new Dictionary<string, string>
     {
-        { "./src/SignaturePad.Android/bin/{0}/SignaturePad.Android.dll", "android/SignaturePad.Android.dll" },
-        { "./src/SignaturePad.iOS/bin/classic/{0}/SignaturePad.iOS.dll", "ios/SignaturePad.iOS.dll" },
-        { "./src/SignaturePad.iOS/bin/unified/{0}/SignaturePad.iOS.dll", "ios-unified/SignaturePad.iOS.dll" },
-        { "./src/SignaturePad.WP7/bin/{0}/SignaturePad.WP7.dll", "wp8/SignaturePad.WP7.dll" },
+        { "./src/SignaturePad.Android/bin/{0}/SignaturePad.dll", "android/SignaturePad.dll" },
+        { "./src/SignaturePad.iOS/bin/classic/{0}/SignaturePad.dll", "ios/SignaturePad.dll" },
+        { "./src/SignaturePad.iOS/bin/unified/{0}/SignaturePad.dll", "ios-unified/SignaturePad.dll" },
+        { "./src/SignaturePad.WP7/bin/{0}/SignaturePad.dll", "wp8/SignaturePad.dll" },
     };
     foreach (var output in outputs) {
         var dest = outDir.CombineWithFilePath(string.Format(output.Value, configuration));
@@ -112,6 +118,10 @@ Task("Package")
     .IsDependentOn("Build")
     .Does(() =>
 {
+    // replace version numbers
+    ReplaceTextInFiles("./nuget/Xamarin.Controls.SignaturePad.nuspec", "{revision}", buildNumber);
+    ReplaceTextInFiles("./component/component.yaml", "{revision}", buildNumber);
+    
     // NuGet
     Information("Packing NuGet...");
     NuGetPack("./nuget/Xamarin.Controls.SignaturePad.nuspec", new NuGetPackSettings {

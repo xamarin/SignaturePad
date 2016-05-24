@@ -3,7 +3,7 @@
 
 id: signature-pad
 name: Signature Pad
-version: 1.3.8
+version: 1.3.8.{revision}
 summary: Makes capturing, saving, and displaying signatures extremely simple.
 publisher: Xamarin, Inc.
 publisher-url: http://xamarin.com/
@@ -22,10 +22,10 @@ is_shell: true
 no_build: true
 local-nuget-repo: ../output/  
 libraries:
-  android: ../output/android/SignaturePad.Android.dll
-  ios: ../output/ios/SignaturePad.iOS.dll
-  ios-unified: ../output/ios-unified/SignaturePad.iOS.dll
-  wp8: ../output/wp8/SignaturePad.WP7.dll
+  android: ../output/android/SignaturePad.dll
+  ios: ../output/ios/SignaturePad.dll
+  ios-unified: ../output/ios-unified/SignaturePad.dll
+  wp8: ../output/wp8/SignaturePad.dll
 packages:
   android: Xamarin.Controls.SignaturePad, Version=1.3.8
   ios: Xamarin.Controls.SignaturePad, Version=1.3.8
@@ -39,16 +39,10 @@ samples:
       - project: Sample.Android
         packages:
           - Xamarin.Controls.SignaturePad
-  - name: "iOS Unified Sample"
+  - name: "iOS Sample"
     path: ../samples/Sample.iOS/Sample.iOS.sln
     installNuGets:
       - project: Sample.iOS
-        packages:
-          - Xamarin.Controls.SignaturePad
-  - name: "iOS Classic Sample"
-    path: ../samples/Sample.iOS/Sample.iOS-Classic.sln
-    installNuGets:
-      - project: Sample-Classic
         packages:
           - Xamarin.Controls.SignaturePad
 
