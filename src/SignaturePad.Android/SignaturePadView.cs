@@ -14,14 +14,9 @@ using Android.Graphics;
 
 namespace SignaturePad {
 	public class SignaturePadView : RelativeLayout {
-		#region UI Controls
 		SignatureCanvasView canvasView;
-		TextView lblSign;
 		View signatureLine;
-		TextView xLabel;
-		TextView lblClear;
 		ClearingImageView imageView;
-		#endregion
 
 		Context context;
 		Paint _paint;
@@ -114,10 +109,19 @@ namespace SignaturePad {
 		/// Text value defaults to 'X'.
 		/// </remarks>
 		/// <value>The signature prompt.</value>
-		public TextView SignaturePrompt {
-			get { return xLabel; }
-			set { xLabel = value; }
+		public string SignaturePrompt {
+			get { return SignaturePromptTextView.Text; }
+			set { SignaturePromptTextView.Text = value; }
 		}
+
+		/// <summary>
+		/// The native text view for the signature prompt.
+		/// </summary>
+		/// <remarks>
+		/// Text value defaults to 'X'.
+		/// </remarks>
+		/// <value>The signature prompt.</value>
+		public TextView SignaturePromptTextView { get; private set; }
 
 		/// <summary>
 		/// The caption displayed under the signature line.
@@ -126,10 +130,19 @@ namespace SignaturePad {
 		/// Text value defaults to 'Sign here.'
 		/// </remarks>
 		/// <value>The caption.</value>
-		public TextView Caption {
-			get { return lblSign; }
-			set { lblSign = value; }
+		public string Caption {
+			get { return CaptionTextView.Text; }
+			set { CaptionTextView.Text = value; }
 		}
+
+		/// <summary>
+		/// The native text view for the caption.
+		/// </summary>
+		/// <remarks>
+		/// Text value defaults to 'Sign here.'
+		/// </remarks>
+		/// <value>The caption.</value>
+		public TextView CaptionTextView { get; private set; }
 
 		/// <summary>
 		/// The color of the signature line.
@@ -154,9 +167,16 @@ namespace SignaturePad {
 		/// Gets the label that clears the pad when clicked.
 		/// </summary>
 		/// <value>The clear label.</value>
-		public TextView ClearLabel {
-			get { return lblClear; }
+		public string ClearLabel {
+			get { return ClearButton.Text; }
+			set { ClearButton.Text = value; }
 		}
+
+		/// <summary>
+		/// Gets the label that clears the pad when clicked.
+		/// </summary>
+		/// <value>The clear label.</value>
+		public TextView ClearButton { get; private set; }
 
 		/// <summary>
 		/// Gets the horizontal line that goes in the lower part of the pad.
@@ -230,18 +250,18 @@ namespace SignaturePad {
 			imageView.LayoutParameters = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.FillParent);
 			AddView (imageView);
 
-			lblSign = new TextView (context);
-			lblSign.Id = generateId ();
-			lblSign.SetIncludeFontPadding (true);
-			lblSign.Text = "Sign Here";
+			CaptionTextView = new TextView (context);
+			CaptionTextView.Id = generateId ();
+			CaptionTextView.SetIncludeFontPadding (true);
+			CaptionTextView.Text = "Sign Here";
 			layout = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.WrapContent, RelativeLayout.LayoutParams.WrapContent);
 			layout.AlignWithParent = true;
 			layout.BottomMargin = 6;
 			layout.AddRule (LayoutRules.AlignBottom);
 			layout.AddRule (LayoutRules.CenterHorizontal);
-			lblSign.LayoutParameters = layout;
-			lblSign.SetPadding (0, 0, 0, 6);
-			AddView (lblSign);
+			CaptionTextView.LayoutParameters = layout;
+			CaptionTextView.SetPadding (0, 0, 0, 6);
+			AddView (CaptionTextView);
 
 			//Display the base line for the user to sign on.
 			signatureLine = new View (context);
@@ -249,37 +269,37 @@ namespace SignaturePad {
 			signatureLine.SetBackgroundColor (Color.Gray);
 			layout = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.MatchParent, 1);
 			layout.SetMargins (10, 0, 10, 5);
-			layout.AddRule (LayoutRules.Above, lblSign.Id);
+			layout.AddRule (LayoutRules.Above, CaptionTextView.Id);
             signatureLine.LayoutParameters = layout;
 			AddView (signatureLine);
 
 			//Display the X on the left hand side of the line where the user signs.
-			xLabel = new TextView (context);
-			xLabel.Id = generateId ();
-			xLabel.Text = "X";
-			xLabel.SetTypeface (null, TypefaceStyle.Bold);
+			SignaturePromptTextView = new TextView (context);
+			SignaturePromptTextView.Id = generateId ();
+			SignaturePromptTextView.Text = "X";
+			SignaturePromptTextView.SetTypeface (null, TypefaceStyle.Bold);
 			layout = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.WrapContent, RelativeLayout.LayoutParams.WrapContent);
 			layout.LeftMargin = 11;
 			layout.AddRule (LayoutRules.Above, signatureLine.Id);
-			xLabel.LayoutParameters = layout;
-			AddView (xLabel);
+			SignaturePromptTextView.LayoutParameters = layout;
+			AddView (SignaturePromptTextView);
 
 			AddView (canvasView);
 
-			lblClear = new TextView (context);
-			lblClear.Id = generateId ();
-			lblClear.Text = "Clear";
+			ClearButton = new TextView (context);
+			ClearButton.Id = generateId ();
+			ClearButton.Text = "Clear";
 			layout = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.WrapContent, RelativeLayout.LayoutParams.WrapContent);
 			layout.SetMargins (0, 10, 22, 0);
 			layout.AlignWithParent = true;
 			layout.AddRule (LayoutRules.AlignRight);
 			layout.AddRule (LayoutRules.AlignTop);
-			lblClear.LayoutParameters = layout;
-			lblClear.Visibility = ViewStates.Invisible;
-			lblClear.Click += (object sender, EventArgs e) => {
+			ClearButton.LayoutParameters = layout;
+			ClearButton.Visibility = ViewStates.Invisible;
+			ClearButton.Click += (object sender, EventArgs e) => {
 				Clear ();
 			};
-			AddView (lblClear);
+			AddView (ClearButton);
 			#endregion
 
 			paths = new List<Path> ();
@@ -297,7 +317,7 @@ namespace SignaturePad {
 			currentPoints = new List<System.Drawing.PointF> ();
 			currentPath = new Path ();
 			imageView.SetImageBitmap (null);
-			lblClear.Visibility = ViewStates.Invisible;
+			ClearButton.Visibility = ViewStates.Invisible;
 			GC.Collect ();
 
 			canvasView.Invalidate ();
@@ -547,7 +567,7 @@ namespace SignaturePad {
 			DrawStrokes ();
 
 			//Display the clear button.
-			lblClear.Visibility = ViewStates.Visible; 
+			ClearButton.Visibility = ViewStates.Visible; 
 			Invalidate ();
 		}
 
@@ -599,7 +619,7 @@ namespace SignaturePad {
 				currentPoints.Add (touch);
 
 				//Display the clear button
-				lblClear.Visibility = ViewStates.Visible;
+				ClearButton.Visibility = ViewStates.Visible;
 				return true;
 			case MotionEventActions.Move:
 				handleTouch (e);
