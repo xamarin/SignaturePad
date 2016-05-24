@@ -1,6 +1,6 @@
-# Signature Pad [![AppVeyor]
+# Signature Pad
 
-[![ci-img]][ci-link] [![NuGet][signature-page-img]][signature-page-link]
+[![AppVeyor][ci-img]][ci-link] [![NuGet][signature-page-img]][signature-page-link]
 
 Signature Pad makes capturing, saving, exporting, and displaying
 signatures extremely simple on Xamarin.iOS, Xamarin.Android and WIndows Phone.
