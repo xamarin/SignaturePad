@@ -57,7 +57,7 @@ Task("RestorePackages")
         "./src/SignaturePad.sln", 
         "./samples/Sample.Android/Sample.Android.sln",
         "./samples/Sample.iOS/Sample.iOS.sln",
-        "./samples/Sample.WP7/Sample.WP7.sln",
+        "./samples/Sample.WP8/Sample.WP8.sln",
     };
     foreach (var solution in solutions) {
         Information("Restoring {0}...", solution);
@@ -85,7 +85,7 @@ Task("Build")
         { "./src/SignaturePad.Android/bin/{0}/SignaturePad.dll", "android/SignaturePad.dll" },
         { "./src/SignaturePad.iOS/bin/classic/{0}/SignaturePad.dll", "ios/SignaturePad.dll" },
         { "./src/SignaturePad.iOS/bin/unified/{0}/SignaturePad.dll", "ios-unified/SignaturePad.dll" },
-        { "./src/SignaturePad.WP7/bin/{0}/SignaturePad.dll", "wp8/SignaturePad.dll" },
+        { "./src/SignaturePad.WP8/bin/{0}/SignaturePad.dll", "wp8/SignaturePad.dll" },
     };
     foreach (var output in outputs) {
         var dest = outDir.CombineWithFilePath(string.Format(output.Value, configuration));

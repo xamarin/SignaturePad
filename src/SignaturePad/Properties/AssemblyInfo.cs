@@ -14,7 +14,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration ("Release")]
 #endif
 [assembly: AssemblyCompany ("")]
-[assembly: AssemblyProduct ("SignaturePad.WP7")]
+[assembly: AssemblyProduct ("SignaturePad.WP8")]
 [assembly: AssemblyCopyright ("Copyright © Xamarin Inc 2016")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]

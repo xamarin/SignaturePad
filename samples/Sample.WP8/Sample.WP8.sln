@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.WP7", "Sample.WP7.csproj", "{CBF96D56-4CC2-41C3-8A1F-C5B8FF0663CD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.WP8", "Sample.WP8.csproj", "{CBF96D56-4CC2-41C3-8A1F-C5B8FF0663CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.WP7", "..\..\src\SignaturePad.WP7\SignaturePad.WP7.csproj", "{105D08DE-982A-4F39-9FB2-82735CF2F3F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.WP8", "..\..\src\SignaturePad.WP8\SignaturePad.WP8.csproj", "{105D08DE-982A-4F39-9FB2-82735CF2F3F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

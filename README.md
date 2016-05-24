@@ -45,13 +45,13 @@ protected override void OnCreate (Bundle bundle)
 }
 ```
 
-### Displaying a Signature Pad on Windows Phone
+### Displaying a Signature Pad on Windows Phone (Silverlight)
 
 On Windows Phone, it is easiest to add your `SignaturePad` control directly in your Page's `.xaml` file.  To do this, be sure you register the namespace in the `<phone:PhoneApplicationPage ... />` tag.  Here is an example:
 ```xml
 <phone:PhoneApplicationPage 
 	<!-- Other properties -->
-    xmlns:component="clr-namespace:Xamarin.Controls;assembly=SignaturePad.WP7">
+    xmlns:component="clr-namespace:Xamarin.Controls;assembly=SignaturePad">
 
 	<!-- Other controls -->
 	<component:SignaturePad Margin="10,10,10,78" Name="signatureView" />

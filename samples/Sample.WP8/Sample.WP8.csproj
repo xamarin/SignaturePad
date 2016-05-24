@@ -9,8 +9,8 @@
     <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sample.WP7</RootNamespace>
-    <AssemblyName>Sample.WP7</AssemblyName>
+    <RootNamespace>Sample.WP8</RootNamespace>
+    <AssemblyName>Sample.WP8</AssemblyName>
     <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
     <SilverlightVersion>
     </SilverlightVersion>
@@ -22,9 +22,9 @@
     </SupportedCultures>
     <XapOutputs>true</XapOutputs>
     <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
-    <XapFilename>Sample.WP7_$(Configuration)_$(Platform).xap</XapFilename>
+    <XapFilename>Sample.WP8_$(Configuration)_$(Platform).xap</XapFilename>
     <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
-    <SilverlightAppEntry>Sample.WP7.App</SilverlightAppEntry>
+    <SilverlightAppEntry>Sample.WP8.App</SilverlightAppEntry>
     <ValidateXaml>true</ValidateXaml>
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
     <FileUpgradeFlags>
@@ -116,9 +116,9 @@
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\SignaturePad.WP7\SignaturePad.WP7.csproj">
+    <ProjectReference Include="..\..\src\SignaturePad.WP8\SignaturePad.WP8.csproj">
       <Project>{105d08de-982a-4f39-9fb2-82735cf2f3f1}</Project>
-      <Name>SignaturePad.WP7</Name>
+      <Name>SignaturePad.WP8</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
