@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.IO;
 using Microsoft.Xna.Framework.Media;
 
-namespace Sample.WP7
+namespace Sample.WP8
 {
 	public partial class MainPage : PhoneApplicationPage
 	{

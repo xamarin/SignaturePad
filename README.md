@@ -1,5 +1,7 @@
 # Signature Pad
 
+[![AppVeyor][ci-img]][ci-link] [![NuGet][signature-page-img]][signature-page-link]
+
 Signature Pad makes capturing, saving, exporting, and displaying
 signatures extremely simple on Xamarin.iOS, Xamarin.Android and WIndows Phone.
 
@@ -43,13 +45,13 @@ protected override void OnCreate (Bundle bundle)
 }
 ```
 
-### Displaying a Signature Pad on Windows Phone
+### Displaying a Signature Pad on Windows Phone (Silverlight)
 
 On Windows Phone, it is easiest to add your `SignaturePad` control directly in your Page's `.xaml` file.  To do this, be sure you register the namespace in the `<phone:PhoneApplicationPage ... />` tag.  Here is an example:
 ```xml
 <phone:PhoneApplicationPage 
 	<!-- Other properties -->
-    xmlns:component="clr-namespace:Xamarin.Controls;assembly=SignaturePad.WP7">
+    xmlns:component="clr-namespace:Xamarin.Controls;assembly=SignaturePad">
 
 	<!-- Other controls -->
 	<component:SignaturePad Margin="10,10,10,78" Name="signatureView" />
@@ -139,7 +141,7 @@ their respective `Visibility` property to `ViewStates.Invisible`.
 
 The Apache License 2.0 applies to all samples in this repository.
 
-   Copyright 2013-2014 Xamarin Inc
+   Copyright 2016 Xamarin Inc
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -152,3 +154,10 @@ The Apache License 2.0 applies to all samples in this repository.
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+
+[ci-img]: https://img.shields.io/appveyor/ci/mattleibow/SignaturePad/add-cake.svg?maxAge=2592000
+[ci-link]: https://ci.appveyor.com/project/mattleibow/SignaturePad
+
+[signature-page-img]: https://img.shields.io/nuget/v/Xamarin.Controls.SignaturePad.svg?maxAge=2592000
+[signature-page-link]: https://www.nuget.org/packages/Xamarin.Controls.SignaturePad

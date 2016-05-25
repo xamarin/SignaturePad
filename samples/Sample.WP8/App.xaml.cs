@@ -13,7 +13,7 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 
-namespace Sample.WP7
+namespace Sample.WP8
 {
 	public partial class App : Application
 	{

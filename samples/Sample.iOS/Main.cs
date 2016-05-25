@@ -4,23 +4,14 @@
 // Author:
 //   Timothy Risi (timothy.risi@gmail.com)
 //
-// Copyright (C) 2012 Timothy Risi
+// Copyright (C) 2016 Xamarin Inc.
 //
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
-#if __UNIFIED__
-using Foundation;
 using UIKit;
-#else
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-#endif
 
-namespace Sample
+namespace Sample.iOS
 {
-	public class Application
+    public class Application
 	{
 		// This is the main entry point of the application.
 		static void Main (string[] args)

@@ -1,20 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:minWidth="25px"
     android:minHeight="25px"
-    android:background="#ff777777"
     android:id="@+id/rootView">
-    <SignaturePad.SignaturePadView
-        android:id="@+id/signatureView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="70dp" />
     <Button
         android:id="@+id/btnSave"
         android:layout_width="wrap_content"
@@ -24,7 +14,8 @@
         android:layout_marginRight="10dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp" />
     <Button
         android:id="@+id/btnLoad"
         android:layout_width="wrap_content"
@@ -34,5 +25,14 @@
         android:layout_marginRight="10dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp" />
+    <signaturepad.SignaturePadView
+        android:id="@+id/signatureView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_above="@id/btnSave" />
 </RelativeLayout>
