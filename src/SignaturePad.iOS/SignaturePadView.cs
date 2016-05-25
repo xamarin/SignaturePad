@@ -42,6 +42,10 @@ namespace SignaturePad {
 	[Register("SignaturePadView")]
     [DesignTimeVisible(true)]
 	public class SignaturePadView : UIView {
+		const int ThinPad = 3;
+		const int ThickPad = 10;
+		const int LineHeight = 1;
+
 		UIImageView imageView;
 		UIBezierPath currentPath;
 		List<UIBezierPath> paths;
@@ -153,6 +157,38 @@ namespace SignaturePad {
 		///  An image view that may be used as a watermark or as a texture
 		///  for the signature pad.
 		/// </summary>
+		/// <value>The background image.</value>
+		[Export ("BackgroundImage"), Browsable(true)]
+		public UIImage BackgroundImage {
+			get { return BackgroundImageView.Image; }
+			set { BackgroundImageView.Image = value; }
+		}
+
+		/// <summary>
+		///  An image view that may be used as a watermark or as a texture
+		///  for the signature pad.
+		/// </summary>
+		/// <value>The background image.</value>
+		[Export ("BackgroundImageContentMode"), Browsable(true)]
+		public UIViewContentMode BackgroundImageContentMode {
+			get { return BackgroundImageView.ContentMode; }
+			set { BackgroundImageView.ContentMode = value; }
+		}
+
+		/// <summary>
+		///  The transparency of the watermark.
+		/// </summary>
+		/// <value>The background image.</value>
+		[Export ("BackgroundImageAlpha"), Browsable(true)]
+		public nfloat BackgroundImageAlpha {
+			get { return BackgroundImageView.Alpha; }
+			set { BackgroundImageView.Alpha = value; }
+		}
+
+		/// <summary>
+		///  An image view that may be used as a watermark or as a texture
+		///  for the signature pad.
+		/// </summary>
 		/// <value>The background image view.</value>
 		public UIImageView BackgroundImageView { get; private set; }
 
@@ -185,12 +221,12 @@ namespace SignaturePad {
 
 		public SignaturePadView (NSCoder coder) : base (coder)
 		{
-			Initialize ();
+            Initialize(/* ? baseProperties: false ? */);
 		}
 
 		public SignaturePadView (IntPtr ptr) : base (ptr)
 		{
-			Initialize ();
+			Initialize (false);
 		}
 
 		public SignaturePadView (CGRect frame)
@@ -199,9 +235,11 @@ namespace SignaturePad {
 			Initialize ();
 		}
 
-		void Initialize ()
+		void Initialize (bool baseProperties = true)
 		{
-			BackgroundColor = UIColor.FromRGB(225, 225, 225);
+            if (baseProperties) {
+			    BackgroundColor = UIColor.FromRGB(225, 225, 225);
+            }
 			strokeColor = UIColor.Black;
 			StrokeWidth = 2f;
 
@@ -224,6 +262,7 @@ namespace SignaturePad {
 			CaptionLabel.Font = UIFont.BoldSystemFontOfSize (11f);
 			CaptionLabel.BackgroundColor = UIColor.Clear;
 			CaptionLabel.TextColor = UIColor.Gray;
+			CaptionLabel.TextAlignment = UITextAlignment.Center;
 			AddSubview (CaptionLabel);
 
 			//Display the base line for the user to sign on.
@@ -645,20 +684,27 @@ namespace SignaturePad {
 
 		public override void LayoutSubviews ()
 		{
-			CaptionLabel.SizeToFit ();
+			var w = Frame.Width;
+			var h = Frame.Height;
+
 			SignaturePromptLabel.SizeToFit ();
 			ClearButton.SizeToFit ();
 
-			imageView.Frame = new CGRect (0, 0, Bounds.Width, Bounds.Height);
+			var captionHeight = CaptionLabel.SizeThatFits(CaptionLabel.Frame.Size).Height;
+			var clearButtonHeight = (int)ClearButton.Font.LineHeight + 1;
 
-			CaptionLabel.Frame = new CGRect ((Bounds.Width / 2) - (CaptionLabel.Frame.Width / 2), Bounds.Height - CaptionLabel.Frame.Height - 3, 
-											CaptionLabel.Frame.Width, CaptionLabel.Frame.Height);
+			var rect = new CGRect (0, 0, w, h);
+			imageView.Frame = rect;
+			BackgroundImageView.Frame = rect;
 
-			SignatureLine.Frame = new CGRect (10, Bounds.Height - SignatureLine.Frame.Height - 5 - CaptionLabel.Frame.Height, Bounds.Width - 20, 1);
-
-			SignaturePromptLabel.Frame = new CGRect (10, Bounds.Height - SignaturePromptLabel.Frame.Height - SignatureLine.Frame.Height - 2 - CaptionLabel.Frame.Height, 
-										   SignaturePromptLabel.Frame.Width, SignaturePromptLabel.Frame.Height);
-			ClearButton.Frame = new CGRect (Bounds.Width - 41 - CaptionLabel.Frame.Height, 10, 31, 14);
+			var top = h;
+			top = top - ThinPad - captionHeight;
+			CaptionLabel.Frame = new CGRect (ThickPad, top, w - ThickPad - ThickPad, captionHeight);
+			top = top - ThinPad - SignatureLine.Frame.Height;
+			SignatureLine.Frame = new CGRect (ThickPad, top, w - ThickPad - ThickPad, LineHeight);
+			top = top - ThinPad - SignaturePromptLabel.Frame.Height;
+			SignaturePromptLabel.Frame = new CGRect (ThickPad, top, SignaturePromptLabel.Frame.Width, SignaturePromptLabel.Frame.Height);
+			ClearButton.Frame = new CGRect (w - ThickPad - ClearButton.Frame.Width, ThickPad, ClearButton.Frame.Width, clearButtonHeight);
 		}
 	}
 }
