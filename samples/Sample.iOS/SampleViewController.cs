@@ -40,8 +40,8 @@ namespace Sample.iOS
 			saveButton.TouchUpInside += OnSaveTapped;
 			loadButton.TouchUpInside += OnLoadTapped;
 
-			signaturePad.CaptionLabel.Font = UIFont.FromName("Marker Felt", 16f);
-			signaturePad.SignaturePromptLabel.Font = UIFont.FromName("Helvetica", 32f);
+			signaturePad.Caption.Font = UIFont.FromName("Marker Felt", 16f);
+			signaturePad.SignaturePrompt.Font = UIFont.FromName("Helvetica", 32f);
 		}
 
 		public override void ViewWillLayoutSubviews()

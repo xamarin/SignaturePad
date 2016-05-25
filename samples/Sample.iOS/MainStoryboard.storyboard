@@ -50,16 +50,16 @@
                                 <rect key="frame" x="20" y="276" width="560" height="262"/>
                                 <subviews/>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="SignaturePrompt" value="☛"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="SignaturePromptText" value="☛"/>
                                     <userDefinedRuntimeAttribute type="image" keyPath="BackgroundImage" value="logo-galaxy-black-64.png"/>
                                     <userDefinedRuntimeAttribute type="number" keyPath="BackgroundImageContentMode">
                                         <integer key="value" value="1"/>
                                     </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="ClearLabel" value="Start Over"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="ClearLabelText" value="Start Over"/>
                                     <userDefinedRuntimeAttribute type="number" keyPath="BackgroundImageAlpha">
                                         <real key="value" value="0.0625"/>
                                     </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="Caption" value="Authorization Signature"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="CaptionText" value="Authorization Signature"/>
                                 </userDefinedRuntimeAttributes>
                                 <color key="backgroundColor" colorSpace="calibratedRGB" red="1" green="1" blue="0.78431372549019607" alpha="1"/>
                             </view>

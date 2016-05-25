@@ -32,12 +32,12 @@ namespace Sample.Android
 				// (good for frequent-redraw situations, bad for memory footprint)
 				// signature.UseBitmapBuffer = true;
 
-				signature.Caption = "Authorization Signature";
-				signature.CaptionTextView.SetTypeface (Typeface.Serif, TypefaceStyle.BoldItalic);
-				signature.CaptionTextView.SetTextSize (global::Android.Util.ComplexUnitType.Sp, 16f);
-				signature.SignaturePrompt = ">>";
-				signature.SignaturePromptTextView.SetTypeface (Typeface.SansSerif, TypefaceStyle.Normal);
-				signature.SignaturePromptTextView.SetTextSize (global::Android.Util.ComplexUnitType.Sp, 32f);
+				signature.Caption.Text = "Authorization Signature";
+				signature.Caption.SetTypeface (Typeface.Serif, TypefaceStyle.BoldItalic);
+				signature.Caption.SetTextSize (global::Android.Util.ComplexUnitType.Sp, 16f);
+				signature.SignaturePrompt.Text = ">>";
+				signature.SignaturePrompt.SetTypeface (Typeface.SansSerif, TypefaceStyle.Normal);
+				signature.SignaturePrompt.SetTextSize (global::Android.Util.ComplexUnitType.Sp, 32f);
 				signature.BackgroundColor = Color.Rgb (255, 255, 200); // a light yellow.
 				signature.StrokeColor = Color.Black;
 
@@ -51,7 +51,7 @@ namespace Sample.Android
 				signature.BackgroundImageView.LayoutParameters = layout;
 
 				// You can change paddings for positioning...
-				var caption = signature.CaptionTextView;
+				var caption = signature.Caption;
 				caption.SetPadding (caption.PaddingLeft, 1, caption.PaddingRight, 25);
 			}
 

@@ -65,9 +65,13 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\SignaturePad\Properties\AssemblyInfo.cs">
-      <Link>Properties\AssemblyInfo.cs</Link>
+    <Compile Include="..\SignaturePad\Properties\AssemblyInfo.Common.cs">
+      <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
+    <Compile Include="..\SignaturePad\Properties\AssemblyInfo.Native.cs">
+      <Link>Properties\AssemblyInfo.Native.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SignaturePad.xaml.cs">
       <DependentUpon>SignaturePad.xaml</DependentUpon>
     </Compile>

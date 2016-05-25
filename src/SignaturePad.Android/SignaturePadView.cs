@@ -15,7 +15,6 @@ using Android.Graphics;
 namespace SignaturePad {
 	public class SignaturePadView : RelativeLayout {
 		SignatureCanvasView canvasView;
-		View signatureLine;
 		ClearingImageView imageView;
 
 		Context context;
@@ -103,25 +102,48 @@ namespace SignaturePad {
 		}
 
 		/// <summary>
+		/// The text for the prompt displayed at the beginning of the signature line.
+		/// </summary>
+		/// <remarks>
+		/// Text value defaults to 'X'.
+		/// </remarks>
+		/// <value>The signature prompt.</value>
+		public string SignaturePromptText {get { return SignaturePrompt.Text; }
+			set { SignaturePrompt.Text = value; }
+		}
+
+		/// <summary>
+		/// The text for the caption displayed under the signature line.
+		/// </summary>
+		/// <remarks>
+		/// Text value defaults to 'Sign here.'
+		/// </remarks>
+		/// <value>The caption.</value>
+		public string CaptionText {
+			get { return Caption.Text; }
+			set { Caption.Text = value; }
+		}
+
+		/// <summary>
+		/// Gets the label that clears the pad when clicked.
+		/// </summary>
+		/// <value>The clear label.</value>
+		public string ClearLabelText {
+			get { return ClearLabel.Text; }
+			set { ClearLabel.Text = value; }
+		}
+
+		/// <summary>
 		/// The prompt displayed at the beginning of the signature line.
 		/// </summary>
 		/// <remarks>
 		/// Text value defaults to 'X'.
 		/// </remarks>
 		/// <value>The signature prompt.</value>
-		public string SignaturePrompt {
-			get { return SignaturePromptTextView.Text; }
-			set { SignaturePromptTextView.Text = value; }
+		public TextView SignaturePrompt {
+			get;
+			private set;
 		}
-
-		/// <summary>
-		/// The native text view for the signature prompt.
-		/// </summary>
-		/// <remarks>
-		/// Text value defaults to 'X'.
-		/// </remarks>
-		/// <value>The signature prompt.</value>
-		public TextView SignaturePromptTextView { get; private set; }
 
 		/// <summary>
 		/// The caption displayed under the signature line.
@@ -130,19 +152,10 @@ namespace SignaturePad {
 		/// Text value defaults to 'Sign here.'
 		/// </remarks>
 		/// <value>The caption.</value>
-		public string Caption {
-			get { return CaptionTextView.Text; }
-			set { CaptionTextView.Text = value; }
+		public TextView Caption {
+			get;
+			private set;
 		}
-
-		/// <summary>
-		/// The native text view for the caption.
-		/// </summary>
-		/// <remarks>
-		/// Text value defaults to 'Sign here.'
-		/// </remarks>
-		/// <value>The caption.</value>
-		public TextView CaptionTextView { get; private set; }
 
 		/// <summary>
 		/// The color of the signature line.
@@ -153,7 +166,7 @@ namespace SignaturePad {
 			get { return signatureLineColor; }
 			set { 
 				signatureLineColor = value; 
-				signatureLine.SetBackgroundColor (value);
+				SignatureLine.SetBackgroundColor (value);
 			}
 		}
 
@@ -167,23 +180,18 @@ namespace SignaturePad {
 		/// Gets the label that clears the pad when clicked.
 		/// </summary>
 		/// <value>The clear label.</value>
-		public string ClearLabel {
-			get { return ClearButton.Text; }
-			set { ClearButton.Text = value; }
+		public TextView ClearLabel {
+			get;
+			private set;
 		}
-
-		/// <summary>
-		/// Gets the label that clears the pad when clicked.
-		/// </summary>
-		/// <value>The clear label.</value>
-		public TextView ClearButton { get; private set; }
 
 		/// <summary>
 		/// Gets the horizontal line that goes in the lower part of the pad.
 		/// </summary>
 		/// <value>The signature line.</value>
 		public View SignatureLine {
-			get { return signatureLine; }
+			get;
+			private set;
 		}
 
 		public SignaturePadView (Context context) : base (context)
@@ -250,56 +258,56 @@ namespace SignaturePad {
 			imageView.LayoutParameters = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.FillParent);
 			AddView (imageView);
 
-			CaptionTextView = new TextView (context);
-			CaptionTextView.Id = generateId ();
-			CaptionTextView.SetIncludeFontPadding (true);
-			CaptionTextView.Text = "Sign Here";
+			Caption = new TextView (context);
+			Caption.Id = generateId ();
+			Caption.SetIncludeFontPadding (true);
+			Caption.Text = "Sign Here";
 			layout = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.WrapContent, RelativeLayout.LayoutParams.WrapContent);
 			layout.AlignWithParent = true;
 			layout.BottomMargin = 6;
 			layout.AddRule (LayoutRules.AlignBottom);
 			layout.AddRule (LayoutRules.CenterHorizontal);
-			CaptionTextView.LayoutParameters = layout;
-			CaptionTextView.SetPadding (0, 0, 0, 6);
-			AddView (CaptionTextView);
+			Caption.LayoutParameters = layout;
+			Caption.SetPadding (0, 0, 0, 6);
+			AddView (Caption);
 
 			//Display the base line for the user to sign on.
-			signatureLine = new View (context);
-			signatureLine.Id = generateId ();
-			signatureLine.SetBackgroundColor (Color.Gray);
+			SignatureLine = new View (context);
+			SignatureLine.Id = generateId ();
+			SignatureLine.SetBackgroundColor (Color.Gray);
 			layout = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.MatchParent, 1);
 			layout.SetMargins (10, 0, 10, 5);
-			layout.AddRule (LayoutRules.Above, CaptionTextView.Id);
-            signatureLine.LayoutParameters = layout;
-			AddView (signatureLine);
+			layout.AddRule (LayoutRules.Above, Caption.Id);
+            SignatureLine.LayoutParameters = layout;
+			AddView (SignatureLine);
 
 			//Display the X on the left hand side of the line where the user signs.
-			SignaturePromptTextView = new TextView (context);
-			SignaturePromptTextView.Id = generateId ();
-			SignaturePromptTextView.Text = "X";
-			SignaturePromptTextView.SetTypeface (null, TypefaceStyle.Bold);
+			SignaturePrompt = new TextView (context);
+			SignaturePrompt.Id = generateId ();
+			SignaturePrompt.Text = "X";
+			SignaturePrompt.SetTypeface (null, TypefaceStyle.Bold);
 			layout = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.WrapContent, RelativeLayout.LayoutParams.WrapContent);
 			layout.LeftMargin = 11;
-			layout.AddRule (LayoutRules.Above, signatureLine.Id);
-			SignaturePromptTextView.LayoutParameters = layout;
-			AddView (SignaturePromptTextView);
+			layout.AddRule (LayoutRules.Above, SignatureLine.Id);
+			SignaturePrompt.LayoutParameters = layout;
+			AddView (SignaturePrompt);
 
 			AddView (canvasView);
 
-			ClearButton = new TextView (context);
-			ClearButton.Id = generateId ();
-			ClearButton.Text = "Clear";
+			ClearLabel = new TextView (context);
+			ClearLabel.Id = generateId ();
+			ClearLabel.Text = "Clear";
 			layout = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.WrapContent, RelativeLayout.LayoutParams.WrapContent);
 			layout.SetMargins (0, 10, 22, 0);
 			layout.AlignWithParent = true;
 			layout.AddRule (LayoutRules.AlignRight);
 			layout.AddRule (LayoutRules.AlignTop);
-			ClearButton.LayoutParameters = layout;
-			ClearButton.Visibility = ViewStates.Invisible;
-			ClearButton.Click += (object sender, EventArgs e) => {
+			ClearLabel.LayoutParameters = layout;
+			ClearLabel.Visibility = ViewStates.Invisible;
+			ClearLabel.Click += (object sender, EventArgs e) => {
 				Clear ();
 			};
-			AddView (ClearButton);
+			AddView (ClearLabel);
 			#endregion
 
 			paths = new List<Path> ();
@@ -317,7 +325,7 @@ namespace SignaturePad {
 			currentPoints = new List<System.Drawing.PointF> ();
 			currentPath = new Path ();
 			imageView.SetImageBitmap (null);
-			ClearButton.Visibility = ViewStates.Invisible;
+			ClearLabel.Visibility = ViewStates.Invisible;
 			GC.Collect ();
 
 			canvasView.Invalidate ();
@@ -567,7 +575,7 @@ namespace SignaturePad {
 			DrawStrokes ();
 
 			//Display the clear button.
-			ClearButton.Visibility = ViewStates.Visible; 
+			ClearLabel.Visibility = ViewStates.Visible; 
 			Invalidate ();
 		}
 
@@ -619,7 +627,7 @@ namespace SignaturePad {
 				currentPoints.Add (touch);
 
 				//Display the clear button
-				ClearButton.Visibility = ViewStates.Visible;
+				ClearLabel.Visibility = ViewStates.Visible;
 				return true;
 			case MotionEventActions.Move:
 				handleTouch (e);

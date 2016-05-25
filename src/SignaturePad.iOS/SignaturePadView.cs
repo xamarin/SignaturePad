@@ -106,20 +106,10 @@ namespace SignaturePad {
 		/// Text value defaults to 'X'.
 		/// </remarks>
 		/// <value>The signature prompt.</value>
-		[Export ("SignaturePrompt"), Browsable(true)]
-		public string SignaturePrompt {
-			get { return SignaturePromptLabel.Text; }
-			set { SignaturePromptLabel.Text = value; }
+		public UILabel SignaturePrompt {
+			get;
+			private set;
 		}
-
-		/// <summary>
-		/// The native label for the signature prompt.
-		/// </summary>
-		/// <remarks>
-		/// Text value defaults to 'X'.
-		/// </remarks>
-		/// <value>The signature prompt.</value>
-		public UILabel SignaturePromptLabel { get; private set; }
 
 		/// <summary>
 		/// The caption displayed under the signature line.
@@ -128,20 +118,10 @@ namespace SignaturePad {
 		/// Text value defaults to 'Sign here.'
 		/// </remarks>
 		/// <value>The caption.</value>
-		[Export ("Caption"), Browsable(true)]
-		public string Caption {
-			get { return CaptionLabel.Text; }
-			set { CaptionLabel.Text = value; }
+		public UILabel Caption {
+			get;
+			private set;
 		}
-
-		/// <summary>
-		/// The native label for the caption.
-		/// </summary>
-		/// <remarks>
-		/// Text value defaults to 'Sign here.'
-		/// </remarks>
-		/// <value>The caption.</value>
-		public UILabel CaptionLabel { get; private set; }
 
 		/// <summary>
 		/// The color of the signature line.
@@ -152,6 +132,13 @@ namespace SignaturePad {
 			get { return SignatureLine.BackgroundColor; }
 			set { SignatureLine.BackgroundColor = value; }
 		}
+
+		/// <summary>
+		///  An image view that may be used as a watermark or as a texture
+		///  for the signature pad.
+		/// </summary>
+		/// <value>The background image view.</value>
+		public UIImageView BackgroundImageView { get; private set; }
 
 		/// <summary>
 		///  An image view that may be used as a watermark or as a texture
@@ -186,33 +173,58 @@ namespace SignaturePad {
 		}
 
 		/// <summary>
-		///  An image view that may be used as a watermark or as a texture
-		///  for the signature pad.
+		/// The text for the prompt displayed at the beginning of the signature line.
 		/// </summary>
-		/// <value>The background image view.</value>
-		public UIImageView BackgroundImageView { get; private set; }
+		/// <remarks>
+		/// Text value defaults to 'X'.
+		/// </remarks>
+		/// <value>The signature prompt.</value>
+		[Export ("SignaturePromptText"), Browsable(true)]
+		public string SignaturePromptText {
+			get { return SignaturePrompt.Text; }
+			set { SignaturePrompt.Text = value; }
+		}
+
+		/// <summary>
+		/// The text for the caption displayed under the signature line.
+		/// </summary>
+		/// <remarks>
+		/// Text value defaults to 'Sign here.'
+		/// </remarks>
+		/// <value>The caption.</value>
+		[Export ("CaptionText"), Browsable(true)]
+		public string CaptionText {
+			get { return Caption.Text; }
+			set { Caption.Text = value; }
+		}
+
+		/// <summary>
+		/// Gets the text for the label that clears the pad when clicked.
+		/// </summary>
+		/// <value>The clear label.</value>
+		[Export ("ClearLabelText"), Browsable(true)]
+		public string ClearLabelText {
+			get { return ClearLabel.Title (UIControlState.Normal); }
+			set { ClearLabel.SetTitle (value, UIControlState.Normal); }
+		}
 
 		/// <summary>
 		/// Gets the label that clears the pad when clicked.
 		/// </summary>
 		/// <value>The clear label.</value>
-		[Export ("ClearLabel"), Browsable(true)]
-		public string ClearLabel {
-			get { return ClearButton.Title (UIControlState.Normal); }
-			set { ClearButton.SetTitle (value, UIControlState.Normal); }
+		public UIButton ClearLabel {
+			get;
+			private set;
 		}
-
-		/// <summary>
-		/// The native button for the clear label.
-		/// </summary>
-		/// <value>The clear label.</value>
-		public UIButton ClearButton { get; private set; }
 
 		/// <summary>
 		/// Gets the horizontal line that goes in the lower part of the pad.
 		/// </summary>
 		/// <value>The signature line.</value>
-		public UIView SignatureLine { get; private set; }
+		public UIView SignatureLine {
+			get;
+			private set;
+		}
 
 		public SignaturePadView ()
 		{
@@ -257,13 +269,13 @@ namespace SignaturePad {
 			imageView = new UIImageView ();
 			AddSubview (imageView);
 
-			CaptionLabel = new UILabel ();
-			CaptionLabel.Text = "Sign here.";
-			CaptionLabel.Font = UIFont.BoldSystemFontOfSize (11f);
-			CaptionLabel.BackgroundColor = UIColor.Clear;
-			CaptionLabel.TextColor = UIColor.Gray;
-			CaptionLabel.TextAlignment = UITextAlignment.Center;
-			AddSubview (CaptionLabel);
+			Caption = new UILabel ();
+			Caption.Text = "Sign here.";
+			Caption.Font = UIFont.BoldSystemFontOfSize (11f);
+			Caption.BackgroundColor = UIColor.Clear;
+			Caption.TextColor = UIColor.Gray;
+			Caption.TextAlignment = UITextAlignment.Center;
+			AddSubview (Caption);
 
 			//Display the base line for the user to sign on.
 			SignatureLine = new UIView ();
@@ -271,26 +283,26 @@ namespace SignaturePad {
 			AddSubview (SignatureLine);
 
 			//Display the X on the left hand side of the line where the user signs.
-			SignaturePromptLabel = new UILabel ();
-			SignaturePromptLabel.Text = "X";
-			SignaturePromptLabel.Font = UIFont.BoldSystemFontOfSize (20f);
-			SignaturePromptLabel.BackgroundColor = UIColor.Clear;
-			SignaturePromptLabel.TextColor = UIColor.Gray;
-			AddSubview (SignaturePromptLabel);
+			SignaturePrompt = new UILabel ();
+			SignaturePrompt.Text = "X";
+			SignaturePrompt.Font = UIFont.BoldSystemFontOfSize (20f);
+			SignaturePrompt.BackgroundColor = UIColor.Clear;
+			SignaturePrompt.TextColor = UIColor.Gray;
+			AddSubview (SignaturePrompt);
 
-			ClearButton = UIButton.FromType (UIButtonType.Custom);
-			ClearButton.SetTitle ("Clear", UIControlState.Normal);
-			ClearButton.Font = UIFont.BoldSystemFontOfSize (11f);
-			ClearButton.BackgroundColor = UIColor.Clear;
-			ClearButton.SetTitleColor (UIColor.Gray, UIControlState.Normal);
+			ClearLabel = UIButton.FromType (UIButtonType.Custom);
+			ClearLabel.SetTitle ("Clear", UIControlState.Normal);
+			ClearLabel.Font = UIFont.BoldSystemFontOfSize (11f);
+			ClearLabel.BackgroundColor = UIColor.Clear;
+			ClearLabel.SetTitleColor (UIColor.Gray, UIControlState.Normal);
 			//btn_clear.SetBackgroundImage (UIImage.FromFile ("Images/closebox.png"), UIControlState.Normal);
 			//btn_clear.SetBackgroundImage (UIImage.FromFile ("Images/closebox_pressed.png"), 
 			//                             UIControlState.Selected);
-			ClearButton.TouchUpInside += (sender, e) => {
+			ClearLabel.TouchUpInside += (sender, e) => {
 				Clear ();
 			};
-			AddSubview (ClearButton);
-			ClearButton.Hidden = true;
+			AddSubview (ClearLabel);
+			ClearLabel.Hidden = true;
 			#endregion
 
 			paths = new List<UIBezierPath> ();
@@ -306,7 +318,7 @@ namespace SignaturePad {
 			points = new List<CGPoint[]> ();
 			currentPoints.Clear ();
 			imageView.Image = null;
-			ClearButton.Hidden = true;
+			ClearLabel.Hidden = true;
 
 			SetNeedsDisplay ();
 		}
@@ -520,7 +532,7 @@ namespace SignaturePad {
 			//Obtain the image for the imported signature and display it in the image view.
 			imageView.Image = GetImage (false);
 			//Display the clear button.
-			ClearButton.Hidden = false;
+			ClearLabel.Hidden = false;
 			SetNeedsDisplay ();
 		}
 
@@ -633,7 +645,7 @@ namespace SignaturePad {
 
 			resetBounds (touchLocation);
 			
-			ClearButton.Hidden = false;
+			ClearLabel.Hidden = false;
 		}
 		
 		public override void TouchesMoved (Foundation.NSSet touches, UIEvent evt)
@@ -687,11 +699,11 @@ namespace SignaturePad {
 			var w = Frame.Width;
 			var h = Frame.Height;
 
-			SignaturePromptLabel.SizeToFit ();
-			ClearButton.SizeToFit ();
+			SignaturePrompt.SizeToFit ();
+			ClearLabel.SizeToFit ();
 
-			var captionHeight = CaptionLabel.SizeThatFits(CaptionLabel.Frame.Size).Height;
-			var clearButtonHeight = (int)ClearButton.Font.LineHeight + 1;
+			var captionHeight = Caption.SizeThatFits(Caption.Frame.Size).Height;
+			var clearButtonHeight = (int)ClearLabel.Font.LineHeight + 1;
 
 			var rect = new CGRect (0, 0, w, h);
 			imageView.Frame = rect;
@@ -699,12 +711,12 @@ namespace SignaturePad {
 
 			var top = h;
 			top = top - ThinPad - captionHeight;
-			CaptionLabel.Frame = new CGRect (ThickPad, top, w - ThickPad - ThickPad, captionHeight);
+			Caption.Frame = new CGRect (ThickPad, top, w - ThickPad - ThickPad, captionHeight);
 			top = top - ThinPad - SignatureLine.Frame.Height;
 			SignatureLine.Frame = new CGRect (ThickPad, top, w - ThickPad - ThickPad, LineHeight);
-			top = top - ThinPad - SignaturePromptLabel.Frame.Height;
-			SignaturePromptLabel.Frame = new CGRect (ThickPad, top, SignaturePromptLabel.Frame.Width, SignaturePromptLabel.Frame.Height);
-			ClearButton.Frame = new CGRect (w - ThickPad - ClearButton.Frame.Width, ThickPad, ClearButton.Frame.Width, clearButtonHeight);
+			top = top - ThinPad - SignaturePrompt.Frame.Height;
+			SignaturePrompt.Frame = new CGRect (ThickPad, top, SignaturePrompt.Frame.Width, SignaturePrompt.Frame.Height);
+			ClearLabel.Frame = new CGRect (w - ThickPad - ClearLabel.Frame.Width, ThickPad, ClearLabel.Frame.Width, clearButtonHeight);
 		}
 	}
 }
