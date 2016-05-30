@@ -8,12 +8,16 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     d:DesignHeight="480" d:DesignWidth="300">
-    
+
     <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
         <Image 
             VerticalAlignment="Stretch"
             HorizontalAlignment="Stretch" 
-            Name="image" />
+            Name="image" Grid.RowSpan="2" />
         <InkPresenter
             Name="inkPresenter"
             VerticalAlignment="Stretch"
@@ -22,25 +26,25 @@
             Opacity="1"
             MouseLeftButtonDown="inkPresenter_OnMouseLeftButtonDown"
             MouseMove="inkPresenter_OnMouseMove"
-            MouseLeftButtonUp="inkPresenter_OnMouseLeftButtonUp" />
+            MouseLeftButtonUp="inkPresenter_OnMouseLeftButtonUp" Grid.RowSpan="2" />
         <TextBlock 
             Text="X" 
             HorizontalAlignment="Left" 
-            Margin="20,0,0,20"
+            FontSize="20" 
+            Margin="20,0,0,0"
             Foreground="Gray"
             Name="textBlock1" 
             VerticalAlignment="Bottom" />
         <Border 
-            BorderBrush="Gray" 
-            BorderThickness="2" 
+            Background="Gray" 
             Height="2"
             HorizontalAlignment="Stretch" 
-            Margin="20,0,20,20" 
+            Margin="20,0,20,0" 
             Name="border1"
             VerticalAlignment="Bottom" />
         <TextBlock 
             Text="Clear" 
-            FontSize="18" 
+            FontSize="11" 
             HorizontalAlignment="Right" 
             Margin="0,20,20,0" 
             Name="btnClear"
@@ -48,5 +52,14 @@
             VerticalAlignment="Top" 
             Visibility="Collapsed"
             MouseLeftButtonUp="btnClear_Click" />
+        <TextBlock 
+            Text="Sign here." 
+            TextAlignment="Center" 
+            FontSize="11" 
+            Margin="3,3,3,3" 
+            Name="captionLabel"
+            Foreground="Gray"
+            VerticalAlignment="Bottom" 
+            MouseLeftButtonUp="btnClear_Click" Grid.Row="1" />
     </Grid>
 </UserControl>

@@ -30,7 +30,7 @@ namespace Xamarin.Controls
 		List<Point> currentPoints;
 		List<Point []> points;
 
-		//Create an array containing all of the points used to draw the signature.  Uses (-10000, -10000)
+		//Create an array containing all of the points used to draw the signature.  Uses (0, 0)
 		//to indicate a new line.
 		public Point [] Points
 		{
@@ -42,7 +42,7 @@ namespace Xamarin.Controls
 				IEnumerable<Point> pointsList = points[0];
 
 				for (var i = 1; i < points.Count; i++) {
-					pointsList = pointsList.Concat (new [] { new Point (-10000, -10000) });
+					pointsList = pointsList.Concat (new [] { new Point (0, 0) });
 					pointsList = pointsList.Concat (points [i]);
 				}
 
@@ -63,8 +63,8 @@ namespace Xamarin.Controls
 				strokeColor = value;
 				if (currentStroke != null)
 					currentStroke.DrawingAttributes.Color = strokeColor;
-				foreach (var stroke in inkPresenter.Strokes)
-					stroke.DrawingAttributes.Color = strokeColor;
+				if (!IsBlank)
+					image.Source = GetImage (false);
 			}
 		}
 
@@ -79,7 +79,7 @@ namespace Xamarin.Controls
 		}
 
 		float lineWidth;
-		public float LineWidth
+		public float StrokeWidth
 		{
 			get { return lineWidth; }
 			set { 
@@ -88,11 +88,53 @@ namespace Xamarin.Controls
 					currentStroke.DrawingAttributes.Height = lineWidth;
 					currentStroke.DrawingAttributes.Width = lineWidth;
 				}
-				foreach (var stroke in inkPresenter.Strokes) {
-					stroke.DrawingAttributes.Height = lineWidth;
-					stroke.DrawingAttributes.Width = lineWidth;
-				}
+				if (!IsBlank)
+					image.Source = GetImage (false);
 			}
+		}
+
+		public TextBlock Caption
+		{
+			get { return captionLabel; }
+		}
+
+		public string CaptionText
+		{
+			get { return captionLabel.Text; }
+			set { captionLabel.Text = value; }
+		}
+
+		public TextBlock ClearLabel
+		{
+			get { return btnClear; }
+		}
+
+		public string ClearLabelText
+		{
+			get { return btnClear.Text; }
+			set { btnClear.Text = value; }
+		}
+
+		public TextBlock SignaturePrompt
+		{
+			get { return textBlock1; }
+		}
+
+		public string SignaturePromptText
+		{
+			get { return textBlock1.Text; }
+			set { textBlock1.Text = value; }
+		}
+
+		public Border SignatureLine
+		{
+			get { return border1; }
+		}
+
+		public Brush SignatureLineBrush
+		{
+			get { return border1.Background; }
+			set { border1.Background = value; }
 		}
 
 		public SignaturePad ()
@@ -304,9 +346,15 @@ namespace Xamarin.Controls
 
                     tempStroke = new Stroke(newCollection);
                 }
+                else
+                {
+                    tempStroke.StylusPoints = stroke.StylusPoints;
+                }
                 
 				tempStroke.DrawingAttributes.Color = strokeColor;
-				presenter.Strokes.Add (shouldCrop ? tempStroke : stroke);
+				tempStroke.DrawingAttributes.Width = lineWidth;
+				tempStroke.DrawingAttributes.Height = lineWidth;
+				presenter.Strokes.Add (tempStroke);
                 tempStroke = null;
 			}
 
@@ -328,10 +376,10 @@ namespace Xamarin.Controls
 
 		Rect getCroppedRectangle(Point [] cachedPoints)
 		{
-			var xMin = cachedPoints.Where (point => point != new Point (-10000, -10000)).Min (point => point.X) - LineWidth / 2;
-			var xMax = cachedPoints.Where (point => point != new Point (-10000, -10000)).Max (point => point.X) + LineWidth / 2;
-			var yMin = cachedPoints.Where (point => point != new Point (-10000, -10000)).Min (point => point.Y) - LineWidth / 2;
-			var yMax = cachedPoints.Where (point => point != new Point (-10000, -10000)).Max (point => point.Y) + LineWidth / 2;
+			var xMin = cachedPoints.Where (point => point != new Point (0, 0)).Min (point => point.X) - StrokeWidth / 2;
+			var xMax = cachedPoints.Where (point => point != new Point (0, 0)).Max (point => point.X) + StrokeWidth / 2;
+			var yMin = cachedPoints.Where (point => point != new Point (0, 0)).Min (point => point.Y) - StrokeWidth / 2;
+			var yMax = cachedPoints.Where (point => point != new Point (0, 0)).Max (point => point.Y) + StrokeWidth / 2;
 
 			xMin = Math.Max (xMin, 0);
 			xMax = Math.Min (xMax, ActualWidth);
@@ -499,7 +547,7 @@ namespace Xamarin.Controls
 				return;
 
 			var startIndex = 0;
-			var emptyIndex = loadedPoints.ToList ().IndexOf (new Point (-10000, -10000));
+			var emptyIndex = loadedPoints.ToList ().IndexOf (new Point (0, 0));
 
 			if (emptyIndex == -1)
 				emptyIndex = loadedPoints.Count ();
@@ -536,7 +584,7 @@ namespace Xamarin.Controls
 				//Obtain the indices for the next line to be drawn.
 				startIndex = emptyIndex + 1;
 				if (startIndex < loadedPoints.Count () - 1) {
-					emptyIndex = loadedPoints.ToList ().IndexOf (new Point (-10000, -10000), startIndex);
+					emptyIndex = loadedPoints.ToList ().IndexOf (new Point (0, 0), startIndex);
 
 					if (emptyIndex == -1)
 						emptyIndex = loadedPoints.Count ();
