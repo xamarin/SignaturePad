@@ -182,7 +182,10 @@ namespace SignaturePad {
 		[Export ("SignaturePromptText"), Browsable(true)]
 		public string SignaturePromptText {
 			get { return SignaturePrompt.Text; }
-			set { SignaturePrompt.Text = value; }
+			set {
+				SignaturePrompt.Text = value;
+				SetNeedsLayout ();
+			}
 		}
 
 		/// <summary>
@@ -205,7 +208,10 @@ namespace SignaturePad {
 		[Export ("ClearLabelText"), Browsable(true)]
 		public string ClearLabelText {
 			get { return ClearLabel.Title (UIControlState.Normal); }
-			set { ClearLabel.SetTitle (value, UIControlState.Normal); }
+			set {
+				ClearLabel.SetTitle (value, UIControlState.Normal);
+				SetNeedsLayout ();
+			}
 		}
 
 		/// <summary>
