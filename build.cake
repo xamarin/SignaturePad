@@ -43,6 +43,8 @@ Task("Clean")
         "./samples/*/packages",
         "./samples/*/bin",
         "./samples/*/obj",
+        "./samples/*/*/bin",
+        "./samples/*/*/obj",
     };
     foreach (var dir in dirs) {
         Information("Cleaning {0}...", dir);
@@ -58,6 +60,7 @@ Task("RestorePackages")
         "./samples/Sample.Android/Sample.Android.sln",
         "./samples/Sample.iOS/Sample.iOS.sln",
         "./samples/Sample.WP8/Sample.WP8.sln",
+        "./samples/Sample.Forms/Sample.Forms.sln",
     };
     foreach (var solution in solutions) {
         Information("Restoring {0}...", solution);
@@ -73,8 +76,8 @@ Task("Build")
     .Does(() =>
 {
     // replace version numbers
-    ReplaceTextInFiles("./src/SignaturePad/Properties/AssemblyInfo.cs", "{revision}", buildNumber);
-    ReplaceTextInFiles("./src/SignaturePad/Properties/AssemblyInfo.cs", "{sha}", buildSha);
+    ReplaceTextInFiles("./src/SignaturePad/Properties/AssemblyInfo.Common.cs", "{revision}", buildNumber);
+    ReplaceTextInFiles("./src/SignaturePad/Properties/AssemblyInfo.Common.cs", "{sha}", buildSha);
     
     // build
     Build("./src/SignaturePad.sln");
@@ -86,6 +89,11 @@ Task("Build")
         { "./src/SignaturePad.iOS/bin/classic/{0}/SignaturePad.dll", "ios/SignaturePad.dll" },
         { "./src/SignaturePad.iOS/bin/unified/{0}/SignaturePad.dll", "ios-unified/SignaturePad.dll" },
         { "./src/SignaturePad.WP8/bin/{0}/SignaturePad.dll", "wp8/SignaturePad.dll" },
+        
+        { "./src/SignaturePad.Forms/bin/{0}/SignaturePad.Forms.dll", "pcl/SignaturePad.Forms.dll" },
+        { "./src/SignaturePad.Forms.Droid/bin/{0}/SignaturePad.Forms.Droid.dll", "android/SignaturePad.Forms.Droid.dll" },
+        { "./src/SignaturePad.Forms.iOS/bin/{0}/SignaturePad.Forms.iOS.dll", "ios-unified/SignaturePad.Forms.iOS.dll" },
+        { "./src/SignaturePad.Forms.WindowsPhone/bin/{0}/SignaturePad.Forms.WindowsPhone.dll", "wp8/SignaturePad.Forms.WindowsPhone.dll" },
     };
     foreach (var output in outputs) {
         var dest = outDir.CombineWithFilePath(string.Format(output.Value, configuration));
@@ -120,11 +128,17 @@ Task("Package")
 {
     // replace version numbers
     ReplaceTextInFiles("./nuget/Xamarin.Controls.SignaturePad.nuspec", "{revision}", buildNumber);
+    ReplaceTextInFiles("./nuget/Xamarin.Controls.SignaturePad.Forms.nuspec", "{revision}", buildNumber);
     ReplaceTextInFiles("./component/component.yaml", "{revision}", buildNumber);
     
     // NuGet
     Information("Packing NuGet...");
     NuGetPack("./nuget/Xamarin.Controls.SignaturePad.nuspec", new NuGetPackSettings {
+        OutputDirectory = outDir,
+        Verbosity = NuGetVerbosity.Detailed,
+        BasePath = IsRunningOnUnix() ? "././" : "./",
+    });
+    NuGetPack("./nuget/Xamarin.Controls.SignaturePad.Forms.nuspec", new NuGetPackSettings {
         OutputDirectory = outDir,
         Verbosity = NuGetVerbosity.Detailed,
         BasePath = IsRunningOnUnix() ? "././" : "./",
