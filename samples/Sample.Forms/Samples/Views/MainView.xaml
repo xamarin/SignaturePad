@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Samples.ViewModels;assembly=Samples"
+             x:Class="Samples.Views.MainView"
+             Title="Signature Pad" Padding="10,10,10,5"
+             BindingContext="{StaticResource ViewModel}">
+
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <local:MainViewModel x:Key="ViewModel" />
+    </ResourceDictionary>
+  </ContentPage.Resources>
+
+  <ScrollView>
+    <StackLayout Spacing="6">
+      <Button Text="Data Binding" HorizontalOptions="FillAndExpand"
+              FontSize="Large" Command="{Binding DataBindingCommand}"/>
+      <Button Text="XAML Code-Behind" HorizontalOptions="FillAndExpand"
+              FontSize="Large" Command="{Binding XamlCodeBehindCommand}"/>
+    </StackLayout>
+  </ScrollView>
+
+</ContentPage>

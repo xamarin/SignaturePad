@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Samples.ViewModels;assembly=Samples"
+             xmlns:converters="clr-namespace:Samples.Converters;assembly=Samples"
+             xmlns:signature="clr-namespace:SignaturePad.Forms;assembly=SignaturePad.Forms"
+             x:Class="Samples.Views.SignaturePadConfigView"
+             Title="Data Binding" Padding="10,10,10,5"
+             BindingContext="{StaticResource ViewModel}">
+
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <local:SignaturePadConfigViewModel x:Key="ViewModel" />
+      <converters:NotValueConverter x:Key="NotConverter" />
+    </ResourceDictionary>
+  </ContentPage.Resources>
+
+  <ContentPage.ToolbarItems>
+    <ToolbarItem Name="Configure" Command="{Binding ConfigureCommand}" Order="Primary" Priority="0" />
+  </ContentPage.ToolbarItems>
+
+  <StackLayout>
+
+    <signature:SignaturePadView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                HeightRequest="150"
+                                CaptionText="{Binding CaptionText}"
+                                CaptionTextColor="{Binding CaptionTextColor}"
+                                ClearText="{Binding ClearText}"
+                                ClearTextColor="{Binding ClearTextColor}"
+                                PromptText="{Binding PromptText}"
+                                PromptTextColor="{Binding PromptTextColor}"
+                                BackgroundColor="{Binding SignaturePadBackground}"
+                                SignatureLineColor="{Binding SignatureLineColor}"
+                                StrokeWidth="{Binding StrokeWidth}"
+                                StrokeColor="{Binding StrokeColor}" />
+
+    <ScrollView IsVisible="{Binding IsConfiguring}">
+      <StackLayout>
+
+        <Label Text="Caption Text:" />
+        <Entry Text="{Binding CaptionText}" />
+
+        <Label Text="Clear Text:" />
+        <Entry Text="{Binding ClearText}" />
+
+        <Label Text="Prompt Text:" />
+        <Entry Text="{Binding PromptText}" />
+
+        <Label Text="Caption Text Color:" />
+        <Picker x:Name="captionTextColorPicker" Title="Select..." SelectedIndex="{Binding CaptionTextColorIndex}" />
+
+        <Label Text="Clear Text Color:" />
+        <Picker x:Name="clearTextColorPicker" Title="Select..." SelectedIndex="{Binding ClearTextColorIndex}" />
+
+        <Label Text="Prompt Text Color:" />
+        <Picker x:Name="promptTextColorPicker" Title="Select..." SelectedIndex="{Binding PromptTextColorIndex}" />
+
+        <Label Text="Background Color:" />
+        <Picker x:Name="backgroundColorPicker" Title="Select..." SelectedIndex="{Binding SignaturePadBackgroundIndex}" />
+
+        <Label Text="Signature Line Color:" />
+        <Picker x:Name="signatureLineColorPicker" Title="Select..." SelectedIndex="{Binding SignatureLineColorIndex}" />
+
+        <Label Text="Stroke Color:" />
+        <Picker x:Name="strokeColorPicker" Title="Select..." SelectedIndex="{Binding StrokeColorIndex}" />
+
+        <Label Text="Stroke Width:" />
+        <StackLayout Orientation="Horizontal">
+          <Stepper Minimum="0" Maximum="100" Increment="1" Value="{Binding StrokeWidth}" />
+          <Label Text="{Binding StrokeWidth}" />
+        </StackLayout>
+
+      </StackLayout>
+    </ScrollView>
+
+  </StackLayout>
+
+</ContentPage>
