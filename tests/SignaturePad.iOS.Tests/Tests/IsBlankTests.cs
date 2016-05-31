@@ -1,15 +1,8 @@
 using System;
-using NUnit.Framework;
 using System.Drawing;
-
-using SignaturePad;
-
-#if __UNIFIED__
 using CoreGraphics;
-#else
-using MonoTouch.CoreGraphics;
-using CGPoint = global::System.Drawing.PointF;
-#endif
+using NUnit.Framework;
+using SignaturePad;
 
 namespace SignaturePadTests {
 	[TestFixture]

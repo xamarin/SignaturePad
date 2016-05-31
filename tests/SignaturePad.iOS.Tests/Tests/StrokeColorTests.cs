@@ -1,12 +1,6 @@
 using System;
-using NUnit.Framework;
-
-#if __UNIFIED__
 using UIKit;
-#else
-using MonoTouch.UIKit;
-#endif
-
+using NUnit.Framework;
 using SignaturePad;
 
 namespace SignaturePadTests {

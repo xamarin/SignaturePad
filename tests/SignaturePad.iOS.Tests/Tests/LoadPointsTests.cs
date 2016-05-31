@@ -1,16 +1,9 @@
 using System;
-using System.Linq;
-using NUnit.Framework;
 using System.Drawing;
-
-#if __UNIFIED__
-using UIKit;
+using System.Linq;
 using CoreGraphics;
-#else
-using MonoTouch.UIKit;
-using CGPoint = global::System.Drawing.PointF;
-#endif
-
+using UIKit;
+using NUnit.Framework;
 using SignaturePad;
 
 namespace SignaturePadTests {
