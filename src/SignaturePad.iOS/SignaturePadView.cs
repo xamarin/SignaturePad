@@ -11,32 +11,11 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
-
-#if __UNIFIED__
 using UIKit;
 using Foundation;
 using CoreGraphics;
 using OpenGLES;
 using CoreImage;
-
-#else
-using System.Drawing;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
-using MonoTouch.CoreGraphics;
-using MonoTouch.OpenGLES;
-using MonoTouch.CoreImage;
-using Foundation = MonoTouch.Foundation;
-
-// Type Mappings Unified to monotouch.dll
-using CGRect = global::System.Drawing.RectangleF;
-using CGSize = global::System.Drawing.SizeF;
-using CGPoint = global::System.Drawing.PointF;
-
-using nfloat = global::System.Single;
-using nint = global::System.Int32;
-using nuint = global::System.UInt32;
-#endif
 
 namespace SignaturePad {
 	[Register("SignaturePadView")]
@@ -239,7 +218,7 @@ namespace SignaturePad {
 
 		public SignaturePadView (NSCoder coder) : base (coder)
 		{
-            Initialize(/* ? baseProperties: false ? */);
+			Initialize(/* ? baseProperties: false ? */);
 		}
 
 		public SignaturePadView (IntPtr ptr) : base (ptr)
@@ -255,9 +234,9 @@ namespace SignaturePad {
 
 		void Initialize (bool baseProperties = true)
 		{
-            if (baseProperties) {
-			    BackgroundColor = UIColor.FromRGB(225, 225, 225);
-            }
+			if (baseProperties) {
+				BackgroundColor = UIColor.FromRGB(225, 225, 225);
+			}
 			strokeColor = UIColor.Black;
 			StrokeWidth = 2f;
 
