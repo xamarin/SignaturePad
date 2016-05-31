@@ -23,12 +23,10 @@ no_build: true
 local-nuget-repo: ../output/  
 libraries:
   android: ../output/android/SignaturePad.dll
-  ios: ../output/ios/SignaturePad.dll
   ios-unified: ../output/ios-unified/SignaturePad.dll
   wp8: ../output/wp8/SignaturePad.dll
 packages:
   android: Xamarin.Controls.SignaturePad, Version=1.3.8
-  ios: Xamarin.Controls.SignaturePad, Version=1.3.8
   ios-unified: Xamarin.Controls.SignaturePad, Version=1.3.8
   wp8: Xamarin.Controls.SignaturePad, Version=1.3.8
 

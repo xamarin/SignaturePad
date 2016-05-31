@@ -86,7 +86,6 @@ Task("Build")
     var outputs = new Dictionary<string, string>
     {
         { "./src/SignaturePad.Android/bin/{0}/SignaturePad.dll", "android/SignaturePad.dll" },
-        { "./src/SignaturePad.iOS/bin/classic/{0}/SignaturePad.dll", "ios/SignaturePad.dll" },
         { "./src/SignaturePad.iOS/bin/unified/{0}/SignaturePad.dll", "ios-unified/SignaturePad.dll" },
         { "./src/SignaturePad.WP8/bin/{0}/SignaturePad.dll", "wp8/SignaturePad.dll" },
         
