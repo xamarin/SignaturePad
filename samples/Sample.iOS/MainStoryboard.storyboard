@@ -87,12 +87,37 @@
                         <outlet property="imageView" destination="29" id="name-outlet-29"/>
                         <outlet property="signaturePad" destination="8" id="name-outlet-8"/>
                         <outlet property="separator" destination="38" id="name-outlet-38"/>
+                        <outlet property="useCode" destination="246" id="name-outlet-246"/>
                     </connections>
-                    <navigationItem key="navigationItem" title="Signature Pad" id="11"/>
+                    <navigationItem key="navigationItem" title="Signature Pad" id="11">
+                        <barButtonItem key="rightBarButtonItem" title="Code Construction" id="246">
+                            <accessibilityConfiguration key="accessibilityConfiguration"/>
+                            <connections>
+                                <segue id="454" destination="250" kind="show"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="53" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-115" y="60"/>
+        </scene>
+        <scene sceneID="249">
+            <objects>
+                <viewController id="250" sceneMemberID="viewController" customClass="CodeBehindViewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="247"/>
+                        <viewControllerLayoutGuide type="bottom" id="248"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="251">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="252" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="579" y="57"/>
         </scene>
     </scenes>
     <resources>

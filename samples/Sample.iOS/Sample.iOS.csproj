@@ -155,6 +155,10 @@
     <InterfaceDefinition Include="MainStoryboard.storyboard" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeBehindViewController.cs" />
+    <Compile Include="CodeBehindViewController.designer.cs">
+      <DependentUpon>CodeBehindViewController.cs</DependentUpon>
+    </Compile>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="SampleViewController.cs" />

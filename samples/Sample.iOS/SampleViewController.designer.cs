@@ -34,6 +34,10 @@ namespace Sample.iOS
         [GeneratedCode ("iOS Designer", "1.0")]
         SignaturePad.SignaturePadView signaturePad { get; set; }
 
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIBarButtonItem useCode { get; set; }
+
         void ReleaseDesignerOutlets ()
         {
             if (imageView != null) {
@@ -59,6 +63,11 @@ namespace Sample.iOS
             if (signaturePad != null) {
                 signaturePad.Dispose ();
                 signaturePad = null;
+            }
+
+            if (useCode != null) {
+                useCode.Dispose ();
+                useCode = null;
             }
         }
     }
