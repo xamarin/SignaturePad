@@ -80,20 +80,26 @@ Task("Build")
     ReplaceTextInFiles("./src/SignaturePad/Properties/AssemblyInfo.Common.cs", "{sha}", buildSha);
     
     // build
-    Build("./src/SignaturePad.sln");
+    if (IsRunningOnWindows()) {
+        Build("./src/SignaturePad.sln");
+    } else {
+        Build("./src/SignaturePad.Mac.sln");
+    }
     
     // copy outputs
     var outputs = new Dictionary<string, string>
     {
         { "./src/SignaturePad.Android/bin/{0}/SignaturePad.dll", "android/SignaturePad.dll" },
         { "./src/SignaturePad.iOS/bin/unified/{0}/SignaturePad.dll", "ios-unified/SignaturePad.dll" },
-        { "./src/SignaturePad.WP8/bin/{0}/SignaturePad.dll", "wp8/SignaturePad.dll" },
         
         { "./src/SignaturePad.Forms/bin/{0}/SignaturePad.Forms.dll", "pcl/SignaturePad.Forms.dll" },
         { "./src/SignaturePad.Forms.Droid/bin/{0}/SignaturePad.Forms.Droid.dll", "android/SignaturePad.Forms.Droid.dll" },
         { "./src/SignaturePad.Forms.iOS/bin/{0}/SignaturePad.Forms.iOS.dll", "ios-unified/SignaturePad.Forms.iOS.dll" },
-        { "./src/SignaturePad.Forms.WindowsPhone/bin/{0}/SignaturePad.Forms.WindowsPhone.dll", "wp8/SignaturePad.Forms.WindowsPhone.dll" },
     };
+    if (IsRunningOnWindows()) {
+        outputs.Add ("./src/SignaturePad.WP8/bin/{0}/SignaturePad.dll", "wp8/SignaturePad.dll");
+        outputs.Add ("./src/SignaturePad.Forms.WindowsPhone/bin/{0}/SignaturePad.Forms.WindowsPhone.dll", "wp8/SignaturePad.Forms.WindowsPhone.dll");
+    }
     foreach (var output in outputs) {
         var dest = outDir.CombineWithFilePath(string.Format(output.Value, configuration));
         var dir = dest.GetDirectory();
@@ -123,6 +129,7 @@ Task("Samples")
 
 Task("Package")
     .IsDependentOn("Build")
+    .WithCriteria(IsRunningOnWindows())
     .Does(() =>
 {
     // replace version numbers
