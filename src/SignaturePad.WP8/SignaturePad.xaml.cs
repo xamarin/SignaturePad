@@ -1,6 +1,6 @@
 ﻿//
 // SignaturePad.cs: User Control subclass for Windows Phone to allow users to draw their signature on 
-//                   the device to be captured as an image or vector.
+//				   the device to be captured as an image or vector.
 //
 // Author:
 //   Timothy Risi (timothy.risi@gmail.com)
@@ -180,104 +180,58 @@ namespace Xamarin.Controls
 		//Create a WriteableBitmap of the currently drawn signature with default colors.
 		public WriteableBitmap GetImage (bool shouldCrop = true, bool keepAspectRatio = true)
 		{
-			return GetImage (strokeColor, 
-				         Colors.Transparent, 
-					 RenderSize,
-					 1, 
-					 shouldCrop,
-                     keepAspectRatio);
+			return GetImage (strokeColor, Colors.Transparent, RenderSize, 1, shouldCrop, keepAspectRatio);
 		}
 
-        public WriteableBitmap GetImage (Size size, bool shouldCrop = true, bool keepAspectRatio = true)
+		public WriteableBitmap GetImage (Size size, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
-			return GetImage (strokeColor, 
-			                 Colors.Transparent, 
-					 size, 
-			                 getScaleFromSize (size, RenderSize),
-                     shouldCrop,
-                     keepAspectRatio);
+			return GetImage (strokeColor, Colors.Transparent, size, getScaleFromSize (size, RenderSize), shouldCrop, keepAspectRatio);
 		}
 
-        public WriteableBitmap GetImage (float scale, bool shouldCrop = true, bool keepAspectRatio = true)
+		public WriteableBitmap GetImage (float scale, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
-			return GetImage (strokeColor,
-			                 Colors.Transparent, 
-					 getSizeFromScale (scale, RenderSize), 
-					 scale,
-                     shouldCrop,
-                     keepAspectRatio);
+			return GetImage (strokeColor, Colors.Transparent, getSizeFromScale (scale, RenderSize), scale, shouldCrop, keepAspectRatio);
 		}
 
 		//Create a WriteableBitmap of the currently drawn signature with the specified Stroke color.
-        public WriteableBitmap GetImage (Color strokeColor, bool shouldCrop = true, bool keepAspectRatio = true)
+		public WriteableBitmap GetImage (Color strokeColor, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
-			return GetImage (strokeColor, 
-			                 Colors.Transparent,
-					 RenderSize,
-					 1,
-                     shouldCrop,
-                     keepAspectRatio);
+			return GetImage (strokeColor, Colors.Transparent, RenderSize, 1, shouldCrop, keepAspectRatio);
 		}
 
 		public WriteableBitmap GetImage (Color strokeColor, Size size, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
-			return GetImage (strokeColor, 
-			                 Colors.Transparent, 
-					 size, 
-					 getScaleFromSize (size, RenderSize),
-                     shouldCrop,
-                     keepAspectRatio);
+			return GetImage (strokeColor, Colors.Transparent, size, getScaleFromSize (size, RenderSize), shouldCrop, keepAspectRatio);
 		}
 
 		public WriteableBitmap GetImage (Color strokeColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
-			return GetImage (strokeColor, 
-			                 Colors.Transparent, 
-					 getSizeFromScale (scale, RenderSize), 
-					 scale,
-                     shouldCrop,
-                     keepAspectRatio);
+			return GetImage (strokeColor, Colors.Transparent, getSizeFromScale (scale, RenderSize), scale, shouldCrop, keepAspectRatio);
 		}
 
 		//Create a WriteableBitmap of the currently drawn signature with the specified Stroke and Fill colors.
 		public WriteableBitmap GetImage (Color strokeColor, Color fillColor, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
-			return GetImage (strokeColor, 
-			                 fillColor,
-			                 RenderSize,
-					 1,
-                     shouldCrop,
-                     keepAspectRatio);
+			return GetImage (strokeColor, fillColor, RenderSize, 1, shouldCrop, keepAspectRatio);
 		}
 
 		public WriteableBitmap GetImage (Color strokeColor, Color fillColor, Size size, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
-			return GetImage (strokeColor, 
-			                 fillColor, 
-					 size, 
-					 getScaleFromSize (size, RenderSize),
-                     shouldCrop,
-                     keepAspectRatio);
+			return GetImage (strokeColor, fillColor, size, getScaleFromSize (size, RenderSize), shouldCrop, keepAspectRatio);
 		}
 
 		public WriteableBitmap GetImage (Color strokeColor, Color fillColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
-			return GetImage (strokeColor,
-			                 fillColor, 
-					 getSizeFromScale (scale, RenderSize), 
-					 scale,
-                     shouldCrop,
-                     keepAspectRatio);
+			return GetImage (strokeColor, fillColor, getSizeFromScale (scale, RenderSize), scale, shouldCrop, keepAspectRatio);
 		}
 
 		WriteableBitmap GetImage (Color strokeColor, Color fillColor, Size size, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
-			if (size.Width == 0 || size.Height == 0 || scale <= 0 || strokeColor == null ||
-			    fillColor == null)
+			if (size.Width == 0 || size.Height == 0 || scale <= 0 || strokeColor == null || fillColor == null)
 				return null;
 
 			float uncroppedScale;
-            Rect croppedRectangle = new Rect();
+			Rect croppedRectangle = new Rect();
 
 			Point [] cachedPoints;
 
@@ -285,20 +239,20 @@ namespace Xamarin.Controls
 			
 				croppedRectangle = getCroppedRectangle (cachedPoints);
 
-                if (croppedRectangle.X >= 5)
-                {
-                    croppedRectangle.X -= 5;
-                    croppedRectangle.Width += 5;
-                }
-                if (croppedRectangle.Y >= 5)
-                {
-                    croppedRectangle.Y -= 5;
-                    croppedRectangle.Height += 5;
-                }
-                if (croppedRectangle.X + croppedRectangle.Width <= size.Width - 5)
-                    croppedRectangle.Width += 5;
-                if (croppedRectangle.Y + croppedRectangle.Height <= size.Height - 5)
-                    croppedRectangle.Height += 5;
+				if (croppedRectangle.X >= 5)
+				{
+					croppedRectangle.X -= 5;
+					croppedRectangle.Width += 5;
+				}
+				if (croppedRectangle.Y >= 5)
+				{
+					croppedRectangle.Y -= 5;
+					croppedRectangle.Height += 5;
+				}
+				if (croppedRectangle.X + croppedRectangle.Width <= size.Width - 5)
+					croppedRectangle.Width += 5;
+				if (croppedRectangle.Y + croppedRectangle.Height <= size.Height - 5)
+					croppedRectangle.Height += 5;
 
 				double scaleX = croppedRectangle.Width / size.Width;
 				double scaleY = croppedRectangle.Height / size.Height;
@@ -307,58 +261,58 @@ namespace Xamarin.Controls
 				uncroppedScale = scale;
 			}
 
-            InkPresenter presenter;
+			InkPresenter presenter;
 
-            if (shouldCrop)
-            {
-                presenter = new InkPresenter()
-                {
-                    Width = keepAspectRatio ? size.Width / uncroppedScale : croppedRectangle.Width,
-                    Height = keepAspectRatio ? size.Height / uncroppedScale : croppedRectangle.Height,
-                    Strokes = new StrokeCollection(),
-                    Background = new SolidColorBrush(fillColor)
-                };
-            }
-            else
-            {
-                presenter = new InkPresenter()
-                {
-                    Width = size.Width,
-                    Height = size.Height,
-                    Strokes = new StrokeCollection(),
-                    Background = new SolidColorBrush(fillColor)
-                };
-            }
+			if (shouldCrop)
+			{
+				presenter = new InkPresenter()
+				{
+					Width = keepAspectRatio ? size.Width / uncroppedScale : croppedRectangle.Width,
+					Height = keepAspectRatio ? size.Height / uncroppedScale : croppedRectangle.Height,
+					Strokes = new StrokeCollection(),
+					Background = new SolidColorBrush(fillColor)
+				};
+			}
+			else
+			{
+				presenter = new InkPresenter()
+				{
+					Width = size.Width,
+					Height = size.Height,
+					Strokes = new StrokeCollection(),
+					Background = new SolidColorBrush(fillColor)
+				};
+			}
 
 			foreach (Stroke stroke in strokes) {
-                var collection = new StylusPointCollection();
+				var collection = new StylusPointCollection();
 
-                var tempStroke = new Stroke ();
-               
-                if (shouldCrop)
-                {
-                    var newCollection = new StylusPointCollection ();
-                    foreach (var point in stroke.StylusPoints)
-                    {
-                        var newPoint = new StylusPoint { X = point.X - croppedRectangle.X, Y = point.Y - croppedRectangle.Y };
-                        newCollection.Add(newPoint);
-                    }
+				var tempStroke = new Stroke ();
+			   
+				if (shouldCrop)
+				{
+					var newCollection = new StylusPointCollection ();
+					foreach (var point in stroke.StylusPoints)
+					{
+						var newPoint = new StylusPoint { X = point.X - croppedRectangle.X, Y = point.Y - croppedRectangle.Y };
+						newCollection.Add(newPoint);
+					}
 
-                    tempStroke = new Stroke(newCollection);
-                }
-                else
-                {
-                    tempStroke.StylusPoints = stroke.StylusPoints;
-                }
-                
+					tempStroke = new Stroke(newCollection);
+				}
+				else
+				{
+					tempStroke.StylusPoints = stroke.StylusPoints;
+				}
+				
 				tempStroke.DrawingAttributes.Color = strokeColor;
 				tempStroke.DrawingAttributes.Width = lineWidth;
 				tempStroke.DrawingAttributes.Height = lineWidth;
 				presenter.Strokes.Add (tempStroke);
-                tempStroke = null;
+				tempStroke = null;
 			}
 
-            WriteableBitmap bitmap = new WriteableBitmap(presenter, new ScaleTransform() { ScaleX = uncroppedScale, ScaleY = uncroppedScale });
+			WriteableBitmap bitmap = new WriteableBitmap(presenter, new ScaleTransform() { ScaleX = uncroppedScale, ScaleY = uncroppedScale });
 
 			return bitmap;
 		}
@@ -367,8 +321,7 @@ namespace Xamarin.Controls
 		WriteableBitmap crop (WriteableBitmap input, Rect croppedRectangle)
 		{
 			Image tempImage = new Image { Source = input, Width = input.PixelWidth, Height = input.PixelHeight };
-			WriteableBitmap cropped = new WriteableBitmap ((int) croppedRectangle.Width,
-			                                               (int) croppedRectangle.Height);
+			WriteableBitmap cropped = new WriteableBitmap ((int) croppedRectangle.Width, (int) croppedRectangle.Height);
 			cropped.Render (tempImage, new TranslateTransform { X = -croppedRectangle.X, Y = -croppedRectangle.Y });
 			cropped.Invalidate ();
 			return cropped;
@@ -517,7 +470,7 @@ namespace Xamarin.Controls
 
 			// Only add the point to the stroke if it is on the current view.
 			if (currentStroke != null && point.X >= 0 && point.Y >= 0 && point.X <= ActualWidth && 
-			    point.Y <= ActualHeight) {
+				point.Y <= ActualHeight) {
 				currentPoints.Add (point);	
 				currentStroke.StylusPoints.Add (GetPoint (point));
 			}

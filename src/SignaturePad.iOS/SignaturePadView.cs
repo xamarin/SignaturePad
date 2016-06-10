@@ -19,7 +19,7 @@ using CoreImage;
 
 namespace SignaturePad {
 	[Register("SignaturePadView")]
-    [DesignTimeVisible(true)]
+	[DesignTimeVisible(true)]
 	public class SignaturePadView : UIView {
 		const int ThinPad = 3;
 		const int ThickPad = 10;
@@ -364,8 +364,7 @@ namespace SignaturePad {
 
 		UIImage GetImage (UIColor strokeColor, UIColor fillColor, CGSize size, nfloat scale, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
-			if (size.Width == 0 || size.Height == 0 || scale <= 0 || strokeColor == null ||
-			    fillColor == null)
+			if (size.Width == 0 || size.Height == 0 || scale <= 0 || strokeColor == null || fillColor == null)
 				return null;
 
 			nfloat uncroppedScale;
@@ -386,9 +385,9 @@ namespace SignaturePad {
 					croppedRectangle.Height += 5;
 				}
 				if (croppedRectangle.X + croppedRectangle.Width <= size.Width - 5)
-               		croppedRectangle.Width += 5;
+					croppedRectangle.Width += 5;
 				if (croppedRectangle.Y + croppedRectangle.Height <= size.Height - 5)
-               		croppedRectangle.Height += 5;
+					croppedRectangle.Height += 5;
 
 				nfloat scaleX = croppedRectangle.Width / Bounds.Width;
 				nfloat scaleY = croppedRectangle.Height / Bounds.Height;
@@ -643,9 +642,7 @@ namespace SignaturePad {
 			currentPoints.Add (touchLocation);
 			
 			updateBounds (touchLocation);
-			SetNeedsDisplayInRect (new CGRect (minX, minY, 
-                                                   (nfloat)Math.Abs (maxX - minX), 
-                                                   (nfloat)Math.Abs (maxY - minY)));
+			SetNeedsDisplayInRect (new CGRect (minX, minY, (nfloat)Math.Abs (maxX - minX),  (nfloat)Math.Abs (maxY - minY)));
 		}
 		
 		public override void TouchesEnded (NSSet touches, UIEvent evt)
