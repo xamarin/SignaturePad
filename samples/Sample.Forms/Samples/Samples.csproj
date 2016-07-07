@@ -62,13 +62,13 @@
   <ItemGroup>
     <EmbeddedResource Include="Views\SignaturePadConfigView.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\SignatureXamlView.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

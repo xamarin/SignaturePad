@@ -138,6 +138,10 @@
       <Name>Samples</Name>
       <Project>{CC18E151-5792-4DA5-ADE6-7CFBA16A593E}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\src\SignaturePad.iOS\SignaturePad.iOS.csproj">
+      <Project>{BEF71536-787B-431F-AC7F-A6469710D11F}</Project>
+      <Name>SignaturePad.iOS</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="PCLStorage, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
