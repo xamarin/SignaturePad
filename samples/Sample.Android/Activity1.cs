@@ -1,18 +1,18 @@
-using System;
-
 using Android.App;
-using Android.Content;
-using Android.Runtime;
+using Android.Graphics;
+using Android.OS;
+using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
-using Android.OS;
-using Android.Graphics;
+using AlertDialog = Android.Support.V7.App.AlertDialog;
 
 using SignaturePad;
 
-namespace Sample.Android {
-	[Activity (Label = "Sample.Android", MainLauncher = true)]
-	public class Activity1 : Activity {
+namespace Sample.Android
+{
+	[Activity (Label = "@string/app_name", MainLauncher = true, Theme = "@style/Theme.AppCompat.Light.DarkActionBar")]
+	public class Activity1 : AppCompatActivity
+	{
 		System.Drawing.PointF [] points;
 
 		protected override void OnCreate (Bundle bundle)
@@ -27,7 +27,6 @@ namespace Sample.Android {
 
 			if (true) { // Customization activated
 				View root = FindViewById<View> (Resource.Id.rootView);
-				root.SetBackgroundColor (Color.White);
 
 				// Activate this to internally use a bitmap to store the strokes
 				// (good for frequent-redraw situations, bad for memory footprint)
@@ -45,7 +44,8 @@ namespace Sample.Android {
 				signature.BackgroundImageView.SetImageResource (Resource.Drawable.logo_galaxy_black_64);
 				signature.BackgroundImageView.SetAlpha (16);
 				signature.BackgroundImageView.SetAdjustViewBounds (true);
-				var layout = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.FillParent);
+
+				var layout = new RelativeLayout.LayoutParams (ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
 				layout.AddRule (LayoutRules.CenterInParent);
 				layout.SetMargins (20, 20, 20, 20);
 				signature.BackgroundImageView.LayoutParameters = layout;
@@ -79,5 +79,3 @@ namespace Sample.Android {
 		}
 	}
 }
-
-
