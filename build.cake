@@ -37,7 +37,7 @@ buildSpec = new BuildSpec () {
 				},
 			}
 		},
-		new DefaultSolutionBuilder {
+		new WpSolutionBuilder {
 			SolutionPath = "src/SignaturePad.sln",
 			BuildsOn = BuildPlatforms.Windows,
 			OutputFiles = new [] { 
@@ -74,11 +74,11 @@ buildSpec = new BuildSpec () {
 	},
 
 	Samples = new ISolutionBuilder [] {
-		new DefaultSolutionBuilder { SolutionPath = "./samples/Sample.Android/Sample.Android.sln", BuildsOn = BuildPlatforms.Mac }, 
+		new DefaultSolutionBuilder { SolutionPath = "./samples/Sample.Android/Sample.Android.sln", BuildsOn = BuildPlatforms.Mac | BuildPlatforms.Windows}, 
 		new IOSSolutionBuilder { SolutionPath = "./samples/Sample.iOS/Sample.iOS.sln", BuildsOn = BuildPlatforms.Mac },
 		new IOSSolutionBuilder { SolutionPath = "./samples/Sample.Forms/Sample.Forms.Mac.sln", BuildsOn = BuildPlatforms.Mac },
-		new DefaultSolutionBuilder { SolutionPath = "./samples/Sample.WP8/Sample.WP8.sln", BuildsOn = BuildPlatforms.Windows }, 
-		new DefaultSolutionBuilder { SolutionPath = "./samples/Sample.Forms/Sample.Forms.Win.sln", BuildsOn = BuildPlatforms.Windows }, 
+		new WpSolutionBuilder { SolutionPath = "./samples/Sample.WP8/Sample.WP8.sln", BuildsOn = BuildPlatforms.Windows }, 
+		new WpSolutionBuilder { SolutionPath = "./samples/Sample.Forms/Sample.Forms.Win.sln", BuildsOn = BuildPlatforms.Windows }, 
 	},
 
 	NuGets = new [] {
