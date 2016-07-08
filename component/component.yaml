@@ -20,7 +20,7 @@ screenshots:
 
 is_shell: true
 no_build: true
-local-nuget-repo: ../output/  
+local-nuget-repo: ../output/
 libraries:
   android: ../output/android/SignaturePad.dll
   ios-unified: ../output/ios-unified/SignaturePad.dll
@@ -33,24 +33,39 @@ packages:
 samples:
   - name: "Android Sample"
     path: ../samples/Sample.Android/Sample.Android.sln
+    removeProjects:
+      - SignaturePad.Android
     installNuGets:
       - project: Sample.Android
         packages:
           - Xamarin.Controls.SignaturePad
   - name: "iOS Sample"
     path: ../samples/Sample.iOS/Sample.iOS.sln
+    removeProjects:
+      - SignaturePad.iOS
     installNuGets:
       - project: Sample.iOS
         packages:
           - Xamarin.Controls.SignaturePad
   - name: "Windows Phone Sample"
     path: ../samples/Sample.WP8/Sample.WP8.sln
+    removeProjects:
+      - SignaturePad.WP8
     installNuGets:
       - project: Sample.WP8
         packages:
           - Xamarin.Controls.SignaturePad
   - name: "Xamarin.Forms Sample"
     path: ../samples/Sample.Forms/Sample.Forms.sln
+    removeProjects:
+      - SignaturePad.WP8
+      - SignaturePad.iOS
+      - SignaturePad.Android
+      - SignaturePad.Forms
+      - SignaturePad.Forms.Droid
+      - SignaturePad.Forms.iOS
+      - SignaturePad.Forms.WindowsPhone
+      - SignaturePad.Forms.Platform.Shared
     installNuGets:
       - project: Samples
         packages:

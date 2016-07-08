@@ -14,8 +14,8 @@
     <tags>xamarin,signature,handwriting,windows,ios,android,windows phone</tags>
   </metadata>
   <files>
-    <file src="output/android/SignaturePad.dll" target="lib\MonoAndroid\SignaturePad.dll" />
-    <file src="output/ios-unified/SignaturePad.dll" target="lib\Xamarin.iOS\SignaturePad.dll" />
-    <file src="output/wp8/SignaturePad.dll" target="lib\wp8\SignaturePad.dll" />
+    <file src="output/android/SignaturePad.dll" target="lib/MonoAndroid/SignaturePad.dll" />
+    <file src="output/ios-unified/SignaturePad.dll" target="lib/Xamarin.iOS/SignaturePad.dll" />
+    <file src="output/wp8/SignaturePad.dll" target="lib/wp8/SignaturePad.dll" />
   </files>
 </package>
