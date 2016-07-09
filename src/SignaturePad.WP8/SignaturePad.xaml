@@ -59,7 +59,6 @@
             Margin="3,3,3,3" 
             Name="captionLabel"
             Foreground="Gray"
-            VerticalAlignment="Bottom" 
-            MouseLeftButtonUp="btnClear_Click" Grid.Row="1" />
+            VerticalAlignment="Bottom" Grid.Row="1" />
     </Grid>
 </UserControl>
