@@ -1,4 +1,4 @@
-#tool nuget:?package=XamarinComponent&version=1.1.0.39
+#tool nuget:?package=XamarinComponent&version=1.1.0.40
 
 #addin nuget:?package=Cake.Xamarin.Build&version=1.0.14.0
 #addin nuget:?package=Cake.Xamarin
