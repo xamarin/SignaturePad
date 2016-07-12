@@ -1,12 +1,11 @@
 # Signature Pad
 
-[![AppVeyor][ci-img]][ci-link] [![NuGet][signature-page-img]][signature-page-link]
-
 Signature Pad makes capturing, saving, exporting, and displaying
-signatures extremely simple on Xamarin.iOS, Xamarin.Android and WIndows Phone.
+signatures extremely simple on Xamarin.iOS, Xamarin.Android and Windows Phone.
 
-![Screenshot](/component/signature-ios.jpg)
+![Screenshot](component/signature-ios.jpg)
 
+Prebuilt versions of Signature Pad are available at the [Xamarin Component Store.][comp-store-link]
 
 ### Displaying a Signature Pad on iOS
 
@@ -139,25 +138,12 @@ their respective `Visibility` property to `ViewStates.Invisible`.
 
 ## License
 
-The Apache License 2.0 applies to all samples in this repository.
-
-   Copyright 2016 Xamarin Inc
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+The license for this repository is specified in
+[LICENSE](LICENSE)
 
 
-[ci-img]: https://img.shields.io/appveyor/ci/mattleibow/SignaturePad/add-cake.svg?maxAge=2592000
-[ci-link]: https://ci.appveyor.com/project/mattleibow/SignaturePad
+## .NET Foundation
+This project is part of the [.NET Foundation](http://www.dotnetfoundation.org/projects)
 
-[signature-page-img]: https://img.shields.io/nuget/v/Xamarin.Controls.SignaturePad.svg?maxAge=2592000
-[signature-page-link]: https://www.nuget.org/packages/Xamarin.Controls.SignaturePad
+
+[comp-store-link]: https://components.xamarin.com/view/signature-pad
