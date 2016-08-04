@@ -699,6 +699,8 @@ namespace SignaturePad {
 			top = top - ThinPad - SignaturePrompt.Frame.Height;
 			SignaturePrompt.Frame = new CGRect (ThickPad, top, SignaturePrompt.Frame.Width, SignaturePrompt.Frame.Height);
 			ClearLabel.Frame = new CGRect (w - ThickPad - ClearLabel.Frame.Width, ThickPad, ClearLabel.Frame.Width, clearButtonHeight);
+			imageView.Image = GetImage (false);
+			SetNeedsDisplay ();
 		}
 	}
 }

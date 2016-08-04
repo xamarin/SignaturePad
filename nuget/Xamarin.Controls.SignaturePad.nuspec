@@ -3,19 +3,19 @@
   <metadata>
     <id>Xamarin.Controls.SignaturePad</id>
     <title>SignaturePad for Xamarin and Windows</title>
-    <version>1.4.0.{revision}</version>
+    <version>1.4.0.0</version>
     <authors>Xamarin, Inc.</authors>
     <owners>Xamarin, Inc.</owners>
-    <licenseUrl>https://github.com/xamarin/SignaturePad/blob/master/LICENSE</licenseUrl>
-    <projectUrl>https://github.com/xamarin/SignaturePad</projectUrl>
+    <licenseUrl>https://components.xamarin.com/license/signature-pad</licenseUrl>
+    <projectUrl>https://components.xamarin.com/view/signature-pad</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Makes capturing, saving, and displaying signatures extremely simple.</description>
     <copyright>Copyright (c) Xamarin Inc. 2016</copyright>
     <tags>xamarin,signature,handwriting,windows,ios,android,windows phone</tags>
   </metadata>
   <files>
-    <file src="output/android/SignaturePad.dll" target="lib\MonoAndroid\SignaturePad.dll" />
-    <file src="output/ios-unified/SignaturePad.dll" target="lib\Xamarin.iOS\SignaturePad.dll" />
-    <file src="output/wp8/SignaturePad.dll" target="lib\wp8\SignaturePad.dll" />
+    <file src="output/android/SignaturePad.dll" target="lib/MonoAndroid/SignaturePad.dll" />
+    <file src="output/ios-unified/SignaturePad.dll" target="lib/Xamarin.iOS/SignaturePad.dll" />
+    <file src="output/wp8/SignaturePad.dll" target="lib/wp8/SignaturePad.dll" />
   </files>
 </package>

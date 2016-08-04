@@ -152,6 +152,12 @@ namespace Xamarin.Controls
 			backgroundColor = Colors.Black;
 			LayoutRoot.Background = new SolidColorBrush (backgroundColor);
 			lineWidth = 3f;
+			SizeChanged += SignaturePad_SizeChanged;
+		}
+
+		private void SignaturePad_SizeChanged (object sender, SizeChangedEventArgs e)
+		{
+			image.Source = GetImage(false);
 		}
 
 		public override void OnApplyTemplate ()

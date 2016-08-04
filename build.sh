@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 ###############################################################
 # This is the Cake bootstrapper script that is responsible for
 # downloading Cake and all specified tools from NuGet.
@@ -7,16 +7,21 @@
 # Define directories.
 SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 TOOLS_DIR=$SCRIPT_DIR/tools
-NUGET_EXE=$TOOLS_DIR/nuget.exe
+export NUGET_EXE=$TOOLS_DIR/nuget.exe
 CAKE_EXE=$TOOLS_DIR/Cake/Cake.exe
+
+# BEGIN TEMP WORKAROUND
+SYSIOCOMP=$TOOLS_DIR/System.IO.Compression.dll
+# END TEMP WORKAROUND
 
 # Define default arguments.
 SCRIPT="build.cake"
 TARGET="Default"
 CONFIGURATION="Release"
 VERBOSITY="verbose"
-DRYRUN=false
+DRYRUN=
 SHOW_VERSION=false
+SCRIPT_ARGUMENTS=()
 
 # Parse arguments.
 for i in "$@"; do
@@ -25,39 +30,71 @@ for i in "$@"; do
         -t|--target) TARGET="$2"; shift ;;
         -c|--configuration) CONFIGURATION="$2"; shift ;;
         -v|--verbosity) VERBOSITY="$2"; shift ;;
-        -d|--dryrun) DRYRUN=true ;;
+        -d|--dryrun) DRYRUN="-dryrun" ;;
         --version) SHOW_VERSION=true ;;
+        --) shift; SCRIPT_ARGUMENTS+=("$@"); break ;;
+        *) SCRIPT_ARGUMENTS+=("$1") ;;
     esac
     shift
 done
 
+# Make sure the tools folder exist.
+if [ ! -d "$TOOLS_DIR" ]; then
+  mkdir "$TOOLS_DIR"
+fi
+
+# Make sure that packages.config exist.
+if [ ! -f "$TOOLS_DIR/packages.config" ]; then
+    echo "Downloading packages.config..."
+    curl -Lsfo "$TOOLS_DIR/packages.config" http://cakebuild.net/download/bootstrapper/packages
+    if [ $? -ne 0 ]; then
+        echo "An error occured while downloading packages.config."
+        exit 1
+    fi
+fi
+
 # Download NuGet if it does not exist.
-if [ ! -f $NUGET_EXE ]; then
+if [ ! -f "$NUGET_EXE" ]; then
     echo "Downloading NuGet..."
-    curl -Lsfo $NUGET_EXE https://www.nuget.org/nuget.exe
+    curl -Lsfo "$NUGET_EXE" https://dist.nuget.org/win-x86-commandline/v3.4.4/NuGet.exe
     if [ $? -ne 0 ]; then
         echo "An error occured while downloading nuget.exe."
         exit 1
     fi
 fi
 
+# BEGIN TEMP WORKAROUND
+# There is a bug in Mono's System.IO.Compression
+# This binary fixes the bug for now
+# Download System.IO.Compression if it does not exist.
+if [ ! -f "$SYSIOCOMP" ]; then
+    echo "Downloading System.IO.Compression.dll ..."
+    curl -Lsfo "$SYSIOCOMP" http://xamarin-components-binaries.s3.amazonaws.com/System.IO.Compression.dll
+    if [ $? -ne 0 ]; then
+        echo "An error occured while downloading System.IO.Compression.dll."
+        exit 1
+    fi
+fi
+# END TEMP WORKAROUND
+
 # Restore tools from NuGet.
-pushd $TOOLS_DIR >/dev/null
-mono $NUGET_EXE install -ExcludeVersion
+pushd "$TOOLS_DIR" >/dev/null
+mono "$NUGET_EXE" install -ExcludeVersion
+if [ $? -ne 0 ]; then
+    echo "Could not restore NuGet packages."
+    exit 1
+fi
 popd >/dev/null
 
 # Make sure that Cake has been installed.
-if [ ! -f $CAKE_EXE ]; then
-    echo "Could not find Cake.exe."
+if [ ! -f "$CAKE_EXE" ]; then
+    echo "Could not find Cake.exe at '$CAKE_EXE'."
     exit 1
 fi
 
 # Start Cake
 if $SHOW_VERSION; then
-    mono $CAKE_EXE -version
-elif $DRYRUN; then
-    mono $CAKE_EXE $SCRIPT -verbosity=$VERBOSITY -configuration=$CONFIGURATION -target=$TARGET -dryrun
+    exec mono "$CAKE_EXE" -version
 else
-    mono $CAKE_EXE $SCRIPT -verbosity=$VERBOSITY -configuration=$CONFIGURATION -target=$TARGET
+    exec mono "$CAKE_EXE" $SCRIPT -verbosity=$VERBOSITY -configuration=$CONFIGURATION -target=$TARGET $DRYRUN "${SCRIPT_ARGUMENTS[@]}"
 fi
-exit $?

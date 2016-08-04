@@ -1,186 +1,96 @@
-#tool nuget:?package=XamarinComponent
+#tool nuget:?package=XamarinComponent&version=1.1.0.40
 
+#addin nuget:?package=Cake.Xamarin.Build&version=1.0.14.0
 #addin nuget:?package=Cake.Xamarin
-#addin nuget:?package=Cake.FileHelpers
 
-//////////////////////////////////////////////////////////////////////
-// ARGUMENTS
-//////////////////////////////////////////////////////////////////////
+BuildSpec buildSpec = null;
 
-var target = Argument("target", "Default");
-var configuration = Argument("configuration", "Release");
-var buildNumber = EnvironmentVariable("APPVEYOR_BUILD_NUMBER") ?? "0";
-var buildSha = EnvironmentVariable("APPVEYOR_REPO_COMMIT") ?? "local_build";
 
-//////////////////////////////////////////////////////////////////////
-// PREPARATION
-//////////////////////////////////////////////////////////////////////
+var TARGET = Argument ("t", Argument ("target", "Default"));
 
-// Define directories.
-DirectoryPath outDir = "./output/";
-FilePath XamarinComponentPath = "./tools/XamarinComponent/tools/xamarin-component.exe";
+buildSpec = new BuildSpec () {
 
-var Build = new Action<string>((solution) =>
-{
-    if (IsRunningOnWindows()) {
-        MSBuild(solution, s => s.SetConfiguration(configuration).SetMSBuildPlatform(MSBuildPlatform.x86));
-    } else {
-        XBuild(solution, s => s.SetConfiguration(configuration));
-    }
-});
+	Libs = new ISolutionBuilder [] { 
+		new DefaultSolutionBuilder {
+			SolutionPath = "src/SignaturePad.Mac.sln",
+			BuildsOn = BuildPlatforms.Mac,
+			OutputFiles = new [] { 
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.Android/bin/Release/SignaturePad.dll",
+					ToDirectory = "output/android",
+				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.iOS/bin/unified/Release/SignaturePad.dll",
+					ToDirectory = "output/ios-unified",
+				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.Forms/bin/Release/SignaturePad.Forms.dll",
+					ToDirectory = "output/pcl",
+				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.Forms.Droid/bin/Release/SignaturePad.Forms.Droid.dll",
+					ToDirectory = "output/android",
+				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.Forms.iOS/bin/Release/SignaturePad.Forms.iOS.dll",
+					ToDirectory = "output/ios-unified",
+				},
+			}
+		},
+		new WpSolutionBuilder {
+			SolutionPath = "src/SignaturePad.sln",
+			BuildsOn = BuildPlatforms.Windows,
+			OutputFiles = new [] { 
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.Android/bin/Release/SignaturePad.dll",
+					ToDirectory = "output/android",
+				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.iOS/bin/unified/Release/SignaturePad.dll",
+					ToDirectory = "output/ios-unified",
+				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.Forms/bin/Release/SignaturePad.Forms.dll",
+					ToDirectory = "output/pcl",
+				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.Forms.Droid/bin/Release/SignaturePad.Forms.Droid.dll",
+					ToDirectory = "output/android",
+				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.Forms.iOS/bin/Release/SignaturePad.Forms.iOS.dll",
+					ToDirectory = "output/ios-unified",
+				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.WP8/bin/Release/SignaturePad.dll",
+					ToDirectory = "output/wp8",
+				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.Forms.WindowsPhone/bin/Release/SignaturePad.Forms.WindowsPhone.dll",
+					ToDirectory = "output/wp8",
+				},
+			}
+		}
+	},
 
-//////////////////////////////////////////////////////////////////////
-// TASKS
-//////////////////////////////////////////////////////////////////////
+	Samples = new ISolutionBuilder [] {
+		new DefaultSolutionBuilder { SolutionPath = "./samples/Sample.Android/Sample.Android.sln", BuildsOn = BuildPlatforms.Mac | BuildPlatforms.Windows}, 
+		new IOSSolutionBuilder { SolutionPath = "./samples/Sample.iOS/Sample.iOS.sln", BuildsOn = BuildPlatforms.Mac },
+		new IOSSolutionBuilder { SolutionPath = "./samples/Sample.Forms/Sample.Forms.Mac.sln", BuildsOn = BuildPlatforms.Mac },
+		new WpSolutionBuilder { SolutionPath = "./samples/Sample.WP8/Sample.WP8.sln", BuildsOn = BuildPlatforms.Windows }, 
+		new WpSolutionBuilder { SolutionPath = "./samples/Sample.Forms/Sample.Forms.Win.sln", BuildsOn = BuildPlatforms.Windows }, 
+	},
 
-Task("Clean")
-    .Does(() =>
-{
-    var dirs = new [] { 
-        "./output",
-        "./src/*/bin", 
-        "./src/*/obj", 
-        "./samples/*/packages",
-        "./samples/*/bin",
-        "./samples/*/obj",
-        "./samples/*/*/bin",
-        "./samples/*/*/obj",
-    };
-    foreach (var dir in dirs) {
-        Information("Cleaning {0}...", dir);
-        CleanDirectories(dir);
-    }
-});
+	NuGets = new [] {
+		new NuGetInfo { NuSpec = "./nuget/Xamarin.Controls.SignaturePad.nuspec", BuildsOn = BuildPlatforms.Mac },
+		new NuGetInfo { NuSpec = "./nuget/Xamarin.Controls.SignaturePad.Forms.nuspec", BuildsOn = BuildPlatforms.Mac },
+	},
 
-Task("RestorePackages")
-    .Does(() =>
-{
-    var solutions = new [] { 
-        "./src/SignaturePad.sln", 
-        "./samples/Sample.Android/Sample.Android.sln",
-        "./samples/Sample.iOS/Sample.iOS.sln",
-        "./samples/Sample.WP8/Sample.WP8.sln",
-        "./samples/Sample.Forms/Sample.Forms.sln",
-    };
-    foreach (var solution in solutions) {
-        Information("Restoring {0}...", solution);
-        NuGetRestore(solution, new NuGetRestoreSettings {
-            Source = new [] { IsRunningOnWindows() ? "https://api.nuget.org/v3/index.json" : "https://www.nuget.org/api/v2/" },
-            Verbosity = NuGetVerbosity.Detailed
-        });
-    }
-});
+	Components = new [] {
+		new Component {ManifestDirectory = "./component", BuildsOn = BuildPlatforms.Mac },
+	},
+};
 
-Task("Build")
-    .IsDependentOn("RestorePackages")
-    .Does(() =>
-{
-    // replace version numbers
-    ReplaceTextInFiles("./src/SignaturePad/Properties/AssemblyInfo.Common.cs", "{revision}", buildNumber);
-    ReplaceTextInFiles("./src/SignaturePad/Properties/AssemblyInfo.Common.cs", "{sha}", buildSha);
-    
-    // build
-    if (IsRunningOnWindows()) {
-        Build("./src/SignaturePad.sln");
-    } else {
-        Build("./src/SignaturePad.Mac.sln");
-    }
-    
-    // copy outputs
-    var outputs = new Dictionary<string, string>
-    {
-        { "./src/SignaturePad.Android/bin/{0}/SignaturePad.dll", "android/SignaturePad.dll" },
-        { "./src/SignaturePad.iOS/bin/unified/{0}/SignaturePad.dll", "ios-unified/SignaturePad.dll" },
-        
-        { "./src/SignaturePad.Forms/bin/{0}/SignaturePad.Forms.dll", "pcl/SignaturePad.Forms.dll" },
-        { "./src/SignaturePad.Forms.Droid/bin/{0}/SignaturePad.Forms.Droid.dll", "android/SignaturePad.Forms.Droid.dll" },
-        { "./src/SignaturePad.Forms.iOS/bin/{0}/SignaturePad.Forms.iOS.dll", "ios-unified/SignaturePad.Forms.iOS.dll" },
-    };
-    if (IsRunningOnWindows()) {
-        outputs.Add ("./src/SignaturePad.WP8/bin/{0}/SignaturePad.dll", "wp8/SignaturePad.dll");
-        outputs.Add ("./src/SignaturePad.Forms.WindowsPhone/bin/{0}/SignaturePad.Forms.WindowsPhone.dll", "wp8/SignaturePad.Forms.WindowsPhone.dll");
-    }
-    foreach (var output in outputs) {
-        var dest = outDir.CombineWithFilePath(string.Format(output.Value, configuration));
-        var dir = dest.GetDirectory();
-        if (!DirectoryExists(dir)) {
-            CreateDirectory(dir);
-        }
-        CopyFile(string.Format(output.Key, configuration), dest);
-    }
-});
+SetupXamarinBuildTasks (buildSpec, Tasks, Task);
 
-Task("Samples")
-    .IsDependentOn("RestorePackages")
-    .Does(() =>
-{
-    // var solutions = new List<string> { 
-    //     ForEverywhere ? "./Demos/Microsoft.Band.Sample/Microsoft.Band.Sample.sln" : (ForWindowsOnly ? "./Demos/Microsoft.Band.Sample/Microsoft.Band.Android.Sample.sln" : "./Demos/Microsoft.Band.Sample/Microsoft.Band.iOS.Sample.sln"),
-    //     ForEverywhere ? "./Demos/Microsoft.Band.Portable.Sample/Microsoft.Band.Portable.Sample.sln" : (ForWindowsOnly ? "./Demos/Microsoft.Band.Portable.Sample/Microsoft.Band.Portable.Sample.Windows.sln" : "./Demos/Microsoft.Band.Portable.Sample/Microsoft.Band.Portable.Sample.Mac.sln"),
-    // };
-    // if (ForWindows) {
-    //     solutions.Add("./Demos/RotatingHand/RotatingHand.sln");
-    // }
-    // foreach (var solution in solutions) {
-    //     Information("Building {0}...", solution);
-    //     Build(solution);
-    // }
-});
-
-Task("Package")
-    .IsDependentOn("Build")
-    .WithCriteria(IsRunningOnWindows())
-    .Does(() =>
-{
-    // replace version numbers
-    ReplaceTextInFiles("./nuget/Xamarin.Controls.SignaturePad.nuspec", "{revision}", buildNumber);
-    ReplaceTextInFiles("./nuget/Xamarin.Controls.SignaturePad.Forms.nuspec", "{revision}", buildNumber);
-    ReplaceTextInFiles("./component/component.yaml", "{revision}", buildNumber);
-    
-    // NuGet
-    Information("Packing NuGet...");
-    NuGetPack("./nuget/Xamarin.Controls.SignaturePad.nuspec", new NuGetPackSettings {
-        OutputDirectory = outDir,
-        Verbosity = NuGetVerbosity.Detailed,
-        BasePath = IsRunningOnUnix() ? "././" : "./",
-    });
-    NuGetPack("./nuget/Xamarin.Controls.SignaturePad.Forms.nuspec", new NuGetPackSettings {
-        OutputDirectory = outDir,
-        Verbosity = NuGetVerbosity.Detailed,
-        BasePath = IsRunningOnUnix() ? "././" : "./",
-    });
-    
-    // Xamarin Component
-    Information("Packing Component...");
-    DeleteFiles("./component/*.xam");
-    PackageComponent("./component/", new XamarinComponentSettings {
-        ToolPath = XamarinComponentPath
-    });
-    DeleteFiles("./output/*.xam");
-    MoveFiles("./component/*.xam", outDir);
-});
-
-Task("Test")
-    .IsDependentOn("Build")
-    .Does(() =>
-{
-    // NUnit3("./src/**/bin/" + configuration + "/*.Tests.dll", new NUnit3Settings {
-    //     NoResults = true
-    //     });
-});
-
-//////////////////////////////////////////////////////////////////////
-// TASK TARGETS
-//////////////////////////////////////////////////////////////////////
-
-Task("Default")
-    .IsDependentOn("Build")
-    .IsDependentOn("Package")
-    .IsDependentOn("Samples")
-    .IsDependentOn("Test");
-
-//////////////////////////////////////////////////////////////////////
-// EXECUTION
-//////////////////////////////////////////////////////////////////////
-
-RunTarget(target);
+RunTarget (TARGET);
