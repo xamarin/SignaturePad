@@ -1,10 +1,11 @@
 # Signature Pad
 
 Signature Pad makes capturing, saving, exporting, and displaying
-signatures extremely simple on Xamarin.iOS, Xamarin.Android and WIndows Phone.
+signatures extremely simple on Xamarin.iOS, Xamarin.Android and Windows Phone.
 
-![Screenshot](/component/signature-ios.jpg)
+![Screenshot](component/signature-ios.jpg)
 
+Prebuilt versions of Signature Pad are available at the [Xamarin Component Store.][comp-store-link]
 
 ### Displaying a Signature Pad on iOS
 
@@ -43,13 +44,13 @@ protected override void OnCreate (Bundle bundle)
 }
 ```
 
-### Displaying a Signature Pad on Windows Phone
+### Displaying a Signature Pad on Windows Phone (Silverlight)
 
 On Windows Phone, it is easiest to add your `SignaturePad` control directly in your Page's `.xaml` file.  To do this, be sure you register the namespace in the `<phone:PhoneApplicationPage ... />` tag.  Here is an example:
 ```xml
 <phone:PhoneApplicationPage 
 	<!-- Other properties -->
-    xmlns:component="clr-namespace:Xamarin.Controls;assembly=SignaturePad.WP7">
+    xmlns:component="clr-namespace:Xamarin.Controls;assembly=SignaturePad">
 
 	<!-- Other controls -->
 	<component:SignaturePad Margin="10,10,10,78" Name="signatureView" />
@@ -137,18 +138,12 @@ their respective `Visibility` property to `ViewStates.Invisible`.
 
 ## License
 
-The Apache License 2.0 applies to all samples in this repository.
+The license for this repository is specified in
+[LICENSE](LICENSE)
 
-   Copyright 2013-2014 Xamarin Inc
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+## .NET Foundation
+This project is part of the [.NET Foundation](http://www.dotnetfoundation.org/projects)
 
-       http://www.apache.org/licenses/LICENSE-2.0
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+[comp-store-link]: https://components.xamarin.com/view/signature-pad

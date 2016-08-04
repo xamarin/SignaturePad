@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Android", "Sample.Android.csproj", "{B07C8650-5086-4650-AC6F-ACCF1291A952}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.Android", "..\..\src\SignaturePad.Android\SignaturePad.Android.csproj", "{F1A16CB9-A759-42C8-8F0B-3C9698A55336}"
@@ -21,6 +23,9 @@ Global
 		{F1A16CB9-A759-42C8-8F0B-3C9698A55336}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1A16CB9-A759-42C8-8F0B-3C9698A55336}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1A16CB9-A759-42C8-8F0B-3C9698A55336}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Sample.Android.csproj

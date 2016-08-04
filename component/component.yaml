@@ -1,0 +1,86 @@
+%YAML 1.2
+---
+
+id: signature-pad
+name: Signature Pad for Xamarin and Windows
+version: 1.4.0.0
+summary: Makes capturing, saving, and displaying signatures extremely simple.
+publisher: Xamarin, Inc.
+publisher-url: http://xamarin.com/
+src-url: https://github.com/xamarin/SignaturePad
+
+details: Details.md
+license: License.md
+getting-started: GettingStarted.md
+icons: 
+  - icons/signature-pad_128x128.png
+  - icons/signature-pad_256x256.png
+screenshots:
+  - signature-ios.jpg
+
+is_shell: true
+no_build: true
+local-nuget-repo: ../output/
+libraries:
+  android: ../output/android/SignaturePad.dll
+  ios-unified: ../output/ios-unified/SignaturePad.dll
+  wp8: ../output/wp8/SignaturePad.dll
+packages:
+  android: Xamarin.Controls.SignaturePad, Version=1.4.0
+  ios-unified: Xamarin.Controls.SignaturePad, Version=1.4.0
+  wp8: Xamarin.Controls.SignaturePad, Version=1.4.0
+
+samples:
+  - name: "Android Sample"
+    path: ../samples/Sample.Android/Sample.Android.sln
+    removeProjects:
+      - SignaturePad.Android
+    installNuGets:
+      - project: Sample.Android
+        packages:
+          - Xamarin.Controls.SignaturePad
+  - name: "iOS Sample"
+    path: ../samples/Sample.iOS/Sample.iOS.sln
+    removeProjects:
+      - SignaturePad.iOS
+    installNuGets:
+      - project: Sample.iOS
+        packages:
+          - Xamarin.Controls.SignaturePad
+  - name: "Windows Phone Sample"
+    path: ../samples/Sample.WP8/Sample.WP8.sln
+    removeProjects:
+      - SignaturePad.WP8
+    installNuGets:
+      - project: Sample.WP8
+        packages:
+          - Xamarin.Controls.SignaturePad
+  - name: "Xamarin.Forms Sample"
+    path: ../samples/Sample.Forms/Sample.Forms.sln
+    removeProjects:
+      - SignaturePad.WP8
+      - SignaturePad.iOS
+      - SignaturePad.Android
+      - SignaturePad.Forms
+      - SignaturePad.Forms.Droid
+      - SignaturePad.Forms.iOS
+      - SignaturePad.Forms.WindowsPhone
+      - SignaturePad.Forms.Platform.Shared
+    installNuGets:
+      - project: Samples
+        packages:
+          - Xamarin.Controls.SignaturePad.Forms
+      - project: Samples.iOS
+        packages:
+          - Xamarin.Controls.SignaturePad
+          - Xamarin.Controls.SignaturePad.Forms
+      - project: Samples.Android
+        packages:
+          - Xamarin.Controls.SignaturePad
+          - Xamarin.Controls.SignaturePad.Forms
+      - project: Samples.WinPhone
+        packages:
+          - Xamarin.Controls.SignaturePad
+          - Xamarin.Controls.SignaturePad.Forms
+
+...
