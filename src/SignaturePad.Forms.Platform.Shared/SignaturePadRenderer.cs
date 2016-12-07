@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
@@ -16,6 +17,14 @@ using Xamarin.Forms.Platform.WinPhone;
 using SignaturePad.Forms.WindowsPhone;
 using NativeSignaturePadView = Xamarin.Controls.SignaturePad;
 using NativePoint = System.Windows.Point;
+#elif WINDOWS_UWP
+using Windows.Graphics.Imaging;
+using Windows.Storage.Streams;
+using Xamarin.Forms.Platform.UWP;
+using System.Runtime.InteropServices.WindowsRuntime;
+using SignaturePad.Forms.UWP;
+using NativeSignaturePadView = Xamarin.Controls.SignaturePad;
+using NativePoint = Windows.Foundation.Point;
 #elif __IOS__
 using UIKit;
 using Xamarin.Forms.Platform.iOS;
@@ -37,6 +46,8 @@ using NativeColor = Android.Graphics.Color;
 
 #if WINDOWS_PHONE
 namespace SignaturePad.Forms.WindowsPhone
+#elif WINDOWS_UWP
+namespace SignaturePad.Forms.UWP
 #elif __IOS__
 namespace SignaturePad.Forms.iOS
 #elif __ANDROID__
@@ -115,6 +126,36 @@ namespace SignaturePad.Forms.Droid
                         return stream;
                     }
                     return null;
+                });
+#elif WINDOWS_UWP
+                var stream = new InMemoryRandomAccessStream();
+                e.ImageStreamTask = Task.Run<Stream>(async () =>
+                {
+                    //Create new Random Access Tream
+                    var imageFormatType = BitmapEncoder.PngEncoderId;
+                    if (e.ImageFormat == SignatureImageFormat.Png)
+                        imageFormatType = BitmapEncoder.PngEncoderId;
+                    else if (e.ImageFormat == SignatureImageFormat.Jpg)
+                        imageFormatType = BitmapEncoder.JpegEncoderId;
+                    else
+                    {
+                        stream.Dispose();
+                        return null;
+                    }
+
+                    //Create bitmap encoder
+                    var encoder = await BitmapEncoder.CreateAsync(imageFormatType, stream);
+
+                    //Set the pixel data and flush it
+                    encoder.SetPixelData(
+                                BitmapPixelFormat.Bgra8,
+                                BitmapAlphaMode.Straight,
+                                (uint)image.PixelWidth,
+                                (uint)image.PixelHeight, 96d, 96d,
+                                image.PixelBuffer.ToArray());
+
+                    await encoder.FlushAsync();
+                    return stream.AsStream();
                 });
 #elif __IOS__
                 e.ImageStreamTask = Task.Run(() =>
