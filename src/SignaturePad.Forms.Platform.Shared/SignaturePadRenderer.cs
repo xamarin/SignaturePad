@@ -141,6 +141,7 @@ namespace SignaturePad.Forms.Droid
                         image = null;
                         if (task.Result)
                         {
+                            stream.Position = 0;
                             return (Stream)stream;
                         }
                         else
