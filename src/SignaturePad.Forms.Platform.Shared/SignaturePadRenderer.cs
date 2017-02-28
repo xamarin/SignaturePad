@@ -37,6 +37,7 @@ using Xamarin.Forms.Platform.UWP;
 using SignaturePad.Forms.UWP;
 using NativeSignaturePadView = SignaturePad.UWP.SignaturePad;
 using System;
+using Windows.UI.Xaml.Media;
 //using NativePoint = CoreGraphics.CGPoint;
 //using NativeColor = UIKit.UIColor;
 #endif
@@ -249,7 +250,7 @@ namespace SignaturePad.Forms.UWP
             if (Element.SignatureLineColor != Color.Default)
             {
                 var color = Element.SignatureLineColor.ToNative();
-#if WINDOWS_PHONE
+#if WINDOWS_PHONE || WINDOWS_UWP
                 Control.SignatureLineBrush = new SolidColorBrush(color);
 #else
                 Control.SignatureLineColor = color;
@@ -306,7 +307,7 @@ namespace SignaturePad.Forms.UWP
             else if (property == SignaturePadView.SignatureLineColorProperty.PropertyName)
             {
                 var color = Element.SignatureLineColor.ToNative();
-#if WINDOWS_PHONE
+#if WINDOWS_PHONE || WINDOWS_UWP
                 Control.SignatureLineBrush = new SolidColorBrush(color);
 #else
                 Control.SignatureLineColor = color;

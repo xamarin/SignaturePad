@@ -8,6 +8,7 @@ using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Input.Inking;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Microsoft.Graphics.Canvas;
@@ -32,158 +33,229 @@ namespace SignaturePad.UWP
 
         #region UI
 
-        private Color _backgroundColor;
+        //private Color _strokeColor = Colors.Black;
 
-        public Color BackgroundColor
+        ///// <summary>
+        ///// Color for the stroke.
+        ///// </summary>
+        //public Color StrokeColor
+        //{
+        //    get
+        //    {
+        //        return _strokeColor;
+        //    }
+        //    set
+        //    {
+        //        if (_strokeColor == value)
+        //            return;
+
+        //        _strokeColor = value;
+
+        //        var drawingAttributes = this.InkCanvas.InkPresenter.CopyDefaultDrawingAttributes();
+        //        drawingAttributes.Color = _strokeColor;
+        //        this.InkCanvas.InkPresenter.UpdateDefaultDrawingAttributes(drawingAttributes);
+        //    }
+        //}
+
+        //private Color _borderColor;
+
+        //public Color BorderColor
+        //{
+        //    get
+        //    {
+        //        return _borderColor;
+        //    }
+        //    set
+        //    {
+        //        if (_borderColor == value)
+        //            return;
+
+        //        _borderColor = value;
+
+        //        var colorBrush = new SolidColorBrush(_borderColor);
+        //        this.Border.BorderBrush = colorBrush;
+        //        this.XTextBlock.Foreground = colorBrush;
+        //    }
+        //}
+
+        //private double _strokeThickness = 7;
+
+        //public double StrokeThickness
+        //{
+        //    get
+        //    {
+        //        return _strokeThickness;
+        //    }
+        //    set
+        //    {
+        //        if (_strokeThickness == value)
+        //            return;
+
+        //        _strokeThickness = value;
+
+        //        var drawingAttributes = this.InkCanvas.InkPresenter.CopyDefaultDrawingAttributes();
+        //        drawingAttributes.Size = new Size(_strokeThickness, _strokeThickness);
+        //        this.InkCanvas.InkPresenter.UpdateDefaultDrawingAttributes(drawingAttributes);
+        //    }
+        //}
+
+        //private string _captionText;
+
+        //public string CaptionText
+        //{
+        //    get
+        //    {
+        //        return _captionText;
+        //    }
+        //    set
+        //    {
+        //        if (_captionText == value)
+        //            return;
+
+        //        _captionText = value;
+
+        //        this.CaptionTextBlock.Text = _captionText;
+        //    }
+        //}
+
+        //private Color _captionTextColor;
+
+        //public Color CaptionTextColor
+        //{
+        //    get
+        //    {
+        //        return _captionTextColor;
+        //    }
+        //    set
+        //    {
+        //        if (_captionTextColor == value)
+        //            return;
+
+        //        _captionTextColor = value;
+
+        //        this.CaptionTextBlock.Foreground = new SolidColorBrush(_captionTextColor);
+        //    }
+        //}
+
+        //private string _clearText;
+
+        //public string ClearText
+        //{
+        //    get
+        //    {
+        //        return _clearText;
+        //    }
+        //    set
+        //    {
+        //        if (_clearText == value)
+        //            return;
+
+        //        _clearText = value;
+
+        //        this.ClearTextBlock.Text = _clearText;
+        //    }
+        //}
+
+        //private Color _clearTextColor;
+
+        //public Color ClearTextColor
+        //{
+        //    get
+        //    {
+        //        return _clearTextColor;
+        //    }
+        //    set
+        //    {
+        //        if (_clearTextColor == value)
+        //            return;
+
+        //        _clearTextColor = value;
+
+        //        this.ClearTextBlock.Foreground = new SolidColorBrush(_clearTextColor);
+        //    }
+        //}
+
+        Color strokeColor;
+        public Color StrokeColor
         {
-            get { return _backgroundColor; }
+            get { return strokeColor; }
             set
             {
-                _backgroundColor = value;
+                strokeColor = value;
+
+                var drawingAttributes = this.InkCanvas.InkPresenter.CopyDefaultDrawingAttributes();
+                drawingAttributes.Color = strokeColor;
+                this.InkCanvas.InkPresenter.UpdateDefaultDrawingAttributes(drawingAttributes);
+            }
+        }
+
+        Color backgroundColor;
+        public Color BackgroundColor
+        {
+            get { return backgroundColor; }
+            set
+            {
+                backgroundColor = value;
                 LayoutRoot.Background = new SolidColorBrush(value);
             }
         }
 
-        private Color _strokeColor = Colors.Black;
-
-        /// <summary>
-        /// Color for the stroke.
-        /// </summary>
-        public Color StrokeColor
+        float lineWidth;
+        public float StrokeWidth
         {
-            get
-            {
-                return _strokeColor;
-            }
+            get { return lineWidth; }
             set
             {
-                if (_strokeColor == value)
-                    return;
-
-                _strokeColor = value;
+                lineWidth = value;
 
                 var drawingAttributes = this.InkCanvas.InkPresenter.CopyDefaultDrawingAttributes();
-                drawingAttributes.Color = _strokeColor;
+                drawingAttributes.Size = new Size(lineWidth, lineWidth);
                 this.InkCanvas.InkPresenter.UpdateDefaultDrawingAttributes(drawingAttributes);
             }
         }
 
-        private Color _borderColor;
-
-        public Color BorderColor
+        public TextBlock Caption
         {
-            get
-            {
-                return _borderColor;
-            }
-            set
-            {
-                if (_borderColor == value)
-                    return;
-
-                _borderColor = value;
-
-                var colorBrush = new SolidColorBrush(_borderColor);
-                this.Border.BorderBrush = colorBrush;
-                this.XTextBlock.Foreground = colorBrush;
-            }
+            get { return captionLabel; }
         }
-
-        private double _strokeThickness = 7;
-
-        public double StrokeThickness
-        {
-            get
-            {
-                return _strokeThickness;
-            }
-            set
-            {
-                if (_strokeThickness == value)
-                    return;
-
-                _strokeThickness = value;
-
-                var drawingAttributes = this.InkCanvas.InkPresenter.CopyDefaultDrawingAttributes();
-                drawingAttributes.Size = new Size(_strokeThickness, _strokeThickness);
-                this.InkCanvas.InkPresenter.UpdateDefaultDrawingAttributes(drawingAttributes);
-            }
-        }
-
-        private string _captionText;
 
         public string CaptionText
         {
-            get
-            {
-                return _captionText;
-            }
-            set
-            {
-                if (_captionText == value)
-                    return;
-
-                _captionText = value;
-
-                this.CaptionTextBlock.Text = _captionText;
-            }
+            get { return captionLabel.Text; }
+            set { captionLabel.Text = value; }
         }
 
-        private Color _captionTextColor;
-
-        public Color CaptionTextColor
+        public TextBlock ClearLabel
         {
-            get
-            {
-                return _captionTextColor;
-            }
-            set
-            {
-                if (_captionTextColor == value)
-                    return;
-
-                _captionTextColor = value;
-
-                this.CaptionTextBlock.Foreground = new SolidColorBrush(_captionTextColor);
-            }
+            get { return btnClear; }
         }
 
-        private string _clearText;
-
-        public string ClearText
+        public string ClearLabelText
         {
-            get
-            {
-                return _clearText;
-            }
-            set
-            {
-                if (_clearText == value)
-                    return;
-
-                _clearText = value;
-
-                this.ClearTextBlock.Text = _clearText;
-            }
+            get { return btnClear.Text; }
+            set { btnClear.Text = value; }
         }
 
-        private Color _clearTextColor;
-
-        public Color ClearTextColor
+        public TextBlock SignaturePrompt
         {
-            get
-            {
-                return _clearTextColor;
-            }
-            set
-            {
-                if (_clearTextColor == value)
-                    return;
+            get { return textBlock1; }
+        }
 
-                _clearTextColor = value;
+        public string SignaturePromptText
+        {
+            get { return textBlock1.Text; }
+            set { textBlock1.Text = value; }
+        }
 
-                this.ClearTextBlock.Foreground = new SolidColorBrush(_clearTextColor);
-            }
+        public Border SignatureLine
+        {
+            get { return border1; }
+        }
+
+        public Brush SignatureLineBrush
+        {
+            get { return border1.Background; }
+            set { border1.Background = value; }
         }
 
         #endregion
@@ -204,11 +276,16 @@ namespace SignaturePad.UWP
 
             //this.InkCanvas.ManipulationStarted += InkCanvasOnManipulationStarted;
 
+            strokeColor = Colors.Black;
+            backgroundColor = Colors.White;
+            LayoutRoot.Background = new SolidColorBrush(backgroundColor);
+            lineWidth = 3f;
+
             // Set initial ink stroke attributes.
             var drawingAttributes = new InkDrawingAttributes
             {
                 Color = StrokeColor,
-                Size = new Size(StrokeThickness, StrokeThickness),
+                Size = new Size(lineWidth, lineWidth),
                 IgnorePressure = false,
                 FitToCurve = true
             };
@@ -263,8 +340,8 @@ namespace SignaturePad.UWP
 
         public void UnsubscribeFromEvents()
         {
-            if (this.ClearTextBlock != null)
-                this.ClearTextBlock.Tapped -= OnClearClick;
+            if (this.btnClear != null)
+                this.btnClear.Tapped -= OnClearClick;
 
             if (this.InkCanvas != null)
                 this.InkCanvas.SizeChanged -= InkCanvas_SizeChanged;
