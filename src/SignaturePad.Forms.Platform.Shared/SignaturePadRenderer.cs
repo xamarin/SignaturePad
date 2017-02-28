@@ -7,6 +7,7 @@ using SignaturePad.Forms;
 using SignaturePad.Forms.Platform;
 using Color = Xamarin.Forms.Color;
 using Point = Xamarin.Forms.Point;
+
 #if WINDOWS_PHONE
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -31,6 +32,13 @@ using SignaturePad.Forms.Droid;
 using NativeSignaturePadView = SignaturePad.SignaturePadView;
 using NativePoint = System.Drawing.PointF;
 using NativeColor = Android.Graphics.Color;
+#elif WINDOWS_UWP
+using Xamarin.Forms.Platform.UWP;
+using SignaturePad.Forms.UWP;
+using NativeSignaturePadView = SignaturePad.UWP.SignaturePad;
+using System;
+//using NativePoint = CoreGraphics.CGPoint;
+//using NativeColor = UIKit.UIColor;
 #endif
 
 [assembly: ExportRenderer(typeof(SignaturePadView), typeof(SignaturePadRenderer))]
@@ -41,6 +49,8 @@ namespace SignaturePad.Forms.WindowsPhone
 namespace SignaturePad.Forms.iOS
 #elif __ANDROID__
 namespace SignaturePad.Forms.Droid
+#elif WINDOWS_UWP
+namespace SignaturePad.Forms.UWP
 #endif
 {
     public class SignaturePadRenderer : ViewRenderer<SignaturePadView, NativeSignaturePadView>
@@ -93,8 +103,8 @@ namespace SignaturePad.Forms.Droid
             var ctrl = Control;
             if (ctrl != null)
             {
-                var image = ctrl.GetImage();
 #if WINDOWS_PHONE
+                var image = ctrl.GetImage();
                 ExtendedImage img = null;
                 if (e.ImageFormat == SignatureImageFormat.Png)
                 {
@@ -117,6 +127,7 @@ namespace SignaturePad.Forms.Droid
                     return null;
                 });
 #elif __IOS__
+                var image = ctrl.GetImage();
                 e.ImageStreamTask = Task.Run(() =>
                 {
                     if (e.ImageFormat == SignatureImageFormat.Png)
@@ -130,6 +141,7 @@ namespace SignaturePad.Forms.Droid
                     return null;
                 });
 #elif __ANDROID__
+                var image = ctrl.GetImage();
                 var stream = new MemoryStream();
                 var format = e.ImageFormat == SignatureImageFormat.Png ? Bitmap.CompressFormat.Png : Bitmap.CompressFormat.Jpeg;
                 e.ImageStreamTask = image
@@ -148,35 +160,52 @@ namespace SignaturePad.Forms.Droid
                             return null;
                         }
                     });
+#elif WINDOWS_UWP
+                var imgFormat = e.ImageFormat == SignatureImageFormat.Png
+                    ? Microsoft.Graphics.Canvas.CanvasBitmapFileFormat.Png
+                    : Microsoft.Graphics.Canvas.CanvasBitmapFileFormat.Jpeg;
+                e.ImageStreamTask = ctrl.GetImageStreamAsync(imgFormat);
 #endif
             }
         }
 
         private void OnIsBlankRequested(object sender, SignaturePadView.IsBlankRequestedEventArgs e)
         {
+#if WINDOWS_UWP
+            throw new NotImplementedException();
+#else
             var ctrl = Control;
             if (ctrl != null)
             {
                 e.IsBlank = ctrl.IsBlank;
             }
+#endif
         }
 
         private void OnPointsRequested(object sender, SignaturePadView.PointsEventArgs e)
         {
+#if WINDOWS_UWP
+            throw new NotImplementedException();
+#else
             var ctrl = Control;
             if (ctrl != null)
             {
                 e.Points = ctrl.Points.Select(p => new Point(p.X, p.Y));
             }
+#endif
         }
 
         private void OnPointsSpecified(object sender, SignaturePadView.PointsEventArgs e)
         {
+#if WINDOWS_UWP
+            throw new NotImplementedException();
+#else
             var ctrl = Control;
             if (ctrl != null)
             {
                 ctrl.LoadPoints(e.Points.Select(p => new NativePoint((float)p.X, (float)p.Y)).ToArray());
             }
+#endif
         }
 
         /// <summary>
@@ -292,5 +321,15 @@ namespace SignaturePad.Forms.Droid
                 Control.StrokeWidth = Element.StrokeWidth;
             }
         }
+
+#if WINDOWS_UWP
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                Control?.UnsubscribeFromEvents();
+
+            base.Dispose(disposing);
+        }
+#endif
     }
 }
