@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Graphics.Display;
@@ -25,12 +26,12 @@ namespace SignaturePad.UWP
         ///// </summary>
         //public Action RaiseIsBlankChangedDelegate { get; set; }
 
-        ///// <summary>
-        ///// Property to check if its blank.
-        ///// </summary>
-        //public bool IsBlank =>
-        //    (this.InkCanvas != null) &&
-        //    (this.InkCanvas.InkPresenter.StrokeContainer.GetStrokes().Count == 0);
+        /// <summary>
+        /// Property to check if its blank.
+        /// </summary>
+        public bool IsBlank =>
+            (this.InkCanvas != null) &&
+            (this.InkCanvas.InkPresenter.StrokeContainer.GetStrokes().Any());
 
         CoreInkIndependentInputSource coreIIIS;
 

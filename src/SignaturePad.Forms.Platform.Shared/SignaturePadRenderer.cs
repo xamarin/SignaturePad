@@ -175,15 +175,11 @@ namespace SignaturePad.Forms.UWP
 
         private void OnIsBlankRequested(object sender, SignaturePadView.IsBlankRequestedEventArgs e)
         {
-#if WINDOWS_UWP
-            throw new NotImplementedException();
-#else
             var ctrl = Control;
             if (ctrl != null)
             {
                 e.IsBlank = ctrl.IsBlank;
             }
-#endif
         }
 
         private void OnPointsRequested(object sender, SignaturePadView.PointsEventArgs e)
