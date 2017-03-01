@@ -21,11 +21,6 @@ namespace SignaturePad.UWP
     {
         #region properties
 
-        ///// <summary>
-        ///// Delegate when the is blank changed.
-        ///// </summary>
-        //public Action RaiseIsBlankChangedDelegate { get; set; }
-
         /// <summary>
         /// Property to check if its blank.
         /// </summary>
@@ -36,148 +31,6 @@ namespace SignaturePad.UWP
         CoreInkIndependentInputSource coreIIIS;
 
         #region UI
-
-        //private Color _strokeColor = Colors.Black;
-
-        ///// <summary>
-        ///// Color for the stroke.
-        ///// </summary>
-        //public Color StrokeColor
-        //{
-        //    get
-        //    {
-        //        return _strokeColor;
-        //    }
-        //    set
-        //    {
-        //        if (_strokeColor == value)
-        //            return;
-
-        //        _strokeColor = value;
-
-        //        var drawingAttributes = this.InkCanvas.InkPresenter.CopyDefaultDrawingAttributes();
-        //        drawingAttributes.Color = _strokeColor;
-        //        this.InkCanvas.InkPresenter.UpdateDefaultDrawingAttributes(drawingAttributes);
-        //    }
-        //}
-
-        //private Color _borderColor;
-
-        //public Color BorderColor
-        //{
-        //    get
-        //    {
-        //        return _borderColor;
-        //    }
-        //    set
-        //    {
-        //        if (_borderColor == value)
-        //            return;
-
-        //        _borderColor = value;
-
-        //        var colorBrush = new SolidColorBrush(_borderColor);
-        //        this.Border.BorderBrush = colorBrush;
-        //        this.XTextBlock.Foreground = colorBrush;
-        //    }
-        //}
-
-        //private double _strokeThickness = 7;
-
-        //public double StrokeThickness
-        //{
-        //    get
-        //    {
-        //        return _strokeThickness;
-        //    }
-        //    set
-        //    {
-        //        if (_strokeThickness == value)
-        //            return;
-
-        //        _strokeThickness = value;
-
-        //        var drawingAttributes = this.InkCanvas.InkPresenter.CopyDefaultDrawingAttributes();
-        //        drawingAttributes.Size = new Size(_strokeThickness, _strokeThickness);
-        //        this.InkCanvas.InkPresenter.UpdateDefaultDrawingAttributes(drawingAttributes);
-        //    }
-        //}
-
-        //private string _captionText;
-
-        //public string CaptionText
-        //{
-        //    get
-        //    {
-        //        return _captionText;
-        //    }
-        //    set
-        //    {
-        //        if (_captionText == value)
-        //            return;
-
-        //        _captionText = value;
-
-        //        this.CaptionTextBlock.Text = _captionText;
-        //    }
-        //}
-
-        //private Color _captionTextColor;
-
-        //public Color CaptionTextColor
-        //{
-        //    get
-        //    {
-        //        return _captionTextColor;
-        //    }
-        //    set
-        //    {
-        //        if (_captionTextColor == value)
-        //            return;
-
-        //        _captionTextColor = value;
-
-        //        this.CaptionTextBlock.Foreground = new SolidColorBrush(_captionTextColor);
-        //    }
-        //}
-
-        //private string _clearText;
-
-        //public string ClearText
-        //{
-        //    get
-        //    {
-        //        return _clearText;
-        //    }
-        //    set
-        //    {
-        //        if (_clearText == value)
-        //            return;
-
-        //        _clearText = value;
-
-        //        this.ClearTextBlock.Text = _clearText;
-        //    }
-        //}
-
-        //private Color _clearTextColor;
-
-        //public Color ClearTextColor
-        //{
-        //    get
-        //    {
-        //        return _clearTextColor;
-        //    }
-        //    set
-        //    {
-        //        if (_clearTextColor == value)
-        //            return;
-
-        //        _clearTextColor = value;
-
-        //        this.ClearTextBlock.Foreground = new SolidColorBrush(_clearTextColor);
-        //    }
-        //}
 
         Color strokeColor;
         public Color StrokeColor
@@ -320,11 +173,6 @@ namespace SignaturePad.UWP
             SetRectangleGeometry(e.NewSize.Width, e.NewSize.Height);
         }
 
-        //private void InkCanvasOnManipulationStarted(object sender, ManipulationStartedRoutedEventArgs manipulationStartedRoutedEventArgs)
-        //{
-        //    this.ClearTextBlock.Visibility = Visibility.Visible;
-        //}
-
         private void OnClearClick(object sender, TappedRoutedEventArgs e)
         {
             ClearStrokes();
@@ -340,18 +188,9 @@ namespace SignaturePad.UWP
             this.InkCanvas.Clip = new RectangleGeometry { Rect = new Rect(0, 0, width, height) };
         }
 
-        ///// <summary>
-        ///// Notify the is blank changed.
-        ///// </summary>
-        //private void NotifyIsBlankChanged()
-        //{
-        //    RaiseIsBlankChangedDelegate?.Invoke();
-        //}
-
         private void ClearStrokes()
         {
             this.InkCanvas.InkPresenter.StrokeContainer.Clear();
-            //NotifyIsBlankChanged();
         }
 
         public void UnsubscribeFromEvents()

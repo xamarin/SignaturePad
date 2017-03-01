@@ -23,13 +23,6 @@
             Foreground="Gray"
             Name="textBlock1" 
             VerticalAlignment="Bottom" />
-        <!--<TextBlock 
-            Name="XTextBlock" 
-            Text="X" 
-            Margin="20,0,0,20"
-            Foreground="Gray"
-            HorizontalAlignment="Left" 
-            VerticalAlignment="Bottom" />-->
         <Border 
             Background="Gray" 
             Height="2"
@@ -37,14 +30,6 @@
             Margin="20,0,20,20" 
             Name="border1"
             VerticalAlignment="Bottom" />
-        <!--<Border 
-            Name="Border"
-            BorderBrush="Gray" 
-            BorderThickness="2" 
-            Height="2"
-            Margin="20,0,20,20" 
-            HorizontalAlignment="Stretch" 
-            VerticalAlignment="Bottom" />-->
         <TextBlock 
             Text="Clear" 
             FontSize="16" 
@@ -63,20 +48,5 @@
             Name="captionLabel"
             Foreground="Gray"
             VerticalAlignment="Bottom" />
-        <!--<TextBlock 
-            Name="CaptionTextBlock"
-            FontSize="18"
-            Foreground="Gray"
-            HorizontalAlignment="Center" 
-            VerticalAlignment="Bottom" />-->
-        <!--<TextBlock 
-            Name="ClearTextBlock"
-            Text="Clear" 
-            FontSize="18" 
-            Margin="0,20,20,0" 
-            Foreground="Gray"
-            HorizontalAlignment="Right" 
-            VerticalAlignment="Top" 
-            Tapped="OnClearClick" />-->
     </Grid>
 </UserControl>
