@@ -7,6 +7,7 @@ using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Input.Inking;
+using Windows.UI.Input.Inking.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -30,6 +31,8 @@ namespace SignaturePad.UWP
         //public bool IsBlank =>
         //    (this.InkCanvas != null) &&
         //    (this.InkCanvas.InkPresenter.StrokeContainer.GetStrokes().Count == 0);
+
+        CoreInkIndependentInputSource coreIIIS;
 
         #region UI
 
@@ -273,8 +276,12 @@ namespace SignaturePad.UWP
 
             // set manipulation mode to allow manipulation event's fire
             //this.InkCanvas.ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY;
+            InkCanvas.InkPresenter.InputDeviceTypes = CoreInputDeviceTypes.Mouse | CoreInputDeviceTypes.Touch;
 
             //this.InkCanvas.ManipulationStarted += InkCanvasOnManipulationStarted;
+
+            coreIIIS = CoreInkIndependentInputSource.Create(InkCanvas.InkPresenter);
+            coreIIIS.PointerReleasing += Core_PointerReleasing;
 
             strokeColor = Colors.Black;
             backgroundColor = Colors.White;
@@ -295,6 +302,14 @@ namespace SignaturePad.UWP
             this.InkCanvas.SizeChanged += InkCanvas_SizeChanged;
         }
 
+        private async void Core_PointerReleasing(CoreInkIndependentInputSource sender, PointerEventArgs args)
+        {
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                btnClear.Visibility = Visibility.Visible;
+            });
+        }
+
         #endregion
 
         #region events
@@ -312,7 +327,7 @@ namespace SignaturePad.UWP
         private void OnClearClick(object sender, TappedRoutedEventArgs e)
         {
             ClearStrokes();
-            //this.ClearTextBlock.Visibility = Visibility.Collapsed;
+            btnClear.Visibility = Visibility.Collapsed;
         }
 
         #endregion
@@ -342,6 +357,9 @@ namespace SignaturePad.UWP
         {
             if (this.btnClear != null)
                 this.btnClear.Tapped -= OnClearClick;
+
+            if (this.coreIIIS != null)
+                this.coreIIIS.PointerReleasing -= Core_PointerReleasing;
 
             if (this.InkCanvas != null)
                 this.InkCanvas.SizeChanged -= InkCanvas_SizeChanged;

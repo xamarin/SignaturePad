@@ -38,8 +38,6 @@ using SignaturePad.Forms.UWP;
 using NativeSignaturePadView = SignaturePad.UWP.SignaturePad;
 using System;
 using Windows.UI.Xaml.Media;
-//using NativePoint = CoreGraphics.CGPoint;
-//using NativeColor = UIKit.UIColor;
 #endif
 
 [assembly: ExportRenderer(typeof(SignaturePadView), typeof(SignaturePadRenderer))]
@@ -60,6 +58,20 @@ namespace SignaturePad.Forms.UWP
         {
             base.OnElementChanged(e);
 
+            if (e.OldElement != null)
+            {
+                // Unsubscribe from event handlers and cleanup any resources
+                e.OldElement.ImageStreamRequested -= OnImageStreamRequested;
+                e.OldElement.IsBlankRequested -= OnIsBlankRequested;
+                e.OldElement.PointsRequested -= OnPointsRequested;
+                e.OldElement.PointsSpecified -= OnPointsSpecified;
+            }
+
+#if WINDOWS_UWP
+            if (Control == null && e.NewElement == null)
+                return; // handle back button press
+#endif
+
             if (Control == null)
             {
                 // Instantiate the native control and assign it to the Control property
@@ -69,15 +81,6 @@ namespace SignaturePad.Forms.UWP
                 var native = new NativeSignaturePadView();
 #endif
                 SetNativeControl(native);
-            }
-
-            if (e.OldElement != null)
-            {
-                // Unsubscribe from event handlers and cleanup any resources
-                e.OldElement.ImageStreamRequested -= OnImageStreamRequested;
-                e.OldElement.IsBlankRequested -= OnIsBlankRequested;
-                e.OldElement.PointsRequested -= OnPointsRequested;
-                e.OldElement.PointsSpecified -= OnPointsSpecified;
             }
 
             if (e.NewElement != null)

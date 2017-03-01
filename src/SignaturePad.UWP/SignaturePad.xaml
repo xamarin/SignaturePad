@@ -47,7 +47,7 @@
             VerticalAlignment="Bottom" />-->
         <TextBlock 
             Text="Clear" 
-            FontSize="11" 
+            FontSize="16" 
             HorizontalAlignment="Right" 
             Margin="0,20,20,0" 
             Name="btnClear"
@@ -58,7 +58,7 @@
         <TextBlock 
             Text="Sign here." 
             TextAlignment="Center" 
-            FontSize="11" 
+            FontSize="16" 
             Margin="3,3,3,3" 
             Name="captionLabel"
             Foreground="Gray"
