@@ -34,9 +34,11 @@ namespace SignaturePad {
 		//Used to determine rectangle that needs to be redrawn.
 		nfloat minX, minY, maxX, maxY;
 
-		//Create an array containing all of the points used to draw the signature.  Uses CGPoint.Empty
-		//to indicate a new line.
-		public CGPoint[] Points {
+        public event EventHandler<bool> IsBlankChanged;
+
+        //Create an array containing all of the points used to draw the signature.  Uses CGPoint.Empty
+        //to indicate a new line.
+        public CGPoint[] Points {
 			get { 
 				if (points == null || points.Count () == 0)
 					return new CGPoint [0];
@@ -298,6 +300,7 @@ namespace SignaturePad {
 		//Delete the current signature.
 		public void Clear ()
 		{
+		    var wasBlank = IsBlank;
 			paths = new List<UIBezierPath> ();
 			currentPath = UIBezierPath.Create ();
 			points = new List<CGPoint[]> ();
@@ -306,6 +309,9 @@ namespace SignaturePad {
 			ClearLabel.Hidden = true;
 
 			SetNeedsDisplay ();
+
+            if(wasBlank != IsBlank)
+                OnIsBlankChanged(IsBlank);
 		}
 
 		//Create a UIImage of the currently drawn signature with default colors.
@@ -468,6 +474,8 @@ namespace SignaturePad {
 			if (loadedPoints == null || loadedPoints.Count () == 0)
 				return;
 
+            var wasBlank = IsBlank;
+
 			var startIndex = 0;
 			var emptyIndex = loadedPoints.ToList ().IndexOf (CGPoint.Empty);
 
@@ -518,7 +526,10 @@ namespace SignaturePad {
 			//Display the clear button.
 			ClearLabel.Hidden = false;
 			SetNeedsDisplay ();
-		}
+
+            if(wasBlank != IsBlank)
+                OnIsBlankChanged(IsBlank);
+        }
 
 		//Update the bounds for the rectangle to be redrawn if necessary for the given point.
 		void updateBounds (CGPoint point)
@@ -647,6 +658,7 @@ namespace SignaturePad {
 		
 		public override void TouchesEnded (NSSet touches, UIEvent evt)
 		{
+		    var wasBlank = IsBlank;
 			UITouch touch = touches.AnyObject as UITouch;
 			
 			//Obtain the location of the touch and add it to the current path and current_points array.
@@ -664,7 +676,10 @@ namespace SignaturePad {
 			imageView.Image = GetImage (false);
 			updateBounds (touchLocation);
 			SetNeedsDisplay ();
-		}
+
+            if(wasBlank != IsBlank)
+                OnIsBlankChanged(IsBlank);
+        }
 		#endregion
 
 		public override void Draw (CGRect rect)
@@ -701,7 +716,12 @@ namespace SignaturePad {
 			ClearLabel.Frame = new CGRect (w - ThickPad - ClearLabel.Frame.Width, ThickPad, ClearLabel.Frame.Width, clearButtonHeight);
 			imageView.Image = GetImage (false);
 			SetNeedsDisplay ();
-		}
-	}
+        }
+
+        private void OnIsBlankChanged(bool isblank)
+        {
+            IsBlankChanged?.Invoke(this, isblank);
+        }
+    }
 }
 

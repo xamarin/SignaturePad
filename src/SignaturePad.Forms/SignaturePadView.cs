@@ -17,10 +17,12 @@ namespace SignaturePad.Forms
         public static readonly BindableProperty SignatureLineColorProperty = BindableProperty.Create(nameof(SignatureLineColor), typeof(Color), typeof(SignaturePadView), Color.Default);
         public static readonly BindableProperty StrokeColorProperty = BindableProperty.Create(nameof(StrokeColor), typeof(Color), typeof(SignaturePadView), Color.Default);
         public static readonly BindableProperty StrokeWidthProperty = BindableProperty.Create(nameof(StrokeWidth), typeof(float), typeof(SignaturePadView), (float)0);
+        public static readonly BindableProperty IsBlankProperty = BindableProperty.Create(nameof(IsBlank), typeof(bool), typeof(SignaturePadView), true, BindingMode.OneWayToSource);
 
         public bool IsBlank
         {
-            get { return RequestIsBlank(); }
+            get { return (bool)GetValue(IsBlankProperty); }
+            internal set { SetValue(IsBlankProperty, value); }
         }
 
         public string CaptionText

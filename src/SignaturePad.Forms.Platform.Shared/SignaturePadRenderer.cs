@@ -80,6 +80,7 @@ namespace SignaturePad.Forms.UWP
 #else
                 var native = new NativeSignaturePadView();
 #endif
+                native.IsBlankChanged += Native_IsBlankChanged;
                 SetNativeControl(native);
             }
 
@@ -93,6 +94,13 @@ namespace SignaturePad.Forms.UWP
 
                 UpdateAll();
             }
+        }
+
+        private void Native_IsBlankChanged(object sender, bool isBlank)
+        {
+            var native = (NativeSignaturePadView) sender;
+            if (Element != null)
+                Element.IsBlank = isBlank;
         }
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)

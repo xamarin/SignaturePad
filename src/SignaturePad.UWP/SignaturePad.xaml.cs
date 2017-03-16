@@ -131,6 +131,7 @@ namespace SignaturePad.UWP
             // set manipulation mode to allow manipulation event's fire
             //this.InkCanvas.ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY;
             InkCanvas.InkPresenter.InputDeviceTypes = CoreInputDeviceTypes.Mouse | CoreInputDeviceTypes.Touch;
+            InkCanvas.InkPresenter.StrokesCollected += InkPresenter_StrokesCollected;
 
             //this.InkCanvas.ManipulationStarted += InkCanvasOnManipulationStarted;
 
@@ -156,6 +157,14 @@ namespace SignaturePad.UWP
             this.InkCanvas.SizeChanged += InkCanvas_SizeChanged;
         }
 
+        private void InkPresenter_StrokesCollected(InkPresenter sender, InkStrokesCollectedEventArgs args)
+        {
+            if (args.Strokes.Count == sender.StrokeContainer.GetStrokes().Count)
+            {
+                OnIsBlankChanged(false);
+            }
+        }
+
         private async void Core_PointerReleasing(CoreInkIndependentInputSource sender, PointerEventArgs args)
         {
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
@@ -167,6 +176,8 @@ namespace SignaturePad.UWP
         #endregion
 
         #region events
+
+        public event EventHandler<bool> IsBlankChanged;
 
         private void InkCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -190,7 +201,11 @@ namespace SignaturePad.UWP
 
         private void ClearStrokes()
         {
+            var wasBlank = IsBlank;
             this.InkCanvas.InkPresenter.StrokeContainer.Clear();
+
+            if(wasBlank != IsBlank)
+                OnIsBlankChanged(IsBlank);
         }
 
         public void UnsubscribeFromEvents()
@@ -203,6 +218,12 @@ namespace SignaturePad.UWP
 
             if (this.InkCanvas != null)
                 this.InkCanvas.SizeChanged -= InkCanvas_SizeChanged;
+        }
+
+
+        private void OnIsBlankChanged(bool isblank)
+        {
+            IsBlankChanged?.Invoke(this, isblank);
         }
 
         #region save image
@@ -221,7 +242,7 @@ namespace SignaturePad.UWP
                 {
                     using (var session = offscreen.CreateDrawingSession())
                     {
-                        session.Clear(Colors.White);
+                        session.Clear(Colors.Transparent);
                         session.DrawInk(this.InkCanvas.InkPresenter.StrokeContainer.GetStrokes());
                     }
 
