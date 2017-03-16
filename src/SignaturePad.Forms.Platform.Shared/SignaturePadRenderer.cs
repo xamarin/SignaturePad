@@ -33,6 +33,7 @@ using NativeSignaturePadView = SignaturePad.SignaturePadView;
 using NativePoint = System.Drawing.PointF;
 using NativeColor = Android.Graphics.Color;
 #elif WINDOWS_UWP
+using NativePoint = Windows.Foundation.Point;
 using Xamarin.Forms.Platform.UWP;
 using SignaturePad.Forms.UWP;
 using NativeSignaturePadView = SignaturePad.UWP.SignaturePad;
@@ -192,28 +193,20 @@ namespace SignaturePad.Forms.UWP
 
         private void OnPointsRequested(object sender, SignaturePadView.PointsEventArgs e)
         {
-#if WINDOWS_UWP
-            throw new NotImplementedException();
-#else
             var ctrl = Control;
             if (ctrl != null)
             {
                 e.Points = ctrl.Points.Select(p => new Point(p.X, p.Y));
             }
-#endif
         }
 
         private void OnPointsSpecified(object sender, SignaturePadView.PointsEventArgs e)
         {
-#if WINDOWS_UWP
-            throw new NotImplementedException();
-#else
             var ctrl = Control;
             if (ctrl != null)
             {
                 ctrl.LoadPoints(e.Points.Select(p => new NativePoint((float)p.X, (float)p.Y)).ToArray());
             }
-#endif
         }
 
         /// <summary>

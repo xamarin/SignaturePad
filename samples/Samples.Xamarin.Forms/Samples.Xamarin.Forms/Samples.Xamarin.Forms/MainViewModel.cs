@@ -39,6 +39,14 @@ namespace Samples.Xam.Forms
 
         }
 
+        private Point[] _storedPoints;
+
+        public Point[] StoredStoredPoints
+        {
+            get { return _storedPoints ?? new Point[0]; }
+            set { _storedPoints = value; }
+        }
+
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

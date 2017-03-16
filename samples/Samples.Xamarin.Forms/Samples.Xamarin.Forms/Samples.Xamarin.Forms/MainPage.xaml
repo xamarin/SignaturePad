@@ -19,9 +19,19 @@
                             WidthRequest="300"
                             Margin="20,20,20,20"
                             IsBlank="{Binding IsSignatureEmpty}" />
-
-        <Button Clicked="Button_OnClicked"
-                IsEnabled="{Binding IsSignatureEmpty, Converter={StaticResource InvertedBoolConverter}}"
-                Text="Save Signature"/>
+        
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+            <Button Text="Save points" 
+                    Clicked="SavePointsClicked"
+                    IsEnabled="{Binding IsSignatureEmpty, Converter={StaticResource InvertedBoolConverter}}"
+                    />
+            <Button Text="Load points" 
+                    Clicked="LoadPointsClicked"
+                    />
+            <Button Text="Save Signature"
+                    Clicked="SaveSignatureClicked"
+                    IsEnabled="{Binding IsSignatureEmpty, Converter={StaticResource InvertedBoolConverter}}"
+                    />
+        </StackLayout>
     </StackLayout>
 </ContentPage>

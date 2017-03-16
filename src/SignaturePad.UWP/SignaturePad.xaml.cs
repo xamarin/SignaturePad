@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,10 +26,26 @@ namespace SignaturePad.UWP
         /// Property to check if its blank.
         /// </summary>
         public bool IsBlank =>
-            (this.InkCanvas != null) &&
-            (this.InkCanvas.InkPresenter.StrokeContainer.GetStrokes().Any());
+            (this.InkCanvas == null) ||
+            (!this.InkCanvas.InkPresenter.StrokeContainer.GetStrokes().Any());
 
         CoreInkIndependentInputSource coreIIIS;
+
+        public Point[] Points
+        {
+            get
+            {
+                if (IsBlank)
+                    return new Point[0];
+
+                var points = InkCanvas?.InkPresenter?.StrokeContainer?.GetStrokes()
+                    .SelectMany(str => str.GetInkPoints().Concat(new [] {new InkPoint(new Point(0,0),1f)}))
+                    .Select(ip => ip.Position)
+                    .ToArray();
+
+                return points ?? new Point[0];
+            }
+        }
 
         #region UI
 
@@ -298,6 +315,23 @@ namespace SignaturePad.UWP
         }
 
         #endregion
+
+        public void LoadPoints(Point[] loadedPoints)
+        {
+            if (loadedPoints == null || loadedPoints.Count() == 0)
+                return;
+
+            var wasBlank = IsBlank;
+
+            // unfortunately UWP does not allow to create InkStrokes from code..... crap...
+
+            //Display the clear button.
+            if(!IsBlank)
+                btnClear.Visibility = Visibility.Visible;
+
+            if (wasBlank != IsBlank)
+                OnIsBlankChanged(IsBlank);
+        }
 
         #endregion
     }
