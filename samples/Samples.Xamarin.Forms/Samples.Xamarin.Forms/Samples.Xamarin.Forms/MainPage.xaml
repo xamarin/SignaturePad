@@ -12,7 +12,7 @@
                             CaptionText="{Binding Title}" 
                             CaptionTextColor="Teal"
                             BackgroundColor="White"
-                            StrokeColor="Black"
+                            StrokeColor="Blue"
                             VerticalOptions="Center" 
                             HorizontalOptions="Center"
                             HeightRequest="200"
@@ -33,5 +33,9 @@
                     IsEnabled="{Binding IsSignatureEmpty, Converter={StaticResource InvertedBoolConverter}}"
                     />
         </StackLayout>
+        <Frame HorizontalOptions="Center"
+                          BackgroundColor="Black">
+            <Image Source="{Binding ImagePath}" Margin="2,2,2,2" BackgroundColor="White"/>
+        </Frame>
     </StackLayout>
 </ContentPage>

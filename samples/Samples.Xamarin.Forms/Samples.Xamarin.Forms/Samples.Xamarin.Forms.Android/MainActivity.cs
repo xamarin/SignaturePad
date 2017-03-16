@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
+using Xamarin.Forms;
 
 namespace Samples.Xam.Forms.Droid
 {
@@ -15,6 +16,8 @@ namespace Samples.Xam.Forms.Droid
             base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
+
+            DependencyService.Register<IFileSystem, FileSystem>();
             LoadApplication(new App());
         }
     }

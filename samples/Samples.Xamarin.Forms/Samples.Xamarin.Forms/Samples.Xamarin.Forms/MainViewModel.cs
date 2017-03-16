@@ -34,12 +34,24 @@ namespace Samples.Xam.Forms
             }
         }
 
+        public string ImagePath
+        {
+            get { return _imagePath; }
+            set
+            {
+                _imagePath = value;
+                OnPropertyChanged();
+            }
+        }
+
         public void SaveSignature(Stream stream)
         {
-
+            var fs = DependencyService.Get<IFileSystem>();
+            ImagePath = fs.Save("signature.png", stream);
         }
 
         private Point[] _storedPoints;
+        private string _imagePath;
 
         public Point[] StoredStoredPoints
         {

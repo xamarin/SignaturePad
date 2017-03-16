@@ -253,22 +253,20 @@ namespace SignaturePad.UWP
             var height = (float)this.InkCanvas.ActualHeight;
             var currentDpi = DisplayInformation.GetForCurrentView().LogicalDpi;
 
-            using (var fileStream = new InMemoryRandomAccessStream())
+            var fileStream = new InMemoryRandomAccessStream();
+            using (var offscreen = new CanvasRenderTarget(device, width, height, currentDpi))
             {
-                using (var offscreen = new CanvasRenderTarget(device, width, height, currentDpi))
+                using (var session = offscreen.CreateDrawingSession())
                 {
-                    using (var session = offscreen.CreateDrawingSession())
-                    {
-                        session.Clear(Colors.Transparent);
-                        session.DrawInk(this.InkCanvas.InkPresenter.StrokeContainer.GetStrokes());
-                    }
-
-                    await offscreen.SaveAsync(fileStream, type);
-
-                    var stream = fileStream.AsStream();
-                    stream.Position = 0;
-                    return stream;
+                    session.Clear(Colors.Transparent);
+                    session.DrawInk(this.InkCanvas.InkPresenter.StrokeContainer.GetStrokes());
                 }
+
+                await offscreen.SaveAsync(fileStream, type);
+
+                var stream = fileStream.AsStream();
+                stream.Position = 0;
+                return stream;
             }
         }
 

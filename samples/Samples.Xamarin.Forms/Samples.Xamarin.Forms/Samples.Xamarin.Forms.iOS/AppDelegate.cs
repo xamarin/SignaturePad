@@ -1,5 +1,6 @@
 ﻿using Foundation;
 using UIKit;
+using Xamarin.Forms;
 
 namespace Samples.Xam.Forms.iOS
 {
@@ -19,6 +20,9 @@ namespace Samples.Xam.Forms.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
+
+            DependencyService.Register<IFileSystem, FileSystem>();
+
             LoadApplication(new Xam.Forms.App());
 
             return base.FinishedLaunching(app, options);
