@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:forms="clr-namespace:Samples.Xam.Forms;assembly=Samples.Xam.Forms"
+             x:Class="Samples.Xam.Forms.App">
+    <Application.Resources>
+        <!-- Application resource dictionary -->
+
+        <ResourceDictionary >
+            <forms:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+
+    </Application.Resources>
+</Application>
