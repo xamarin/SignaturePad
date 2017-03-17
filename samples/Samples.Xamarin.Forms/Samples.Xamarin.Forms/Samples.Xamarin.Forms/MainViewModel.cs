@@ -47,6 +47,10 @@ namespace Samples.Xam.Forms
         public void SaveSignature(Stream stream)
         {
             var fs = DependencyService.Get<IFileSystem>();
+
+            // clear ImagePath first, so UWP frees the file handle and it can be overridden
+            ImagePath = null;
+
             ImagePath = fs.Save("signature.png", stream);
         }
 

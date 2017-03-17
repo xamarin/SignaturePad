@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Graphics.Display;
@@ -20,6 +21,8 @@ namespace SignaturePad.UWP
 {
     public sealed partial class SignaturePad
     {
+        private const float UWP_DEFAULT_PRESSURE = 0.5f;
+
         #region properties
 
         /// <summary>
@@ -39,7 +42,7 @@ namespace SignaturePad.UWP
                     return new Point[0];
 
                 var points = InkCanvas?.InkPresenter?.StrokeContainer?.GetStrokes()
-                    .SelectMany(str => str.GetInkPoints().Concat(new [] {new InkPoint(new Point(0,0),1f)}))
+                    .SelectMany(str => str.GetInkPoints().Concat(new [] {new InkPoint(new Point(0,0), UWP_DEFAULT_PRESSURE) }))
                     .Select(ip => ip.Position)
                     .ToArray();
 
@@ -321,10 +324,33 @@ namespace SignaturePad.UWP
 
             var wasBlank = IsBlank;
 
-            // unfortunately UWP does not allow to create InkStrokes from code..... crap...
+            var strokeBuilder = new InkStrokeBuilder();
+            var drawingAttributes = this.InkCanvas.InkPresenter.CopyDefaultDrawingAttributes();
+            drawingAttributes.Color = strokeColor;
+            drawingAttributes.Size = new Size(lineWidth, lineWidth);
+            strokeBuilder.SetDefaultDrawingAttributes(drawingAttributes);
+
+            var strokes = new List<InkStroke>();
+            var currentPoints = new List<InkPoint>();
+            foreach (var point in loadedPoints)
+            {
+                if (point == new Point(0, 0))
+                {
+                    var stroke = strokeBuilder.CreateStrokeFromInkPoints(currentPoints, Matrix3x2.Identity);
+                    strokes.Add(stroke);
+                    currentPoints = new List<InkPoint>();
+                }
+                else
+                    currentPoints.Add(new InkPoint(point, UWP_DEFAULT_PRESSURE));
+            }
+
+            if (strokes.Count > 0)
+            {
+                InkCanvas.InkPresenter.StrokeContainer.AddStrokes(strokes);
+            }
 
             //Display the clear button.
-            if(!IsBlank)
+            if (!IsBlank)
                 btnClear.Visibility = Visibility.Visible;
 
             if (wasBlank != IsBlank)
