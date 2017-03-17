@@ -33,9 +33,11 @@ namespace SignaturePad {
 		//Used to determine rectangle that needs to be redrawn.
 		RectF dirtyRect;
 
-		//Create an array containing all of the points used to draw the signature.  Uses null
-		//to indicate a new line.
-		public System.Drawing.PointF[] Points {
+        public event EventHandler<bool> IsBlankChanged;
+
+        //Create an array containing all of the points used to draw the signature.  Uses null
+        //to indicate a new line.
+        public System.Drawing.PointF[] Points {
 			get { 
 				if (points == null || points.Count () == 0)
 					return new System.Drawing.PointF [0];
@@ -320,6 +322,7 @@ namespace SignaturePad {
 		//Delete the current signature.
 		public void Clear ()
 		{
+		    var wasBlank = IsBlank;
 			paths = new List<Path> ();
 			points = new List<System.Drawing.PointF[]> ();
 			currentPoints = new List<System.Drawing.PointF> ();
@@ -330,7 +333,10 @@ namespace SignaturePad {
 
 			canvasView.Invalidate ();
 			Invalidate ();
-		}
+
+            if(wasBlank != IsBlank)
+                OnIsBlankChanged(IsBlank);
+        }
 
 		//Create a UIImage of the currently drawn signature.
 		public Bitmap GetImage (bool shouldCrop = true, bool keepAspectRatio = true)
@@ -577,6 +583,8 @@ namespace SignaturePad {
 			//Display the clear button.
 			ClearLabel.Visibility = ViewStates.Visible; 
 			Invalidate ();
+
+            OnIsBlankChanged(IsBlank);
 		}
 
 		//Update the bounds for the rectangle to be redrawn if necessary for the given point.
@@ -608,6 +616,7 @@ namespace SignaturePad {
 
 		public override bool OnTouchEvent (MotionEvent e)
 		{
+
 			float touchX = e.GetX ();
 			float touchY = e.GetY ();
 
@@ -638,6 +647,7 @@ namespace SignaturePad {
 					(int) (dirtyRect.Bottom + 1));
 				break;
 			case MotionEventActions.Up:
+			    var wasBlank = IsBlank;
 				handleTouch (e);
 				currentPath = smoothedPathWithGranularity (20, out currentPoints);
 
@@ -647,7 +657,11 @@ namespace SignaturePad {
 
 				DrawStrokes ();
 				canvasView.Invalidate ();
-				break;
+
+                if(wasBlank != IsBlank)
+                    OnIsBlankChanged(IsBlank);
+
+                break;
 			default:
 				return false;
 			}
@@ -742,7 +756,12 @@ namespace SignaturePad {
 			smoothedPoints.Add (last);
 
 			return smoothedPath;
-		}
-	}
+        }
+
+        private void OnIsBlankChanged(bool isblank)
+        {
+            IsBlankChanged?.Invoke(this, isblank);
+        }
+    }
 }
 

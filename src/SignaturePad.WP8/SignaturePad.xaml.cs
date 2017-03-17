@@ -30,6 +30,8 @@ namespace Xamarin.Controls
 		List<Point> currentPoints;
 		List<Point []> points;
 
+	    public event EventHandler<bool> IsBlankChanged;
+
 		//Create an array containing all of the points used to draw the signature.  Uses (0, 0)
 		//to indicate a new line.
 		public Point [] Points
@@ -168,6 +170,8 @@ namespace Xamarin.Controls
 		//Delete the current signature
 		public void Clear ()
 		{
+		    var wasBlank = IsBlank;
+
 			currentPoints.Clear ();
 			currentStroke = null;
 			btnClear.Visibility = Visibility.Collapsed;
@@ -175,6 +179,9 @@ namespace Xamarin.Controls
 			image.Source = null;
 			points.Clear ();
 			strokes.Clear ();
+
+            if(wasBlank != IsBlank)
+                OnIsBlankChanged(IsBlank);
 		}
 
 		private void btnClear_Click (object sender, RoutedEventArgs e)
@@ -472,6 +479,7 @@ namespace Xamarin.Controls
 
 		protected void inkPresenter_OnMouseLeftButtonUp (object sender, MouseButtonEventArgs e)
 		{
+		    var wasBlank = IsBlank;
 			Point point = e.GetPosition (inkPresenter);
 
 			// Only add the point to the stroke if it is on the current view.
@@ -489,6 +497,9 @@ namespace Xamarin.Controls
 			
 			currentStroke = null;
 			image.Source = GetImage (false);
+
+            if(wasBlank != IsBlank)
+                OnIsBlankChanged(IsBlank);
 		}
 		#endregion
 
@@ -504,6 +515,8 @@ namespace Xamarin.Controls
 		{
 			if (loadedPoints == null || loadedPoints.Count () == 0)
 				return;
+
+		    var wasBlank = IsBlank;
 
 			var startIndex = 0;
 			var emptyIndex = loadedPoints.ToList ().IndexOf (new Point (0, 0));
@@ -555,6 +568,14 @@ namespace Xamarin.Controls
 			image.Source = GetImage (false);
 			//Display the clear button.
 			btnClear.Visibility = Visibility.Visible;
-		}
-	}
+
+            if(wasBlank != IsBlank)
+                OnIsBlankChanged(IsBlank);
+        }
+
+        private void OnIsBlankChanged(bool isblank)
+        {
+            IsBlankChanged?.Invoke(this, isblank);
+        }
+    }
 }

@@ -7,6 +7,7 @@ using SignaturePad.Forms;
 using SignaturePad.Forms.Platform;
 using Color = Xamarin.Forms.Color;
 using Point = Xamarin.Forms.Point;
+
 #if WINDOWS_PHONE
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -31,6 +32,13 @@ using SignaturePad.Forms.Droid;
 using NativeSignaturePadView = SignaturePad.SignaturePadView;
 using NativePoint = System.Drawing.PointF;
 using NativeColor = Android.Graphics.Color;
+#elif WINDOWS_UWP
+using NativePoint = Windows.Foundation.Point;
+using Xamarin.Forms.Platform.UWP;
+using SignaturePad.Forms.UWP;
+using NativeSignaturePadView = SignaturePad.UWP.SignaturePad;
+using System;
+using Windows.UI.Xaml.Media;
 #endif
 
 [assembly: ExportRenderer(typeof(SignaturePadView), typeof(SignaturePadRenderer))]
@@ -41,6 +49,8 @@ namespace SignaturePad.Forms.WindowsPhone
 namespace SignaturePad.Forms.iOS
 #elif __ANDROID__
 namespace SignaturePad.Forms.Droid
+#elif WINDOWS_UWP
+namespace SignaturePad.Forms.UWP
 #endif
 {
     public class SignaturePadRenderer : ViewRenderer<SignaturePadView, NativeSignaturePadView>
@@ -48,6 +58,20 @@ namespace SignaturePad.Forms.Droid
         protected override void OnElementChanged(ElementChangedEventArgs<SignaturePadView> e)
         {
             base.OnElementChanged(e);
+
+            if (e.OldElement != null)
+            {
+                // Unsubscribe from event handlers and cleanup any resources
+                e.OldElement.ImageStreamRequested -= OnImageStreamRequested;
+                e.OldElement.IsBlankRequested -= OnIsBlankRequested;
+                e.OldElement.PointsRequested -= OnPointsRequested;
+                e.OldElement.PointsSpecified -= OnPointsSpecified;
+            }
+
+#if WINDOWS_UWP
+            if (Control == null && e.NewElement == null)
+                return; // handle back button press
+#endif
 
             if (Control == null)
             {
@@ -57,16 +81,8 @@ namespace SignaturePad.Forms.Droid
 #else
                 var native = new NativeSignaturePadView();
 #endif
+                native.IsBlankChanged += Native_IsBlankChanged;
                 SetNativeControl(native);
-            }
-
-            if (e.OldElement != null)
-            {
-                // Unsubscribe from event handlers and cleanup any resources
-                e.OldElement.ImageStreamRequested -= OnImageStreamRequested;
-                e.OldElement.IsBlankRequested -= OnIsBlankRequested;
-                e.OldElement.PointsRequested -= OnPointsRequested;
-                e.OldElement.PointsSpecified -= OnPointsSpecified;
             }
 
             if (e.NewElement != null)
@@ -81,6 +97,13 @@ namespace SignaturePad.Forms.Droid
             }
         }
 
+        private void Native_IsBlankChanged(object sender, bool isBlank)
+        {
+            var native = (NativeSignaturePadView) sender;
+            if (Element != null)
+                Element.IsBlank = isBlank;
+        }
+
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
@@ -93,8 +116,8 @@ namespace SignaturePad.Forms.Droid
             var ctrl = Control;
             if (ctrl != null)
             {
-                var image = ctrl.GetImage();
 #if WINDOWS_PHONE
+                var image = ctrl.GetImage();
                 ExtendedImage img = null;
                 if (e.ImageFormat == SignatureImageFormat.Png)
                 {
@@ -117,6 +140,7 @@ namespace SignaturePad.Forms.Droid
                     return null;
                 });
 #elif __IOS__
+                var image = ctrl.GetImage();
                 e.ImageStreamTask = Task.Run(() =>
                 {
                     if (e.ImageFormat == SignatureImageFormat.Png)
@@ -130,6 +154,7 @@ namespace SignaturePad.Forms.Droid
                     return null;
                 });
 #elif __ANDROID__
+                var image = ctrl.GetImage();
                 var stream = new MemoryStream();
                 var format = e.ImageFormat == SignatureImageFormat.Png ? Bitmap.CompressFormat.Png : Bitmap.CompressFormat.Jpeg;
                 e.ImageStreamTask = image
@@ -141,6 +166,7 @@ namespace SignaturePad.Forms.Droid
                         image = null;
                         if (task.Result)
                         {
+                            stream.Seek(0, SeekOrigin.Begin);
                             return (Stream)stream;
                         }
                         else
@@ -148,6 +174,11 @@ namespace SignaturePad.Forms.Droid
                             return null;
                         }
                     });
+#elif WINDOWS_UWP
+                var imgFormat = e.ImageFormat == SignatureImageFormat.Png
+                    ? Microsoft.Graphics.Canvas.CanvasBitmapFileFormat.Png
+                    : Microsoft.Graphics.Canvas.CanvasBitmapFileFormat.Jpeg;
+                e.ImageStreamTask = ctrl.GetImageStreamAsync(imgFormat);
 #endif
             }
         }
@@ -220,7 +251,7 @@ namespace SignaturePad.Forms.Droid
             if (Element.SignatureLineColor != Color.Default)
             {
                 var color = Element.SignatureLineColor.ToNative();
-#if WINDOWS_PHONE
+#if WINDOWS_PHONE || WINDOWS_UWP
                 Control.SignatureLineBrush = new SolidColorBrush(color);
 #else
                 Control.SignatureLineColor = color;
@@ -277,7 +308,7 @@ namespace SignaturePad.Forms.Droid
             else if (property == SignaturePadView.SignatureLineColorProperty.PropertyName)
             {
                 var color = Element.SignatureLineColor.ToNative();
-#if WINDOWS_PHONE
+#if WINDOWS_PHONE || WINDOWS_UWP
                 Control.SignatureLineBrush = new SolidColorBrush(color);
 #else
                 Control.SignatureLineColor = color;
@@ -292,5 +323,15 @@ namespace SignaturePad.Forms.Droid
                 Control.StrokeWidth = Element.StrokeWidth;
             }
         }
+
+#if WINDOWS_UWP
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                Control?.UnsubscribeFromEvents();
+
+            base.Dispose(disposing);
+        }
+#endif
     }
 }
