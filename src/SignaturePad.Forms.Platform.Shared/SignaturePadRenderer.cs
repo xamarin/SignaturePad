@@ -166,6 +166,7 @@ namespace SignaturePad.Forms.UWP
                         image = null;
                         if (task.Result)
                         {
+                            stream.Seek(0, SeekOrigin.Begin);
                             return (Stream)stream;
                         }
                         else
