@@ -96,6 +96,11 @@ namespace SignaturePad.Forms
             return args.ImageStreamTask;
         }
 
+        public void Clear ()
+        {
+            ClearRequested?.Invoke (this, null);
+        }
+
         private IEnumerable<Point> GetSignaturePoints()
         {
             var args = new PointsEventArgs();
@@ -119,6 +124,7 @@ namespace SignaturePad.Forms
         internal event EventHandler<IsBlankRequestedEventArgs> IsBlankRequested;
         internal event EventHandler<PointsEventArgs> PointsRequested;
         internal event EventHandler<PointsEventArgs> PointsSpecified;
+        internal event EventHandler<EventArgs> ClearRequested;
 
         internal class ImageStreamRequestedEventArgs : EventArgs
         {
