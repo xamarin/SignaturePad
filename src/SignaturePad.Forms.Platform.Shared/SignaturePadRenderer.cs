@@ -67,6 +67,7 @@ namespace SignaturePad.Forms.Droid
                 e.OldElement.IsBlankRequested -= OnIsBlankRequested;
                 e.OldElement.PointsRequested -= OnPointsRequested;
                 e.OldElement.PointsSpecified -= OnPointsSpecified;
+                e.OldElement.ClearRequested -= OnClearRequested;
             }
 
             if (e.NewElement != null)
@@ -76,6 +77,7 @@ namespace SignaturePad.Forms.Droid
                 e.NewElement.IsBlankRequested += OnIsBlankRequested;
                 e.NewElement.PointsRequested += OnPointsRequested;
                 e.NewElement.PointsSpecified += OnPointsSpecified;
+                e.NewElement.ClearRequested += OnClearRequested;
 
                 UpdateAll();
             }
@@ -176,6 +178,14 @@ namespace SignaturePad.Forms.Droid
             if (ctrl != null)
             {
                 ctrl.LoadPoints(e.Points.Select(p => new NativePoint((float)p.X, (float)p.Y)).ToArray());
+            }
+        }
+
+        private void OnClearRequested (object sender, System.EventArgs e)
+        {
+            var ctrl = Control;
+            if (ctrl != null) {
+                ctrl.Clear ();
             }
         }
 
