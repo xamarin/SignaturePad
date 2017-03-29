@@ -3,7 +3,7 @@
   <metadata>
     <id>Xamarin.Controls.SignaturePad.Forms</id>
     <title>SignaturePad for Xamarin.Forms</title>
-    <version>1.4.0.0</version>
+    <version>1.4.1</version>
     <authors>Xamarin, Inc.</authors>
     <owners>Xamarin, Inc.</owners>
     <licenseUrl>https://components.xamarin.com/license/signature-pad</licenseUrl>
@@ -15,15 +15,15 @@
     <dependencies>
       <group targetFramework="MonoAndroid">
         <dependency id="Xamarin.Forms" version="2.2.0" />
-        <dependency id="Xamarin.Controls.SignaturePad" version="1.4.0.0" />
+        <dependency id="Xamarin.Controls.SignaturePad" version="1.4.1" />
       </group>
       <group targetFramework="Xamarin.iOS">
         <dependency id="Xamarin.Forms" version="2.2.0" />
-        <dependency id="Xamarin.Controls.SignaturePad" version="1.4.0.0" />
+        <dependency id="Xamarin.Controls.SignaturePad" version="1.4.1" />
       </group>
       <group targetFramework="wp8">
         <dependency id="Xamarin.Forms" version="2.2.0" />
-        <dependency id="Xamarin.Controls.SignaturePad" version="1.4.0.0" />
+        <dependency id="Xamarin.Controls.SignaturePad" version="1.4.1" />
         <dependency id="ImageTools" version="0.3.1" />
       </group>
       <group targetFramework="portable-net45+win8+wp8">
