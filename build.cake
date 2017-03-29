@@ -74,7 +74,7 @@ buildSpec = new BuildSpec () {
 	},
 
 	Samples = new ISolutionBuilder [] {
-		new DefaultSolutionBuilder { SolutionPath = "./samples/Sample.Android/Sample.Android.sln", BuildsOn = BuildPlatforms.Mac | BuildPlatforms.Windows}, 
+		new DefaultSolutionBuilder { SolutionPath = "./samples/Sample.Android/Sample.Android.sln", BuildsOn = BuildPlatforms.Mac | BuildPlatforms.Windows },
 		new IOSSolutionBuilder { SolutionPath = "./samples/Sample.iOS/Sample.iOS.sln", BuildsOn = BuildPlatforms.Mac },
 		new IOSSolutionBuilder { SolutionPath = "./samples/Sample.Forms/Sample.Forms.Mac.sln", BuildsOn = BuildPlatforms.Mac },
 		new WpSolutionBuilder { SolutionPath = "./samples/Sample.WP8/Sample.WP8.sln", BuildsOn = BuildPlatforms.Windows }, 
@@ -82,15 +82,21 @@ buildSpec = new BuildSpec () {
 	},
 
 	NuGets = new [] {
-		new NuGetInfo { NuSpec = "./nuget/Xamarin.Controls.SignaturePad.nuspec", BuildsOn = BuildPlatforms.Mac },
-		new NuGetInfo { NuSpec = "./nuget/Xamarin.Controls.SignaturePad.Forms.nuspec", BuildsOn = BuildPlatforms.Mac },
+		new NuGetInfo { NuSpec = "./nuget/Xamarin.Controls.SignaturePad.nuspec", BuildsOn = BuildPlatforms.Mac | BuildPlatforms.Windows },
+		new NuGetInfo { NuSpec = "./nuget/Xamarin.Controls.SignaturePad.Forms.nuspec", BuildsOn = BuildPlatforms.Mac | BuildPlatforms.Windows },
 	},
 
 	Components = new [] {
-		new Component {ManifestDirectory = "./component", BuildsOn = BuildPlatforms.Mac },
+		new Component { ManifestDirectory = "./component", BuildsOn = BuildPlatforms.Mac | BuildPlatforms.Windows },
 	},
 };
 
 SetupXamarinBuildTasks (buildSpec, Tasks, Task);
+
+Task ("CI")
+    .IsDependentOn ("libs")
+    .IsDependentOn ("nuget")
+    .IsDependentOn ("component")
+    .IsDependentOn ("samples");
 
 RunTarget (TARGET);
