@@ -3,6 +3,10 @@ using Color = Xamarin.Forms.Color;
 using System.Windows.Controls;
 using System.Windows.Media;
 using NativeColor = System.Windows.Media.Color;
+#elif WINDOWS_UWP
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
+using NativeColor = Windows.UI.Color;
 #elif __IOS__
 using UIKit;
 using Xamarin.Forms.Platform.iOS;
@@ -13,11 +17,19 @@ using Xamarin.Forms.Platform.Android;
 using NativeColor = Android.Graphics.Color;
 #endif
 
-namespace SignaturePad.Forms.Platform
+#if WINDOWS_PHONE
+namespace SignaturePad.Forms.WindowsPhone
+#elif WINDOWS_UWP
+namespace SignaturePad.Forms.UWP
+#elif __IOS__
+namespace SignaturePad.Forms.iOS
+#elif __ANDROID__
+namespace SignaturePad.Forms.Droid
+#endif
 {
     public static class ColorExtensions
     {
-#if WINDOWS_PHONE
+#if WINDOWS_PHONE || WINDOWS_UWP
         public static NativeColor ToWindows(this Color color)
         {
             return NativeColor.FromArgb(
@@ -30,7 +42,7 @@ namespace SignaturePad.Forms.Platform
 
         public static NativeColor ToNative(this Color color)
         {
-#if WINDOWS_PHONE
+#if WINDOWS_PHONE || WINDOWS_UWP
             return color.ToWindows();
 #elif __IOS__
             return color.ToUIColor();
@@ -39,7 +51,7 @@ namespace SignaturePad.Forms.Platform
 #endif
         }
 
-#if WINDOWS_PHONE
+#if WINDOWS_PHONE || WINDOWS_UWP
         public static void SetTextColor(this TextBlock textBlock, Color color)
         {
             textBlock.Foreground = new SolidColorBrush(color.ToNative());

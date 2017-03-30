@@ -3,7 +3,7 @@
 
 id: signature-pad
 name: Signature Pad for Xamarin and Windows
-version: "1.4.1"
+version: "1.5.0"
 summary: Makes capturing, saving, and displaying signatures extremely simple.
 publisher: Xamarin, Inc.
 publisher-url: http://xamarin.com/
@@ -25,10 +25,17 @@ libraries:
   android: ../output/android/SignaturePad.dll
   ios-unified: ../output/ios-unified/SignaturePad.dll
   wp8: ../output/wp8/SignaturePad.dll
+  uwp: ../output/uwp/SignaturePad.dll
 packages:
-  android: Xamarin.Controls.SignaturePad, Version=1.4.1
-  ios-unified: Xamarin.Controls.SignaturePad, Version=1.4.1
-  wp8: Xamarin.Controls.SignaturePad, Version=1.4.1
+  android: Xamarin.Controls.SignaturePad, Version=1.5.0
+  ios-unified: Xamarin.Controls.SignaturePad, Version=1.5.0
+  wp8: Xamarin.Controls.SignaturePad, Version=1.5.0
+  uwp: Xamarin.Controls.SignaturePad, Version=1.5.0
+additional-files:
+  - src: "../output/uwp/SignaturePad.pri"
+    dst: "lib/uwp/SignaturePad.pri"
+  - src: "../output/uwp/SignaturePad.xr.xml"
+    dst: "lib/uwp/SignaturePad/SignaturePad.xr.xml"
 
 samples:
   - name: "Android Sample"
@@ -53,6 +60,14 @@ samples:
       - SignaturePad.WP8
     installNuGets:
       - project: Sample.WP8
+        packages:
+          - Xamarin.Controls.SignaturePad
+  - name: "UWP Sample"
+    path: ../samples/Sample.UWP/Sample.UWP.sln
+    removeProjects:
+      - SignaturePad.UWP
+    installNuGets:
+      - project: Sample.UWP
         packages:
           - Xamarin.Controls.SignaturePad
   - name: "Xamarin.Forms Sample"

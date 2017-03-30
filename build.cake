@@ -1,4 +1,4 @@
-#tool nuget:?package=XamarinComponent&version=1.1.0.40
+#tool nuget:?package=XamarinComponent&version=1.1.0.49
 
 #addin nuget:?package=Cake.Xamarin.Build&version=1.0.14.0
 #addin nuget:?package=Cake.Xamarin
@@ -69,6 +69,22 @@ buildSpec = new BuildSpec () {
 					FromFile = "./src/SignaturePad.Forms.WindowsPhone/bin/Release/SignaturePad.Forms.WindowsPhone.dll",
 					ToDirectory = "output/wp8",
 				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.UWP/bin/Release/SignaturePad.dll",
+					ToDirectory = "output/uwp",
+				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.UWP/bin/Release/SignaturePad.pri",
+					ToDirectory = "output/uwp",
+				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.UWP/bin/Release/SignaturePad.xr.xml",
+					ToDirectory = "output/uwp",
+				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.Forms.UWP/bin/Release/SignaturePad.Forms.UWP.dll",
+					ToDirectory = "output/uwp",
+				},
 			}
 		}
 	},
@@ -78,6 +94,7 @@ buildSpec = new BuildSpec () {
 		new IOSSolutionBuilder { SolutionPath = "./samples/Sample.iOS/Sample.iOS.sln", BuildsOn = BuildPlatforms.Mac },
 		new IOSSolutionBuilder { SolutionPath = "./samples/Sample.Forms/Sample.Forms.Mac.sln", BuildsOn = BuildPlatforms.Mac },
 		new WpSolutionBuilder { SolutionPath = "./samples/Sample.WP8/Sample.WP8.sln", BuildsOn = BuildPlatforms.Windows }, 
+		new WpSolutionBuilder { SolutionPath = "./samples/Sample.UWP/Sample.UWP.sln", BuildsOn = BuildPlatforms.Windows }, 
 		new WpSolutionBuilder { SolutionPath = "./samples/Sample.Forms/Sample.Forms.Win.sln", BuildsOn = BuildPlatforms.Windows }, 
 	},
 
@@ -94,9 +111,9 @@ buildSpec = new BuildSpec () {
 SetupXamarinBuildTasks (buildSpec, Tasks, Task);
 
 Task ("CI")
-    .IsDependentOn ("libs")
-    .IsDependentOn ("nuget")
-    .IsDependentOn ("component")
-    .IsDependentOn ("samples");
+	.IsDependentOn ("libs")
+	.IsDependentOn ("nuget")
+	.IsDependentOn ("component")
+	.IsDependentOn ("samples");
 
 RunTarget (TARGET);
