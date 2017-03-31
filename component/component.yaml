@@ -99,5 +99,9 @@ samples:
         packages:
           - Xamarin.Controls.SignaturePad
           - Xamarin.Controls.SignaturePad.Forms
+      - project: Samples.UWP
+        packages:
+          - Xamarin.Controls.SignaturePad
+          - Xamarin.Controls.SignaturePad.Forms
 
 ...
