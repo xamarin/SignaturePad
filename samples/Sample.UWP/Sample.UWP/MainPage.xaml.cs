@@ -21,7 +21,6 @@ namespace Sample.UWP
         private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
             points = signatureView.Points;
-            signatureView.StrokeColor = Windows.UI.Colors.Red;
 
             await new MessageDialog("Vector saved!").ShowAsync();
         }

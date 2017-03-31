@@ -8,24 +8,27 @@
     xmlns:my="using:Xamarin.Controls"
     mc:Ignorable="d">
 
-    <Grid x:Name="LayoutRoot" Background="LightGray">
+    <Grid x:Name="LayoutRoot" Background="LightGray" Padding="12">
 
-        <my:SignaturePad x:Name="signatureView" Margin="10,10,10,78" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="12" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <my:SignaturePad x:Name="signatureView" Grid.Row="0" />
 
         <Button x:Name="btnSave" Content="Save" Click="btnSave_Click" 
                 Background="DarkGray" Foreground="Black" BorderBrush="Black" 
-                Height="72" Width="160" 
-                HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Bottom" />
+                HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="2" />
 
         <Button x:Name="btnLoad" Content="Load Last" Click="btnLoad_Click" 
                 Background="DarkGray" Foreground="Black" BorderBrush="Black" 
-                Height="72" Width="160" 
-                HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Bottom" />
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="2" />
 
         <Button x:Name="btnSaveImage" Content="Save Image" Click="btnSaveImage_Click" 
                 Background="DarkGray" Foreground="Black" BorderBrush="Black" 
-                Height="72" Width="180" 
-                HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Bottom" />
+                HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Row="2" />
 
     </Grid>
 
