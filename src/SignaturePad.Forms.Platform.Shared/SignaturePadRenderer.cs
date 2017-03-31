@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using System.Linq;
 using Xamarin.Forms;
 using SignaturePad.Forms;
-using SignaturePad.Forms.Platform;
 using Color = Xamarin.Forms.Color;
 using Point = Xamarin.Forms.Point;
 #if WINDOWS_PHONE
@@ -16,6 +15,15 @@ using Xamarin.Forms.Platform.WinPhone;
 using SignaturePad.Forms.WindowsPhone;
 using NativeSignaturePadView = Xamarin.Controls.SignaturePad;
 using NativePoint = System.Windows.Point;
+#elif WINDOWS_UWP
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
+using Xamarin.Forms.Platform.UWP;
+using Microsoft.Graphics.Canvas;
+using SignaturePad.Forms.UWP;
+using NativeSignaturePadView = Xamarin.Controls.SignaturePad;
+using NativePoint = Windows.Foundation.Point;
 #elif __IOS__
 using UIKit;
 using Xamarin.Forms.Platform.iOS;
@@ -35,8 +43,13 @@ using NativeColor = Android.Graphics.Color;
 
 [assembly: ExportRenderer(typeof(SignaturePadView), typeof(SignaturePadRenderer))]
 
+// backwards compatibility, can be removed later
+namespace SignaturePad.Forms.Platform { }
+
 #if WINDOWS_PHONE
 namespace SignaturePad.Forms.WindowsPhone
+#elif WINDOWS_UWP
+namespace SignaturePad.Forms.UWP
 #elif __IOS__
 namespace SignaturePad.Forms.iOS
 #elif __ANDROID__
@@ -95,8 +108,8 @@ namespace SignaturePad.Forms.Droid
             var ctrl = Control;
             if (ctrl != null)
             {
-                var image = ctrl.GetImage();
 #if WINDOWS_PHONE
+                var image = ctrl.GetImage();
                 ExtendedImage img = null;
                 if (e.ImageFormat == SignatureImageFormat.Png)
                 {
@@ -118,7 +131,11 @@ namespace SignaturePad.Forms.Droid
                     }
                     return null;
                 });
+#elif WINDOWS_UWP
+                var format = e.ImageFormat == SignatureImageFormat.Png ? CanvasBitmapFileFormat.Png : CanvasBitmapFileFormat.Jpeg;
+                e.ImageStreamTask = ctrl.GetImageStream(format);
 #elif __IOS__
+                var image = ctrl.GetImage();
                 e.ImageStreamTask = Task.Run(() =>
                 {
                     if (e.ImageFormat == SignatureImageFormat.Png)
@@ -132,6 +149,7 @@ namespace SignaturePad.Forms.Droid
                     return null;
                 });
 #elif __ANDROID__
+                var image = ctrl.GetImage();
                 var stream = new MemoryStream();
                 var format = e.ImageFormat == SignatureImageFormat.Png ? Bitmap.CompressFormat.Png : Bitmap.CompressFormat.Jpeg;
                 e.ImageStreamTask = image
@@ -231,7 +249,7 @@ namespace SignaturePad.Forms.Droid
             if (Element.SignatureLineColor != Color.Default)
             {
                 var color = Element.SignatureLineColor.ToNative();
-#if WINDOWS_PHONE
+#if WINDOWS_PHONE || WINDOWS_UWP
                 Control.SignatureLineBrush = new SolidColorBrush(color);
 #else
                 Control.SignatureLineColor = color;
@@ -288,7 +306,7 @@ namespace SignaturePad.Forms.Droid
             else if (property == SignaturePadView.SignatureLineColorProperty.PropertyName)
             {
                 var color = Element.SignatureLineColor.ToNative();
-#if WINDOWS_PHONE
+#if WINDOWS_PHONE || WINDOWS_UWP
                 Control.SignatureLineBrush = new SolidColorBrush(color);
 #else
                 Control.SignatureLineColor = color;

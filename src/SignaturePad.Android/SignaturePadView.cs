@@ -31,7 +31,10 @@ namespace SignaturePad {
 		float lastY;
 
 		//Used to determine rectangle that needs to be redrawn.
-		RectF dirtyRect;
+		float dirtyRectLeft;
+		float dirtyRectTop;
+		float dirtyRectRight;
+		float dirtyRectBottom;
 
 		//Create an array containing all of the points used to draw the signature.  Uses null
 		//to indicate a new line.
@@ -313,8 +316,6 @@ namespace SignaturePad {
 			paths = new List<Path> ();
 			points = new List<System.Drawing.PointF[]> ();
 			currentPoints = new List<System.Drawing.PointF> ();
-
-			dirtyRect = new RectF ();
 		}
 
 		//Delete the current signature.
@@ -582,28 +583,28 @@ namespace SignaturePad {
 		//Update the bounds for the rectangle to be redrawn if necessary for the given point.
 		void updateBounds (float touchX, float touchY)
 		{
-			if (touchX < dirtyRect.Left)
-				dirtyRect.Left = touchX;
-			else if (touchX > dirtyRect.Right)
-				dirtyRect.Right = touchX;
+			if (touchX < dirtyRectLeft)
+				dirtyRectLeft = touchX;
+			else if (touchX > dirtyRectRight)
+				dirtyRectRight = touchX;
 			
-			if (touchY < dirtyRect.Top)
-				dirtyRect.Top = touchY;
-			else if (touchY > dirtyRect.Bottom)
-				dirtyRect.Bottom = touchY;
+			if (touchY < dirtyRectTop)
+				dirtyRectTop = touchY;
+			else if (touchY > dirtyRectBottom)
+				dirtyRectBottom = touchY;
 		}
 
 		//Set the bounds for the rectangle that will need to be redrawn to show the drawn path.
 		void resetBounds (float touchX, float touchY)
 		{
 			if (touchX < lastX)
-				dirtyRect.Left = touchX;
+				dirtyRectLeft = touchX;
 			if (touchX > lastX)
-				dirtyRect.Right = touchX;
+				dirtyRectRight = touchX;
 			if (touchY < lastY)
-				dirtyRect.Top = touchY;
+				dirtyRectTop = touchY;
 			if (touchY > lastY)
-				dirtyRect.Bottom = touchY;
+				dirtyRectBottom = touchY;
 		}
 
 		public override bool OnTouchEvent (MotionEvent e)
@@ -632,10 +633,10 @@ namespace SignaturePad {
 			case MotionEventActions.Move:
 				handleTouch (e);
 				canvasView.Invalidate(
-					(int) (dirtyRect.Left - 1),
-					(int) (dirtyRect.Top - 1),
-					(int) (dirtyRect.Right + 1),
-					(int) (dirtyRect.Bottom + 1));
+					(int) (dirtyRectLeft - 1),
+					(int) (dirtyRectTop - 1),
+					(int) (dirtyRectRight + 1),
+					(int) (dirtyRectBottom + 1));
 				break;
 			case MotionEventActions.Up:
 				handleTouch (e);

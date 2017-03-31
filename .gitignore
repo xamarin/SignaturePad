@@ -4,6 +4,7 @@
 # Repo-specific files
 tools/
 output/
+**/Resources/Resource.Designer.cs
 
 # User-specific files
 *.suo

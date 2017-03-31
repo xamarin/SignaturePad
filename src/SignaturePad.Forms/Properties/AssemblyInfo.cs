@@ -6,3 +6,4 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo ("SignaturePad.Forms.Droid")]
 [assembly: InternalsVisibleTo ("SignaturePad.Forms.iOS")]
 [assembly: InternalsVisibleTo ("SignaturePad.Forms.WindowsPhone")]
+[assembly: InternalsVisibleTo ("SignaturePad.Forms.UWP")]

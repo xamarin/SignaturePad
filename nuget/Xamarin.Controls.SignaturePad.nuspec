@@ -3,19 +3,27 @@
   <metadata>
     <id>Xamarin.Controls.SignaturePad</id>
     <title>SignaturePad for Xamarin and Windows</title>
-    <version>1.4.0.0</version>
+    <version>1.5.0</version>
     <authors>Xamarin, Inc.</authors>
     <owners>Xamarin, Inc.</owners>
     <licenseUrl>https://components.xamarin.com/license/signature-pad</licenseUrl>
     <projectUrl>https://components.xamarin.com/view/signature-pad</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Makes capturing, saving, and displaying signatures extremely simple.</description>
-    <copyright>Copyright (c) Xamarin Inc. 2016</copyright>
-    <tags>xamarin,signature,handwriting,windows,ios,android,windows phone</tags>
+    <copyright>Copyright (c) Xamarin Inc. 2017</copyright>
+    <tags>xamarin,signature,handwriting,windows,ios,android,windows phone,uwp</tags>
+    <dependencies>
+      <group targetFramework="uap10.0">
+        <dependency id="Win2D.uwp" version="1.20.0" />
+      </group>
+    </dependencies>
   </metadata>
   <files>
     <file src="output/android/SignaturePad.dll" target="lib/MonoAndroid/SignaturePad.dll" />
     <file src="output/ios-unified/SignaturePad.dll" target="lib/Xamarin.iOS/SignaturePad.dll" />
     <file src="output/wp8/SignaturePad.dll" target="lib/wp8/SignaturePad.dll" />
+    <file src="output/uwp/SignaturePad.dll" target="lib/uap10.0/SignaturePad.dll" />
+    <file src="output/uwp/SignaturePad.pri" target="lib/uap10.0/SignaturePad.pri" />
+    <file src="output/uwp/SignaturePad.xr.xml" target="lib/uap10.0/SignaturePad/SignaturePad.xr.xml" />
   </files>
 </package>

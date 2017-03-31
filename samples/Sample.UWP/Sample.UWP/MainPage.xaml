@@ -1,0 +1,35 @@
+﻿<Page
+    x:Class="Sample.UWP.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Sample.UWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:my="using:Xamarin.Controls"
+    mc:Ignorable="d">
+
+    <Grid x:Name="LayoutRoot" Background="LightGray" Padding="12">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="12" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <my:SignaturePad x:Name="signatureView" Grid.Row="0" />
+
+        <Button x:Name="btnSave" Content="Save" Click="btnSave_Click" 
+                Background="DarkGray" Foreground="Black" BorderBrush="Black" 
+                HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="2" />
+
+        <Button x:Name="btnLoad" Content="Load Last" Click="btnLoad_Click" 
+                Background="DarkGray" Foreground="Black" BorderBrush="Black" 
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="2" />
+
+        <Button x:Name="btnSaveImage" Content="Save Image" Click="btnSaveImage_Click" 
+                Background="DarkGray" Foreground="Black" BorderBrush="Black" 
+                HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Row="2" />
+
+    </Grid>
+
+</Page>
