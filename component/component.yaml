@@ -36,8 +36,6 @@ additional-files:
     dst: "lib/uwp/SignaturePad.pri"
   - src: "../output/uwp/SignaturePad.xr.xml"
     dst: "lib/uwp/SignaturePad/SignaturePad.xr.xml"
-  - src: "../samples/Sample.Forms/Samples.UWP/project.json"
-    dst: "samples/Sample.Forms/Samples.UWP/project.json"
 
 samples:
   - name: "Android Sample"
