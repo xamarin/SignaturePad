@@ -62,7 +62,7 @@ namespace SignaturePad.Forms.Droid
         {
             base.OnElementChanged(e);
 
-            if (Control == null)
+            if (Control == null && e.NewElement != null)
             {
                 // Instantiate the native control and assign it to the Control property
 #if __ANDROID__
