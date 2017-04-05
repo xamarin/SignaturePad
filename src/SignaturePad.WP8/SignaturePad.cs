@@ -1,120 +1,127 @@
-using System;
-using System.ComponentModel;
-using CoreGraphics;
-using Foundation;
-using UIKit;
+﻿using System.IO;
 using System.Threading.Tasks;
-using System.IO;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Xamarin.Controls
 {
-	[Register ("SignaturePadView")]
-	[DesignTimeVisible (true)]
-	public partial class SignaturePadView : UIView
+	public class SignaturePad : Grid
 	{
-		public SignaturePadView ()
+		public SignaturePad ()
 		{
 			Initialize ();
 		}
 
-		public SignaturePadView (NSCoder coder) : base (coder)
+		private void Initialize ()
 		{
-			Initialize (/* ? baseProperties: false ? */);
-		}
+			const int ThinPad = 3;
+			const int ThickPad = 20;
+			const int LineHeight = 2;
 
-		public SignaturePadView (IntPtr ptr) : base (ptr)
-		{
-			Initialize (false);
-		}
+			RowDefinitions.Add (new RowDefinition { Height = new GridLength (1, GridUnitType.Star) });
+			RowDefinitions.Add (new RowDefinition { Height = GridLength.Auto });
 
-		public SignaturePadView (CGRect frame)
-			: base (frame)
-		{
-			Initialize ();
-		}
-
-		private void Initialize (bool baseProperties = true)
-		{
 			// add the background view
 			{
-				BackgroundImageView = new UIImageView ();
-				AddSubview (BackgroundImageView);
+				BackgroundImageView = new Image ();
+				BackgroundImageView.SetValue (Grid.HorizontalAlignmentProperty, HorizontalAlignment.Stretch);
+				BackgroundImageView.SetValue (Grid.VerticalAlignmentProperty, VerticalAlignment.Stretch);
+				BackgroundImageView.SetValue (Grid.RowProperty, 0);
+				Children.Add (BackgroundImageView);
 			}
 
 			// add the main signature view
 			{
 				SignaturePadCanvas = new SignaturePadCanvasView ();
+				SignaturePadCanvas.SetValue (Grid.HorizontalAlignmentProperty, HorizontalAlignment.Stretch);
+				SignaturePadCanvas.SetValue (Grid.VerticalAlignmentProperty, VerticalAlignment.Stretch);
+				SignaturePadCanvas.SetValue (Grid.RowProperty, 0);
 				SignaturePadCanvas.StrokeCompleted += (sender, e) => UpdateUi ();
-				AddSubview (SignaturePadCanvas);
+				Children.Add (SignaturePadCanvas);
 			}
 
 			// add the caption
 			{
-				Caption = new UILabel ()
+				Caption = new TextBlock ()
 				{
 					Text = "Sign here.",
-					Font = UIFont.BoldSystemFontOfSize (11f),
-					BackgroundColor = UIColor.Clear,
-					TextColor = UIColor.Gray,
-					TextAlignment = UITextAlignment.Center
+					FontSize = 11,
+					Foreground = new SolidColorBrush (Colors.Gray),
+					TextAlignment = TextAlignment.Center,
+					Margin = new Thickness (ThinPad)
 				};
-				AddSubview (Caption);
+				Caption.SetValue (Grid.HorizontalAlignmentProperty, HorizontalAlignment.Stretch);
+				Caption.SetValue (Grid.VerticalAlignmentProperty, VerticalAlignment.Bottom);
+				Caption.SetValue (Grid.RowProperty, 1);
+				Children.Add (Caption);
 			}
 
 			// add the signature line
 			{
-				SignatureLine = new UIView ()
+				SignatureLine = new Border ()
 				{
-					BackgroundColor = UIColor.Gray
+					Background = new SolidColorBrush (Colors.Gray),
+					Height = LineHeight,
+					Margin = new Thickness (ThickPad, 0, ThickPad, 0)
 				};
-				AddSubview (SignatureLine);
+				SignatureLine.SetValue (Grid.HorizontalAlignmentProperty, HorizontalAlignment.Stretch);
+				SignatureLine.SetValue (Grid.VerticalAlignmentProperty, VerticalAlignment.Bottom);
+				Children.Add (SignatureLine);
 			}
 
 			// add the prompt
 			{
-				SignaturePrompt = new UILabel ()
+				SignaturePrompt = new TextBlock ()
 				{
 					Text = "X",
-					Font = UIFont.BoldSystemFontOfSize (20f),
-					BackgroundColor = UIColor.Clear,
-					TextColor = UIColor.Gray
+					FontSize = 20,
+					FontWeight = FontWeights.Bold,
+					Margin = new Thickness (ThickPad, 0, 0, ThinPad)
 				};
-				AddSubview (SignaturePrompt);
+				SignaturePrompt.SetValue (Grid.HorizontalAlignmentProperty, HorizontalAlignment.Left);
+				SignaturePrompt.SetValue (Grid.VerticalAlignmentProperty, VerticalAlignment.Bottom);
+				Children.Add (SignaturePrompt);
 			}
 
 			// add the clear label
 			{
-				ClearLabel = UIButton.FromType (UIButtonType.Custom);
-				ClearLabel.SetTitle ("Clear", UIControlState.Normal);
-				ClearLabel.Font = UIFont.BoldSystemFontOfSize (11f);
-				ClearLabel.BackgroundColor = UIColor.Clear;
-				ClearLabel.SetTitleColor (UIColor.Gray, UIControlState.Normal);
-				AddSubview (ClearLabel);
+				ClearLabel = new TextBlock ()
+				{
+					Text = "Clear",
+					FontSize = 11,
+					FontWeight = FontWeights.Bold,
+					Visibility = Visibility.Collapsed,
+					Foreground = new SolidColorBrush (Colors.Gray),
+					Margin = new Thickness (0, ThickPad, ThickPad, 0)
+				};
+				ClearLabel.SetValue (Grid.HorizontalAlignmentProperty, HorizontalAlignment.Right);
+				ClearLabel.SetValue (Grid.VerticalAlignmentProperty, VerticalAlignment.Top);
+				Children.Add (ClearLabel);
 
 				// attach the "clear" command
-				ClearLabel.TouchUpInside += (sender, e) => Clear ();
+				ClearLabel.MouseLeftButtonUp += (sender, e) => Clear ();
 			}
 
 			// clear / initialize the view
 			Clear ();
 		}
 
-		public CGPoint[][] Strokes => SignaturePadCanvas.Strokes;
+		public Point[][] Strokes => SignaturePadCanvas.Strokes;
 
-		public CGPoint[] Points => SignaturePadCanvas.Points;
+		public Point[] Points => SignaturePadCanvas.Points;
 
 		public bool IsBlank => SignaturePadCanvas.IsBlank;
 
 		public SignaturePadCanvasView SignaturePadCanvas { get; private set; }
 
-		[Export ("StrokeColor"), Browsable (true)]
-		public UIColor StrokeColor
+		public Color StrokeColor
 		{
 			get { return SignaturePadCanvas.StrokeColor; }
 			set { SignaturePadCanvas.StrokeColor = value; }
 		}
 
-		[Export ("StrokeWidth"), Browsable (true)]
 		public float StrokeWidth
 		{
 			get { return SignaturePadCanvas.StrokeWidth; }
@@ -128,7 +135,7 @@ namespace Xamarin.Controls
 		/// Text value defaults to 'X'.
 		/// </remarks>
 		/// <value>The signature prompt.</value>
-		public UILabel SignaturePrompt { get; private set; }
+		public TextBlock SignaturePrompt { get; private set; }
 
 		/// <summary>
 		/// The caption displayed under the signature line.
@@ -137,17 +144,30 @@ namespace Xamarin.Controls
 		/// Text value defaults to 'Sign here.'
 		/// </remarks>
 		/// <value>The caption.</value>
-		public UILabel Caption { get; private set; }
+		public TextBlock Caption { get; private set; }
+
+		/// <summary>
+		/// The brush of the signature line.
+		/// </summary>
+		/// <value>The brush of the signature line.</value>
+		public Brush SignatureLineBrush
+		{
+			get { return SignatureLine.Background; }
+			set { SignatureLine.Background = value; }
+		}
 
 		/// <summary>
 		/// The color of the signature line.
 		/// </summary>
 		/// <value>The color of the signature line.</value>
-		[Export ("SignatureLineColor"), Browsable (true)]
-		public UIColor SignatureLineColor
+		public Color SignatureLineColor
 		{
-			get { return SignatureLine.BackgroundColor; }
-			set { SignatureLine.BackgroundColor = value; }
+			get
+			{
+				var scb = SignatureLine.Background as SolidColorBrush;
+				return scb == null ? Colors.Transparent : scb.Color;
+			}
+			set { SignatureLine.Background = new SolidColorBrush (value); }
 		}
 
 		/// <summary>
@@ -155,18 +175,20 @@ namespace Xamarin.Controls
 		///  for the signature pad.
 		/// </summary>
 		/// <value>The background image view.</value>
-		public UIImageView BackgroundImageView { get; private set; }
+		public Image BackgroundImageView { get; private set; }
 
 		/// <summary>
-		///  An image view that may be used as a watermark or as a texture
-		///  for the signature pad.
+		/// The color of the background.
 		/// </summary>
-		/// <value>The background image.</value>
-		[Export ("BackgroundImage"), Browsable (true)]
-		public UIImage BackgroundImage
+		/// <value>The color of the background.</value>
+		public Color BackgroundColor
 		{
-			get { return BackgroundImageView.Image; }
-			set { BackgroundImageView.Image = value; }
+			get
+			{
+				var scb = Background as SolidColorBrush;
+				return scb == null ? Colors.Transparent : scb.Color;
+			}
+			set { Background = new SolidColorBrush (value); }
 		}
 
 		/// <summary>
@@ -174,22 +196,31 @@ namespace Xamarin.Controls
 		///  for the signature pad.
 		/// </summary>
 		/// <value>The background image.</value>
-		[Export ("BackgroundImageContentMode"), Browsable (true)]
-		public UIViewContentMode BackgroundImageContentMode
+		public ImageSource BackgroundImage
 		{
-			get { return BackgroundImageView.ContentMode; }
-			set { BackgroundImageView.ContentMode = value; }
+			get { return BackgroundImageView.Source; }
+			set { BackgroundImageView.Source = value; }
+		}
+
+		/// <summary>
+		///  An image view that may be used as a watermark or as a texture
+		///  for the signature pad.
+		/// </summary>
+		/// <value>The background image.</value>
+		public Stretch BackgroundImageStretch
+		{
+			get { return BackgroundImageView.Stretch; }
+			set { BackgroundImageView.Stretch = value; }
 		}
 
 		/// <summary>
 		///  The transparency of the watermark.
 		/// </summary>
 		/// <value>The background image.</value>
-		[Export ("BackgroundImageAlpha"), Browsable (true)]
-		public nfloat BackgroundImageAlpha
+		public double BackgroundImageOpacity
 		{
-			get { return BackgroundImageView.Alpha; }
-			set { BackgroundImageView.Alpha = value; }
+			get { return BackgroundImageView.Opacity; }
+			set { BackgroundImageView.Opacity = value; }
 		}
 
 		/// <summary>
@@ -199,15 +230,10 @@ namespace Xamarin.Controls
 		/// Text value defaults to 'X'.
 		/// </remarks>
 		/// <value>The signature prompt.</value>
-		[Export ("SignaturePromptText"), Browsable (true)]
 		public string SignaturePromptText
 		{
 			get { return SignaturePrompt.Text; }
-			set
-			{
-				SignaturePrompt.Text = value;
-				SetNeedsLayout ();
-			}
+			set { SignaturePrompt.Text = value; }
 		}
 
 		/// <summary>
@@ -217,7 +243,6 @@ namespace Xamarin.Controls
 		/// Text value defaults to 'Sign here.'
 		/// </remarks>
 		/// <value>The caption.</value>
-		[Export ("CaptionText"), Browsable (true)]
 		public string CaptionText
 		{
 			get { return Caption.Text; }
@@ -228,28 +253,23 @@ namespace Xamarin.Controls
 		/// Gets the text for the label that clears the pad when clicked.
 		/// </summary>
 		/// <value>The clear label.</value>
-		[Export ("ClearLabelText"), Browsable (true)]
 		public string ClearLabelText
 		{
-			get { return ClearLabel.Title (UIControlState.Normal); }
-			set
-			{
-				ClearLabel.SetTitle (value, UIControlState.Normal);
-				SetNeedsLayout ();
-			}
+			get { return ClearLabel.Text; }
+			set { ClearLabel.Text = value; }
 		}
 
 		/// <summary>
 		/// Gets the label that clears the pad when clicked.
 		/// </summary>
 		/// <value>The clear label.</value>
-		public UIButton ClearLabel { get; private set; }
+		public TextBlock ClearLabel { get; private set; }
 
 		/// <summary>
 		/// Gets the horizontal line that goes in the lower part of the pad.
 		/// </summary>
 		/// <value>The signature line.</value>
-		public UIView SignatureLine { get; private set; }
+		public Border SignatureLine { get; private set; }
 
 		public void Clear ()
 		{
@@ -257,15 +277,15 @@ namespace Xamarin.Controls
 
 			UpdateUi ();
 		}
-
-		public void LoadPoints (CGPoint[] points)
+		
+		public void LoadPoints (Point[] points)
 		{
 			SignaturePadCanvas.LoadPoints (points);
 
 			UpdateUi ();
 		}
 
-		public void LoadStrokes (CGPoint[][] strokes)
+		public void LoadStrokes (Point[][] strokes)
 		{
 			SignaturePadCanvas.LoadStrokes (strokes);
 
@@ -275,7 +295,7 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an image of the currently drawn signature.
 		/// </summary>
-		public UIImage GetImage (bool shouldCrop = true, bool keepAspectRatio = true)
+		public WriteableBitmap GetImage (bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return SignaturePadCanvas.GetImage (shouldCrop, keepAspectRatio);
 		}
@@ -283,7 +303,7 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an image of the currently drawn signature at the specified size.
 		/// </summary>
-		public UIImage GetImage (CGSize size, bool shouldCrop = true, bool keepAspectRatio = true)
+		public WriteableBitmap GetImage (Size size, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return SignaturePadCanvas.GetImage (size, shouldCrop, keepAspectRatio);
 		}
@@ -291,7 +311,7 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an image of the currently drawn signature at the specified scale.
 		/// </summary>
-		public UIImage GetImage (float scale, bool shouldCrop = true, bool keepAspectRatio = true)
+		public WriteableBitmap GetImage (float scale, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return SignaturePadCanvas.GetImage (scale, shouldCrop, keepAspectRatio);
 		}
@@ -299,7 +319,7 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an image of the currently drawn signature with the specified stroke color.
 		/// </summary>
-		public UIImage GetImage (UIColor strokeColor, bool shouldCrop = true, bool keepAspectRatio = true)
+		public WriteableBitmap GetImage (Color strokeColor, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return SignaturePadCanvas.GetImage (strokeColor, shouldCrop, keepAspectRatio);
 		}
@@ -307,7 +327,7 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an image of the currently drawn signature at the specified size with the specified stroke color.
 		/// </summary>
-		public UIImage GetImage (UIColor strokeColor, CGSize size, bool shouldCrop = true, bool keepAspectRatio = true)
+		public WriteableBitmap GetImage (Color strokeColor, Size size, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return SignaturePadCanvas.GetImage (strokeColor, size, shouldCrop, keepAspectRatio);
 		}
@@ -315,7 +335,7 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an image of the currently drawn signature at the specified scale with the specified stroke color.
 		/// </summary>
-		public UIImage GetImage (UIColor strokeColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
+		public WriteableBitmap GetImage (Color strokeColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return SignaturePadCanvas.GetImage (strokeColor, scale, shouldCrop, keepAspectRatio);
 		}
@@ -323,7 +343,7 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an image of the currently drawn signature with the specified stroke and background colors.
 		/// </summary>
-		public UIImage GetImage (UIColor strokeColor, UIColor fillColor, bool shouldCrop = true, bool keepAspectRatio = true)
+		public WriteableBitmap GetImage (Color strokeColor, Color fillColor, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return SignaturePadCanvas.GetImage (strokeColor, fillColor, shouldCrop, keepAspectRatio);
 		}
@@ -331,7 +351,7 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an image of the currently drawn signature at the specified size with the specified stroke and background colors.
 		/// </summary>
-		public UIImage GetImage (UIColor strokeColor, UIColor fillColor, CGSize size, bool shouldCrop = true, bool keepAspectRatio = true)
+		public WriteableBitmap GetImage (Color strokeColor, Color fillColor, Size size, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return SignaturePadCanvas.GetImage (strokeColor, fillColor, size, shouldCrop, keepAspectRatio);
 		}
@@ -339,7 +359,7 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an image of the currently drawn signature at the specified scale with the specified stroke and background colors.
 		/// </summary>
-		public UIImage GetImage (UIColor strokeColor, UIColor fillColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
+		public WriteableBitmap GetImage (Color strokeColor, Color fillColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return SignaturePadCanvas.GetImage (strokeColor, fillColor, scale, shouldCrop, keepAspectRatio);
 		}
@@ -347,7 +367,7 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an image of the currently drawn signature using the specified settings.
 		/// </summary>
-		public UIImage GetImage (ImageConstructionSettings settings)
+		public WriteableBitmap GetImage (ImageConstructionSettings settings)
 		{
 			return SignaturePadCanvas.GetImage (settings);
 		}
@@ -363,7 +383,7 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an encoded image of the currently drawn signature at the specified size.
 		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, CGSize size, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Size size, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return SignaturePadCanvas.GetImageStreamAsync (format, size, shouldCrop, keepAspectRatio);
 		}
@@ -379,7 +399,7 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an encoded image of the currently drawn signature with the specified stroke color.
 		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, UIColor strokeColor, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, shouldCrop, keepAspectRatio);
 		}
@@ -387,7 +407,7 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an encoded image of the currently drawn signature at the specified size with the specified stroke color.
 		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, UIColor strokeColor, CGSize size, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, Size size, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, size, shouldCrop, keepAspectRatio);
 		}
@@ -395,7 +415,7 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an encoded image of the currently drawn signature at the specified scale with the specified stroke color.
 		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, UIColor strokeColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, scale, shouldCrop, keepAspectRatio);
 		}
@@ -403,7 +423,7 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an encoded image of the currently drawn signature with the specified stroke and background colors.
 		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, UIColor strokeColor, UIColor fillColor, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, Color fillColor, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, fillColor, shouldCrop, keepAspectRatio);
 		}
@@ -411,7 +431,7 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an encoded image of the currently drawn signature at the specified size with the specified stroke and background colors.
 		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, UIColor strokeColor, UIColor fillColor, CGSize size, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, Color fillColor, Size size, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, fillColor, size, shouldCrop, keepAspectRatio);
 		}
@@ -419,7 +439,7 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an encoded image of the currently drawn signature at the specified scale with the specified stroke and background colors.
 		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, UIColor strokeColor, UIColor fillColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, Color fillColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
 			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, fillColor, scale, shouldCrop, keepAspectRatio);
 		}
@@ -434,39 +454,8 @@ namespace Xamarin.Controls
 
 		private void UpdateUi ()
 		{
-			ClearLabel.Hidden = IsBlank;
+			ClearLabel.Visibility = IsBlank ? Visibility.Collapsed : Visibility.Visible;
 		}
 
-		public override void LayoutSubviews ()
-		{
-			const int ThinPad = 3;
-			const int ThickPad = 10;
-			const int LineHeight = 1;
-
-			var w = Frame.Width;
-			var h = Frame.Height;
-
-			SignaturePrompt.SizeToFit ();
-			ClearLabel.SizeToFit ();
-
-			var captionHeight = Caption.SizeThatFits (Caption.Frame.Size).Height;
-			var clearButtonHeight = (int)ClearLabel.Font.LineHeight + 1;
-
-			var rect = new CGRect (0, 0, w, h);
-			SignaturePadCanvas.Frame = rect;
-			BackgroundImageView.Frame = rect;
-
-			var top = h;
-			top = top - ThinPad - captionHeight;
-			Caption.Frame = new CGRect (ThickPad, top, w - ThickPad - ThickPad, captionHeight);
-
-			top = top - ThinPad - SignatureLine.Frame.Height;
-			SignatureLine.Frame = new CGRect (ThickPad, top, w - ThickPad - ThickPad, LineHeight);
-
-			top = top - ThinPad - SignaturePrompt.Frame.Height;
-			SignaturePrompt.Frame = new CGRect (ThickPad, top, SignaturePrompt.Frame.Width, SignaturePrompt.Frame.Height);
-
-			ClearLabel.Frame = new CGRect (w - ThickPad - ClearLabel.Frame.Width, ThickPad, ClearLabel.Frame.Width, clearButtonHeight);
-		}
 	}
 }
