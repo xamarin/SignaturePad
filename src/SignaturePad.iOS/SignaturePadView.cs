@@ -645,6 +645,14 @@ namespace SignaturePad {
 			SetNeedsDisplayInRect (new CGRect (minX, minY, (nfloat)Math.Abs (maxX - minX),  (nfloat)Math.Abs (maxY - minY)));
 		}
 		
+		//we want to capture "cancelled" touches as well--otherwise abrupt
+		//motions like straight lines or dots in signature are not saved,
+		//resulting in "missing lines"
+		public override void TouchesCancelled (NSSet touches, UIEvent evt)
+		{
+		        TouchesEnded(touches, evt);
+		}
+		
 		public override void TouchesEnded (NSSet touches, UIEvent evt)
 		{
 			UITouch touch = touches.AnyObject as UITouch;
@@ -704,4 +712,3 @@ namespace SignaturePad {
 		}
 	}
 }
-
