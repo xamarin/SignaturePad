@@ -1,13 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.WP8", "Sample.WP8.csproj", "{CBF96D56-4CC2-41C3-8A1F-C5B8FF0663CD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.WP8", "..\..\src\SignaturePad.WP8\SignaturePad.WP8.csproj", "{105D08DE-982A-4F39-9FB2-82735CF2F3F1}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SignaturePad.Shared", "..\..\src\SignaturePad.Shared\SignaturePad.Shared.shproj", "{05D1E7C0-73FC-41DE-A7D6-01AE4C1A4DD3}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\..\src\SignaturePad.Shared\SignaturePad.Shared.projitems*{05d1e7c0-73fc-41de-a7d6-01ae4c1a4dd3}*SharedItemsImports = 13
+		..\..\src\SignaturePad.Shared\SignaturePad.Shared.projitems*{105d08de-982a-4f39-9fb2-82735cf2f3f1}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM = Debug|ARM
@@ -37,8 +43,8 @@ Global
 		{CBF96D56-4CC2-41C3-8A1F-C5B8FF0663CD}.Release|x86.Deploy.0 = Release|x86
 		{105D08DE-982A-4F39-9FB2-82735CF2F3F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{105D08DE-982A-4F39-9FB2-82735CF2F3F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{105D08DE-982A-4F39-9FB2-82735CF2F3F1}.Debug|ARM.ActiveCfg = Debug|ARM
-		{105D08DE-982A-4F39-9FB2-82735CF2F3F1}.Debug|ARM.Build.0 = Debug|ARM
+		{105D08DE-982A-4F39-9FB2-82735CF2F3F1}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{105D08DE-982A-4F39-9FB2-82735CF2F3F1}.Debug|ARM.Build.0 = Debug|Any CPU
 		{105D08DE-982A-4F39-9FB2-82735CF2F3F1}.Debug|x86.ActiveCfg = Debug|x86
 		{105D08DE-982A-4F39-9FB2-82735CF2F3F1}.Debug|x86.Build.0 = Debug|x86
 		{105D08DE-982A-4F39-9FB2-82735CF2F3F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
