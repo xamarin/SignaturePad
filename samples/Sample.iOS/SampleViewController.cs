@@ -7,7 +7,6 @@ namespace Sample.iOS
 	public partial class SampleViewController : UIViewController
 	{
 		private CGPoint[] points;
-		private UIImage savedImage;
 
 		public SampleViewController ()
 			: base ("SampleViewController", null)
