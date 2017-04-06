@@ -61,6 +61,11 @@ namespace Xamarin.Controls
 			SetNeedsDisplayInRect (DirtyRect);
 		}
 
+		public override void TouchesCancelled (NSSet touches, UIEvent evt)
+		{
+			TouchesEnded (touches, evt);
+		}
+
 		public override void TouchesEnded (NSSet touches, UIEvent evt)
 		{
 			// obtain the location of the touch
