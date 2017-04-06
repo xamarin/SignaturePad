@@ -6,31 +6,29 @@ using Android.Views;
 using Android.Widget;
 using AlertDialog = Android.Support.V7.App.AlertDialog;
 
-using SignaturePad;
+using Xamarin.Controls;
 
 namespace Sample.Android
 {
 	[Activity (Label = "@string/app_name", MainLauncher = true, Theme = "@style/Theme.AppCompat.Light.DarkActionBar")]
-	public class Activity1 : AppCompatActivity
+	public class MainActivity : AppCompatActivity
 	{
-		System.Drawing.PointF [] points;
+		private const bool EnableCustomization = true;
+
+		private System.Drawing.PointF[] points;
 
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
-			//RequestedOrientation = global::Android.Content.PM.ScreenOrientation.Landscape;
 
-			// Set our view from the "main" layout resource
+			// set our view from the "main" layout resource
 			SetContentView (Resource.Layout.Main);
 
-			SignaturePadView signature = FindViewById<SignaturePadView> (Resource.Id.signatureView);
+			var signature = FindViewById<SignaturePadView> (Resource.Id.signatureView);
 
-			if (true) { // Customization activated
-				View root = FindViewById<View> (Resource.Id.rootView);
-
-				// Activate this to internally use a bitmap to store the strokes
-				// (good for frequent-redraw situations, bad for memory footprint)
-				// signature.UseBitmapBuffer = true;
+			if (EnableCustomization)
+			{
+				var root = FindViewById<View> (Resource.Id.rootView);
 
 				signature.Caption.Text = "Authorization Signature";
 				signature.Caption.SetTypeface (Typeface.Serif, TypefaceStyle.BoldItalic);
@@ -55,12 +53,14 @@ namespace Sample.Android
 				caption.SetPadding (caption.PaddingLeft, 1, caption.PaddingRight, 25);
 			}
 
-			// Get our button from the layout resource,
+			// get our button from the layout resource,
 			// and attach an event to it
-			Button btnSave = FindViewById<Button> (Resource.Id.btnSave);
-			btnSave.Click += delegate {
+			var btnSave = FindViewById<Button> (Resource.Id.btnSave);
+			btnSave.Click += delegate
+			{
 				if (signature.IsBlank)
-				{//Display the base line for the user to sign on.
+				{
+					// display the base line for the user to sign on.
 					AlertDialog.Builder alert = new AlertDialog.Builder (this);
 					alert.SetMessage ("No signature to save.");
 					alert.SetNeutralButton ("Okay", delegate { });
@@ -70,8 +70,9 @@ namespace Sample.Android
 			};
 			btnSave.Dispose ();
 
-			Button btnLoad = FindViewById<Button> (Resource.Id.btnLoad);
-			btnLoad.Click += delegate {
+			var btnLoad = FindViewById<Button> (Resource.Id.btnLoad);
+			btnLoad.Click += delegate
+			{
 				if (points != null)
 					signature.LoadPoints (points);
 			};
