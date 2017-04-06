@@ -60,7 +60,7 @@ namespace Xamarin.Controls
 				{
 					stroke.Color = value;
 				}
-				Invalidate ();
+				inkPresenter.Invalidate ();
 			}
 		}
 
@@ -78,7 +78,7 @@ namespace Xamarin.Controls
 				{
 					stroke.Width = value;
 				}
-				Invalidate ();
+				inkPresenter.Invalidate ();
 			}
 		}
 
