@@ -3,7 +3,7 @@
 
 id: signature-pad
 name: Signature Pad for Xamarin and Windows
-version: "1.5.0"
+version: "2.0.0"
 summary: Makes capturing, saving, and displaying signatures extremely simple.
 publisher: Xamarin, Inc.
 publisher-url: http://xamarin.com/
@@ -27,21 +27,18 @@ libraries:
   wp8: ../output/wp8/SignaturePad.dll
   uwp: ../output/uwp/SignaturePad.dll
 packages:
-  android: Xamarin.Controls.SignaturePad, Version=1.5.0
-  ios-unified: Xamarin.Controls.SignaturePad, Version=1.5.0
-  wp8: Xamarin.Controls.SignaturePad, Version=1.5.0
-  uwp: Xamarin.Controls.SignaturePad, Version=1.5.0
-additional-files:
-  - src: "../output/uwp/SignaturePad.pri"
-    dst: "lib/uwp/SignaturePad.pri"
-  - src: "../output/uwp/SignaturePad.xr.xml"
-    dst: "lib/uwp/SignaturePad/SignaturePad.xr.xml"
+  android: Xamarin.Controls.SignaturePad, Version=2.0.0
+  ios-unified: Xamarin.Controls.SignaturePad, Version=2.0.0
+  wp8: Xamarin.Controls.SignaturePad, Version=2.0.0
+  uwp: Xamarin.Controls.SignaturePad, Version=2.0.0
 
 samples:
   - name: "Android Sample"
     path: ../samples/Sample.Android/Sample.Android.sln
     removeProjects:
       - SignaturePad.Android
+      - SignaturePad.Shared
+      - SignaturePad.InkPresenter.Shared
     installNuGets:
       - project: Sample.Android
         packages:
@@ -50,6 +47,8 @@ samples:
     path: ../samples/Sample.iOS/Sample.iOS.sln
     removeProjects:
       - SignaturePad.iOS
+      - SignaturePad.Shared
+      - SignaturePad.InkPresenter.Shared
     installNuGets:
       - project: Sample.iOS
         packages:
@@ -58,6 +57,7 @@ samples:
     path: ../samples/Sample.WP8/Sample.WP8.sln
     removeProjects:
       - SignaturePad.WP8
+      - SignaturePad.Shared
     installNuGets:
       - project: Sample.WP8
         packages:
@@ -66,6 +66,7 @@ samples:
     path: ../samples/Sample.UWP/Sample.UWP.sln
     removeProjects:
       - SignaturePad.UWP
+      - SignaturePad.Shared
     installNuGets:
       - project: Sample.UWP
         packages:
@@ -81,6 +82,8 @@ samples:
       - SignaturePad.Forms.iOS
       - SignaturePad.Forms.WindowsPhone
       - SignaturePad.Forms.Platform.Shared
+      - SignaturePad.Shared
+      - SignaturePad.InkPresenter.Shared
     installNuGets:
       - project: Samples
         packages:
