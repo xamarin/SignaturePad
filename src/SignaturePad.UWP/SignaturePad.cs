@@ -298,73 +298,73 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an image of the currently drawn signature.
 		/// </summary>
-		public WriteableBitmap GetImage (bool shouldCrop = true, bool keepAspectRatio = true)
+		public WriteableBitmap GetImage (bool shouldCrop = true)
 		{
-			return SignaturePadCanvas.GetImage (shouldCrop, keepAspectRatio);
+			return SignaturePadCanvas.GetImage (shouldCrop);
 		}
 
 		/// <summary>
 		/// Create an image of the currently drawn signature at the specified size.
 		/// </summary>
-		public WriteableBitmap GetImage (Size size, bool shouldCrop = true, bool keepAspectRatio = true)
+		public WriteableBitmap GetImage (Size size, bool shouldCrop = true)
 		{
-			return SignaturePadCanvas.GetImage (size, shouldCrop, keepAspectRatio);
+			return SignaturePadCanvas.GetImage (size, shouldCrop);
 		}
 
 		/// <summary>
 		/// Create an image of the currently drawn signature at the specified scale.
 		/// </summary>
-		public WriteableBitmap GetImage (float scale, bool shouldCrop = true, bool keepAspectRatio = true)
+		public WriteableBitmap GetImage (float scale, bool shouldCrop = true)
 		{
-			return SignaturePadCanvas.GetImage (scale, shouldCrop, keepAspectRatio);
+			return SignaturePadCanvas.GetImage (scale, shouldCrop);
 		}
 
 		/// <summary>
 		/// Create an image of the currently drawn signature with the specified stroke color.
 		/// </summary>
-		public WriteableBitmap GetImage (Color strokeColor, bool shouldCrop = true, bool keepAspectRatio = true)
+		public WriteableBitmap GetImage (Color strokeColor, bool shouldCrop = true)
 		{
-			return SignaturePadCanvas.GetImage (strokeColor, shouldCrop, keepAspectRatio);
+			return SignaturePadCanvas.GetImage (strokeColor, shouldCrop);
 		}
 
 		/// <summary>
 		/// Create an image of the currently drawn signature at the specified size with the specified stroke color.
 		/// </summary>
-		public WriteableBitmap GetImage (Color strokeColor, Size size, bool shouldCrop = true, bool keepAspectRatio = true)
+		public WriteableBitmap GetImage (Color strokeColor, Size size, bool shouldCrop = true)
 		{
-			return SignaturePadCanvas.GetImage (strokeColor, size, shouldCrop, keepAspectRatio);
+			return SignaturePadCanvas.GetImage (strokeColor, size, shouldCrop);
 		}
 
 		/// <summary>
 		/// Create an image of the currently drawn signature at the specified scale with the specified stroke color.
 		/// </summary>
-		public WriteableBitmap GetImage (Color strokeColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
+		public WriteableBitmap GetImage (Color strokeColor, float scale, bool shouldCrop = true)
 		{
-			return SignaturePadCanvas.GetImage (strokeColor, scale, shouldCrop, keepAspectRatio);
+			return SignaturePadCanvas.GetImage (strokeColor, scale, shouldCrop);
 		}
 
 		/// <summary>
 		/// Create an image of the currently drawn signature with the specified stroke and background colors.
 		/// </summary>
-		public WriteableBitmap GetImage (Color strokeColor, Color fillColor, bool shouldCrop = true, bool keepAspectRatio = true)
+		public WriteableBitmap GetImage (Color strokeColor, Color fillColor, bool shouldCrop = true)
 		{
-			return SignaturePadCanvas.GetImage (strokeColor, fillColor, shouldCrop, keepAspectRatio);
+			return SignaturePadCanvas.GetImage (strokeColor, fillColor, shouldCrop);
 		}
 
 		/// <summary>
 		/// Create an image of the currently drawn signature at the specified size with the specified stroke and background colors.
 		/// </summary>
-		public WriteableBitmap GetImage (Color strokeColor, Color fillColor, Size size, bool shouldCrop = true, bool keepAspectRatio = true)
+		public WriteableBitmap GetImage (Color strokeColor, Color fillColor, Size size, bool shouldCrop = true)
 		{
-			return SignaturePadCanvas.GetImage (strokeColor, fillColor, size, shouldCrop, keepAspectRatio);
+			return SignaturePadCanvas.GetImage (strokeColor, fillColor, size, shouldCrop);
 		}
 
 		/// <summary>
 		/// Create an image of the currently drawn signature at the specified scale with the specified stroke and background colors.
 		/// </summary>
-		public WriteableBitmap GetImage (Color strokeColor, Color fillColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
+		public WriteableBitmap GetImage (Color strokeColor, Color fillColor, float scale, bool shouldCrop = true)
 		{
-			return SignaturePadCanvas.GetImage (strokeColor, fillColor, scale, shouldCrop, keepAspectRatio);
+			return SignaturePadCanvas.GetImage (strokeColor, fillColor, scale, shouldCrop);
 		}
 
 		/// <summary>
@@ -378,73 +378,73 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an encoded image of the currently drawn signature.
 		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, bool shouldCrop = true)
 		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, shouldCrop, keepAspectRatio);
+			return SignaturePadCanvas.GetImageStreamAsync (format, shouldCrop);
 		}
 
 		/// <summary>
 		/// Create an encoded image of the currently drawn signature at the specified size.
 		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Size size, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Size size, bool shouldCrop = true)
 		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, size, shouldCrop, keepAspectRatio);
+			return SignaturePadCanvas.GetImageStreamAsync (format, size, shouldCrop);
 		}
 
 		/// <summary>
 		/// Create an encoded image of the currently drawn signature at the specified scale.
 		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, float scale, bool shouldCrop = true)
 		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, scale, shouldCrop, keepAspectRatio);
+			return SignaturePadCanvas.GetImageStreamAsync (format, scale, shouldCrop);
 		}
 
 		/// <summary>
 		/// Create an encoded image of the currently drawn signature with the specified stroke color.
 		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, bool shouldCrop = true)
 		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, shouldCrop, keepAspectRatio);
+			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, shouldCrop);
 		}
 
 		/// <summary>
 		/// Create an encoded image of the currently drawn signature at the specified size with the specified stroke color.
 		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, Size size, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, Size size, bool shouldCrop = true)
 		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, size, shouldCrop, keepAspectRatio);
+			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, size, shouldCrop);
 		}
 
 		/// <summary>
 		/// Create an encoded image of the currently drawn signature at the specified scale with the specified stroke color.
 		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, float scale, bool shouldCrop = true)
 		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, scale, shouldCrop, keepAspectRatio);
+			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, scale, shouldCrop);
 		}
 
 		/// <summary>
 		/// Create an encoded image of the currently drawn signature with the specified stroke and background colors.
 		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, Color fillColor, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, Color fillColor, bool shouldCrop = true)
 		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, fillColor, shouldCrop, keepAspectRatio);
+			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, fillColor, shouldCrop);
 		}
 
 		/// <summary>
 		/// Create an encoded image of the currently drawn signature at the specified size with the specified stroke and background colors.
 		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, Color fillColor, Size size, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, Color fillColor, Size size, bool shouldCrop = true)
 		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, fillColor, size, shouldCrop, keepAspectRatio);
+			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, fillColor, size, shouldCrop);
 		}
 
 		/// <summary>
 		/// Create an encoded image of the currently drawn signature at the specified scale with the specified stroke and background colors.
 		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, Color fillColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, Color fillColor, float scale, bool shouldCrop = true)
 		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, fillColor, scale, shouldCrop, keepAspectRatio);
+			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, fillColor, scale, shouldCrop);
 		}
 
 		/// <summary>

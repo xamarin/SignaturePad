@@ -34,12 +34,6 @@ namespace Xamarin.Controls
 {
 	partial class SignaturePadCanvasView
 	{
-#if __IOS__
-		private float Width => (float)Bounds.Width;
-
-		private float Height => (float)Bounds.Height;
-#endif
-
 		public event EventHandler StrokeCompleted;
 
 		public bool IsBlank => inkPresenter.GetStrokes ().Count == 0;
@@ -81,20 +75,21 @@ namespace Xamarin.Controls
 				return NativeRect.Empty;
 			}
 
-			double xMin = Width, xMax = 0, yMin = Height, yMax = 0;
+			var size = this.GetSize ();
+			double xMin = size.Width, xMax = 0, yMin = size.Height, yMax = 0;
 			foreach (var point in inkPresenter.GetStrokes ().SelectMany (stroke => stroke.GetPoints ()))
 			{
 				xMin = point.X <= 0 ? 0 : Math.Min (xMin, point.X);
 				yMin = point.Y <= 0 ? 0 : Math.Min (yMin, point.Y);
-				xMax = point.X >= Width ? Width : Math.Max (xMax, point.X);
-				yMax = point.Y >= Height ? Height : Math.Max (yMax, point.Y);
+				xMax = point.X >= size.Width ? size.Width : Math.Max (xMax, point.X);
+				yMax = point.Y >= size.Height ? size.Height : Math.Max (yMax, point.Y);
 			}
 
 			var spacing = (StrokeWidth / 2f) + padding;
 			xMin = Math.Max (0, xMin - spacing);
 			yMin = Math.Max (0, yMin - spacing);
-			xMax = Math.Min (Width, xMax + spacing);
-			yMax = Math.Min (Height, yMax + spacing);
+			xMax = Math.Min (size.Width, xMax + spacing);
+			yMax = Math.Min (size.Height, yMax + spacing);
 
 			return new NativeRect (
 				(float)xMin,
@@ -106,24 +101,22 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an image of the currently drawn signature.
 		/// </summary>
-		public NativeImage GetImage (bool shouldCrop = true, bool keepAspectRatio = true)
+		public NativeImage GetImage (bool shouldCrop = true)
 		{
 			return GetImage (new ImageConstructionSettings
 			{
 				ShouldCrop = shouldCrop,
-				ShouldKeepAspectRatio = keepAspectRatio,
 			});
 		}
 
 		/// <summary>
 		/// Create an image of the currently drawn signature at the specified size.
 		/// </summary>
-		public NativeImage GetImage (NativeSize size, bool shouldCrop = true, bool keepAspectRatio = true)
+		public NativeImage GetImage (NativeSize size, bool shouldCrop = true)
 		{
 			return GetImage (new ImageConstructionSettings
 			{
 				ShouldCrop = shouldCrop,
-				ShouldKeepAspectRatio = keepAspectRatio,
 				DesiredSizeOrScale = size,
 			});
 		}
@@ -131,12 +124,11 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an image of the currently drawn signature at the specified scale.
 		/// </summary>
-		public NativeImage GetImage (float scale, bool shouldCrop = true, bool keepAspectRatio = true)
+		public NativeImage GetImage (float scale, bool shouldCrop = true)
 		{
 			return GetImage (new ImageConstructionSettings
 			{
 				ShouldCrop = shouldCrop,
-				ShouldKeepAspectRatio = keepAspectRatio,
 				DesiredSizeOrScale = scale,
 			});
 		}
@@ -144,12 +136,11 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an image of the currently drawn signature with the specified stroke color.
 		/// </summary>
-		public NativeImage GetImage (NativeColor strokeColor, bool shouldCrop = true, bool keepAspectRatio = true)
+		public NativeImage GetImage (NativeColor strokeColor, bool shouldCrop = true)
 		{
 			return GetImage (new ImageConstructionSettings
 			{
 				ShouldCrop = shouldCrop,
-				ShouldKeepAspectRatio = keepAspectRatio,
 				StrokeColor = strokeColor,
 			});
 		}
@@ -157,12 +148,11 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an image of the currently drawn signature at the specified size with the specified stroke color.
 		/// </summary>
-		public NativeImage GetImage (NativeColor strokeColor, NativeSize size, bool shouldCrop = true, bool keepAspectRatio = true)
+		public NativeImage GetImage (NativeColor strokeColor, NativeSize size, bool shouldCrop = true)
 		{
 			return GetImage (new ImageConstructionSettings
 			{
 				ShouldCrop = shouldCrop,
-				ShouldKeepAspectRatio = keepAspectRatio,
 				StrokeColor = strokeColor,
 				DesiredSizeOrScale = size,
 			});
@@ -171,12 +161,11 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an image of the currently drawn signature at the specified scale with the specified stroke color.
 		/// </summary>
-		public NativeImage GetImage (NativeColor strokeColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
+		public NativeImage GetImage (NativeColor strokeColor, float scale, bool shouldCrop = true)
 		{
 			return GetImage (new ImageConstructionSettings
 			{
 				ShouldCrop = shouldCrop,
-				ShouldKeepAspectRatio = keepAspectRatio,
 				StrokeColor = strokeColor,
 				DesiredSizeOrScale = scale,
 			});
@@ -185,12 +174,11 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an image of the currently drawn signature with the specified stroke and background colors.
 		/// </summary>
-		public NativeImage GetImage (NativeColor strokeColor, NativeColor fillColor, bool shouldCrop = true, bool keepAspectRatio = true)
+		public NativeImage GetImage (NativeColor strokeColor, NativeColor fillColor, bool shouldCrop = true)
 		{
 			return GetImage (new ImageConstructionSettings
 			{
 				ShouldCrop = shouldCrop,
-				ShouldKeepAspectRatio = keepAspectRatio,
 				StrokeColor = strokeColor,
 				BackgroundColor = fillColor,
 			});
@@ -199,12 +187,11 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an image of the currently drawn signature at the specified size with the specified stroke and background colors.
 		/// </summary>
-		public NativeImage GetImage (NativeColor strokeColor, NativeColor fillColor, NativeSize size, bool shouldCrop = true, bool keepAspectRatio = true)
+		public NativeImage GetImage (NativeColor strokeColor, NativeColor fillColor, NativeSize size, bool shouldCrop = true)
 		{
 			return GetImage (new ImageConstructionSettings
 			{
 				ShouldCrop = shouldCrop,
-				ShouldKeepAspectRatio = keepAspectRatio,
 				StrokeColor = strokeColor,
 				BackgroundColor = fillColor,
 				DesiredSizeOrScale = size,
@@ -214,12 +201,11 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an image of the currently drawn signature at the specified scale with the specified stroke and background colors.
 		/// </summary>
-		public NativeImage GetImage (NativeColor strokeColor, NativeColor fillColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
+		public NativeImage GetImage (NativeColor strokeColor, NativeColor fillColor, float scale, bool shouldCrop = true)
 		{
 			return GetImage (new ImageConstructionSettings
 			{
 				ShouldCrop = shouldCrop,
-				ShouldKeepAspectRatio = keepAspectRatio,
 				StrokeColor = strokeColor,
 				BackgroundColor = fillColor,
 				DesiredSizeOrScale = scale,
@@ -232,15 +218,14 @@ namespace Xamarin.Controls
 		public NativeImage GetImage (ImageConstructionSettings settings)
 		{
 			float scale;
-			NativeRect croppedRectangle;
-			NativeSize imageSize;
+			NativeRect imageBounds;
 			float strokeWidth;
 			NativeColor strokeColor;
 			NativeColor backgroundColor;
 
-			if (GetImageConstructionArguments (settings, out scale, out croppedRectangle, out imageSize, out strokeWidth, out strokeColor, out backgroundColor))
+			if (GetImageConstructionArguments (settings, out scale, out imageBounds, out strokeWidth, out strokeColor, out backgroundColor))
 			{
-				return GetImageInternal (scale, croppedRectangle, imageSize, strokeWidth, strokeColor, backgroundColor);
+				return GetImageInternal (scale, imageBounds, strokeWidth, strokeColor, backgroundColor);
 			}
 
 			return null;
@@ -249,24 +234,22 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an encoded image stream of the currently drawn signature.
 		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, bool shouldCrop = true)
 		{
 			return GetImageStreamAsync (format, new ImageConstructionSettings
 			{
 				ShouldCrop = shouldCrop,
-				ShouldKeepAspectRatio = keepAspectRatio,
 			});
 		}
 
 		/// <summary>
 		/// Create an encoded image stream of the currently drawn signature at the specified size.
 		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, NativeSize size, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, NativeSize size, bool shouldCrop = true)
 		{
 			return GetImageStreamAsync (format, new ImageConstructionSettings
 			{
 				ShouldCrop = shouldCrop,
-				ShouldKeepAspectRatio = keepAspectRatio,
 				DesiredSizeOrScale = size,
 			});
 		}
@@ -274,12 +257,11 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an encoded image stream of the currently drawn signature at the specified scale.
 		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, float scale, bool shouldCrop = true)
 		{
 			return GetImageStreamAsync (format, new ImageConstructionSettings
 			{
 				ShouldCrop = shouldCrop,
-				ShouldKeepAspectRatio = keepAspectRatio,
 				DesiredSizeOrScale = scale,
 			});
 		}
@@ -287,12 +269,11 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an encoded image stream of the currently drawn signature with the specified stroke color.
 		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, NativeColor strokeColor, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, NativeColor strokeColor, bool shouldCrop = true)
 		{
 			return GetImageStreamAsync (format, new ImageConstructionSettings
 			{
 				ShouldCrop = shouldCrop,
-				ShouldKeepAspectRatio = keepAspectRatio,
 				StrokeColor = strokeColor,
 			});
 		}
@@ -300,12 +281,11 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an encoded image stream of the currently drawn signature at the specified size with the specified stroke color.
 		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, NativeColor strokeColor, NativeSize size, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, NativeColor strokeColor, NativeSize size, bool shouldCrop = true)
 		{
 			return GetImageStreamAsync (format, new ImageConstructionSettings
 			{
 				ShouldCrop = shouldCrop,
-				ShouldKeepAspectRatio = keepAspectRatio,
 				StrokeColor = strokeColor,
 				DesiredSizeOrScale = size,
 			});
@@ -314,12 +294,11 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an encoded image stream of the currently drawn signature at the specified scale with the specified stroke color.
 		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, NativeColor strokeColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, NativeColor strokeColor, float scale, bool shouldCrop = true)
 		{
 			return GetImageStreamAsync (format, new ImageConstructionSettings
 			{
 				ShouldCrop = shouldCrop,
-				ShouldKeepAspectRatio = keepAspectRatio,
 				StrokeColor = strokeColor,
 				DesiredSizeOrScale = scale,
 			});
@@ -328,12 +307,11 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an encoded image stream of the currently drawn signature with the specified stroke and background colors.
 		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, NativeColor strokeColor, NativeColor fillColor, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, NativeColor strokeColor, NativeColor fillColor, bool shouldCrop = true)
 		{
 			return GetImageStreamAsync (format, new ImageConstructionSettings
 			{
 				ShouldCrop = shouldCrop,
-				ShouldKeepAspectRatio = keepAspectRatio,
 				StrokeColor = strokeColor,
 				BackgroundColor = fillColor,
 			});
@@ -342,12 +320,11 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an encoded image stream of the currently drawn signature at the specified size with the specified stroke and background colors.
 		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, NativeColor strokeColor, NativeColor fillColor, NativeSize size, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, NativeColor strokeColor, NativeColor fillColor, NativeSize size, bool shouldCrop = true)
 		{
 			return GetImageStreamAsync (format, new ImageConstructionSettings
 			{
 				ShouldCrop = shouldCrop,
-				ShouldKeepAspectRatio = keepAspectRatio,
 				StrokeColor = strokeColor,
 				BackgroundColor = fillColor,
 				DesiredSizeOrScale = size,
@@ -357,12 +334,11 @@ namespace Xamarin.Controls
 		/// <summary>
 		/// Create an encoded image stream of the currently drawn signature at the specified scale with the specified stroke and background colors.
 		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, NativeColor strokeColor, NativeColor fillColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, NativeColor strokeColor, NativeColor fillColor, float scale, bool shouldCrop = true)
 		{
 			return GetImageStreamAsync (format, new ImageConstructionSettings
 			{
 				ShouldCrop = shouldCrop,
-				ShouldKeepAspectRatio = keepAspectRatio,
 				StrokeColor = strokeColor,
 				BackgroundColor = fillColor,
 				DesiredSizeOrScale = scale,
@@ -375,29 +351,27 @@ namespace Xamarin.Controls
 		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, ImageConstructionSettings settings)
 		{
 			float scale;
-			NativeRect croppedRectangle;
-			NativeSize imageSize;
+			NativeRect imageBounds;
 			float strokeWidth;
 			NativeColor strokeColor;
 			NativeColor backgroundColor;
 
-			if (GetImageConstructionArguments (settings, out scale, out croppedRectangle, out imageSize, out strokeWidth, out strokeColor, out backgroundColor))
+			if (GetImageConstructionArguments (settings, out scale, out imageBounds, out strokeWidth, out strokeColor, out backgroundColor))
 			{
-				return GetImageStreamInternal (format, scale, croppedRectangle, imageSize, strokeWidth, strokeColor, backgroundColor);
+				return GetImageStreamInternal (format, scale, imageBounds, strokeWidth, strokeColor, backgroundColor);
 			}
 
 			return Task.FromResult<Stream> (null);
 		}
 
-		private bool GetImageConstructionArguments (ImageConstructionSettings settings, out float scale, out NativeRect croppedRectangle, out NativeSize imageSize, out float strokeWidth, out NativeColor strokeColor, out NativeColor backgroundColor)
+		private bool GetImageConstructionArguments (ImageConstructionSettings settings, out float scale, out NativeRect imageBounds, out float strokeWidth, out NativeColor strokeColor, out NativeColor backgroundColor)
 		{
 			settings.ApplyDefaults (StrokeWidth, StrokeColor);
 
 			if (IsBlank || settings.DesiredSizeOrScale?.IsValid != true)
 			{
 				scale = default (float);
-				croppedRectangle = default (NativeRect);
-				imageSize = default (NativeSize);
+				imageBounds = default (NativeRect);
 				strokeWidth = default (float);
 				strokeColor = default (NativeColor);
 				backgroundColor = default (NativeColor);
@@ -406,22 +380,17 @@ namespace Xamarin.Controls
 			}
 
 			var sizeOrScale = settings.DesiredSizeOrScale.Value;
-			var size = sizeOrScale.GetSize ((float)Width, (float)Height);
-			scale = sizeOrScale.GetScale ((float)Width, (float)Height);
+			var viewSize = this.GetSize ();
+			var size = sizeOrScale.GetSize ((float)viewSize.Width, (float)viewSize.Height);
+			scale = sizeOrScale.GetScale ((float)viewSize.Width, (float)viewSize.Height);
 
-			croppedRectangle = NativeRect.Empty;
+			imageBounds = new NativeRect (0, 0, size.Width, size.Height);
 			if (settings.ShouldCrop == true)
 			{
-				croppedRectangle = GetSignatureBounds ();
-				var scaleX = Width / (float)croppedRectangle.Width;
-				var scaleY = Height / (float)croppedRectangle.Height;
+				imageBounds = GetSignatureBounds ();
+				var scaleX = viewSize.Width / (float)imageBounds.Width;
+				var scaleY = viewSize.Height / (float)imageBounds.Height;
 				scale = Math.Min ((float)scaleX, (float)scaleY);
-			}
-
-			imageSize = size;
-			if (settings.ShouldKeepAspectRatio != true)
-			{
-				imageSize = new NativeSize (croppedRectangle.Width * scale, croppedRectangle.Height * scale);
 			}
 
 			strokeWidth = settings.StrokeWidth.Value;

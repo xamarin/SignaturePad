@@ -4,6 +4,7 @@ using System.Linq;
 
 #if __ANDROID__
 using Android.Graphics;
+using Android.Views;
 #elif __IOS__
 using CoreGraphics;
 using UIKit;
@@ -18,6 +19,7 @@ using Windows.Foundation;
 using System.Numerics;
 using Windows.UI;
 using Windows.UI.Input.Inking;
+using Windows.UI.Xaml;
 #endif
 
 namespace Xamarin.Controls
@@ -29,6 +31,11 @@ namespace Xamarin.Controls
 		public static System.Drawing.SizeF GetSize (this Bitmap image)
 		{
 			return new System.Drawing.SizeF (image.Width, image.Height);
+		}
+		
+		public static System.Drawing.SizeF GetSize (this View view)
+		{
+			return new System.Drawing.SizeF (view.Width, view.Height);
 		}
 
 #elif __IOS__
@@ -51,6 +58,11 @@ namespace Xamarin.Controls
 		public static void LineTo (this UIBezierPath path, nfloat x, nfloat y)
 		{
 			path.AddLineTo (new CGPoint (x, y));
+		}
+		
+		public static CGSize GetSize (this UIView view)
+		{
+			return view.Bounds.Size;
 		}
 
 #elif WINDOWS_PHONE
@@ -101,6 +113,11 @@ namespace Xamarin.Controls
 			return stroke.StylusPoints.Select (p => new Point (p.X, p.Y));
 		}
 
+		public static Size GetSize (this FrameworkElement element)
+		{
+			return new Size (element.ActualWidth, element.ActualHeight);
+		}
+
 #elif WINDOWS_UWP
 
 		private const float DefaultPressure = 0.5f;
@@ -141,6 +158,11 @@ namespace Xamarin.Controls
 		public static IEnumerable<Point> GetPoints (this InkStroke stroke)
 		{
 			return stroke.GetInkPoints ().Select (p => p.Position);
+		}
+
+		public static Size GetSize (this FrameworkElement element)
+		{
+			return new Size (element.ActualWidth, element.ActualHeight);
 		}
 
 #endif

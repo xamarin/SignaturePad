@@ -97,8 +97,6 @@ namespace Xamarin.Controls
 
 		public bool? ShouldCrop { get; set; }
 
-		public bool? ShouldKeepAspectRatio { get; set; }
-
 		public SizeOrScale? DesiredSizeOrScale { get; set; }
 
 		public NativeNullableColor StrokeColor { get; set; }
@@ -115,7 +113,6 @@ namespace Xamarin.Controls
 		internal void ApplyDefaults (float strokeWidth, NativeColor strokeColor)
 		{
 			ShouldCrop = ShouldCrop ?? true;
-			ShouldKeepAspectRatio = ShouldKeepAspectRatio ?? true;
 			DesiredSizeOrScale = DesiredSizeOrScale ?? 1f;
 			StrokeColor = StrokeColor ?? strokeColor;
 			BackgroundColor = BackgroundColor ?? Transparent;

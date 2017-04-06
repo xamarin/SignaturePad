@@ -78,12 +78,12 @@ namespace Xamarin.Controls
 			inkPresenter.Strokes.Clear ();
 		}
 
-		private WriteableBitmap GetImageInternal (float scale, Rect croppedRectangle, Size imageSize, float strokeWidth, Color strokeColor, Color backgroundColor)
+		private WriteableBitmap GetImageInternal (float scale, Rect imageBounds, float strokeWidth, Color strokeColor, Color backgroundColor)
 		{
 			var presenter = new InkPresenter
 			{
-				Width = imageSize.Width,
-				Height = imageSize.Height,
+				Width = imageBounds.Width,
+				Height = imageBounds.Height,
 				Strokes = new StrokeCollection (),
 				Background = new SolidColorBrush (backgroundColor)
 			};
@@ -91,15 +91,15 @@ namespace Xamarin.Controls
 			foreach (var stroke in inkPresenter.Strokes)
 			{
 				Stroke tempStroke;
-				if (croppedRectangle.X != 0 || croppedRectangle.Y != 0)
+				if (imageBounds.X != 0 || imageBounds.Y != 0)
 				{
 					var newCollection = new StylusPointCollection ();
 					foreach (var point in stroke.StylusPoints)
 					{
 						var newPoint = new StylusPoint
 						{
-							X = point.X - croppedRectangle.X,
-							Y = point.Y - croppedRectangle.Y
+							X = point.X - imageBounds.X,
+							Y = point.Y - imageBounds.Y
 						};
 						newCollection.Add (newPoint);
 					}
@@ -121,9 +121,9 @@ namespace Xamarin.Controls
 			return new WriteableBitmap (presenter, new ScaleTransform { ScaleX = scale, ScaleY = scale });
 		}
 
-		private Task<Stream> GetImageStreamInternal (SignatureImageFormat format, float scale, Rect croppedRectangle, Size imageSize, float strokeWidth, Color strokeColor, Color backgroundColor)
+		private Task<Stream> GetImageStreamInternal (SignatureImageFormat format, float scale, Rect imageBounds, float strokeWidth, Color strokeColor, Color backgroundColor)
 		{
-			var image = GetImageInternal (scale, croppedRectangle, imageSize, strokeWidth, strokeColor, backgroundColor);
+			var image = GetImageInternal (scale, imageBounds, strokeWidth, strokeColor, backgroundColor);
 			if (image != null)
 			{
 				if (format == SignatureImageFormat.Jpeg)
