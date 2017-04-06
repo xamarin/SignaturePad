@@ -50,6 +50,7 @@ namespace Xamarin.Controls
 				// make a deep copy, with { 0, 0 } line starter
 				return inkPresenter.GetStrokes ()
 					.SelectMany (s => new[] { new NativePoint (0, 0) }.Concat (s.GetPoints ()))
+					.Skip (1) // skip the first empty
 					.ToArray ();
 			}
 		}
