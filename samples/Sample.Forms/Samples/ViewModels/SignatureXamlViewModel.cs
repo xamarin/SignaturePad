@@ -1,6 +1,6 @@
 ﻿namespace Samples.ViewModels
 {
-    public class SignatureXamlViewModel : BaseViewModel
-    {
-    }
+	public class SignatureXamlViewModel : BaseViewModel
+	{
+	}
 }
