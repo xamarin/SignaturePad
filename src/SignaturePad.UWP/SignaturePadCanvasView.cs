@@ -85,7 +85,7 @@ namespace Xamarin.Controls
 			inkPresenter.StrokeContainer.Clear ();
 		}
 
-		private async Task<Stream> GetImageStreamInternal (SignatureImageFormat format, float scale, Rect imageBounds, float strokeWidth, Color strokeColor, Color backgroundColor)
+		private async Task<Stream> GetImageStreamInternal (SignatureImageFormat format, Size scale, Rect signatureBounds, Size imageSize, float strokeWidth, Color strokeColor, Color backgroundColor)
 		{
 			CanvasBitmapFileFormat cbff;
 			if (format == SignatureImageFormat.Jpeg)
@@ -101,7 +101,7 @@ namespace Xamarin.Controls
 				return null;
 			}
 
-			using (var offscreen = GetRenderTarget (scale, imageBounds, strokeWidth, strokeColor, backgroundColor))
+			using (var offscreen = GetRenderTarget (scale, signatureBounds, imageSize, strokeWidth, strokeColor, backgroundColor))
 			{
 				var fileStream = new InMemoryRandomAccessStream ();
 				await offscreen.SaveAsync (fileStream, cbff);
@@ -113,9 +113,9 @@ namespace Xamarin.Controls
 			}
 		}
 
-		private WriteableBitmap GetImageInternal (float scale, Rect imageBounds, float strokeWidth, Color strokeColor, Color backgroundColor)
+		private WriteableBitmap GetImageInternal (Size scale, Rect signatureBounds, Size imageSize, float strokeWidth, Color strokeColor, Color backgroundColor)
 		{
-			using (var offscreen = GetRenderTarget (scale, imageBounds, strokeWidth, strokeColor, backgroundColor))
+			using (var offscreen = GetRenderTarget (scale, signatureBounds, imageSize, strokeWidth, strokeColor, backgroundColor))
 			{
 				var bitmap = new WriteableBitmap ((int)offscreen.SizeInPixels.Width, (int)offscreen.SizeInPixels.Height);
 				offscreen.GetPixelBytes (bitmap.PixelBuffer);
@@ -123,20 +123,18 @@ namespace Xamarin.Controls
 			}
 		}
 
-		private CanvasRenderTarget GetRenderTarget (float scale, Rect imageBounds, float strokeWidth, Color strokeColor, Color backgroundColor)
+		private CanvasRenderTarget GetRenderTarget (Size scale, Rect signatureBounds, Size imageSize, float strokeWidth, Color strokeColor, Color backgroundColor)
 		{
 			var device = CanvasDevice.GetSharedDevice ();
-			var currentDpi = DisplayInformation.GetForCurrentView ().LogicalDpi;
-
-			var offscreen = new CanvasRenderTarget (device, (int)imageBounds.Width, (int)imageBounds.Height, currentDpi);
+			var offscreen = new CanvasRenderTarget (device, (int)imageSize.Width, (int)imageSize.Height, 96);
 
 			using (var session = offscreen.CreateDrawingSession ())
 			{
 				session.Clear (backgroundColor);
-				if (imageBounds.X != 0 || imageBounds.Y != 0)
-				{
-					session.Transform = Matrix3x2.CreateTranslation ((float)-imageBounds.X, (float)-imageBounds.Y);
-				}
+
+				session.Transform = Matrix3x2.Multiply (
+					Matrix3x2.CreateTranslation ((float)-signatureBounds.X, (float)-signatureBounds.Y),
+					Matrix3x2.CreateScale ((float)scale.Width, (float)scale.Height));
 
 				// apply the specified colors/style
 				var strokes = inkPresenter.StrokeContainer.GetStrokes ().Select (s =>

@@ -222,14 +222,15 @@ namespace Xamarin.Controls
 		public NativeImage GetImage (ImageConstructionSettings settings)
 		{
 			NativeSize scale;
-			NativeRect imageBounds;
+			NativeRect signatureBounds;
+			NativeSize imageSize;
 			float strokeWidth;
 			NativeColor strokeColor;
 			NativeColor backgroundColor;
 
-			if (GetImageConstructionArguments (settings, out scale, out imageBounds, out strokeWidth, out strokeColor, out backgroundColor))
+			if (GetImageConstructionArguments (settings, out scale, out signatureBounds, out imageSize, out strokeWidth, out strokeColor, out backgroundColor))
 			{
-				return GetImageInternal (scale, imageBounds, strokeWidth, strokeColor, backgroundColor);
+				return GetImageInternal (scale, signatureBounds, imageSize, strokeWidth, strokeColor, backgroundColor);
 			}
 
 			return null;
@@ -358,27 +359,29 @@ namespace Xamarin.Controls
 		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, ImageConstructionSettings settings)
 		{
 			NativeSize scale;
-			NativeRect imageBounds;
+			NativeRect signatureBounds;
+			NativeSize imageSize;
 			float strokeWidth;
 			NativeColor strokeColor;
 			NativeColor backgroundColor;
 
-			if (GetImageConstructionArguments (settings, out scale, out imageBounds, out strokeWidth, out strokeColor, out backgroundColor))
+			if (GetImageConstructionArguments (settings, out scale, out signatureBounds, out imageSize, out strokeWidth, out strokeColor, out backgroundColor))
 			{
-				return GetImageStreamInternal (format, scale, imageBounds, strokeWidth, strokeColor, backgroundColor);
+				return GetImageStreamInternal (format, scale, signatureBounds, imageSize, strokeWidth, strokeColor, backgroundColor);
 			}
 
 			return Task.FromResult<Stream> (null);
 		}
 
-		private bool GetImageConstructionArguments (ImageConstructionSettings settings, out NativeSize scale, out NativeRect imageBounds, out float strokeWidth, out NativeColor strokeColor, out NativeColor backgroundColor)
+		private bool GetImageConstructionArguments (ImageConstructionSettings settings, out NativeSize scale, out NativeRect signatureBounds, out NativeSize imageSize, out float strokeWidth, out NativeColor strokeColor, out NativeColor backgroundColor)
 		{
 			settings.ApplyDefaults (StrokeWidth, StrokeColor);
 
 			if (IsBlank || settings.DesiredSizeOrScale?.IsValid != true)
 			{
 				scale = default (NativeSize);
-				imageBounds = default (NativeRect);
+				signatureBounds = default (NativeRect);
+				imageSize = default (NativeSize);
 				strokeWidth = default (float);
 				strokeColor = default (NativeColor);
 				backgroundColor = default (NativeColor);
@@ -388,32 +391,29 @@ namespace Xamarin.Controls
 
 			var sizeOrScale = settings.DesiredSizeOrScale.Value;
 			var viewSize = this.GetSize ();
-			var size = sizeOrScale.GetSize ((float)viewSize.Width, (float)viewSize.Height);
-			scale = sizeOrScale.GetScale ((float)size.Width, (float)size.Height);
 
-			imageBounds = new NativeRect (0, 0, size.Width, size.Height);
+			imageSize = sizeOrScale.GetSize ((float)viewSize.Width, (float)viewSize.Height);
+			scale = sizeOrScale.GetScale ((float)imageSize.Width, (float)imageSize.Height);
+
+			signatureBounds = GetSignatureBounds ();
+
 			if (settings.ShouldCrop == true)
 			{
-				imageBounds = GetSignatureBounds ();
-
 				if (sizeOrScale.Type == SizeOrScaleType.Size)
 				{
 					// if a specific size was set, scale to that
-					var scaleX = size.Width / (float)imageBounds.Width;
-					var scaleY = size.Height / (float)imageBounds.Height;
+					var scaleX = imageSize.Width / (float)signatureBounds.Width;
+					var scaleY = imageSize.Height / (float)signatureBounds.Height;
 					if (sizeOrScale.KeepAspectRatio)
 					{
 						scaleX = scaleY = Math.Min ((float)scaleX, (float)scaleY);
 					}
 					scale = new NativeSize ((float)scaleX, (float)scaleY);
-					
-					imageBounds.Width = size.Width;
-					imageBounds.Height = size.Height;
 				}
 				else if (sizeOrScale.Type == SizeOrScaleType.Scale)
 				{
-					imageBounds.Width *= scale.Width;
-					imageBounds.Height *= scale.Height;
+					imageSize.Width = signatureBounds.Width * scale.Width;
+					imageSize.Height = signatureBounds.Height * scale.Height;
 				}
 			}
 

@@ -36,7 +36,7 @@ namespace Sample.UWP
 			var storageFolder = await KnownFolders.GetFolderForUserAsync (null, KnownFolderId.PicturesLibrary);
 			var file = await storageFolder.CreateFileAsync ("signature.png", CreationCollisionOption.ReplaceExisting);
 
-			using (var bitmap = await signatureView.GetImageStreamAsync (SignatureImageFormat.Png, Colors.Black, Colors.White, 1f, false))
+			using (var bitmap = await signatureView.GetImageStreamAsync (SignatureImageFormat.Png, Colors.Black, Colors.White, 1f))
 			using (var stream = await file.OpenAsync (FileAccessMode.ReadWrite))
 			using (var dest = stream.AsStreamForWrite ())
 			{

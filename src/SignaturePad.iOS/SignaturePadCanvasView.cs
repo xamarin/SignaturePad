@@ -89,20 +89,20 @@ namespace Xamarin.Controls
 			inkPresenter.Clear ();
 		}
 
-		private UIImage GetImageInternal (CGSize scale, CGRect imageBounds, float strokeWidth, UIColor strokeColor, UIColor backgroundColor)
+		private UIImage GetImageInternal (CGSize scale, CGRect signatureBounds, CGSize imageSize, float strokeWidth, UIColor strokeColor, UIColor backgroundColor)
 		{
-			UIGraphics.BeginImageContext (imageBounds.Size);
+			UIGraphics.BeginImageContext (imageSize);
 
 			// create context and set the desired options
 			var context = UIGraphics.GetCurrentContext ();
 
 			// background
 			context.SetFillColor (backgroundColor.CGColor);
-			context.FillRect (new CGRect (CGPoint.Empty, imageBounds.Size));
+			context.FillRect (new CGRect (CGPoint.Empty, imageSize));
 
 			// cropping / scaling
 			context.ScaleCTM (scale.Width, scale.Height);
-			context.TranslateCTM (-imageBounds.Left, -imageBounds.Top);
+			context.TranslateCTM (-signatureBounds.Left, -signatureBounds.Top);
 
 			// strokes
 			context.SetStrokeColor (strokeColor.CGColor);
@@ -123,9 +123,9 @@ namespace Xamarin.Controls
 			return image;
 		}
 
-		private Task<Stream> GetImageStreamInternal (SignatureImageFormat format, CGSize scale, CGRect imageBounds, float strokeWidth, UIColor strokeColor, UIColor backgroundColor)
+		private Task<Stream> GetImageStreamInternal (SignatureImageFormat format, CGSize scale, CGRect signatureBounds, CGSize imageSize, float strokeWidth, UIColor strokeColor, UIColor backgroundColor)
 		{
-			var image = GetImageInternal (scale, imageBounds, strokeWidth, strokeColor, backgroundColor);
+			var image = GetImageInternal (scale, signatureBounds, imageSize, strokeWidth, strokeColor, backgroundColor);
 			if (image != null)
 			{
 				if (format == SignatureImageFormat.Jpeg)

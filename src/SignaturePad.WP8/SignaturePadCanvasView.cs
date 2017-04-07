@@ -78,12 +78,12 @@ namespace Xamarin.Controls
 			inkPresenter.Strokes.Clear ();
 		}
 
-		private WriteableBitmap GetImageInternal (float scale, Rect imageBounds, float strokeWidth, Color strokeColor, Color backgroundColor)
+		private WriteableBitmap GetImageInternal (Size scale, Rect signatureBounds, Size imageSize, float strokeWidth, Color strokeColor, Color backgroundColor)
 		{
 			var presenter = new InkPresenter
 			{
-				Width = imageBounds.Width,
-				Height = imageBounds.Height,
+				Width = imageSize.Width / scale.Width,
+				Height = imageSize.Height / scale.Height,
 				Strokes = new StrokeCollection (),
 				Background = new SolidColorBrush (backgroundColor)
 			};
@@ -91,15 +91,15 @@ namespace Xamarin.Controls
 			foreach (var stroke in inkPresenter.Strokes)
 			{
 				Stroke tempStroke;
-				if (imageBounds.X != 0 || imageBounds.Y != 0)
+				if (signatureBounds.X != 0 || signatureBounds.Y != 0)
 				{
 					var newCollection = new StylusPointCollection ();
 					foreach (var point in stroke.StylusPoints)
 					{
 						var newPoint = new StylusPoint
 						{
-							X = point.X - imageBounds.X,
-							Y = point.Y - imageBounds.Y
+							X = point.X - signatureBounds.X,
+							Y = point.Y - signatureBounds.Y
 						};
 						newCollection.Add (newPoint);
 					}
@@ -118,12 +118,12 @@ namespace Xamarin.Controls
 				tempStroke = null;
 			}
 
-			return new WriteableBitmap (presenter, new ScaleTransform { ScaleX = scale, ScaleY = scale });
+			return new WriteableBitmap (presenter, new ScaleTransform { ScaleX = scale.Width, ScaleY = scale.Height });
 		}
 
-		private Task<Stream> GetImageStreamInternal (SignatureImageFormat format, float scale, Rect imageBounds, float strokeWidth, Color strokeColor, Color backgroundColor)
+		private Task<Stream> GetImageStreamInternal (SignatureImageFormat format, Size scale, Rect signatureBounds, Size imageSize, float strokeWidth, Color strokeColor, Color backgroundColor)
 		{
-			var image = GetImageInternal (scale, imageBounds, strokeWidth, strokeColor, backgroundColor);
+			var image = GetImageInternal (scale, signatureBounds, imageSize, strokeWidth, strokeColor, backgroundColor);
 			if (image != null)
 			{
 				if (format == SignatureImageFormat.Jpeg)
