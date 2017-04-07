@@ -87,7 +87,7 @@ namespace Xamarin.Controls
 			inkPresenter.Clear ();
 		}
 
-		private Bitmap GetImageInternal (float scale, System.Drawing.RectangleF imageBounds, float strokeWidth, Color strokeColor, Color backgroundColor)
+		private Bitmap GetImageInternal (System.Drawing.SizeF scale, System.Drawing.RectangleF imageBounds, float strokeWidth, Color strokeColor, Color backgroundColor)
 		{
 			// create bitmap and set the desired options
 			var image = Bitmap.CreateBitmap ((int)imageBounds.Width, (int)imageBounds.Height, Bitmap.Config.Argb8888);
@@ -97,8 +97,8 @@ namespace Xamarin.Controls
 				canvas.DrawColor (backgroundColor);
 
 				// cropping / scaling
+				canvas.Scale (scale.Width, scale.Height);
 				canvas.Translate (-imageBounds.Left, -imageBounds.Top);
-				canvas.Scale (scale, scale);
 
 				// strokes
 				using (var paint = new Paint ())
@@ -121,7 +121,7 @@ namespace Xamarin.Controls
 			return image;
 		}
 
-		private async Task<Stream> GetImageStreamInternal (SignatureImageFormat format, float scale, System.Drawing.RectangleF imageBounds, float strokeWidth, Color strokeColor, Color backgroundColor)
+		private async Task<Stream> GetImageStreamInternal (SignatureImageFormat format, System.Drawing.SizeF scale, System.Drawing.RectangleF imageBounds, float strokeWidth, Color strokeColor, Color backgroundColor)
 		{
 			Bitmap.CompressFormat bcf;
 			if (format == SignatureImageFormat.Jpeg)

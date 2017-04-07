@@ -33,6 +33,31 @@ namespace Xamarin.Controls
 			X = xy;
 			Y = xy;
 			Type = type;
+			KeepAspectRatio = true;
+		}
+
+		public SizeOrScale (float xy, SizeOrScaleType type, bool keepAspectRatio)
+		{
+			X = xy;
+			Y = xy;
+			Type = type;
+			KeepAspectRatio = keepAspectRatio;
+		}
+
+		public SizeOrScale (NativeSize size, SizeOrScaleType type)
+		{
+			X = (float)size.Width;
+			Y = (float)size.Height;
+			Type = type;
+			KeepAspectRatio = true;
+		}
+
+		public SizeOrScale (NativeSize size, SizeOrScaleType type, bool keepAspectRatio)
+		{
+			X = (float)size.Width;
+			Y = (float)size.Height;
+			Type = type;
+			KeepAspectRatio = keepAspectRatio;
 		}
 
 		public SizeOrScale (float x, float y, SizeOrScaleType type)
@@ -40,6 +65,15 @@ namespace Xamarin.Controls
 			X = x;
 			Y = y;
 			Type = type;
+			KeepAspectRatio = true;
+		}
+
+		public SizeOrScale (float x, float y, SizeOrScaleType type, bool keepAspectRatio)
+		{
+			X = x;
+			Y = y;
+			Type = type;
+			KeepAspectRatio = keepAspectRatio;
 		}
 
 		public float X { get; set; }
@@ -47,18 +81,20 @@ namespace Xamarin.Controls
 		public float Y { get; set; }
 
 		public SizeOrScaleType Type { get; set; }
+		
+		public bool KeepAspectRatio { get; set; }
 
 		public bool IsValid => X > 0 && Y > 0;
 
-		public float GetScale (float width, float height)
+		public NativeSize GetScale (float width, float height)
 		{
 			if (Type == SizeOrScaleType.Scale)
 			{
-				return Math.Min (X, Y);
+				return new NativeSize (X, Y);
 			}
 			else
 			{
-				return Math.Min (X / width, Y / height);
+				return new NativeSize (X / width, Y / height);
 			}
 		}
 

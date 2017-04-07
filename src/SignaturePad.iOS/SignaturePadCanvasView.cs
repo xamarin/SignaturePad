@@ -89,7 +89,7 @@ namespace Xamarin.Controls
 			inkPresenter.Clear ();
 		}
 
-		private UIImage GetImageInternal (float scale, CGRect imageBounds, float strokeWidth, UIColor strokeColor, UIColor backgroundColor)
+		private UIImage GetImageInternal (CGSize scale, CGRect imageBounds, float strokeWidth, UIColor strokeColor, UIColor backgroundColor)
 		{
 			UIGraphics.BeginImageContext (imageBounds.Size);
 
@@ -101,8 +101,8 @@ namespace Xamarin.Controls
 			context.FillRect (new CGRect (CGPoint.Empty, imageBounds.Size));
 
 			// cropping / scaling
+			context.ScaleCTM (scale.Width, scale.Height);
 			context.TranslateCTM (-imageBounds.Left, -imageBounds.Top);
-			context.ScaleCTM (scale, scale);
 
 			// strokes
 			context.SetStrokeColor (strokeColor.CGColor);
@@ -123,7 +123,7 @@ namespace Xamarin.Controls
 			return image;
 		}
 
-		private Task<Stream> GetImageStreamInternal (SignatureImageFormat format, float scale, CGRect imageBounds, float strokeWidth, UIColor strokeColor, UIColor backgroundColor)
+		private Task<Stream> GetImageStreamInternal (SignatureImageFormat format, CGSize scale, CGRect imageBounds, float strokeWidth, UIColor strokeColor, UIColor backgroundColor)
 		{
 			var image = GetImageInternal (scale, imageBounds, strokeWidth, strokeColor, backgroundColor);
 			if (image != null)
