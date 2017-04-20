@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>05d1e7c0-73fc-41de-a7d6-01ae4c1a4dd3</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Xamarin.Controls</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ImageConstructionSettings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PathSmoothing.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SignatureImageFormat.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SignaturePadCanvasView.cs" />
+  </ItemGroup>
+</Project>

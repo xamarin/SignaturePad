@@ -156,10 +156,6 @@
       <Project>{6fc62387-6717-4577-a48b-d15848741f08}</Project>
       <Name>SignaturePad.Forms.UWP</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\src\SignaturePad.Forms\SignaturePad.Forms.csproj">
-      <Project>{b2af970d-d640-451c-95af-92af531b8c1e}</Project>
-      <Name>SignaturePad.Forms</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\src\SignaturePad.UWP\SignaturePad.UWP.csproj">
       <Project>{16131fdc-d50b-4ef2-8ecc-661184ff80db}</Project>
       <Name>SignaturePad.UWP</Name>

@@ -2,11 +2,11 @@
 
 namespace Samples.Views
 {
-    public partial class MainView : ContentPage
-    {
-        public MainView()
-        {
-            InitializeComponent();
-        }
-    }
+	public partial class MainView : ContentPage
+	{
+		public MainView ()
+		{
+			InitializeComponent ();
+		}
+	}
 }

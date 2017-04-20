@@ -1,12 +1,3 @@
-//
-// SampleViewController.cs
-//
-// Author:
-//   Matthew Leibowitz (matthew.leibowitz@xamarin.com)
-//
-// Copyright (C) 2016 Xamarin Inc.
-//
-
 using System;
 using CoreGraphics;
 using UIKit;
@@ -15,68 +6,64 @@ namespace Sample.iOS
 {
 	public partial class SampleViewController : UIViewController
 	{
-		CGPoint[] points;
-		UIImage savedImage;
+		private CGPoint[] points;
 
-		public SampleViewController()
-			: base("SampleViewController", null)
+		public SampleViewController ()
+			: base ("SampleViewController", null)
 		{
 		}
 
-		public SampleViewController(IntPtr handle)
-			: base(handle)
+		public SampleViewController (IntPtr handle)
+			: base (handle)
 		{
 		}
 
-		private bool ShowImageView
-		{
-			get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Pad; }
-		}
+		private bool ShowImageView => UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Pad;
 
-		public override void ViewDidLoad()
+		public override void ViewDidLoad ()
 		{
-			base.ViewDidLoad();
+			base.ViewDidLoad ();
 
 			saveButton.TouchUpInside += OnSaveTapped;
 			loadButton.TouchUpInside += OnLoadTapped;
 
-			signaturePad.Caption.Font = UIFont.FromName("Marker Felt", 16f);
-			signaturePad.SignaturePrompt.Font = UIFont.FromName("Helvetica", 32f);
+			signaturePad.Caption.Font = UIFont.FromName ("Marker Felt", 16f);
+			signaturePad.SignaturePrompt.Font = UIFont.FromName ("Helvetica", 32f);
 		}
 
-		public override void ViewWillLayoutSubviews()
+		public override void ViewWillLayoutSubviews ()
 		{
-			base.ViewWillLayoutSubviews();
+			base.ViewWillLayoutSubviews ();
 
 			imageView.Hidden = !ShowImageView;
 			separator.Constant = ShowImageView ? 12f : -View.Frame.Height * 0.3f;
 		}
 
-		void OnSaveTapped(object sender, EventArgs e)
+		private void OnSaveTapped (object sender, EventArgs e)
 		{
 			if (signaturePad.IsBlank)
 			{
-				new UIAlertView("Signature Pad", "No signature to save.", null, "OK", null).Show();
+				new UIAlertView ("Signature Pad", "No signature to save.", null, "OK", null).Show ();
 			}
 			else
 			{
 				points = signaturePad.Points;
 				if (ShowImageView)
 				{
-					imageView.Image = signaturePad.GetImage();
+					imageView.Image = signaturePad.GetImage (UIColor.Black, UIColor.White, 1f);
 				}
 				else
 				{
-					new UIAlertView("Signature Pad", "Vector Saved.", null, "OK", null).Show();
+					new UIAlertView ("Signature Pad", "Vector Saved.", null, "OK", null).Show ();
 				}
 			}
 		}
 
-		void OnLoadTapped(object sender, EventArgs e)
+		private void OnLoadTapped (object sender, EventArgs e)
 		{
 			if (points != null)
 			{
-				signaturePad.LoadPoints(points);
+				signaturePad.LoadPoints (points);
 			}
 		}
 	}

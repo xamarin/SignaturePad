@@ -49,9 +49,11 @@
     <Compile Include="..\SignaturePad\Properties\AssemblyInfo.Native.cs">
       <Link>Properties\AssemblyInfo.Native.cs</Link>
     </Compile>
+    <Compile Include="InkPresenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SignaturePadCanvasView.cs" />
     <Compile Include="SignaturePadView.cs" />
-    <Compile Include="ClearingImageView.cs" />
-    <Compile Include="SignatureCanvasView.cs" />
   </ItemGroup>
+  <Import Project="..\SignaturePad.Shared\SignaturePad.Shared.projitems" Label="Shared" />
+  <Import Project="..\SignaturePad.InkPresenter.Shared\SignaturePad.InkPresenter.Shared.projitems" Label="Shared" />
 </Project>

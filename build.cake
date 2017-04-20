@@ -28,11 +28,11 @@ buildSpec = new BuildSpec () {
 					ToDirectory = "output/pcl",
 				},
 				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Forms.Droid/bin/Release/SignaturePad.Forms.Droid.dll",
+					FromFile = "./src/SignaturePad.Forms.Droid/bin/Release/SignaturePad.Forms.dll",
 					ToDirectory = "output/android",
 				},
 				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Forms.iOS/bin/Release/SignaturePad.Forms.iOS.dll",
+					FromFile = "./src/SignaturePad.Forms.iOS/bin/Release/SignaturePad.Forms.dll",
 					ToDirectory = "output/ios-unified",
 				},
 			}
@@ -54,11 +54,11 @@ buildSpec = new BuildSpec () {
 					ToDirectory = "output/pcl",
 				},
 				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Forms.Droid/bin/Release/SignaturePad.Forms.Droid.dll",
+					FromFile = "./src/SignaturePad.Forms.Droid/bin/Release/SignaturePad.Forms.dll",
 					ToDirectory = "output/android",
 				},
 				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Forms.iOS/bin/Release/SignaturePad.Forms.iOS.dll",
+					FromFile = "./src/SignaturePad.Forms.iOS/bin/Release/SignaturePad.Forms.dll",
 					ToDirectory = "output/ios-unified",
 				},
 				new OutputFileCopy {
@@ -66,7 +66,7 @@ buildSpec = new BuildSpec () {
 					ToDirectory = "output/wp8",
 				},
 				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Forms.WindowsPhone/bin/Release/SignaturePad.Forms.WindowsPhone.dll",
+					FromFile = "./src/SignaturePad.Forms.WindowsPhone/bin/Release/SignaturePad.Forms.dll",
 					ToDirectory = "output/wp8",
 				},
 				new OutputFileCopy {
@@ -74,15 +74,7 @@ buildSpec = new BuildSpec () {
 					ToDirectory = "output/uwp",
 				},
 				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.UWP/bin/Release/SignaturePad.pri",
-					ToDirectory = "output/uwp",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.UWP/bin/Release/SignaturePad.xr.xml",
-					ToDirectory = "output/uwp",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Forms.UWP/bin/Release/SignaturePad.Forms.UWP.dll",
+					FromFile = "./src/SignaturePad.Forms.UWP/bin/Release/SignaturePad.Forms.dll",
 					ToDirectory = "output/uwp",
 				},
 			}

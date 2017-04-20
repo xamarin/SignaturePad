@@ -3,7 +3,7 @@
   <metadata>
     <id>Xamarin.Controls.SignaturePad</id>
     <title>SignaturePad for Xamarin and Windows</title>
-    <version>1.5.1</version>
+    <version>2.0.0</version>
     <authors>Xamarin, Inc.</authors>
     <owners>Xamarin, Inc.</owners>
     <licenseUrl>https://components.xamarin.com/license/signature-pad</licenseUrl>
@@ -13,6 +13,9 @@
     <copyright>Copyright (c) Xamarin Inc. 2017</copyright>
     <tags>xamarin,signature,handwriting,windows,ios,android,windows phone,uwp</tags>
     <dependencies>
+      <group targetFramework="wp8">
+        <dependency id="ImageTools" version="0.3.1" />
+      </group>
       <group targetFramework="uap10.0">
         <dependency id="Win2D.uwp" version="1.20.0" />
       </group>
@@ -23,7 +26,5 @@
     <file src="output/ios-unified/SignaturePad.dll" target="lib/Xamarin.iOS/SignaturePad.dll" />
     <file src="output/wp8/SignaturePad.dll" target="lib/wp8/SignaturePad.dll" />
     <file src="output/uwp/SignaturePad.dll" target="lib/uap10.0/SignaturePad.dll" />
-    <file src="output/uwp/SignaturePad.pri" target="lib/uap10.0/SignaturePad.pri" />
-    <file src="output/uwp/SignaturePad.xr.xml" target="lib/uap10.0/SignaturePad/SignaturePad.xr.xml" />
   </files>
 </package>

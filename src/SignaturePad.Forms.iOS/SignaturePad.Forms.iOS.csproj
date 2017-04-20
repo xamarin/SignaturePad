@@ -6,18 +6,9 @@
     <ProjectGuid>{B12D20AA-0EDF-4903-B385-BB8090848532}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>SignaturePad.Forms.iOS</RootNamespace>
+    <RootNamespace>SignaturePad.Forms</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>SignaturePad.Forms.iOS</AssemblyName>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath />
-    <SccProvider>
-    </SccProvider>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <AssemblyName>SignaturePad.Forms</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -84,6 +75,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="..\SignaturePad.Forms.Platform.Shared\SignaturePad.Forms.Platform.Shared.projitems" Label="Shared" />
+  <Import Project="..\SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.3.3.193\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.3.193\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

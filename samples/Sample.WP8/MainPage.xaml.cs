@@ -1,26 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.IO;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using Microsoft.Phone.Controls;
 using System.Windows.Media.Imaging;
-using System.IO;
+using Microsoft.Phone.Controls;
 using Microsoft.Xna.Framework.Media;
 
 namespace Sample.WP8
 {
 	public partial class MainPage : PhoneApplicationPage
 	{
-		Point [] points;
+		private Point[] points;
 
-		// Constructor
 		public MainPage ()
 		{
 			InitializeComponent ();
@@ -40,15 +30,19 @@ namespace Sample.WP8
 
 		private void btnSaveImage_Click (object sender, RoutedEventArgs e)
 		{
-			WriteableBitmap bitmap = signatureView.GetImage ();
+			var bitmap = signatureView.GetImage (Colors.Black, Colors.White, 1f);
 
-			using (MemoryStream stream = new MemoryStream ()) {
+			using (var stream = new MemoryStream ())
+			{
 				bitmap.SaveJpeg (stream, bitmap.PixelWidth, bitmap.PixelHeight, 0, 100);
 				stream.Seek (0, SeekOrigin.Begin);
 
 				using (MediaLibrary mediaLibrary = new MediaLibrary ())
+				{
 					mediaLibrary.SavePicture ("signature.jpg", stream);
+				}
 			}
+
 			MessageBox.Show ("Picture saved to photo library");
 		}
 	}

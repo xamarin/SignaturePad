@@ -27,7 +27,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp" />
-    <signaturepad.SignaturePadView
+    <xamarin.controls.SignaturePadView
         android:id="@+id/signatureView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

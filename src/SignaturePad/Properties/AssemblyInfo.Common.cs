@@ -4,17 +4,17 @@ using System.Resources;
 #if DEBUG
 [assembly: AssemblyConfiguration ("DEBUG")]
 #else
-[assembly: AssemblyConfiguration("Release")]
+[assembly: AssemblyConfiguration ("Release")]
 #endif
 
 [assembly: AssemblyDescription ("Makes capturing, saving, and displaying signatures extremely simple.")]
 
 [assembly: AssemblyCompany ("")]
-[assembly: AssemblyCopyright ("Copyright © Xamarin Inc 2016")]
+[assembly: AssemblyCopyright ("Copyright © Xamarin Inc 2017")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]
-[assembly: NeutralResourcesLanguageAttribute ("en-US")]
+[assembly: NeutralResourcesLanguage ("en-US")]
 
-[assembly: AssemblyVersion ("1.5.0.0")]
-[assembly: AssemblyFileVersion ("1.5.0.0")]
-[assembly: AssemblyInformationalVersion("1.5.0.0")]
+[assembly: AssemblyVersion ("2.0.0.0")]
+[assembly: AssemblyFileVersion ("2.0.0.0")]
+[assembly: AssemblyInformationalVersion ("2.0.0.0")]

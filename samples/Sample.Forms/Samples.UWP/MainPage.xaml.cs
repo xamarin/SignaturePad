@@ -1,12 +1,12 @@
 ﻿namespace Samples.UWP
 {
-    public sealed partial class MainPage
-    {
-        public MainPage()
-        {
-            InitializeComponent();
+	public sealed partial class MainPage
+	{
+		public MainPage ()
+		{
+			InitializeComponent ();
 
-            LoadApplication(new Samples.App());
-        }
-    }
+			LoadApplication (new Samples.App ());
+		}
+	}
 }

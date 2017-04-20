@@ -7,21 +7,12 @@
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SignaturePad.Forms.Droid</RootNamespace>
-    <AssemblyName>SignaturePad.Forms.Droid</AssemblyName>
+    <RootNamespace>SignaturePad.Forms</RootNamespace>
+    <AssemblyName>SignaturePad.Forms</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath />
-    <SccProvider>
-    </SccProvider>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
     <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -107,13 +98,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
   <ItemGroup>
     <ProjectReference Include="..\SignaturePad.Android\SignaturePad.Android.csproj">
       <Project>{f1a16cb9-a759-42c8-8f0b-3c9698a55336}</Project>
@@ -128,6 +112,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="..\SignaturePad.Forms.Platform.Shared\SignaturePad.Forms.Platform.Shared.projitems" Label="Shared" />
+  <Import Project="..\SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.projitems" Label="Shared" />
   <Import Project="..\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets" Condition="Exists('..\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

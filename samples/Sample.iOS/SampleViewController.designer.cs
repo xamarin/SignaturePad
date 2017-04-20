@@ -32,7 +32,7 @@ namespace Sample.iOS
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        SignaturePad.SignaturePadView signaturePad { get; set; }
+        Xamarin.Controls.SignaturePadView signaturePad { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
