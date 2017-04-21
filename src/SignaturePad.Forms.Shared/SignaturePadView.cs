@@ -85,14 +85,128 @@ namespace SignaturePad.Forms
 		}
 
 		/// <summary>
-		/// Returns an image data stream for the current signature.
-		/// (The caller must dispose the stream)
+		/// Create an encoded image stream of the currently drawn signature.
 		/// </summary>
-		/// <param name="imageFormat">The format/encoding of the image that is desired.</param>
-		/// <returns>Returns the image data stream.</returns>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat imageFormat)
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, bool shouldCrop = true, bool keepAspectRatio = true)
 		{
-			var args = new ImageStreamRequestedEventArgs (imageFormat);
+			return GetImageStreamAsync (format, new ImageConstructionSettings
+			{
+				ShouldCrop = shouldCrop,
+				DesiredSizeOrScale = new SizeOrScale (1f, SizeOrScaleType.Scale, keepAspectRatio)
+			});
+		}
+
+		/// <summary>
+		/// Create an encoded image stream of the currently drawn signature at the specified size.
+		/// </summary>
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Size size, bool shouldCrop = true, bool keepAspectRatio = true)
+		{
+			return GetImageStreamAsync (format, new ImageConstructionSettings
+			{
+				ShouldCrop = shouldCrop,
+				DesiredSizeOrScale = new SizeOrScale (size, SizeOrScaleType.Size, keepAspectRatio)
+			});
+		}
+
+		/// <summary>
+		/// Create an encoded image stream of the currently drawn signature at the specified scale.
+		/// </summary>
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
+		{
+			return GetImageStreamAsync (format, new ImageConstructionSettings
+			{
+				ShouldCrop = shouldCrop,
+				DesiredSizeOrScale = new SizeOrScale (scale, SizeOrScaleType.Scale, keepAspectRatio)
+			});
+		}
+
+		/// <summary>
+		/// Create an encoded image stream of the currently drawn signature with the specified stroke color.
+		/// </summary>
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, bool shouldCrop = true, bool keepAspectRatio = true)
+		{
+			return GetImageStreamAsync (format, new ImageConstructionSettings
+			{
+				ShouldCrop = shouldCrop,
+				DesiredSizeOrScale = new SizeOrScale (1f, SizeOrScaleType.Scale, keepAspectRatio),
+				StrokeColor = strokeColor
+			});
+		}
+
+		/// <summary>
+		/// Create an encoded image stream of the currently drawn signature at the specified size with the specified stroke color.
+		/// </summary>
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, Size size, bool shouldCrop = true, bool keepAspectRatio = true)
+		{
+			return GetImageStreamAsync (format, new ImageConstructionSettings
+			{
+				ShouldCrop = shouldCrop,
+				StrokeColor = strokeColor,
+				DesiredSizeOrScale = new SizeOrScale (size, SizeOrScaleType.Size, keepAspectRatio)
+			});
+		}
+
+		/// <summary>
+		/// Create an encoded image stream of the currently drawn signature at the specified scale with the specified stroke color.
+		/// </summary>
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
+		{
+			return GetImageStreamAsync (format, new ImageConstructionSettings
+			{
+				ShouldCrop = shouldCrop,
+				StrokeColor = strokeColor,
+				DesiredSizeOrScale = new SizeOrScale (scale, SizeOrScaleType.Scale, keepAspectRatio)
+			});
+		}
+
+		/// <summary>
+		/// Create an encoded image stream of the currently drawn signature with the specified stroke and background colors.
+		/// </summary>
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, Color fillColor, bool shouldCrop = true, bool keepAspectRatio = true)
+		{
+			return GetImageStreamAsync (format, new ImageConstructionSettings
+			{
+				ShouldCrop = shouldCrop,
+				DesiredSizeOrScale = new SizeOrScale (1f, SizeOrScaleType.Scale, keepAspectRatio),
+				StrokeColor = strokeColor,
+				BackgroundColor = fillColor
+			});
+		}
+
+		/// <summary>
+		/// Create an encoded image stream of the currently drawn signature at the specified size with the specified stroke and background colors.
+		/// </summary>
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, Color fillColor, Size size, bool shouldCrop = true, bool keepAspectRatio = true)
+		{
+			return GetImageStreamAsync (format, new ImageConstructionSettings
+			{
+				ShouldCrop = shouldCrop,
+				StrokeColor = strokeColor,
+				BackgroundColor = fillColor,
+				DesiredSizeOrScale = new SizeOrScale (size, SizeOrScaleType.Size, keepAspectRatio)
+			});
+		}
+
+		/// <summary>
+		/// Create an encoded image stream of the currently drawn signature at the specified scale with the specified stroke and background colors.
+		/// </summary>
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, Color fillColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
+		{
+			return GetImageStreamAsync (format, new ImageConstructionSettings
+			{
+				ShouldCrop = shouldCrop,
+				StrokeColor = strokeColor,
+				BackgroundColor = fillColor,
+				DesiredSizeOrScale = new SizeOrScale (scale, SizeOrScaleType.Scale, keepAspectRatio)
+			});
+		}
+
+		/// <summary>
+		/// Create an encoded image stream of the currently drawn signature using the specified settings.
+		/// </summary>
+		public Task<Stream> GetImageStreamAsync (SignatureImageFormat imageFormat, ImageConstructionSettings settings)
+		{
+			var args = new ImageStreamRequestedEventArgs (imageFormat, settings);
 			ImageStreamRequested?.Invoke (this, args);
 			return args.ImageStreamTask;
 		}
@@ -129,12 +243,15 @@ namespace SignaturePad.Forms
 
 		internal class ImageStreamRequestedEventArgs : EventArgs
 		{
-			public ImageStreamRequestedEventArgs (SignatureImageFormat imageFormat)
+			public ImageStreamRequestedEventArgs (SignatureImageFormat imageFormat, ImageConstructionSettings settings)
 			{
 				ImageFormat = imageFormat;
+				Settings = settings;
 			}
 
 			public SignatureImageFormat ImageFormat { get; private set; }
+
+			public ImageConstructionSettings Settings { get; private set; }
 
 			public Task<Stream> ImageStreamTask { get; set; } = Task.FromResult<Stream> (null);
 		}

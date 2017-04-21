@@ -92,7 +92,25 @@ namespace SignaturePad.Forms
 			if (ctrl != null)
 			{
 				var format = e.ImageFormat == SignatureImageFormat.Png ? Xamarin.Controls.SignatureImageFormat.Png : Xamarin.Controls.SignatureImageFormat.Jpeg;
-				e.ImageStreamTask = ctrl.GetImageStreamAsync (format);
+
+				var settings = new Xamarin.Controls.ImageConstructionSettings ();
+				if (e.Settings.BackgroundColor.HasValue)
+				{
+					settings.BackgroundColor = e.Settings.BackgroundColor.Value.ToNative ();
+				}
+				if (e.Settings.DesiredSizeOrScale.HasValue)
+				{
+					var val = e.Settings.DesiredSizeOrScale.Value;
+					settings.DesiredSizeOrScale = new Xamarin.Controls.SizeOrScale (val.X, val.Y, (Xamarin.Controls.SizeOrScaleType)(int)val.Type, val.KeepAspectRatio);
+				}
+				settings.ShouldCrop = e.Settings.ShouldCrop;
+				if (e.Settings.StrokeColor.HasValue)
+				{
+					settings.StrokeColor = e.Settings.StrokeColor.Value.ToNative ();
+				}
+				settings.StrokeWidth = e.Settings.StrokeWidth;
+
+				e.ImageStreamTask = ctrl.GetImageStreamAsync (format, settings);
 			}
 		}
 
