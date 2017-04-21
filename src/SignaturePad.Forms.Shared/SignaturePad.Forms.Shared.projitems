@@ -12,5 +12,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)SignatureImageFormat.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SignaturePadView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ImageConstructionSettings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SignaturePadCanvasView.cs" />
   </ItemGroup>
 </Project>

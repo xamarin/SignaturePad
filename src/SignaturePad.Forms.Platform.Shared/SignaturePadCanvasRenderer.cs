@@ -1,47 +1,35 @@
+using System;
 using System.ComponentModel;
-using System.IO;
-using System.Threading.Tasks;
 using System.Linq;
 using Xamarin.Forms;
 using SignaturePad.Forms;
 using Color = Xamarin.Forms.Color;
 using Point = Xamarin.Forms.Point;
 #if WINDOWS_PHONE
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using Xamarin.Forms.Platform.WinPhone;
-using NativeSignaturePadView = Xamarin.Controls.SignaturePad;
+using NativeSignaturePadCanvasView = Xamarin.Controls.SignaturePadCanvasView;
 using NativePoint = System.Windows.Point;
 #elif WINDOWS_UWP
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
 using Xamarin.Forms.Platform.UWP;
-using Microsoft.Graphics.Canvas;
-using NativeSignaturePadView = Xamarin.Controls.SignaturePad;
+using NativeSignaturePadCanvasView = Xamarin.Controls.SignaturePadCanvasView;
 using NativePoint = Windows.Foundation.Point;
 #elif __IOS__
-using UIKit;
 using Xamarin.Forms.Platform.iOS;
-using NativeSignaturePadView = Xamarin.Controls.SignaturePadView;
+using NativeSignaturePadCanvasView = Xamarin.Controls.SignaturePadCanvasView;
 using NativePoint = CoreGraphics.CGPoint;
-using NativeColor = UIKit.UIColor;
 #elif __ANDROID__
-using Android.Graphics;
-using Android.Widget;
 using Xamarin.Forms.Platform.Android;
-using NativeSignaturePadView = Xamarin.Controls.SignaturePadView;
+using NativeSignaturePadCanvasView = Xamarin.Controls.SignaturePadCanvasView;
 using NativePoint = System.Drawing.PointF;
-using NativeColor = Android.Graphics.Color;
 #endif
 
-[assembly: ExportRenderer (typeof (SignaturePadView), typeof (SignaturePadRenderer))]
+[assembly: ExportRenderer (typeof (SignaturePadCanvasView), typeof (SignaturePadCanvasRenderer))]
 
 namespace SignaturePad.Forms
 {
-	public class SignaturePadRenderer : ViewRenderer<SignaturePadView, NativeSignaturePadView>
+	public class SignaturePadCanvasRenderer : ViewRenderer<SignaturePadCanvasView, NativeSignaturePadCanvasView>
 	{
-		protected override void OnElementChanged (ElementChangedEventArgs<SignaturePadView> e)
+		protected override void OnElementChanged (ElementChangedEventArgs<SignaturePadCanvasView> e)
 		{
 			base.OnElementChanged (e);
 
@@ -49,10 +37,13 @@ namespace SignaturePad.Forms
 			{
 				// Instantiate the native control and assign it to the Control property
 #if __ANDROID__
-				var native = new NativeSignaturePadView (Xamarin.Forms.Forms.Context);
+				var native = new NativeSignaturePadCanvasView (Xamarin.Forms.Forms.Context);
 #else
-				var native = new NativeSignaturePadView ();
+				var native = new NativeSignaturePadCanvasView ();
 #endif
+
+				native.StrokeCompleted += OnStrokeCompleted;
+
 				SetNativeControl (native);
 			}
 
@@ -63,6 +54,8 @@ namespace SignaturePad.Forms
 				e.OldElement.IsBlankRequested -= OnIsBlankRequested;
 				e.OldElement.PointsRequested -= OnPointsRequested;
 				e.OldElement.PointsSpecified -= OnPointsSpecified;
+				e.OldElement.StrokesRequested -= OnStrokesRequested;
+				e.OldElement.StrokesSpecified -= OnStrokesSpecified;
 				e.OldElement.ClearRequested -= OnClearRequested;
 			}
 
@@ -73,6 +66,8 @@ namespace SignaturePad.Forms
 				e.NewElement.IsBlankRequested += OnIsBlankRequested;
 				e.NewElement.PointsRequested += OnPointsRequested;
 				e.NewElement.PointsSpecified += OnPointsSpecified;
+				e.NewElement.StrokesRequested += OnStrokesRequested;
+				e.NewElement.StrokesSpecified += OnStrokesSpecified;
 				e.NewElement.ClearRequested += OnClearRequested;
 
 				UpdateAll ();
@@ -86,7 +81,12 @@ namespace SignaturePad.Forms
 			Update (e.PropertyName);
 		}
 
-		private void OnImageStreamRequested (object sender, SignaturePadView.ImageStreamRequestedEventArgs e)
+		private void OnStrokeCompleted (object sender, EventArgs e)
+		{
+			Element?.OnStrokeCompleted ();
+		}
+
+		private void OnImageStreamRequested (object sender, SignaturePadCanvasView.ImageStreamRequestedEventArgs e)
 		{
 			var ctrl = Control;
 			if (ctrl != null)
@@ -114,7 +114,7 @@ namespace SignaturePad.Forms
 			}
 		}
 
-		private void OnIsBlankRequested (object sender, SignaturePadView.IsBlankRequestedEventArgs e)
+		private void OnIsBlankRequested (object sender, SignaturePadCanvasView.IsBlankRequestedEventArgs e)
 		{
 			var ctrl = Control;
 			if (ctrl != null)
@@ -123,7 +123,7 @@ namespace SignaturePad.Forms
 			}
 		}
 
-		private void OnPointsRequested (object sender, SignaturePadView.PointsEventArgs e)
+		private void OnPointsRequested (object sender, SignaturePadCanvasView.PointsEventArgs e)
 		{
 			var ctrl = Control;
 			if (ctrl != null)
@@ -132,7 +132,7 @@ namespace SignaturePad.Forms
 			}
 		}
 
-		private void OnPointsSpecified (object sender, SignaturePadView.PointsEventArgs e)
+		private void OnPointsSpecified (object sender, SignaturePadCanvasView.PointsEventArgs e)
 		{
 			var ctrl = Control;
 			if (ctrl != null)
@@ -141,7 +141,25 @@ namespace SignaturePad.Forms
 			}
 		}
 
-		private void OnClearRequested (object sender, System.EventArgs e)
+		private void OnStrokesRequested (object sender, SignaturePadCanvasView.StrokesEventArgs e)
+		{
+			var ctrl = Control;
+			if (ctrl != null)
+			{
+				e.Strokes = ctrl.Strokes.Select (s => s.Select (p => new Point (p.X, p.Y)));
+			}
+		}
+
+		private void OnStrokesSpecified (object sender, SignaturePadCanvasView.StrokesEventArgs e)
+		{
+			var ctrl = Control;
+			if (ctrl != null)
+			{
+				ctrl.LoadStrokes (e.Strokes.Select (s => s.Select (p => new NativePoint ((float)p.X, (float)p.Y)).ToArray ()).ToArray ());
+			}
+		}
+
+		private void OnClearRequested (object sender, EventArgs e)
 		{
 			var ctrl = Control;
 			if (ctrl != null)
@@ -160,38 +178,6 @@ namespace SignaturePad.Forms
 				return;
 			}
 
-			if (Element.BackgroundColor != Color.Default)
-			{
-				Control.BackgroundColor = Element.BackgroundColor.ToNative ();
-			}
-			if (!string.IsNullOrEmpty (Element.CaptionText))
-			{
-				Control.CaptionText = Element.CaptionText;
-			}
-			if (Element.CaptionTextColor != Color.Default)
-			{
-				Control.Caption.SetTextColor (Element.CaptionTextColor);
-			}
-			if (!string.IsNullOrEmpty (Element.ClearText))
-			{
-				Control.ClearLabelText = Element.ClearText;
-			}
-			if (Element.ClearTextColor != Color.Default)
-			{
-				Control.ClearLabel.SetTextColor (Element.ClearTextColor);
-			}
-			if (!string.IsNullOrEmpty (Element.PromptText))
-			{
-				Control.SignaturePromptText = Element.PromptText;
-			}
-			if (Element.PromptTextColor != Color.Default)
-			{
-				Control.SignaturePrompt.SetTextColor (Element.PromptTextColor);
-			}
-			if (Element.SignatureLineColor != Color.Default)
-			{
-				Control.SignatureLineColor = Element.SignatureLineColor.ToNative ();
-			}
 			if (Element.StrokeColor != Color.Default)
 			{
 				Control.StrokeColor = Element.StrokeColor.ToNative ();
@@ -212,43 +198,11 @@ namespace SignaturePad.Forms
 				return;
 			}
 
-			if (property == SignaturePadView.BackgroundColorProperty.PropertyName)
-			{
-				Control.BackgroundColor = Element.BackgroundColor.ToNative ();
-			}
-			else if (property == SignaturePadView.CaptionTextProperty.PropertyName)
-			{
-				Control.CaptionText = Element.CaptionText;
-			}
-			else if (property == SignaturePadView.CaptionTextColorProperty.PropertyName)
-			{
-				Control.Caption.SetTextColor (Element.CaptionTextColor);
-			}
-			else if (property == SignaturePadView.ClearTextProperty.PropertyName)
-			{
-				Control.ClearLabelText = Element.ClearText;
-			}
-			else if (property == SignaturePadView.ClearTextColorProperty.PropertyName)
-			{
-				Control.ClearLabel.SetTextColor (Element.ClearTextColor);
-			}
-			else if (property == SignaturePadView.PromptTextProperty.PropertyName)
-			{
-				Control.SignaturePromptText = Element.PromptText;
-			}
-			else if (property == SignaturePadView.PromptTextColorProperty.PropertyName)
-			{
-				Control.SignaturePrompt.SetTextColor (Element.PromptTextColor);
-			}
-			else if (property == SignaturePadView.SignatureLineColorProperty.PropertyName)
-			{
-				Control.SignatureLineColor = Element.SignatureLineColor.ToNative ();
-			}
-			else if (property == SignaturePadView.StrokeColorProperty.PropertyName)
+			if (property == SignaturePadCanvasView.StrokeColorProperty.PropertyName)
 			{
 				Control.StrokeColor = Element.StrokeColor.ToNative ();
 			}
-			else if (property == SignaturePadView.StrokeWidthProperty.PropertyName)
+			else if (property == SignaturePadCanvasView.StrokeWidthProperty.PropertyName)
 			{
 				Control.StrokeWidth = Element.StrokeWidth;
 			}

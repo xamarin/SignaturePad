@@ -10,6 +10,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ColorExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SignaturePadRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SignaturePadCanvasRenderer.cs" />
   </ItemGroup>
 </Project>
