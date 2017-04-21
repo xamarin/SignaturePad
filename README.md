@@ -1,5 +1,10 @@
 # Signature Pad
 
+
+[![Build Status](https://jenkins.mono-project.com/buildStatus/icon?job=Components-SignaturePad-Windows)](https://jenkins.mono-project.com/view/Components/job/Components-SignaturePad-Windows/)  [![Build Status](https://jenkins.mono-project.com/buildStatus/icon?job=Components-SignaturePad)](https://jenkins.mono-project.com/view/Components/job/Components-SignaturePad/)
+
+[![SignaturePad NuGet](https://img.shields.io/nuget/v/Xamarin.Controls.SignaturePad.svg?label=SignaturePad%20NuGet)](https://www.nuget.org/packages/Xamarin.Controls.SignaturePad)  [![NuGet](https://img.shields.io/nuget/v/Xamarin.Controls.SignaturePad.Forms.svg?label=SignaturePad.Forms%20NuGet)](https://www.nuget.org/packages/Xamarin.Controls.SignaturePad.Forms)
+
 Signature Pad makes capturing, saving, exporting, and displaying signatures extremely simple on
 Xamarin.iOS, Xamarin.Android and Windows.
 
