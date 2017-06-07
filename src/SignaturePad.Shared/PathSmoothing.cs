@@ -17,6 +17,9 @@ using Windows.UI.Input.Inking;
 using NativePoint = Windows.Foundation.Point;
 using NativePath = System.Collections.Generic.List<Windows.Foundation.Point>;
 using InkStroke = Windows.UI.Input.Inking.InkStroke;
+#elif WINDOWS_PHONE_APP
+using NativePoint = Windows.Foundation.Point;
+using NativePath = Windows.UI.Xaml.Media.PathGeometry;
 #endif
 
 namespace Xamarin.Controls
@@ -93,7 +96,7 @@ namespace Xamarin.Controls
 			smoothedPoints.Add (last);
 
 			// create the new path with the old attributes
-#if __ANDROID__ || __IOS__
+#if __ANDROID__ || __IOS__ || WINDOWS_PHONE_APP
 			return new InkStroke (smoothedPath, smoothedPoints.ToList (), currentPath.Color, currentPath.Width);
 #elif WINDOWS_PHONE
 			var da = currentPath.DrawingAttributes;

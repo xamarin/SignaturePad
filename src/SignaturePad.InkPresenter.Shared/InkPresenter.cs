@@ -16,12 +16,21 @@ using NativePoint = CoreGraphics.CGPoint;
 using NativeColor = UIKit.UIColor;
 using NativeImage = UIKit.UIImage;
 using NativePath = UIKit.UIBezierPath;
+#elif WINDOWS_PHONE_APP
+using NativeRect = Windows.Foundation.Rect;
+using NativeSize = Windows.Foundation.Size;
+using NativePoint = Windows.Foundation.Point;
+using NativeColor = Windows.UI.Color;
+using NativeImage = Windows.UI.Xaml.Media.Imaging.WriteableBitmap;
+using NativePath = Windows.UI.Xaml.Media.PathGeometry;
 #endif
 
 namespace Xamarin.Controls
 {
 	internal partial class InkPresenter
 	{
+		private const float MinimumPointDistance = 1.0f;
+
 		private static float ScreenDensity;
 
 		private readonly List<InkStroke> paths = new List<InkStroke> ();
@@ -37,7 +46,7 @@ namespace Xamarin.Controls
 
 		// public properties
 
-		public NativeColor StrokeColor { get; set; } = NativeColor.Black;
+		public NativeColor StrokeColor { get; set; } = ImageConstructionSettings.Black;
 
 		public float StrokeWidth { get; set; } = 1f * ScreenDensity;
 
@@ -146,6 +155,16 @@ namespace Xamarin.Controls
 		}
 
 		// private methods
+
+		private bool HasMovedFarEnough (InkStroke stroke, double touchX, double touchY)
+		{
+			var lastPoint = stroke.GetPoints ().LastOrDefault ();
+			var deltaX = touchX - lastPoint.X;
+			var deltaY = touchY - lastPoint.Y;
+
+			var distance = Math.Sqrt (Math.Pow (deltaX, 2) + Math.Pow (deltaY, 2));
+			return distance >= MinimumPointDistance;
+		}
 
 		/// <summary>
 		/// Update the bounds for the rectangle to be redrawn if necessary for the given point.

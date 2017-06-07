@@ -20,6 +20,11 @@ using System.Numerics;
 using Windows.UI;
 using Windows.UI.Input.Inking;
 using Windows.UI.Xaml;
+#elif WINDOWS_PHONE_APP
+using Windows.Foundation;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 #endif
 
 namespace Xamarin.Controls
@@ -116,6 +121,45 @@ namespace Xamarin.Controls
 		public static Size GetSize (this FrameworkElement element)
 		{
 			return new Size (element.ActualWidth, element.ActualHeight);
+		}
+
+#elif WINDOWS_PHONE_APP
+
+		public static void MoveTo (this PathGeometry stroke, double x, double y)
+		{
+			var figure = new PathFigure ();
+			figure.StartPoint = new Point (x, y);
+			var segment = new PolyLineSegment ();
+			segment.Points.Add (new Point (x, y));
+			figure.Segments.Add (segment);
+			stroke.Figures.Add (figure);
+		}
+
+		public static void LineTo (this PathGeometry stroke, double x, double y)
+		{
+			var figure = stroke.Figures.LastOrDefault ();
+			if (figure == null)
+			{
+				figure = new PathFigure ();
+				stroke.Figures.Add (figure);
+			}
+			var segment = figure.Segments.LastOrDefault () as PolyLineSegment;
+			if(segment == null)
+			{
+				segment = new PolyLineSegment ();
+				figure.Segments.Add (segment);
+			}
+			segment.Points.Add (new Point (x, y));
+		}
+		
+		public static Size GetSize (this FrameworkElement element)
+		{
+			return new Size (element.ActualWidth, element.ActualHeight);
+		}
+
+		public static Size GetSize (this WriteableBitmap image)
+		{
+			return new Size (image.PixelWidth, image.PixelHeight);
 		}
 
 #elif WINDOWS_UWP

@@ -8,6 +8,10 @@ using NativePath = Android.Graphics.Path;
 using NativePoint = CoreGraphics.CGPoint;
 using NativeColor = UIKit.UIColor;
 using NativePath = UIKit.UIBezierPath;
+#elif WINDOWS_PHONE_APP
+using NativePoint = Windows.Foundation.Point;
+using NativeColor = Windows.UI.Color;
+using NativePath = Windows.UI.Xaml.Media.PathGeometry;
 #endif
 
 namespace Xamarin.Controls
