@@ -49,6 +49,15 @@
     <Compile Include="SignaturePad.cs" />
     <Compile Include="SignaturePadCanvasView.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="WriteableBitmapEx.WinRT">
+      <HintPath>..\packages\WriteableBitmapEx.1.5.1.0\lib\wpa81\WriteableBitmapEx.WinRT.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="..\SignaturePad.Shared\SignaturePad.Shared.projitems" Label="Shared" />
   <Import Project="..\SignaturePad.InkPresenter.Shared\SignaturePad.InkPresenter.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
