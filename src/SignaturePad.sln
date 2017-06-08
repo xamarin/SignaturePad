@@ -40,6 +40,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.WindowsPhone81
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.Windows81", "SignaturePad.Windows81\SignaturePad.Windows81.csproj", "{D084E70F-D32B-4E17-8583-73BFA4D1EDE6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.WindowsRuntime81", "SignaturePad.WindowsRuntime81\SignaturePad.WindowsRuntime81.csproj", "{71AC63E4-ECE4-4412-B318-D5E7BD65EC50}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SignaturePad.Shared\SignaturePad.Shared.projitems*{05d1e7c0-73fc-41de-a7d6-01ae4c1a4dd3}*SharedItemsImports = 13
@@ -114,6 +116,10 @@ Global
 		{D084E70F-D32B-4E17-8583-73BFA4D1EDE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D084E70F-D32B-4E17-8583-73BFA4D1EDE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D084E70F-D32B-4E17-8583-73BFA4D1EDE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71AC63E4-ECE4-4412-B318-D5E7BD65EC50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71AC63E4-ECE4-4412-B318-D5E7BD65EC50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71AC63E4-ECE4-4412-B318-D5E7BD65EC50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71AC63E4-ECE4-4412-B318-D5E7BD65EC50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

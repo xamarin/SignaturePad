@@ -68,18 +68,21 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Win2D.win81.1.20.0\build\win\Win2D.win81.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Win2D.win81.1.20.0\build\win\Win2D.win81.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.DotNet.BuildTools.GenAPI.1.0.0-beta-00081\build\Microsoft.DotNet.BuildTools.GenAPI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.DotNet.BuildTools.GenAPI.1.0.0-beta-00081\build\Microsoft.DotNet.BuildTools.GenAPI.targets'))" />
   </Target>
   <Target Name="Win2DLibraryProjectModifications" BeforeTargets="ResolveAssemblyReferences;ResolveSDKReferences" AfterTargets="InjectReference">
     <!-- we want to undo everything from the NuGet and manually reference the Any CPU winmd so that we can still be Any CPU -->
-    <Copy SourceFiles="..\packages\Win2D.win81.1.20.0\lib\win\Microsoft.Graphics.Canvas.winmd"
-          DestinationFolder="$(IntermediateOutputPath)\Win2D" />
+    <Copy SourceFiles="..\packages\Win2D.win81.1.20.0\lib\win\Microsoft.Graphics.Canvas.winmd" DestinationFolder="$(IntermediateOutputPath)\Win2D" />
     <ItemGroup>
       <SDKReference Remove="Microsoft.VCLibs, Version=12.0" />
       <Reference Remove="Microsoft.Graphics.Canvas" />
       <Reference Remove="Microsoft.Graphics.Canvas.Numerics" />
-      <Reference Include="$(IntermediateOutputPath)\Win2D\Microsoft.Graphics.Canvas.winmd" />
+      <Reference Include="$(IntermediateOutputPath)\Win2D\Microsoft.Graphics.Canvas.winmd">
+        <Private>True</Private>
+      </Reference>
     </ItemGroup>
   </Target>
+  <Import Project="..\packages\Microsoft.DotNet.BuildTools.GenAPI.1.0.0-beta-00081\build\Microsoft.DotNet.BuildTools.GenAPI.targets" Condition="Exists('..\packages\Microsoft.DotNet.BuildTools.GenAPI.1.0.0-beta-00081\build\Microsoft.DotNet.BuildTools.GenAPI.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
