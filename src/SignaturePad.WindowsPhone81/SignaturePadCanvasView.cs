@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI;
@@ -7,9 +9,10 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.Storage.Streams;
-using System.Linq;
 using Windows.Graphics.Imaging;
-using System.Runtime.InteropServices.WindowsRuntime;
+using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Numerics;
+using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Xamarin.Controls
 {
@@ -81,91 +84,121 @@ namespace Xamarin.Controls
 			inkPresenter.Clear ();
 		}
 
-		private WriteableBitmap GetImageInternal (Size scale, Rect signatureBounds, Size imageSize, float strokeWidth, Color strokeColor, Color backgroundColor)
-		{
-			var bitmap = BitmapFactory.New ((int)imageSize.Width, (int)imageSize.Height);
-			using (var context = bitmap.GetBitmapContext ())
-			{
-				var w = context.Width;
-				var h = context.Height;
-				var mainScale = Math.Max (scale.Width, scale.Height);
-
-				bitmap.Clear (backgroundColor);
-
-				foreach (var stroke in inkPresenter.GetStrokes ())
-				{
-					var color = WriteableBitmapExtensions.ConvertColor (stroke.Color);
-					var width = (int)(stroke.Width * mainScale); // TODO: scaling 2 axis
-
-					var points = stroke.GetPoints ();
-					var count = points.Count;
-
-					var x1 = (int)((points[0].X - signatureBounds.X) * scale.Width);
-					var y1 = (int)((points[0].Y - signatureBounds.Y) * scale.Height);
-
-					if (count == 1)
-					{
-						bitmap.FillEllipseCentered (x1, y1, width, width, color);
-					}
-
-					for (var i = 1; i < count; i += 1)
-					{
-						var x2 = (int)((points[i].X - signatureBounds.X) * scale.Width);
-						var y2 = (int)((points[i].Y - signatureBounds.Y) * scale.Height);
-						WriteableBitmapExtensions.DrawLineAa (context, w, h, x1, y1, x2, y2, color, width);
-						x1 = x2;
-						y1 = y2;
-					}
-				}
-			}
-			return bitmap;
-		}
-
 		private async Task<Stream> GetImageStreamInternal (SignatureImageFormat format, Size scale, Rect signatureBounds, Size imageSize, float strokeWidth, Color strokeColor, Color backgroundColor)
 		{
-			Guid encoderId;
+			CanvasBitmapFileFormat cbff;
 			if (format == SignatureImageFormat.Jpeg)
 			{
-				encoderId = BitmapEncoder.JpegEncoderId;
+				cbff = CanvasBitmapFileFormat.Jpeg;
 			}
 			else if (format == SignatureImageFormat.Png)
 			{
-				encoderId = BitmapEncoder.PngEncoderId;
+				cbff = CanvasBitmapFileFormat.Png;
 			}
 			else
 			{
 				return null;
 			}
 
-			var image = GetImageInternal (scale, signatureBounds, imageSize, strokeWidth, strokeColor, backgroundColor);
-			if (image != null)
+			using (var offscreen = GetRenderTarget (scale, signatureBounds, imageSize, strokeWidth, strokeColor, backgroundColor))
 			{
-				var width = (uint)image.PixelWidth;
-				var height = (uint)image.PixelHeight;
+				var fileStream = new InMemoryRandomAccessStream ();
+				await offscreen.SaveAsync (fileStream, cbff);
 
-				// copy buffer to pixels
-				byte[] pixels;
-				using (var pixelStream = image.PixelBuffer.AsStream ())
+				var stream = fileStream.AsStream ();
+				stream.Position = 0;
+
+				return stream;
+			}
+		}
+
+		private WriteableBitmap GetImageInternal (Size scale, Rect signatureBounds, Size imageSize, float strokeWidth, Color strokeColor, Color backgroundColor)
+		{
+			using (var offscreen = GetRenderTarget (scale, signatureBounds, imageSize, strokeWidth, strokeColor, backgroundColor))
+			{
+				var bitmap = new WriteableBitmap ((int)offscreen.SizeInPixels.Width, (int)offscreen.SizeInPixels.Height);
+				offscreen.GetPixelBytes (bitmap.PixelBuffer);
+				return bitmap;
+			}
+		}
+
+		private CanvasRenderTarget GetRenderTarget (Size scale, Rect signatureBounds, Size imageSize, float strokeWidth, Color strokeColor, Color backgroundColor)
+		{
+			var device = CanvasDevice.GetSharedDevice ();
+			var offscreen = new CanvasRenderTarget (device, (int)imageSize.Width, (int)imageSize.Height, 96);
+
+			using (var session = offscreen.CreateDrawingSession ())
+			{
+				session.Clear (backgroundColor);
+
+				session.Transform = Multiply (
+					CreateTranslation ((float)-signatureBounds.X, (float)-signatureBounds.Y),
+					CreateScale ((float)scale.Width, (float)scale.Height));
+
+				foreach (var stroke in inkPresenter.GetStrokes ())
 				{
-					pixels = new byte[(uint)pixelStream.Length];
-					await pixelStream.ReadAsync (pixels, 0, pixels.Length);
+					var points = stroke.GetPoints ();
+					var position = points.First ();
+
+					var builder = new CanvasPathBuilder (device);
+					builder.BeginFigure ((float)position.X, (float)position.Y);
+					foreach (var point in points)
+					{
+						builder.AddLine (new Vector2 { X = (float)point.X, Y = (float)point.Y });
+					}
+					builder.EndFigure (CanvasFigureLoop.Open);
+
+					var path = CanvasGeometry.CreatePath (builder);
+					var color = strokeColor;
+					var width = (float)strokeWidth;
+					session.DrawGeometry (path, color, width);
 				}
-
-				return await Task.Run (async () =>
-				{
-					// encode pixels into stream
-					var ms = new MemoryStream ();
-					var encoder = await BitmapEncoder.CreateAsync (encoderId, ms.AsRandomAccessStream ());
-					encoder.SetPixelData (BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied, width, height, 96, 96, pixels);
-					await encoder.FlushAsync ();
-
-					// reset the stream cursor
-					ms.Position = 0;
-					return ms;
-				});
 			}
 
-			return null;
+			return offscreen;
+		}
+
+		private static Matrix3x2 CreateTranslation (float xPosition, float yPosition)
+		{
+			Matrix3x2 result;
+
+			result.M11 = 1.0f; result.M12 = 0.0f;
+			result.M21 = 0.0f; result.M22 = 1.0f;
+
+			result.M31 = xPosition;
+			result.M32 = yPosition;
+
+			return result;
+		}
+
+		private static Matrix3x2 CreateScale (float xScale, float yScale)
+		{
+			Matrix3x2 result;
+
+			result.M11 = xScale; result.M12 = 0.0f;
+			result.M21 = 0.0f; result.M22 = yScale;
+			result.M31 = 0.0f; result.M32 = 0.0f;
+
+			return result;
+		}
+
+		private static Matrix3x2 Multiply (Matrix3x2 value1, Matrix3x2 value2)
+		{
+			Matrix3x2 result;
+
+			// First row
+			result.M11 = value1.M11 * value2.M11 + value1.M12 * value2.M21;
+			result.M12 = value1.M11 * value2.M12 + value1.M12 * value2.M22;
+
+			// Second row
+			result.M21 = value1.M21 * value2.M11 + value1.M22 * value2.M21;
+			result.M22 = value1.M21 * value2.M12 + value1.M22 * value2.M22;
+
+			// Third row
+			result.M31 = value1.M31 * value2.M11 + value1.M32 * value2.M21 + value2.M31;
+			result.M32 = value1.M31 * value2.M12 + value1.M32 * value2.M22 + value2.M32;
+
+			return result;
 		}
 	}
 }
