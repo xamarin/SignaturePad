@@ -125,8 +125,8 @@ namespace Xamarin.Controls
 					builder.EndFigure (CanvasFigureLoop.Open);
 
 					var path = CanvasGeometry.CreatePath (builder);
-					var color = stroke.DrawingAttributes.Color;
-					var width = (float)stroke.DrawingAttributes.Size.Width;
+					var color = strokeColor;
+					var width = (float)strokeWidth;
 					session.DrawGeometry (path, color, width);
 				}
 			}
