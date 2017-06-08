@@ -40,12 +40,20 @@ namespace Xamarin.Controls
 			StrokeColor = settings.StrokeColor.Value;
 		}
 
+		/// <summary>
+		/// Gets or sets the color of the strokes for the signature.
+		/// </summary>
+		/// <value>The color of the stroke.</value>
 		public Color StrokeColor
 		{
 			get { return inkPresenter.StrokeColor; }
 			set { inkPresenter.StrokeColor = value; }
 		}
 
+		/// <summary>
+		/// Gets or sets the width in pixels of the strokes for the signature.
+		/// </summary>
+		/// <value>The width of the line.</value>
 		public float StrokeWidth
 		{
 			get { return inkPresenter.StrokeWidth; }

@@ -33,6 +33,8 @@ namespace Xamarin.Controls
 			inkPresenter = new InkPresenter ();
 			inkPresenter.ClipToBounds = true;
 			inkPresenter.StrokeCompleted += OnStrokeCompleted;
+			inkPresenter.SetValue (Grid.HorizontalAlignmentProperty, HorizontalAlignment.Stretch);
+			inkPresenter.SetValue (Grid.VerticalAlignmentProperty, VerticalAlignment.Stretch);
 			Children.Add (inkPresenter);
 
 			// get some defaults
