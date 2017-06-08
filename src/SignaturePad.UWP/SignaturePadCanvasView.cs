@@ -148,7 +148,7 @@ namespace Xamarin.Controls
 					return s;
 				});
 
-				session.DrawInk (strokes);
+				session.DrawInk (strokes.ToArray ());
 			}
 
 			return offscreen;
