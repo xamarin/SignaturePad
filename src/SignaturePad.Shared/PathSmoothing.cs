@@ -38,7 +38,9 @@ namespace Xamarin.Controls
 		{
 			var currentPoints = currentPath.GetPoints ().ToList ();
 
-			var smoothedPath = SmoothedPathWithGranularity (currentPoints, granularity);
+			NativePath smoothedPath;
+			List<NativePoint> smoothedPoints;
+			SmoothedPathWithGranularity (currentPoints, granularity, out smoothedPath, out smoothedPoints);
 			if (smoothedPath == null)
 			{
 				return currentPath;
@@ -69,17 +71,19 @@ namespace Xamarin.Controls
 #endif
 		}
 
-		public static NativePath SmoothedPathWithGranularity (NativePath currentPoints, int granularity)
+		public static void SmoothedPathWithGranularity (List<NativePoint> currentPoints, int granularity, out NativePath smoothedPath, out List<NativePoint> smoothedPoints)
 		{
 			// not enough points to smooth effectively, so return the original path and points.
 			if (currentPoints.Count < 4)
 			{
-				return null;
+				smoothedPath = null;
+				smoothedPoints = null;
+				return;
 			}
 
 			// create a new bezier path to hold the smoothed path.
-			var smoothedPath = new NativePath ();
-			var smoothedPoints = new List<NativePoint> ();
+			smoothedPath = new NativePath ();
+			smoothedPoints = new List<NativePoint> ();
 
 			// duplicate the first and last points as control points.
 			currentPoints.Insert (0, currentPoints[0]);
@@ -127,7 +131,6 @@ namespace Xamarin.Controls
 			var last = currentPoints[currentPoints.Count - 1];
 			smoothedPath.LineTo (last.X, last.Y);
 			smoothedPoints.Add (last);
-			return smoothedPath;
 		}
 
 #if WINDOWS_APP
