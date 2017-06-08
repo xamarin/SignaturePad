@@ -22,7 +22,7 @@ using NativePoint = System.Windows.Point;
 using NativeSize = System.Windows.Size;
 using NativeColor = System.Windows.Media.Color;
 using NativeImage = System.Windows.Media.Imaging.WriteableBitmap;
-#elif WINDOWS_UWP
+#elif WINDOWS_UWP || WINDOWS_APP
 using NativeRect = Windows.Foundation.Rect;
 using NativePoint = Windows.Foundation.Point;
 using NativeSize = Windows.Foundation.Size;

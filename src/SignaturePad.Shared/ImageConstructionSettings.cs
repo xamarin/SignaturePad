@@ -12,7 +12,7 @@ using NativeNullableColor = UIKit.UIColor;
 using NativeSize = System.Windows.Size;
 using NativeColor = System.Windows.Media.Color;
 using NativeNullableColor = System.Nullable<System.Windows.Media.Color>;
-#elif WINDOWS_UWP
+#elif WINDOWS_UWP || WINDOWS_APP
 using NativeSize = Windows.Foundation.Size;
 using NativeColor = Windows.UI.Color;
 using NativeNullableColor = System.Nullable<Windows.UI.Color>;
@@ -130,7 +130,7 @@ namespace Xamarin.Controls
 #if __IOS__ || __ANDROID__
 		internal static readonly NativeColor Black = NativeColor.Black;
 		internal static readonly NativeColor Transparent = new NativeColor (0, 0, 0, 0);
-#elif WINDOWS_PHONE || WINDOWS_UWP || WINDOWS_PHONE_APP
+#elif WINDOWS_PHONE || WINDOWS_UWP || WINDOWS_PHONE_APP || WINDOWS_APP
 		internal static readonly NativeColor Black = NativeColor.FromArgb (255, 0, 0, 0);
 		internal static readonly NativeColor Transparent = NativeColor.FromArgb (0, 0, 0, 0);
 #endif

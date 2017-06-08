@@ -12,7 +12,7 @@ using System.Windows.Ink;
 using NativePoint = System.Windows.Point;
 using NativePath = System.Windows.Ink.Stroke;
 using InkStroke = System.Windows.Ink.Stroke;
-#elif WINDOWS_UWP
+#elif WINDOWS_UWP || WINDOWS_APP
 using Windows.UI.Input.Inking;
 using NativePoint = Windows.Foundation.Point;
 using NativePath = System.Collections.Generic.List<Windows.Foundation.Point>;
@@ -38,10 +38,43 @@ namespace Xamarin.Controls
 		{
 			var currentPoints = currentPath.GetPoints ().ToList ();
 
+			var smoothedPath = SmoothedPathWithGranularity (currentPoints, granularity);
+			if (smoothedPath == null)
+			{
+				return currentPath;
+			}
+
+			// create the new path with the old attributes
+#if __ANDROID__ || __IOS__ || WINDOWS_PHONE_APP
+			return new InkStroke (smoothedPath, smoothedPoints.ToList (), currentPath.Color, currentPath.Width);
+#elif WINDOWS_PHONE
+			var da = currentPath.DrawingAttributes;
+			smoothedPath.DrawingAttributes = new DrawingAttributes
+			{
+				Color = da.Color,
+				OutlineColor = da.OutlineColor,
+				Width = da.Width,
+				Height = da.Height,
+			};
+			return smoothedPath;
+#elif WINDOWS_UWP || WINDOWS_APP
+			var da = currentPath.DrawingAttributes;
+			var builder = new InkStrokeBuilder ();
+			builder.SetDefaultDrawingAttributes (new InkDrawingAttributes
+			{
+				Color = da.Color,
+				Size = da.Size
+			});
+			return builder.CreateStroke (smoothedPath);
+#endif
+		}
+
+		public static NativePath SmoothedPathWithGranularity (NativePath currentPoints, int granularity)
+		{
 			// not enough points to smooth effectively, so return the original path and points.
 			if (currentPoints.Count < 4)
 			{
-				return currentPath;
+				return null;
 			}
 
 			// create a new bezier path to hold the smoothed path.
@@ -94,30 +127,57 @@ namespace Xamarin.Controls
 			var last = currentPoints[currentPoints.Count - 1];
 			smoothedPath.LineTo (last.X, last.Y);
 			smoothedPoints.Add (last);
-
-			// create the new path with the old attributes
-#if __ANDROID__ || __IOS__ || WINDOWS_PHONE_APP
-			return new InkStroke (smoothedPath, smoothedPoints.ToList (), currentPath.Color, currentPath.Width);
-#elif WINDOWS_PHONE
-			var da = currentPath.DrawingAttributes;
-			smoothedPath.DrawingAttributes = new DrawingAttributes
-			{
-				Color = da.Color,
-				OutlineColor = da.OutlineColor,
-				Width = da.Width,
-				Height = da.Height,
-			};
 			return smoothedPath;
-#elif WINDOWS_UWP
-			var da = currentPath.DrawingAttributes;
-			var builder = new InkStrokeBuilder ();
-			builder.SetDefaultDrawingAttributes (new InkDrawingAttributes
-			{
-				Color = da.Color,
-				Size = da.Size
-			});
-			return builder.CreateStroke (smoothedPath);
-#endif
 		}
+
+#if WINDOWS_APP
+
+		public static List<NativePoint> BezierToLinear (IReadOnlyList<InkStrokeRenderingSegment> segments, float step)
+		{
+			var linear = new List<NativePoint> ();
+			linear.Add (segments[0].Position);
+
+			var prev = segments[0].Position;
+			foreach (var segment in segments.Skip (1))
+			{
+				var t = 0f;
+				while (t < 1.0f)
+				{
+					t += step;
+
+					var p1 = prev;
+					var c1 = segment.BezierControlPoint1;
+					var c2 = segment.BezierControlPoint2;
+					var p2 = segment.Position;
+
+					linear.Add (Qubic (t, p1, c1, c2, p2));
+				}
+
+				prev = segment.Position;
+			}
+
+			return linear;
+		}
+
+		private static NativePoint Quadratic (float t, NativePoint p1, NativePoint p2, NativePoint p3)
+		{
+			return new NativePoint
+			{
+				X = (1 - t) * (1 - t) * p1.X + 2 * (1 - t) * t * p2.X + t * t * p3.X,
+				Y = (1 - t) * (1 - t) * p1.Y + 2 * (1 - t) * t * p2.Y + t * t * p3.Y
+			};
+		}
+
+		private static NativePoint Qubic (float t, NativePoint p0, NativePoint p1, NativePoint p2, NativePoint p3)
+		{
+			return new NativePoint
+			{
+				X = (1 - t) * (1 - t) * (1 - t) * p0.X + 3 * (1 - t) * (1 - t) * t * p1.X + 3 * (1 - t) * t * t * p2.X + t * t * t * p3.X,
+				Y = (1 - t) * (1 - t) * (1 - t) * p0.Y + 3 * (1 - t) * (1 - t) * t * p1.Y + 3 * (1 - t) * t * t * p2.Y + t * t * t * p3.Y
+			};
+		}
+
+		// P = (1-t)•A + t•B = (1-t)2•P1 + 2•(1-t) •t•C + t2•P2
+#endif
 	}
 }
