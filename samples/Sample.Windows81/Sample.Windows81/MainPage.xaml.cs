@@ -24,7 +24,7 @@ namespace Sample.Windows81
 		{
 			points = signatureView.Points;
 
-			//await new MessageDialog ("Vector saved!").ShowAsync ();
+			await new MessageDialog ("Vector saved!").ShowAsync ();
 		}
 
 		private void btnLoad_Click (object sender, RoutedEventArgs e)
