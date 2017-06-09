@@ -26,11 +26,17 @@ libraries:
   ios-unified: ../output/ios-unified/SignaturePad.dll
   wp8: ../output/wp8/SignaturePad.dll
   uwp: ../output/uwp/SignaturePad.dll
+  wpa81: ../output/wpa/SignaturePad.dll
+  winrt: ../output/winrt/SignaturePad.dll
+  win8: ../output/win/SignaturePad.dll
 packages:
   android: Xamarin.Controls.SignaturePad, Version=2.0.0
   ios-unified: Xamarin.Controls.SignaturePad, Version=2.0.0
   wp8: Xamarin.Controls.SignaturePad, Version=2.0.0
   uwp: Xamarin.Controls.SignaturePad, Version=2.0.0
+  wpa81: Xamarin.Controls.SignaturePad, Version=2.0.0
+  winrt: Xamarin.Controls.SignaturePad, Version=2.0.0
+  win8: Xamarin.Controls.SignaturePad, Version=2.0.0
 
 samples:
   - name: "Android Sample"
@@ -71,16 +77,58 @@ samples:
       - project: Sample.UWP
         packages:
           - Xamarin.Controls.SignaturePad
+  - name: "Windows Phone 8.1 Sample"
+    path: ../samples/Sample.WindowsPhone81/Sample.WindowsPhone81.sln
+    removeProjects:
+      - SignaturePad.WindowsPhone81
+      - SignaturePad.Shared
+      - SignaturePad.InkPresenter.Shared
+    installNuGets:
+      - project: Sample.WindowsPhone81
+        packages:
+          - Xamarin.Controls.SignaturePad
+  - name: "Windows 8.1 Sample"
+    path: ../samples/Sample.Windows81/Sample.Windows81.sln
+    removeProjects:
+      - SignaturePad.Windows81
+      - SignaturePad.Shared
+    installNuGets:
+      - project: Sample.Windows81
+        packages:
+          - Xamarin.Controls.SignaturePad
+  - name: "Windows 8.1 Universal Sample"
+    path: ../samples/Sample.WindowsRuntime81/Sample.WindowsRuntime81.sln
+    removeProjects:
+      - SignaturePad.WindowsRuntime81
+      - SignaturePad.Windows81
+      - SignaturePad.WindowsPhone81
+      - SignaturePad.Shared
+      - SignaturePad.InkPresenter.Shared
+    installNuGets:
+      - project: Sample.WindowsRuntime81
+        packages:
+          - Xamarin.Controls.SignaturePad
+      - project: Sample.WindowsRuntime81.Windows
+        packages:
+          - Xamarin.Controls.SignaturePad
+      - project: Sample.WindowsRuntime81.WindowsPhone
+        packages:
+          - Xamarin.Controls.SignaturePad
   - name: "Xamarin.Forms Sample"
     path: ../samples/Sample.Forms/Sample.Forms.sln
     removeProjects:
       - SignaturePad.WP8
       - SignaturePad.iOS
       - SignaturePad.Android
+      - SignaturePad.Windows81
+      - SignaturePad.WindowsPhone81
+      - SignaturePad.WindowsRuntime81
       - SignaturePad.Forms
       - SignaturePad.Forms.Droid
       - SignaturePad.Forms.iOS
       - SignaturePad.Forms.WindowsPhone
+      - SignaturePad.Forms.Windows81
+      - SignaturePad.Forms.WindowsPhone81
       - SignaturePad.Forms.Platform.Shared
       - SignaturePad.Shared
       - SignaturePad.InkPresenter.Shared
@@ -101,6 +149,14 @@ samples:
           - Xamarin.Controls.SignaturePad
           - Xamarin.Controls.SignaturePad.Forms
       - project: Samples.UWP
+        packages:
+          - Xamarin.Controls.SignaturePad
+          - Xamarin.Controls.SignaturePad.Forms
+      - project: Samples.Windows81
+        packages:
+          - Xamarin.Controls.SignaturePad
+          - Xamarin.Controls.SignaturePad.Forms
+      - project: Samples.WindowsPhone81
         packages:
           - Xamarin.Controls.SignaturePad
           - Xamarin.Controls.SignaturePad.Forms
