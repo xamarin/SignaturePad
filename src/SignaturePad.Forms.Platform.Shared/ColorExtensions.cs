@@ -3,7 +3,7 @@ using Color = Xamarin.Forms.Color;
 using System.Windows.Controls;
 using System.Windows.Media;
 using NativeColor = System.Windows.Media.Color;
-#elif WINDOWS_UWP
+#elif WINDOWS_UWP || WINDOWS_PHONE_APP || WINDOWS_APP
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using NativeColor = Windows.UI.Color;
@@ -21,7 +21,7 @@ namespace SignaturePad.Forms
 {
 	public static class ColorExtensions
 	{
-#if WINDOWS_PHONE || WINDOWS_UWP
+#if WINDOWS_PHONE || WINDOWS_UWP || WINDOWS_PHONE_APP || WINDOWS_APP
 		public static NativeColor ToWindows (this Color color)
 		{
 			return NativeColor.FromArgb (
@@ -34,7 +34,7 @@ namespace SignaturePad.Forms
 
 		public static NativeColor ToNative (this Color color)
 		{
-#if WINDOWS_PHONE || WINDOWS_UWP
+#if WINDOWS_PHONE || WINDOWS_UWP || WINDOWS_PHONE_APP || WINDOWS_APP
 			return color.ToWindows ();
 #elif __IOS__
 			return color.ToUIColor ();
@@ -43,7 +43,7 @@ namespace SignaturePad.Forms
 #endif
 		}
 
-#if WINDOWS_PHONE || WINDOWS_UWP
+#if WINDOWS_PHONE || WINDOWS_UWP || WINDOWS_PHONE_APP || WINDOWS_APP
 		public static void SetTextColor (this TextBlock textBlock, Color color)
 		{
 			textBlock.Foreground = new SolidColorBrush (color.ToNative ());

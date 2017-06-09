@@ -42,6 +42,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.Windows81", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.WindowsRuntime81", "SignaturePad.WindowsRuntime81\SignaturePad.WindowsRuntime81.csproj", "{71AC63E4-ECE4-4412-B318-D5E7BD65EC50}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.Forms.Windows81", "SignaturePad.Forms.Windows81\SignaturePad.Forms.Windows81.csproj", "{FFF4B94A-54F1-4C45-9027-211AD220391C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.Forms.WindowsPhone81", "SignaturePad.Forms.WindowsPhone81\SignaturePad.Forms.WindowsPhone81.csproj", "{F36EE8E1-F28E-48EE-852E-274186D49DF3}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SignaturePad.Shared\SignaturePad.Shared.projitems*{05d1e7c0-73fc-41de-a7d6-01ae4c1a4dd3}*SharedItemsImports = 13
@@ -62,10 +66,14 @@ Global
 		SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.projitems*{d522b5d1-e475-4e17-9282-564952cad281}*SharedItemsImports = 13
 		SignaturePad.InkPresenter.Shared\SignaturePad.InkPresenter.Shared.projitems*{f1a16cb9-a759-42c8-8f0b-3c9698a55336}*SharedItemsImports = 4
 		SignaturePad.Shared\SignaturePad.Shared.projitems*{f1a16cb9-a759-42c8-8f0b-3c9698a55336}*SharedItemsImports = 4
+		SignaturePad.Forms.Platform.Shared\SignaturePad.Forms.Platform.Shared.projitems*{f36ee8e1-f28e-48ee-852e-274186d49df3}*SharedItemsImports = 4
+		SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.projitems*{f36ee8e1-f28e-48ee-852e-274186d49df3}*SharedItemsImports = 4
 		SignaturePad.InkPresenter.Shared\SignaturePad.InkPresenter.Shared.projitems*{f7b2fd45-eac0-4cf1-8bfd-43e2c080ed3e}*SharedItemsImports = 4
 		SignaturePad.Shared\SignaturePad.Shared.projitems*{f7b2fd45-eac0-4cf1-8bfd-43e2c080ed3e}*SharedItemsImports = 4
 		SignaturePad.Forms.Platform.Shared\SignaturePad.Forms.Platform.Shared.projitems*{fb73d461-d197-42a2-8928-086333277e54}*SharedItemsImports = 4
 		SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.projitems*{fb73d461-d197-42a2-8928-086333277e54}*SharedItemsImports = 4
+		SignaturePad.Forms.Platform.Shared\SignaturePad.Forms.Platform.Shared.projitems*{fff4b94a-54f1-4c45-9027-211ad220391c}*SharedItemsImports = 4
+		SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.projitems*{fff4b94a-54f1-4c45-9027-211ad220391c}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -120,6 +128,14 @@ Global
 		{71AC63E4-ECE4-4412-B318-D5E7BD65EC50}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71AC63E4-ECE4-4412-B318-D5E7BD65EC50}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71AC63E4-ECE4-4412-B318-D5E7BD65EC50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFF4B94A-54F1-4C45-9027-211AD220391C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFF4B94A-54F1-4C45-9027-211AD220391C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFF4B94A-54F1-4C45-9027-211AD220391C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFF4B94A-54F1-4C45-9027-211AD220391C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F36EE8E1-F28E-48EE-852E-274186D49DF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F36EE8E1-F28E-48EE-852E-274186D49DF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F36EE8E1-F28E-48EE-852E-274186D49DF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F36EE8E1-F28E-48EE-852E-274186D49DF3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -132,5 +148,7 @@ Global
 		{4C55BDD7-F049-4742-9E00-CDD480E53A54} = {2E0B4682-FC63-4CCE-A52F-E8ED176B3EC6}
 		{6FC62387-6717-4577-A48B-D15848741F08} = {2E0B4682-FC63-4CCE-A52F-E8ED176B3EC6}
 		{D522B5D1-E475-4E17-9282-564952CAD281} = {2E0B4682-FC63-4CCE-A52F-E8ED176B3EC6}
+		{FFF4B94A-54F1-4C45-9027-211AD220391C} = {2E0B4682-FC63-4CCE-A52F-E8ED176B3EC6}
+		{F36EE8E1-F28E-48EE-852E-274186D49DF3} = {2E0B4682-FC63-4CCE-A52F-E8ED176B3EC6}
 	EndGlobalSection
 EndGlobal
