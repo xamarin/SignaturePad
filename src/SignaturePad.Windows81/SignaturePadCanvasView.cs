@@ -47,7 +47,17 @@ namespace Xamarin.Controls
 		public Color StrokeColor
 		{
 			get { return inkPresenter.StrokeColor; }
-			set { inkPresenter.StrokeColor = value; }
+			set
+			{
+				inkPresenter.StrokeColor = value;
+				foreach (var stroke in inkPresenter.GetStrokes ())
+				{
+					var da = stroke.DrawingAttributes;
+					da.Color = value;
+					stroke.DrawingAttributes = da;
+				}
+				inkPresenter.Invalidate ();
+			}
 		}
 
 		/// <summary>
@@ -57,7 +67,17 @@ namespace Xamarin.Controls
 		public float StrokeWidth
 		{
 			get { return inkPresenter.StrokeWidth; }
-			set { inkPresenter.StrokeWidth = value; }
+			set
+			{
+				inkPresenter.StrokeWidth = value;
+				foreach (var stroke in inkPresenter.GetStrokes ())
+				{
+					var da = stroke.DrawingAttributes;
+					da.Size = new Size (value, value);
+					stroke.DrawingAttributes = da;
+				}
+				inkPresenter.Invalidate ();
+			}
 		}
 
 		public void Clear ()

@@ -79,10 +79,6 @@ namespace Xamarin.Controls
 			set
 			{
 				strokeColor = value;
-				foreach (var stroke in inkManager.GetStrokes ())
-				{
-					stroke.DrawingAttributes.Color = strokeColor;
-				}
 				var da = CreateDefaultDrawingAttributes ();
 				inkManager.SetDefaultDrawingAttributes (da);
 			}
@@ -94,10 +90,6 @@ namespace Xamarin.Controls
 			set
 			{
 				strokeWidth = value;
-				foreach (var stroke in inkManager.GetStrokes ())
-				{
-					stroke.DrawingAttributes.Size = new Size (strokeWidth, strokeWidth);
-				}
 				var da = CreateDefaultDrawingAttributes ();
 				inkManager.SetDefaultDrawingAttributes (da);
 			}
@@ -269,6 +261,10 @@ namespace Xamarin.Controls
 
 					Children.Add (pathShape);
 				}
+			}
+			if (Children.Count > 1)
+			{
+				Children.Move ((uint)Children.IndexOf (tempPathShape), (uint)Children.Count - 1);
 			}
 		}
 
