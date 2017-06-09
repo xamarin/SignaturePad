@@ -176,7 +176,7 @@ namespace Xamarin.Controls
 
 			if (curr != null)
 			{
-				var smoothed = PathSmoothing.SmoothedPathWithGranularity (curr, 20);
+				var smoothed = PathSmoothing.SmoothedPathWithGranularity (curr, 2);
 
 				// swap the old path with the smoothed one
 				inkPresenter.Strokes.Remove (curr);
