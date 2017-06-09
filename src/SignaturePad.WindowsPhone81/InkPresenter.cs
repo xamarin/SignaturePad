@@ -130,7 +130,7 @@ namespace Xamarin.Controls
 			OnPointerMoved (sender, e);
 
 			// add the current path and points to their respective lists.
-			var smoothed = PathSmoothing.SmoothedPathWithGranularity (currentPath, 20);
+			var smoothed = PathSmoothing.SmoothedPathWithGranularity (currentPath, 4);
 			paths.Add (smoothed);
 
 			// reset the drawing
