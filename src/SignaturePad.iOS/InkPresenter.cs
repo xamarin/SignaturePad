@@ -52,13 +52,16 @@ namespace Xamarin.Controls
 			var touch = touches.AnyObject as UITouch;
 			var touchLocation = touch.LocationInView (this);
 
-			// add it to the current path
-			currentPath.Path.AddLineTo (touchLocation);
-			currentPath.GetPoints ().Add (touchLocation);
+			if (HasMovedFarEnough (currentPath, touchLocation.X, touchLocation.Y))
+			{
+				// add it to the current path
+				currentPath.Path.AddLineTo (touchLocation);
+				currentPath.GetPoints ().Add (touchLocation);
 
-			// update the dirty rectangle
-			UpdateBounds (touchLocation);
-			SetNeedsDisplayInRect (DirtyRect);
+				// update the dirty rectangle
+				UpdateBounds (touchLocation);
+				SetNeedsDisplayInRect (DirtyRect);
+			}
 		}
 
 		public override void TouchesCancelled (NSSet touches, UIEvent evt)
@@ -72,9 +75,12 @@ namespace Xamarin.Controls
 			var touch = touches.AnyObject as UITouch;
 			var touchLocation = touch.LocationInView (this);
 
-			// add it to the current path
-			currentPath.Path.AddLineTo (touchLocation);
-			currentPath.GetPoints ().Add (touchLocation);
+			if (HasMovedFarEnough (currentPath, touchLocation.X, touchLocation.Y))
+			{
+				// add it to the current path
+				currentPath.Path.AddLineTo (touchLocation);
+				currentPath.GetPoints ().Add (touchLocation);
+			}
 
 			// obtain the smoothed path, and add it to the old paths
 			var smoothed = PathSmoothing.SmoothedPathWithGranularity (currentPath, 40);
