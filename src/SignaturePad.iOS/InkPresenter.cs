@@ -145,7 +145,7 @@ namespace Xamarin.Controls
 			}
 
 			var size = Bounds.Size;
-			UIGraphics.BeginImageContext (size);
+			UIGraphics.BeginImageContextWithOptions (size, false, ScreenDensity);
 			var context = UIGraphics.GetCurrentContext ();
 
 			context.SetLineCap (CGLineCap.Round);
