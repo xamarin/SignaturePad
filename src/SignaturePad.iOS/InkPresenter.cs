@@ -83,7 +83,7 @@ namespace Xamarin.Controls
 			}
 
 			// obtain the smoothed path, and add it to the old paths
-			var smoothed = PathSmoothing.SmoothedPathWithGranularity (currentPath, 40);
+			var smoothed = PathSmoothing.SmoothedPathWithGranularity (currentPath, 4);
 			paths.Add (smoothed);
 
 			// clear the current path

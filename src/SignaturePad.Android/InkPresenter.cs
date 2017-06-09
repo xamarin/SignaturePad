@@ -105,7 +105,7 @@ namespace Xamarin.Controls
 			TouchesMoved (e, false);
 
 			// add the current path and points to their respective lists.
-			var smoothed = PathSmoothing.SmoothedPathWithGranularity (currentPath, 20);
+			var smoothed = PathSmoothing.SmoothedPathWithGranularity (currentPath, 2);
 			paths.Add (smoothed);
 
 			// reset the drawing

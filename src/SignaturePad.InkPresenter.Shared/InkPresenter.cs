@@ -29,7 +29,7 @@ namespace Xamarin.Controls
 {
 	internal partial class InkPresenter
 	{
-		private const float MinimumPointDistance = 1.0f;
+		private const float MinimumPointDistance = 2.0f;
 
 		private static float ScreenDensity;
 
