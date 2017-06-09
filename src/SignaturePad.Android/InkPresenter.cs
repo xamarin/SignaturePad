@@ -71,26 +71,32 @@ namespace Xamarin.Controls
 				float historicalX = e.GetHistoricalX (i);
 				float historicalY = e.GetHistoricalY (i);
 
-				// update the dirty rectangle
-				UpdateBounds (historicalX, historicalY);
+				if (HasMovedFarEnough (currentPath, historicalX, historicalY))
+				{
+					// update the dirty rectangle
+					UpdateBounds (historicalX, historicalY);
 
-				// add it to the current path
-				currentPath.Path.LineTo (historicalX, historicalY);
-				currentPath.GetPoints ().Add (new System.Drawing.PointF (historicalX, historicalY));
+					// add it to the current path
+					currentPath.Path.LineTo (historicalX, historicalY);
+					currentPath.GetPoints ().Add (new System.Drawing.PointF (historicalX, historicalY));
+				}
 			}
 
 			float touchX = e.GetX ();
 			float touchY = e.GetY ();
 
-			// add it to the current path
-			currentPath.Path.LineTo (touchX, touchY);
-			currentPath.GetPoints ().Add (new System.Drawing.PointF (touchX, touchY));
-
-			// update the dirty rectangle
-			UpdateBounds (touchX, touchY);
-			if (update)
+			if (HasMovedFarEnough (currentPath, touchX, touchY))
 			{
-				Invalidate (DirtyRect);
+				// add it to the current path
+				currentPath.Path.LineTo (touchX, touchY);
+				currentPath.GetPoints ().Add (new System.Drawing.PointF (touchX, touchY));
+
+				// update the dirty rectangle
+				UpdateBounds (touchX, touchY);
+				if (update)
+				{
+					Invalidate (DirtyRect);
+				}
 			}
 		}
 
@@ -99,7 +105,7 @@ namespace Xamarin.Controls
 			TouchesMoved (e, false);
 
 			// add the current path and points to their respective lists.
-			var smoothed = PathSmoothing.SmoothedPathWithGranularity (currentPath, 20);
+			var smoothed = PathSmoothing.SmoothedPathWithGranularity (currentPath, 2);
 			paths.Add (smoothed);
 
 			// reset the drawing
@@ -162,7 +168,7 @@ namespace Xamarin.Controls
 					paint.SetStyle (Paint.Style.Stroke);
 
 					paint.Color = currentPath.Color;
-					paint.StrokeWidth = currentPath.Width;
+					paint.StrokeWidth = currentPath.Width * ScreenDensity;
 
 					canvas.DrawPath (currentPath.Path, paint);
 				}
@@ -190,7 +196,7 @@ namespace Xamarin.Controls
 				foreach (var path in paths)
 				{
 					paint.Color = path.Color;
-					paint.StrokeWidth = path.Width;
+					paint.StrokeWidth = path.Width * ScreenDensity;
 
 					canvas.DrawPath (path.Path, paint);
 

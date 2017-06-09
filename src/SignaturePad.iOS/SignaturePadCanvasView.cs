@@ -91,7 +91,7 @@ namespace Xamarin.Controls
 
 		private UIImage GetImageInternal (CGSize scale, CGRect signatureBounds, CGSize imageSize, float strokeWidth, UIColor strokeColor, UIColor backgroundColor)
 		{
-			UIGraphics.BeginImageContext (imageSize);
+			UIGraphics.BeginImageContextWithOptions (imageSize, false, InkPresenter.ScreenDensity);
 
 			// create context and set the desired options
 			var context = UIGraphics.GetCurrentContext ();

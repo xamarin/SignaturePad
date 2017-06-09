@@ -9,8 +9,8 @@ using System.Resources;
 
 [assembly: AssemblyDescription ("Makes capturing, saving, and displaying signatures extremely simple.")]
 
-[assembly: AssemblyCompany ("")]
-[assembly: AssemblyCopyright ("Copyright © Xamarin Inc 2017")]
+[assembly: AssemblyCompany ("Xamarin, Inc.")]
+[assembly: AssemblyCopyright ("Copyright © Xamarin, Inc. 2017")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]
 [assembly: NeutralResourcesLanguage ("en-US")]

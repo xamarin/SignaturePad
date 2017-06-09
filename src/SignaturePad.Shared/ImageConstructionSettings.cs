@@ -12,7 +12,11 @@ using NativeNullableColor = UIKit.UIColor;
 using NativeSize = System.Windows.Size;
 using NativeColor = System.Windows.Media.Color;
 using NativeNullableColor = System.Nullable<System.Windows.Media.Color>;
-#elif WINDOWS_UWP
+#elif WINDOWS_UWP || WINDOWS_APP
+using NativeSize = Windows.Foundation.Size;
+using NativeColor = Windows.UI.Color;
+using NativeNullableColor = System.Nullable<Windows.UI.Color>;
+#elif WINDOWS_PHONE_APP
 using NativeSize = Windows.Foundation.Size;
 using NativeColor = Windows.UI.Color;
 using NativeNullableColor = System.Nullable<Windows.UI.Color>;
@@ -124,11 +128,11 @@ namespace Xamarin.Controls
 	public struct ImageConstructionSettings
 	{
 #if __IOS__ || __ANDROID__
-		private static readonly NativeColor Black = NativeColor.Black;
-		private static readonly NativeColor Transparent = new NativeColor (0, 0, 0, 0);
-#elif WINDOWS_PHONE || WINDOWS_UWP
-		private static readonly NativeColor Black = NativeColor.FromArgb (255, 0, 0, 0);
-		private static readonly NativeColor Transparent = NativeColor.FromArgb (0, 0, 0, 0);
+		internal static readonly NativeColor Black = NativeColor.Black;
+		internal static readonly NativeColor Transparent = new NativeColor (0, 0, 0, 0);
+#elif WINDOWS_PHONE || WINDOWS_UWP || WINDOWS_PHONE_APP || WINDOWS_APP
+		internal static readonly NativeColor Black = NativeColor.FromArgb (255, 0, 0, 0);
+		internal static readonly NativeColor Transparent = NativeColor.FromArgb (0, 0, 0, 0);
 #endif
 
 		public bool? ShouldCrop { get; set; }
@@ -143,7 +147,7 @@ namespace Xamarin.Controls
 
 		internal void ApplyDefaults ()
 		{
-			ApplyDefaults (2f, Black);
+			ApplyDefaults (1f, Black);
 		}
 
 		internal void ApplyDefaults (float strokeWidth, NativeColor strokeColor)

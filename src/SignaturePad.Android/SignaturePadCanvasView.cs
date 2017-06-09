@@ -104,7 +104,7 @@ namespace Xamarin.Controls
 				using (var paint = new Paint ())
 				{
 					paint.Color = strokeColor;
-					paint.StrokeWidth = strokeWidth;
+					paint.StrokeWidth = strokeWidth * InkPresenter.ScreenDensity;
 					paint.StrokeJoin = Paint.Join.Round;
 					paint.StrokeCap = Paint.Cap.Round;
 					paint.AntiAlias = true;

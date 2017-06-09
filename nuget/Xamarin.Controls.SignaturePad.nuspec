@@ -8,6 +8,7 @@
     <owners>Xamarin, Inc.</owners>
     <licenseUrl>https://components.xamarin.com/license/signature-pad</licenseUrl>
     <projectUrl>https://components.xamarin.com/view/signature-pad</projectUrl>
+    <iconUrl>https://cdn.rawgit.com/xamarin/SignaturePad/v2.0/component/icons/signature-pad_256x256.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Makes capturing, saving, and displaying signatures extremely simple.</description>
     <copyright>Copyright (c) Xamarin Inc. 2017</copyright>
@@ -19,6 +20,12 @@
       <group targetFramework="uap10.0">
         <dependency id="Win2D.uwp" version="1.20.0" />
       </group>
+      <group targetFramework="win">
+        <dependency id="Win2D.win81" version="1.20.0" />
+      </group>
+      <group targetFramework="wpa">
+        <dependency id="Win2D.win81" version="1.20.0" />
+      </group>
     </dependencies>
   </metadata>
   <files>
@@ -26,5 +33,8 @@
     <file src="output/ios-unified/SignaturePad.dll" target="lib/Xamarin.iOS/SignaturePad.dll" />
     <file src="output/wp8/SignaturePad.dll" target="lib/wp8/SignaturePad.dll" />
     <file src="output/uwp/SignaturePad.dll" target="lib/uap10.0/SignaturePad.dll" />
+    <file src="output/win/SignaturePad.dll" target="lib/win/SignaturePad.dll" />
+    <file src="output/wpa/SignaturePad.dll" target="lib/wpa/SignaturePad.dll" />
+    <file src="output/winrt/SignaturePad.dll" target="lib/portable-win81+wpa81/SignaturePad.dll" />
   </files>
 </package>

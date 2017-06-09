@@ -13,6 +13,10 @@ using NativePoint = System.Windows.Point;
 using Xamarin.Forms.Platform.UWP;
 using NativeSignaturePadCanvasView = Xamarin.Controls.SignaturePadCanvasView;
 using NativePoint = Windows.Foundation.Point;
+#elif WINDOWS_PHONE_APP || WINDOWS_APP
+using Xamarin.Forms.Platform.WinRT;
+using NativeSignaturePadCanvasView = Xamarin.Controls.SignaturePadCanvasView;
+using NativePoint = Windows.Foundation.Point;
 #elif __IOS__
 using Xamarin.Forms.Platform.iOS;
 using NativeSignaturePadCanvasView = Xamarin.Controls.SignaturePadCanvasView;

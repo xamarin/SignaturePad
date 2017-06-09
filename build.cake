@@ -77,6 +77,26 @@ buildSpec = new BuildSpec () {
 					FromFile = "./src/SignaturePad.Forms.UWP/bin/Release/SignaturePad.Forms.dll",
 					ToDirectory = "output/uwp",
 				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.Windows81/bin/Release/SignaturePad.dll",
+					ToDirectory = "output/win",
+				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.Forms.Windows81/bin/Release/SignaturePad.Forms.dll",
+					ToDirectory = "output/win",
+				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.WindowsPhone81/bin/Release/SignaturePad.dll",
+					ToDirectory = "output/wpa",
+				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.Forms.WindowsPhone81/bin/Release/SignaturePad.Forms.dll",
+					ToDirectory = "output/wpa",
+				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.WindowsRuntime81/bin/Release/SignaturePad.dll",
+					ToDirectory = "output/winrt",
+				},
 			}
 		}
 	},
@@ -87,6 +107,9 @@ buildSpec = new BuildSpec () {
 		new IOSSolutionBuilder { SolutionPath = "./samples/Sample.Forms/Sample.Forms.Mac.sln", BuildsOn = BuildPlatforms.Mac },
 		new WpSolutionBuilder { SolutionPath = "./samples/Sample.WP8/Sample.WP8.sln", BuildsOn = BuildPlatforms.Windows }, 
 		new WpSolutionBuilder { SolutionPath = "./samples/Sample.UWP/Sample.UWP.sln", BuildsOn = BuildPlatforms.Windows }, 
+		new WpSolutionBuilder { SolutionPath = "./samples/Sample.Windows81/Sample.Windows81.sln", BuildsOn = BuildPlatforms.Windows }, 
+		new WpSolutionBuilder { SolutionPath = "./samples/Sample.WindowsPhone81/Sample.WindowsPhone81.sln", BuildsOn = BuildPlatforms.Windows }, 
+		new WpSolutionBuilder { SolutionPath = "./samples/Sample.WindowsRuntime81/Sample.WindowsRuntime81.sln", BuildsOn = BuildPlatforms.Windows }, 
 		new WpSolutionBuilder { SolutionPath = "./samples/Sample.Forms/Sample.Forms.Win.sln", BuildsOn = BuildPlatforms.Windows }, 
 	},
 
