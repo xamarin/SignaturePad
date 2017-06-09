@@ -3,7 +3,7 @@
 
 id: signature-pad
 name: Signature Pad for Xamarin and Windows
-version: "2.0.0"
+version: "2.1.0"
 summary: Makes capturing, saving, and displaying signatures extremely simple.
 publisher: Xamarin, Inc.
 publisher-url: http://xamarin.com/
@@ -30,13 +30,13 @@ libraries:
   winrt: ../output/winrt/SignaturePad.dll
   win8: ../output/win/SignaturePad.dll
 packages:
-  android: Xamarin.Controls.SignaturePad, Version=2.0.0
-  ios-unified: Xamarin.Controls.SignaturePad, Version=2.0.0
-  wp8: Xamarin.Controls.SignaturePad, Version=2.0.0
-  uwp: Xamarin.Controls.SignaturePad, Version=2.0.0
-  wpa81: Xamarin.Controls.SignaturePad, Version=2.0.0
-  winrt: Xamarin.Controls.SignaturePad, Version=2.0.0
-  win8: Xamarin.Controls.SignaturePad, Version=2.0.0
+  android: Xamarin.Controls.SignaturePad, Version=2.1.0
+  ios-unified: Xamarin.Controls.SignaturePad, Version=2.1.0
+  wp8: Xamarin.Controls.SignaturePad, Version=2.1.0
+  uwp: Xamarin.Controls.SignaturePad, Version=2.1.0
+  wpa81: Xamarin.Controls.SignaturePad, Version=2.1.0
+  winrt: Xamarin.Controls.SignaturePad, Version=2.1.0
+  win8: Xamarin.Controls.SignaturePad, Version=2.1.0
 
 samples:
   - name: "Android Sample"
