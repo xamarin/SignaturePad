@@ -168,7 +168,7 @@ namespace Xamarin.Controls
 					paint.SetStyle (Paint.Style.Stroke);
 
 					paint.Color = currentPath.Color;
-					paint.StrokeWidth = currentPath.Width;
+					paint.StrokeWidth = currentPath.Width * ScreenDensity;
 
 					canvas.DrawPath (currentPath.Path, paint);
 				}
@@ -196,7 +196,7 @@ namespace Xamarin.Controls
 				foreach (var path in paths)
 				{
 					paint.Color = path.Color;
-					paint.StrokeWidth = path.Width;
+					paint.StrokeWidth = path.Width * ScreenDensity;
 
 					canvas.DrawPath (path.Path, paint);
 

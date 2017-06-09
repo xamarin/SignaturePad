@@ -31,7 +31,7 @@ namespace Xamarin.Controls
 	{
 		private const float MinimumPointDistance = 2.0f;
 
-		private static float ScreenDensity;
+		public static float ScreenDensity;
 
 		private readonly List<InkStroke> paths = new List<InkStroke> ();
 		private InkStroke currentPath;
@@ -48,7 +48,7 @@ namespace Xamarin.Controls
 
 		public NativeColor StrokeColor { get; set; } = ImageConstructionSettings.Black;
 
-		public float StrokeWidth { get; set; } = 1f * ScreenDensity;
+		public float StrokeWidth { get; set; } = 1f;
 
 		// private properties
 

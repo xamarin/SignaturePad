@@ -147,7 +147,7 @@ namespace Xamarin.Controls
 
 		internal void ApplyDefaults ()
 		{
-			ApplyDefaults (2f, Black);
+			ApplyDefaults (1f, Black);
 		}
 
 		internal void ApplyDefaults (float strokeWidth, NativeColor strokeColor)
