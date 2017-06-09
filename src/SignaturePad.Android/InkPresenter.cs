@@ -48,6 +48,9 @@ namespace Xamarin.Controls
 
 		private void TouchesBegan (MotionEvent e)
 		{
+			// don't allow the event to propagate because we're handling it here
+			Parent?.RequestDisallowInterceptTouchEvent (true);
+
 			// create a new path and set the options
 			currentPath = new InkStroke (new Path (), new List<System.Drawing.PointF> (), StrokeColor, StrokeWidth);
 
@@ -116,6 +119,9 @@ namespace Xamarin.Controls
 
 			// we are done with drawing
 			OnStrokeCompleted ();
+
+			// allow the event to propagate
+			Parent?.RequestDisallowInterceptTouchEvent (false);
 		}
 
 		private void Invalidate (RectangleF dirtyRect)
