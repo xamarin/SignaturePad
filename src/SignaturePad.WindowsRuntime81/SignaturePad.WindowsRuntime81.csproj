@@ -45,13 +45,9 @@
   <ItemGroup>
     <ProjectReference Include="..\SignaturePad.WindowsPhone81\SignaturePad.WindowsPhone81.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <Project>{F7B2FD45-EAC0-4CF1-8BFD-43E2C080ED3E}</Project>
-      <Name>SignaturePad.WindowsPhone81</Name>
     </ProjectReference>
     <ProjectReference Include="..\SignaturePad.Windows81\SignaturePad.Windows81.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <Project>{D084E70F-D32B-4E17-8583-73BFA4D1EDE6}</Project>
-      <Name>SignaturePad.Windows81</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -67,7 +63,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <Target Name="GenerateSources" BeforeTargets="BeforeBuild">
+  <Target Name="GenerateSources" AfterTargets="ResolveReferences">
     <Exec Command="fc.exe &quot;$(WindowsSource)&quot; &quot;$(WindowsPhoneSource)&quot;" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
