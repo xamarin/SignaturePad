@@ -3,7 +3,7 @@
   <metadata>
     <id>Xamarin.Controls.SignaturePad.Forms</id>
     <title>SignaturePad for Xamarin.Forms</title>
-    <version>2.1.0</version>
+    <version>2.1.1</version>
     <authors>Xamarin, Inc.</authors>
     <owners>Xamarin, Inc.</owners>
     <licenseUrl>https://components.xamarin.com/license/signature-pad</licenseUrl>
@@ -16,27 +16,27 @@
     <dependencies>
       <group targetFramework="MonoAndroid">
         <dependency id="Xamarin.Forms" version="2.3.3" />
-        <dependency id="Xamarin.Controls.SignaturePad" version="2.1.0" />
+        <dependency id="Xamarin.Controls.SignaturePad" version="2.1.1" />
       </group>
       <group targetFramework="Xamarin.iOS">
         <dependency id="Xamarin.Forms" version="2.3.3" />
-        <dependency id="Xamarin.Controls.SignaturePad" version="2.1.0" />
+        <dependency id="Xamarin.Controls.SignaturePad" version="2.1.1" />
       </group>
       <group targetFramework="wp8">
         <dependency id="Xamarin.Forms" version="2.3.3" />
-        <dependency id="Xamarin.Controls.SignaturePad" version="2.1.0" />
+        <dependency id="Xamarin.Controls.SignaturePad" version="2.1.1" />
       </group>
       <group targetFramework="uap10.0">
         <dependency id="Xamarin.Forms" version="2.3.3" />
-        <dependency id="Xamarin.Controls.SignaturePad" version="2.1.0" />
+        <dependency id="Xamarin.Controls.SignaturePad" version="2.1.1" />
       </group>
       <group targetFramework="win">
         <dependency id="Xamarin.Forms" version="2.3.3" />
-        <dependency id="Xamarin.Controls.SignaturePad" version="2.1.0" />
+        <dependency id="Xamarin.Controls.SignaturePad" version="2.1.1" />
       </group>
       <group targetFramework="wpa">
         <dependency id="Xamarin.Forms" version="2.3.3" />
-        <dependency id="Xamarin.Controls.SignaturePad" version="2.1.0" />
+        <dependency id="Xamarin.Controls.SignaturePad" version="2.1.1" />
       </group>
       <group targetFramework="portable-net45+win8+wp8">
         <dependency id="Xamarin.Forms" version="2.3.3" />
