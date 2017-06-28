@@ -69,6 +69,12 @@ namespace Xamarin.Controls
 
 		private void TouchesMoved (MotionEvent e, bool update = true)
 		{
+			// something may have happened (clear) so start the stroke again
+			if (currentPath == null)
+			{
+				TouchesBegan (e);
+			}
+
 			for (var i = 0; i < e.HistorySize; i++)
 			{
 				float historicalX = e.GetHistoricalX (i);
@@ -105,11 +111,15 @@ namespace Xamarin.Controls
 
 		private void TouchesEnded (MotionEvent e)
 		{
-			TouchesMoved (e, false);
+			// something may have happened (clear) during the stroke
+			if (currentPath != null)
+			{
+				TouchesMoved (e, false);
 
-			// add the current path and points to their respective lists.
-			var smoothed = PathSmoothing.SmoothedPathWithGranularity (currentPath, 2);
-			paths.Add (smoothed);
+				// add the current path and points to their respective lists.
+				var smoothed = PathSmoothing.SmoothedPathWithGranularity (currentPath, 2);
+				paths.Add (smoothed);
+			}
 
 			// reset the drawing
 			currentPath = null;

@@ -48,6 +48,12 @@ namespace Xamarin.Controls
 
 		public override void TouchesMoved (NSSet touches, UIEvent evt)
 		{
+			// something may have happened (clear) so start the stroke again
+			if (currentPath == null)
+			{
+				TouchesBegan (touches, evt);
+			}
+
 			// obtain the location of the touch
 			var touch = touches.AnyObject as UITouch;
 			var touchLocation = touch.LocationInView (this);
@@ -75,16 +81,20 @@ namespace Xamarin.Controls
 			var touch = touches.AnyObject as UITouch;
 			var touchLocation = touch.LocationInView (this);
 
-			if (HasMovedFarEnough (currentPath, touchLocation.X, touchLocation.Y))
+			// something may have happened (clear) during the stroke
+			if (currentPath != null)
 			{
-				// add it to the current path
-				currentPath.Path.AddLineTo (touchLocation);
-				currentPath.GetPoints ().Add (touchLocation);
-			}
+				if (HasMovedFarEnough (currentPath, touchLocation.X, touchLocation.Y))
+				{
+					// add it to the current path
+					currentPath.Path.AddLineTo (touchLocation);
+					currentPath.GetPoints ().Add (touchLocation);
+				}
 
-			// obtain the smoothed path, and add it to the old paths
-			var smoothed = PathSmoothing.SmoothedPathWithGranularity (currentPath, 4);
-			paths.Add (smoothed);
+				// obtain the smoothed path, and add it to the old paths
+				var smoothed = PathSmoothing.SmoothedPathWithGranularity (currentPath, 4);
+				paths.Add (smoothed);
+			}
 
 			// clear the current path
 			currentPath = null;
