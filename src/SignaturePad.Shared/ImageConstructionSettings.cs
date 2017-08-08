@@ -145,6 +145,8 @@ namespace Xamarin.Controls
 
 		public float? StrokeWidth { get; set; }
 
+		public float? Padding { get; set; }
+
 		internal void ApplyDefaults ()
 		{
 			ApplyDefaults (1f, Black);
@@ -157,6 +159,7 @@ namespace Xamarin.Controls
 			StrokeColor = StrokeColor ?? strokeColor;
 			BackgroundColor = BackgroundColor ?? Transparent;
 			StrokeWidth = StrokeWidth ?? strokeWidth;
+			Padding = Padding ?? 5f;
 		}
 	}
 }

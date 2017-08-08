@@ -56,5 +56,30 @@ namespace Samples.Views
 				await DisplayAlert ("Stats", $"The signature has {linesCount} lines or {pointCount} points, and is {imageSize:#,###.0}KB (in memory) when saved as a PNG.", "Cool");
 			}
 		}
+
+		private async void OnGetImage (object sender, EventArgs e)
+		{
+			var settings = new ImageConstructionSettings
+			{
+				Padding = 12,
+				ShouldCrop=false,
+				StrokeColor = Color.Black,
+				BackgroundColor = Color.Silver,
+				DesiredSizeOrScale = 2f
+			};
+			var image = await padView.GetImageStreamAsync (SignatureImageFormat.Png, settings);
+
+			var page = new ContentPage
+			{
+				Title = "Signature",
+				Content = new Image
+				{
+					Aspect = Aspect.AspectFit,
+					Source = ImageSource.FromStream (() => image)
+				}
+			};
+
+			await Navigation.PushAsync (page);
+		}
 	}
 }

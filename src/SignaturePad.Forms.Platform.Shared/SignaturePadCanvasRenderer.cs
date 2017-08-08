@@ -113,6 +113,7 @@ namespace SignaturePad.Forms
 					settings.StrokeColor = e.Settings.StrokeColor.Value.ToNative ();
 				}
 				settings.StrokeWidth = e.Settings.StrokeWidth;
+				settings.Padding = e.Settings.Padding;
 
 				e.ImageStreamTask = ctrl.GetImageStreamAsync (format, settings);
 			}

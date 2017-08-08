@@ -14,5 +14,6 @@
                                 SignatureLineColor="Aqua" StrokeColor="Black" StrokeWidth="2" />
     <Button Clicked="OnChangeTheme" Text="Change Theme" />
     <Button Clicked="OnGetStats" Text="Get Signature Stats" />
+    <Button Clicked="OnGetImage" Text="Get Signature Image" />
   </StackLayout>
 </ContentPage>

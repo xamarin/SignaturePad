@@ -401,7 +401,7 @@ namespace Xamarin.Controls
 			imageSize = sizeOrScale.GetSize ((float)viewSize.Width, (float)viewSize.Height);
 			scale = sizeOrScale.GetScale ((float)imageSize.Width, (float)imageSize.Height);
 
-			signatureBounds = GetSignatureBounds ();
+			signatureBounds = GetSignatureBounds (settings.Padding.Value);
 
 			if (settings.ShouldCrop == true)
 			{
