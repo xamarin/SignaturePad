@@ -401,10 +401,10 @@ namespace Xamarin.Controls
 			imageSize = sizeOrScale.GetSize ((float)viewSize.Width, (float)viewSize.Height);
 			scale = sizeOrScale.GetScale ((float)imageSize.Width, (float)imageSize.Height);
 
-			signatureBounds = GetSignatureBounds (settings.Padding.Value);
-
 			if (settings.ShouldCrop == true)
 			{
+				signatureBounds = GetSignatureBounds (settings.Padding.Value);
+
 				if (sizeOrScale.Type == SizeOrScaleType.Size)
 				{
 					// if a specific size was set, scale to that
@@ -421,6 +421,10 @@ namespace Xamarin.Controls
 					imageSize.Width = signatureBounds.Width * scale.Width;
 					imageSize.Height = signatureBounds.Height * scale.Height;
 				}
+			}
+			else
+			{
+				signatureBounds = new NativeRect (0, 0, viewSize.Width, viewSize.Height);
 			}
 
 			strokeWidth = settings.StrokeWidth.Value;
