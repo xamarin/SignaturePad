@@ -69,6 +69,9 @@ namespace Samples.Views
 			};
 			var image = await padView.GetImageStreamAsync (SignatureImageFormat.Png, settings);
 
+			if (image == null)
+				return;
+
 			var page = new ContentPage
 			{
 				Title = "Signature",
