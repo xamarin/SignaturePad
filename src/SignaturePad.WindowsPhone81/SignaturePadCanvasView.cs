@@ -84,6 +84,8 @@ namespace Xamarin.Controls
 		public void Clear ()
 		{
 			inkPresenter.Clear ();
+
+			OnCleared ();
 		}
 
 		private async Task<Stream> GetImageStreamInternal (SignatureImageFormat format, Size scale, Rect signatureBounds, Size imageSize, float strokeWidth, Color strokeColor, Color backgroundColor)

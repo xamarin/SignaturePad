@@ -44,7 +44,12 @@ namespace Xamarin.Controls
 			// add the main signature view
 			{
 				SignaturePadCanvas = new SignaturePadCanvasView ();
-				SignaturePadCanvas.StrokeCompleted += (sender, e) => UpdateUi ();
+				SignaturePadCanvas.StrokeCompleted += (sender, e) =>
+				{
+					UpdateUi ();
+					StrokeCompleted?.Invoke (this, EventArgs.Empty);
+				};
+				SignaturePadCanvas.Cleared += (sender, e) => Cleared?.Invoke (this, EventArgs.Empty);
 				AddSubview (SignaturePadCanvas);
 			}
 
@@ -250,6 +255,10 @@ namespace Xamarin.Controls
 		/// </summary>
 		/// <value>The signature line.</value>
 		public UIView SignatureLine { get; private set; }
+
+		public event EventHandler StrokeCompleted;
+
+		public event EventHandler Cleared;
 
 		public void Clear ()
 		{

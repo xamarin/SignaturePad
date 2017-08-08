@@ -62,7 +62,12 @@ namespace Xamarin.Controls
 					Id = GenerateId (this),
 					LayoutParameters = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.MatchParent, RelativeLayout.LayoutParams.MatchParent)
 				};
-				SignaturePadCanvas.StrokeCompleted += (sender, e) => UpdateUi ();
+				SignaturePadCanvas.StrokeCompleted += (sender, e) =>
+				{
+					UpdateUi ();
+					StrokeCompleted?.Invoke (this, EventArgs.Empty);
+				};
+				SignaturePadCanvas.Cleared += (sender, e) => Cleared?.Invoke (this, EventArgs.Empty);
 				AddView (SignaturePadCanvas);
 			}
 
@@ -270,6 +275,10 @@ namespace Xamarin.Controls
 		/// </summary>
 		/// <value>The signature line.</value>
 		public View SignatureLine { get; private set; }
+
+		public event EventHandler StrokeCompleted;
+
+		public event EventHandler Cleared;
 
 		public void Clear ()
 		{

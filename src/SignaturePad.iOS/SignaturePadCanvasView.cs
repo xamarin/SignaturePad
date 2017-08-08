@@ -87,6 +87,8 @@ namespace Xamarin.Controls
 		public void Clear ()
 		{
 			inkPresenter.Clear ();
+
+			OnCleared ();
 		}
 
 		private UIImage GetImageInternal (CGSize scale, CGRect signatureBounds, CGSize imageSize, float strokeWidth, UIColor strokeColor, UIColor backgroundColor)

@@ -76,6 +76,8 @@ namespace Xamarin.Controls
 		public void Clear ()
 		{
 			inkPresenter.Strokes.Clear ();
+
+			OnCleared ();
 		}
 
 		private WriteableBitmap GetImageInternal (Size scale, Rect signatureBounds, Size imageSize, float strokeWidth, Color strokeColor, Color backgroundColor)

@@ -47,6 +47,7 @@ namespace SignaturePad.Forms
 #endif
 
 				native.StrokeCompleted += OnStrokeCompleted;
+				native.Cleared += OnCleared;
 
 				SetNativeControl (native);
 			}
@@ -88,6 +89,11 @@ namespace SignaturePad.Forms
 		private void OnStrokeCompleted (object sender, EventArgs e)
 		{
 			Element?.OnStrokeCompleted ();
+		}
+
+		private void OnCleared (object sender, EventArgs e)
+		{
+			Element?.OnCleared ();
 		}
 
 		private void OnImageStreamRequested (object sender, SignaturePadCanvasView.ImageStreamRequestedEventArgs e)
