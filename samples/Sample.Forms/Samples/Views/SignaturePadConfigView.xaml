@@ -1,28 +1,23 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:Samples.ViewModels;assembly=Samples"
-             xmlns:converters="clr-namespace:Samples.Converters;assembly=Samples"
-             xmlns:signature="clr-namespace:SignaturePad.Forms;assembly=SignaturePad.Forms"
-             x:Class="Samples.Views.SignaturePadConfigView"
-             Title="Data Binding" Padding="10,10,10,5"
-             BindingContext="{StaticResource ViewModel}">
+<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:local="clr-namespace:Samples.ViewModels;assembly=Samples"
+            xmlns:converters="clr-namespace:Samples.Converters;assembly=Samples"
+            xmlns:signature="clr-namespace:SignaturePad.Forms;assembly=SignaturePad.Forms"
+            x:Class="Samples.Views.SignaturePadConfigView"
+            Title="Data Binding"
+            BindingContext="{StaticResource ViewModel}">
 
-  <ContentPage.Resources>
+  <TabbedPage.Resources>
     <ResourceDictionary>
       <local:SignaturePadConfigViewModel x:Key="ViewModel" />
       <converters:NotValueConverter x:Key="NotConverter" />
     </ResourceDictionary>
-  </ContentPage.Resources>
+  </TabbedPage.Resources>
 
-  <ContentPage.ToolbarItems>
-    <ToolbarItem Name="Configure" Command="{Binding ConfigureCommand}" Order="Primary" Priority="0" />
-  </ContentPage.ToolbarItems>
-
-  <StackLayout>
-
+  <ContentPage Title="Sign" Padding="10,10,10,5">
     <signature:SignaturePadView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-                                HeightRequest="150"
+                                HeightRequest="200"
                                 CaptionText="{Binding CaptionText}"
                                 CaptionTextColor="{Binding CaptionTextColor}"
                                 ClearText="{Binding ClearText}"
@@ -34,7 +29,11 @@
                                 StrokeWidth="{Binding StrokeWidth}"
                                 StrokeColor="{Binding StrokeColor}" />
 
-    <ScrollView IsVisible="{Binding IsConfiguring}">
+  </ContentPage>
+    
+  <ContentPage Title="Configure" Padding="10,10,10,5">
+
+    <ScrollView>
       <StackLayout>
 
         <Label Text="Caption Text:" />
@@ -67,12 +66,12 @@
         <Label Text="Stroke Width:" />
         <StackLayout Orientation="Horizontal">
           <Stepper Minimum="0" Maximum="100" Increment="1" Value="{Binding StrokeWidth}" />
-          <Label Text="{Binding StrokeWidth}" />
+          <Label Text="{Binding StrokeWidth}" VerticalOptions="Center" />
         </StackLayout>
 
       </StackLayout>
     </ScrollView>
 
-  </StackLayout>
+  </ContentPage>
 
-</ContentPage>
+</TabbedPage>

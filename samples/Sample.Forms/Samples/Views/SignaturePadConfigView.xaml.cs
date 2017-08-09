@@ -4,7 +4,7 @@ using Samples.Models;
 
 namespace Samples.Views
 {
-	public partial class SignaturePadConfigView : ContentPage
+	public partial class SignaturePadConfigView : TabbedPage
 	{
 		public SignaturePadConfigView ()
 		{

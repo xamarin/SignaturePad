@@ -62,9 +62,8 @@ namespace Samples.Views
 			var settings = new ImageConstructionSettings
 			{
 				Padding = 12,
-				ShouldCrop=false,
-				StrokeColor = Color.Black,
-				BackgroundColor = Color.Silver,
+				StrokeColor = Color.FromRgb (25, 25, 25),
+				BackgroundColor = Color.FromRgb (225, 225, 225),
 				DesiredSizeOrScale = 2f
 			};
 			var image = await padView.GetImageStreamAsync (SignatureImageFormat.Png, settings);
