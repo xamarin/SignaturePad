@@ -7,6 +7,9 @@ namespace Xamarin.Controls
 {
 	partial class InkPresenter : UIView
 	{
+		CGPoint[] _points = new CGPoint[5];
+		byte _pointCounter;
+
 		static InkPresenter ()
 		{
 			ScreenDensity = (float)UIScreen.MainScreen.Scale;
@@ -41,6 +44,8 @@ namespace Xamarin.Controls
 			// obtain the location of the touch
 			var touch = touches.AnyObject as UITouch;
 			var touchLocation = touch.LocationInView (this);
+			_pointCounter = 0;
+			_points[0] = touchLocation;
 
 			// move the path to that position
 			currentPath.Path.MoveTo (touchLocation);
@@ -64,9 +69,25 @@ namespace Xamarin.Controls
 
 			if (HasMovedFarEnough (currentPath, touchLocation.X, touchLocation.Y))
 			{
+				_pointCounter++;
+				_points[_pointCounter] = touchLocation;
+				if (_pointCounter == 4)
+				{
+					// move the endpoint to the middle of the line joining the second control point of the first Bezier segment and the first control point of the second Bezier segment 
+					_points[3] = new CGPoint((_points[2].X + _points[4].X) / 2.0, (_points[2].Y + _points[4].Y) / 2.0);
+
+					// add a cubic Bezier from point 0 to point 3, with control points point 1 and point 2
+					currentPath.Path.MoveTo(_points[0]);
+					currentPath.Path.AddCurveToPoint(_points[3], _points[1], _points[2]);
+
+					// replace points and get ready to handle the next segment
+					_points[0] = _points[3];
+					_points[1] = _points[4];
+					_pointCounter = 1;
+				}
+
 				// add it to the current path
-				currentPath.Path.AddLineTo (touchLocation);
-				currentPath.GetPoints ().Add (touchLocation);
+				currentPath.GetPoints ().Add(touchLocation);
 
 				// update the dirty rectangle
 				UpdateBounds (touchLocation);
@@ -81,6 +102,8 @@ namespace Xamarin.Controls
 
 		public override void TouchesEnded (NSSet touches, UIEvent evt)
 		{
+			_pointCounter = 0;
+
 			// obtain the location of the touch
 			var touch = touches.AnyObject as UITouch;
 			var touchLocation = touch.LocationInView (this);
@@ -95,9 +118,7 @@ namespace Xamarin.Controls
 					currentPath.GetPoints ().Add (touchLocation);
 				}
 
-				// obtain the smoothed path, and add it to the old paths
-				var smoothed = PathSmoothing.SmoothedPathWithGranularity (currentPath, 4);
-				paths.Add (smoothed);
+				paths.Add (currentPath); 
 			}
 
 			// clear the current path
