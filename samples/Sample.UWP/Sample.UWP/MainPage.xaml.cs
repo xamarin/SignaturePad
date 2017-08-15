@@ -17,6 +17,11 @@ namespace Sample.UWP
 		public MainPage ()
 		{
 			InitializeComponent ();
+
+			signatureView.StrokeCompleted += (sender, e) => UpdateUi ();
+			signatureView.Cleared += (sender, e) => UpdateUi ();
+
+			UpdateUi ();
 		}
 
 		private async void btnSave_Click (object sender, RoutedEventArgs e)
@@ -24,6 +29,15 @@ namespace Sample.UWP
 			points = signatureView.Points;
 
 			await new MessageDialog ("Vector saved!").ShowAsync ();
+
+			UpdateUi ();
+		}
+
+		private void UpdateUi ()
+		{
+			btnSave.IsEnabled = !signatureView.IsBlank;
+			btnSaveImage.IsEnabled = !signatureView.IsBlank;
+			btnLoad.IsEnabled = points != null;
 		}
 
 		private void btnLoad_Click (object sender, RoutedEventArgs e)

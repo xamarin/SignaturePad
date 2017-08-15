@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -38,7 +39,12 @@ namespace Xamarin.Controls
 				SignaturePadCanvas.SetValue (Grid.HorizontalAlignmentProperty, HorizontalAlignment.Stretch);
 				SignaturePadCanvas.SetValue (Grid.VerticalAlignmentProperty, VerticalAlignment.Stretch);
 				SignaturePadCanvas.SetValue (Grid.RowProperty, 0);
-				SignaturePadCanvas.StrokeCompleted += (sender, e) => UpdateUi ();
+				SignaturePadCanvas.StrokeCompleted += (sender, e) =>
+				{
+					UpdateUi ();
+					StrokeCompleted?.Invoke (this, EventArgs.Empty);
+				};
+				SignaturePadCanvas.Cleared += (sender, e) => Cleared?.Invoke (this, EventArgs.Empty);
 				Children.Add (SignaturePadCanvas);
 			}
 
@@ -270,6 +276,10 @@ namespace Xamarin.Controls
 		/// </summary>
 		/// <value>The signature line.</value>
 		public Border SignatureLine { get; private set; }
+
+		public event EventHandler StrokeCompleted;
+
+		public event EventHandler Cleared;
 
 		public void Clear ()
 		{

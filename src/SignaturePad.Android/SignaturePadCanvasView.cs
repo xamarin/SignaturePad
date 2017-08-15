@@ -85,6 +85,8 @@ namespace Xamarin.Controls
 		public void Clear ()
 		{
 			inkPresenter.Clear ();
+
+			OnCleared ();
 		}
 
 		private Bitmap GetImageInternal (System.Drawing.SizeF scale, System.Drawing.RectangleF signatureBounds, System.Drawing.SizeF imageSize, float strokeWidth, Color strokeColor, Color backgroundColor)

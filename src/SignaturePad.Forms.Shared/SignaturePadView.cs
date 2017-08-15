@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -124,7 +125,12 @@ namespace SignaturePad.Forms
 				SignaturePadCanvas.SetValue (Grid.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
 				SignaturePadCanvas.SetValue (Grid.RowProperty, 0);
 				SignaturePadCanvas.SetValue (Grid.RowSpanProperty, 2);
-				SignaturePadCanvas.StrokeCompleted += (sender, e) => UpdateUi ();
+				SignaturePadCanvas.StrokeCompleted += (sender, e) =>
+				{
+					UpdateUi ();
+					StrokeCompleted?.Invoke (this, EventArgs.Empty);
+				};
+				SignaturePadCanvas.Cleared += (sender, e) => Cleared?.Invoke (this, EventArgs.Empty);
 				Children.Add (SignaturePadCanvas);
 			}
 
@@ -374,6 +380,10 @@ namespace SignaturePad.Forms
 		/// </summary>
 		/// <value>The signature line.</value>
 		public BoxView SignatureLine { get; private set; }
+
+		public event EventHandler StrokeCompleted;
+
+		public event EventHandler Cleared;
 
 		public void Clear ()
 		{

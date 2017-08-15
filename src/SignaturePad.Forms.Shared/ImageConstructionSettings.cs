@@ -114,5 +114,7 @@ namespace SignaturePad.Forms
 		public Color? BackgroundColor { get; set; }
 
 		public float? StrokeWidth { get; set; }
+
+		public float? Padding { get; set; }
 	}
 }

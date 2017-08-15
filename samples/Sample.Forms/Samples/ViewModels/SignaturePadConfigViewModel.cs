@@ -7,9 +7,6 @@ namespace Samples.ViewModels
 {
 	public class SignaturePadConfigViewModel : BaseViewModel
 	{
-		private readonly ICommand isConfiguringCommand;
-		private bool isConfiguring;
-
 		private string captionText;
 		private string clearText;
 		private string promptText;
@@ -21,19 +18,6 @@ namespace Samples.ViewModels
 		private Color signaturePadBackground;
 		private Color signatureLineColor;
 		private Color strokeColor;
-
-		public SignaturePadConfigViewModel ()
-		{
-			isConfiguringCommand = new Command (() => IsConfiguring = !IsConfiguring);
-		}
-
-		public ICommand ConfigureCommand => isConfiguringCommand;
-
-		public bool IsConfiguring
-		{
-			get { return isConfiguring; }
-			set { Set (ref isConfiguring, value); }
-		}
 
 		public string CaptionText
 		{
@@ -134,8 +118,6 @@ namespace Samples.ViewModels
 		public override void OnAppearing ()
 		{
 			base.OnAppearing ();
-
-			IsConfiguring = true;
 
 			CaptionText = "sign here";
 			ClearText = "clear";

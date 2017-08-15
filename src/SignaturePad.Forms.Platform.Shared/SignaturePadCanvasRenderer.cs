@@ -47,6 +47,7 @@ namespace SignaturePad.Forms
 #endif
 
 				native.StrokeCompleted += OnStrokeCompleted;
+				native.Cleared += OnCleared;
 
 				SetNativeControl (native);
 			}
@@ -90,6 +91,11 @@ namespace SignaturePad.Forms
 			Element?.OnStrokeCompleted ();
 		}
 
+		private void OnCleared (object sender, EventArgs e)
+		{
+			Element?.OnCleared ();
+		}
+
 		private void OnImageStreamRequested (object sender, SignaturePadCanvasView.ImageStreamRequestedEventArgs e)
 		{
 			var ctrl = Control;
@@ -113,6 +119,7 @@ namespace SignaturePad.Forms
 					settings.StrokeColor = e.Settings.StrokeColor.Value.ToNative ();
 				}
 				settings.StrokeWidth = e.Settings.StrokeWidth;
+				settings.Padding = e.Settings.Padding;
 
 				e.ImageStreamTask = ctrl.GetImageStreamAsync (format, settings);
 			}

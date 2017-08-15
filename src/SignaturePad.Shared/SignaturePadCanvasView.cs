@@ -42,6 +42,8 @@ namespace Xamarin.Controls
 	{
 		public event EventHandler StrokeCompleted;
 
+		public event EventHandler Cleared;
+
 		public bool IsBlank => inkPresenter.GetStrokes ().Count == 0;
 
 		public NativePoint[] Points
@@ -401,10 +403,10 @@ namespace Xamarin.Controls
 			imageSize = sizeOrScale.GetSize ((float)viewSize.Width, (float)viewSize.Height);
 			scale = sizeOrScale.GetScale ((float)imageSize.Width, (float)imageSize.Height);
 
-			signatureBounds = GetSignatureBounds ();
-
 			if (settings.ShouldCrop == true)
 			{
+				signatureBounds = GetSignatureBounds (settings.Padding.Value);
+
 				if (sizeOrScale.Type == SizeOrScaleType.Size)
 				{
 					// if a specific size was set, scale to that
@@ -421,6 +423,10 @@ namespace Xamarin.Controls
 					imageSize.Width = signatureBounds.Width * scale.Width;
 					imageSize.Height = signatureBounds.Height * scale.Height;
 				}
+			}
+			else
+			{
+				signatureBounds = new NativeRect (0, 0, viewSize.Width, viewSize.Height);
 			}
 
 			strokeWidth = settings.StrokeWidth.Value;
@@ -442,6 +448,11 @@ namespace Xamarin.Controls
 			}
 
 			inkPresenter.AddStrokes (loadedStrokes, StrokeColor, StrokeWidth);
+
+			if (!IsBlank)
+			{
+				OnStrokeCompleted ();
+			}
 		}
 
 		/// <summary>
@@ -494,6 +505,16 @@ namespace Xamarin.Controls
 			while (startIndex < emptyIndex);
 
 			inkPresenter.AddStrokes (strokes, StrokeColor, StrokeWidth);
+
+			if (!IsBlank)
+			{
+				OnStrokeCompleted ();
+			}
+		}
+		
+		private void OnCleared ()
+		{
+			Cleared?.Invoke (this, EventArgs.Empty);
 		}
 
 		private void OnStrokeCompleted ()

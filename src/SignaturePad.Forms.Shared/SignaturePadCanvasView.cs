@@ -217,8 +217,14 @@ namespace SignaturePad.Forms
 		{
 			StrokeCompleted?.Invoke (this, EventArgs.Empty);
 		}
+		
+		internal void OnCleared ()
+		{
+			Cleared?.Invoke (this, EventArgs.Empty);
+		}
 
 		public event EventHandler StrokeCompleted;
+		public event EventHandler Cleared;
 
 		internal event EventHandler<ImageStreamRequestedEventArgs> ImageStreamRequested;
 		internal event EventHandler<IsBlankRequestedEventArgs> IsBlankRequested;
