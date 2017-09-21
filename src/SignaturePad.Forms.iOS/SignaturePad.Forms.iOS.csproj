@@ -60,10 +60,6 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SignaturePad.Forms\SignaturePad.Forms.csproj">
-      <Project>{B2AF970D-D640-451C-95AF-92AF531B8C1E}</Project>
-      <Name>SignaturePad.Forms</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SignaturePad.iOS\SignaturePad.iOS.csproj">
       <Project>{bef71536-787b-431f-ac7f-a6469710d11f}</Project>
       <Name>SignaturePad.iOS</Name>

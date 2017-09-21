@@ -48,10 +48,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SignaturePad.Forms\SignaturePad.Forms.csproj">
-      <Project>{b2af970d-d640-451c-95af-92af531b8c1e}</Project>
-      <Name>SignaturePad.Forms</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SignaturePad.WP8\SignaturePad.WP8.csproj">
       <Project>{105d08de-982a-4f39-9fb2-82735cf2f3f1}</Project>
       <Name>SignaturePad.WP8</Name>

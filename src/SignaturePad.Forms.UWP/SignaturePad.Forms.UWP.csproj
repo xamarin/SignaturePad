@@ -51,10 +51,6 @@
     <EmbeddedResource Include="Properties\SignaturePad.Forms.UWP.rd.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SignaturePad.Forms\SignaturePad.Forms.csproj">
-      <Project>{b2af970d-d640-451c-95af-92af531b8c1e}</Project>
-      <Name>SignaturePad.Forms</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SignaturePad.UWP\SignaturePad.UWP.csproj">
       <Project>{16131fdc-d50b-4ef2-8ecc-661184ff80db}</Project>
       <Name>SignaturePad.UWP</Name>

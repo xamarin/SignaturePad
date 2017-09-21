@@ -1,19 +1,32 @@
-#tool nuget:?package=XamarinComponent&version=1.1.0.49
+#tool nuget:?package=XamarinComponent&version=1.1.0.60
 
-#addin nuget:?package=Cake.Xamarin.Build&version=1.0.14.0
-#addin nuget:?package=Cake.Xamarin
+#addin nuget:?package=Cake.Xamarin&version=1.3.0.15
+#addin nuget:?package=Cake.Xamarin.Build&version=2.0.22
 
-BuildSpec buildSpec = null;
+var TARGET = Argument ("t", Argument ("target", Argument ("Target", "Default")));
+var VERBOSITY = (Verbosity) Enum.Parse (typeof(Verbosity), Argument ("v", Argument ("verbosity", Argument ("Verbosity", "Verbose"))), true);
 
+class SolutionBuilder : DefaultSolutionBuilder 
+{
+	public override void RunBuild (FilePath solution)
+	{
+		CakeContext.MSBuild(solution, c => {
+			if (CakeContext.GetOperatingSystem() == PlatformFamily.OSX)
+				c.ToolPath = "/Library/Frameworks/Mono.framework/Versions/Current/Commands/msbuild";
+			if (Verbosity.HasValue)
+				c.Verbosity = Verbosity.Value;
+			c.Configuration = "Release";
+			c.MSBuildPlatform = MSBuildPlatform.x86;
+		});
+	}
+}
 
-var TARGET = Argument ("t", Argument ("target", "Default"));
-
-buildSpec = new BuildSpec () {
-
+var buildSpec = new BuildSpec () {
 	Libs = new ISolutionBuilder [] { 
-		new DefaultSolutionBuilder {
+		new SolutionBuilder {
 			SolutionPath = "src/SignaturePad.Mac.sln",
 			BuildsOn = BuildPlatforms.Mac,
+			Verbosity = VERBOSITY,
 			OutputFiles = new [] { 
 				new OutputFileCopy {
 					FromFile = "./src/SignaturePad.Android/bin/Release/SignaturePad.dll",
@@ -37,10 +50,46 @@ buildSpec = new BuildSpec () {
 				},
 			}
 		},
-		new WpSolutionBuilder {
+		new SolutionBuilder {
+			SolutionPath = "src/SignaturePad.VS2015.sln",
+			BuildsOn = BuildPlatforms.Windows,
+			Verbosity = VERBOSITY,
+			OutputFiles = new [] {
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.WP8/bin/Release/SignaturePad.dll",
+					ToDirectory = "output/wp8",
+				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.Forms.WindowsPhone/bin/Release/SignaturePad.Forms.dll",
+					ToDirectory = "output/wp8",
+				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.Windows81/bin/Release/SignaturePad.dll",
+					ToDirectory = "output/win",
+				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.Forms.Windows81/bin/Release/SignaturePad.Forms.dll",
+					ToDirectory = "output/win",
+				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.WindowsPhone81/bin/Release/SignaturePad.dll",
+					ToDirectory = "output/wpa",
+				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.Forms.WindowsPhone81/bin/Release/SignaturePad.Forms.dll",
+					ToDirectory = "output/wpa",
+				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.WindowsRuntime81/bin/Release/SignaturePad.dll",
+					ToDirectory = "output/winrt",
+				},
+			}
+		},
+		new SolutionBuilder {
 			SolutionPath = "src/SignaturePad.sln",
 			BuildsOn = BuildPlatforms.Windows,
-			OutputFiles = new [] { 
+			Verbosity = VERBOSITY,
+			OutputFiles = new [] {
 				new OutputFileCopy {
 					FromFile = "./src/SignaturePad.Android/bin/Release/SignaturePad.dll",
 					ToDirectory = "output/android",
@@ -62,40 +111,12 @@ buildSpec = new BuildSpec () {
 					ToDirectory = "output/ios-unified",
 				},
 				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.WP8/bin/Release/SignaturePad.dll",
-					ToDirectory = "output/wp8",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Forms.WindowsPhone/bin/Release/SignaturePad.Forms.dll",
-					ToDirectory = "output/wp8",
-				},
-				new OutputFileCopy {
 					FromFile = "./src/SignaturePad.UWP/bin/Release/SignaturePad.dll",
 					ToDirectory = "output/uwp",
 				},
 				new OutputFileCopy {
 					FromFile = "./src/SignaturePad.Forms.UWP/bin/Release/SignaturePad.Forms.dll",
 					ToDirectory = "output/uwp",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Windows81/bin/Release/SignaturePad.dll",
-					ToDirectory = "output/win",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Forms.Windows81/bin/Release/SignaturePad.Forms.dll",
-					ToDirectory = "output/win",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.WindowsPhone81/bin/Release/SignaturePad.dll",
-					ToDirectory = "output/wpa",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Forms.WindowsPhone81/bin/Release/SignaturePad.Forms.dll",
-					ToDirectory = "output/wpa",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.WindowsRuntime81/bin/Release/SignaturePad.dll",
-					ToDirectory = "output/winrt",
 				},
 			}
 		}

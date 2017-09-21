@@ -1,14 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.10
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5FEE4ACF-08CB-45D3-9805-9505A5C0AD5F}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.WP8", "SignaturePad.WP8\SignaturePad.WP8.csproj", "{105D08DE-982A-4F39-9FB2-82735CF2F3F1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.iOS", "SignaturePad.iOS\SignaturePad.iOS.csproj", "{BEF71536-787B-431F-AC7F-A6469710D11F}"
 EndProject
@@ -19,8 +17,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.Forms.Droid", "SignaturePad.Forms.Droid\SignaturePad.Forms.Droid.csproj", "{1D5482F6-AA89-422C-9E34-88A8A1AD8AB6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.Forms.iOS", "SignaturePad.Forms.iOS\SignaturePad.Forms.iOS.csproj", "{B12D20AA-0EDF-4903-B385-BB8090848532}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.Forms.WindowsPhone", "SignaturePad.Forms.WindowsPhone\SignaturePad.Forms.WindowsPhone.csproj", "{FB73D461-D197-42A2-8928-086333277E54}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Forms", "Forms", "{2E0B4682-FC63-4CCE-A52F-E8ED176B3EC6}"
 EndProject
@@ -36,20 +32,9 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SignaturePad.InkPresenter.S
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SignaturePad.Forms.Shared", "SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.shproj", "{D522B5D1-E475-4E17-9282-564952CAD281}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.WindowsPhone81", "SignaturePad.WindowsPhone81\SignaturePad.WindowsPhone81.csproj", "{F7B2FD45-EAC0-4CF1-8BFD-43E2C080ED3E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.Windows81", "SignaturePad.Windows81\SignaturePad.Windows81.csproj", "{D084E70F-D32B-4E17-8583-73BFA4D1EDE6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.WindowsRuntime81", "SignaturePad.WindowsRuntime81\SignaturePad.WindowsRuntime81.csproj", "{71AC63E4-ECE4-4412-B318-D5E7BD65EC50}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.Forms.Windows81", "SignaturePad.Forms.Windows81\SignaturePad.Forms.Windows81.csproj", "{FFF4B94A-54F1-4C45-9027-211AD220391C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.Forms.WindowsPhone81", "SignaturePad.Forms.WindowsPhone81\SignaturePad.Forms.WindowsPhone81.csproj", "{F36EE8E1-F28E-48EE-852E-274186D49DF3}"
-EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SignaturePad.Shared\SignaturePad.Shared.projitems*{05d1e7c0-73fc-41de-a7d6-01ae4c1a4dd3}*SharedItemsImports = 13
-		SignaturePad.Shared\SignaturePad.Shared.projitems*{105d08de-982a-4f39-9fb2-82735cf2f3f1}*SharedItemsImports = 4
 		SignaturePad.Shared\SignaturePad.Shared.projitems*{16131fdc-d50b-4ef2-8ecc-661184ff80db}*SharedItemsImports = 4
 		SignaturePad.Forms.Platform.Shared\SignaturePad.Forms.Platform.Shared.projitems*{1d5482f6-aa89-422c-9e34-88a8a1ad8ab6}*SharedItemsImports = 4
 		SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.projitems*{1d5482f6-aa89-422c-9e34-88a8a1ad8ab6}*SharedItemsImports = 4
@@ -62,28 +47,15 @@ Global
 		SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.projitems*{b2af970d-d640-451c-95af-92af531b8c1e}*SharedItemsImports = 4
 		SignaturePad.InkPresenter.Shared\SignaturePad.InkPresenter.Shared.projitems*{bef71536-787b-431f-ac7f-a6469710d11f}*SharedItemsImports = 4
 		SignaturePad.Shared\SignaturePad.Shared.projitems*{bef71536-787b-431f-ac7f-a6469710d11f}*SharedItemsImports = 4
-		SignaturePad.Shared\SignaturePad.Shared.projitems*{d084e70f-d32b-4e17-8583-73bfa4d1ede6}*SharedItemsImports = 4
 		SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.projitems*{d522b5d1-e475-4e17-9282-564952cad281}*SharedItemsImports = 13
 		SignaturePad.InkPresenter.Shared\SignaturePad.InkPresenter.Shared.projitems*{f1a16cb9-a759-42c8-8f0b-3c9698a55336}*SharedItemsImports = 4
 		SignaturePad.Shared\SignaturePad.Shared.projitems*{f1a16cb9-a759-42c8-8f0b-3c9698a55336}*SharedItemsImports = 4
-		SignaturePad.Forms.Platform.Shared\SignaturePad.Forms.Platform.Shared.projitems*{f36ee8e1-f28e-48ee-852e-274186d49df3}*SharedItemsImports = 4
-		SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.projitems*{f36ee8e1-f28e-48ee-852e-274186d49df3}*SharedItemsImports = 4
-		SignaturePad.InkPresenter.Shared\SignaturePad.InkPresenter.Shared.projitems*{f7b2fd45-eac0-4cf1-8bfd-43e2c080ed3e}*SharedItemsImports = 4
-		SignaturePad.Shared\SignaturePad.Shared.projitems*{f7b2fd45-eac0-4cf1-8bfd-43e2c080ed3e}*SharedItemsImports = 4
-		SignaturePad.Forms.Platform.Shared\SignaturePad.Forms.Platform.Shared.projitems*{fb73d461-d197-42a2-8928-086333277e54}*SharedItemsImports = 4
-		SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.projitems*{fb73d461-d197-42a2-8928-086333277e54}*SharedItemsImports = 4
-		SignaturePad.Forms.Platform.Shared\SignaturePad.Forms.Platform.Shared.projitems*{fff4b94a-54f1-4c45-9027-211ad220391c}*SharedItemsImports = 4
-		SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.projitems*{fff4b94a-54f1-4c45-9027-211ad220391c}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{105D08DE-982A-4F39-9FB2-82735CF2F3F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{105D08DE-982A-4F39-9FB2-82735CF2F3F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{105D08DE-982A-4F39-9FB2-82735CF2F3F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{105D08DE-982A-4F39-9FB2-82735CF2F3F1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BEF71536-787B-431F-AC7F-A6469710D11F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BEF71536-787B-431F-AC7F-A6469710D11F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEF71536-787B-431F-AC7F-A6469710D11F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -104,10 +76,6 @@ Global
 		{B12D20AA-0EDF-4903-B385-BB8090848532}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B12D20AA-0EDF-4903-B385-BB8090848532}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B12D20AA-0EDF-4903-B385-BB8090848532}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FB73D461-D197-42A2-8928-086333277E54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FB73D461-D197-42A2-8928-086333277E54}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FB73D461-D197-42A2-8928-086333277E54}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FB73D461-D197-42A2-8928-086333277E54}.Release|Any CPU.Build.0 = Release|Any CPU
 		{16131FDC-D50B-4EF2-8ECC-661184FF80DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{16131FDC-D50B-4EF2-8ECC-661184FF80DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16131FDC-D50B-4EF2-8ECC-661184FF80DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -116,26 +84,6 @@ Global
 		{6FC62387-6717-4577-A48B-D15848741F08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FC62387-6717-4577-A48B-D15848741F08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FC62387-6717-4577-A48B-D15848741F08}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F7B2FD45-EAC0-4CF1-8BFD-43E2C080ED3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F7B2FD45-EAC0-4CF1-8BFD-43E2C080ED3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F7B2FD45-EAC0-4CF1-8BFD-43E2C080ED3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F7B2FD45-EAC0-4CF1-8BFD-43E2C080ED3E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D084E70F-D32B-4E17-8583-73BFA4D1EDE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D084E70F-D32B-4E17-8583-73BFA4D1EDE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D084E70F-D32B-4E17-8583-73BFA4D1EDE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D084E70F-D32B-4E17-8583-73BFA4D1EDE6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{71AC63E4-ECE4-4412-B318-D5E7BD65EC50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{71AC63E4-ECE4-4412-B318-D5E7BD65EC50}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{71AC63E4-ECE4-4412-B318-D5E7BD65EC50}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{71AC63E4-ECE4-4412-B318-D5E7BD65EC50}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FFF4B94A-54F1-4C45-9027-211AD220391C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FFF4B94A-54F1-4C45-9027-211AD220391C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FFF4B94A-54F1-4C45-9027-211AD220391C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FFF4B94A-54F1-4C45-9027-211AD220391C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F36EE8E1-F28E-48EE-852E-274186D49DF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F36EE8E1-F28E-48EE-852E-274186D49DF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F36EE8E1-F28E-48EE-852E-274186D49DF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F36EE8E1-F28E-48EE-852E-274186D49DF3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -144,11 +92,11 @@ Global
 		{B2AF970D-D640-451C-95AF-92AF531B8C1E} = {2E0B4682-FC63-4CCE-A52F-E8ED176B3EC6}
 		{1D5482F6-AA89-422C-9E34-88A8A1AD8AB6} = {2E0B4682-FC63-4CCE-A52F-E8ED176B3EC6}
 		{B12D20AA-0EDF-4903-B385-BB8090848532} = {2E0B4682-FC63-4CCE-A52F-E8ED176B3EC6}
-		{FB73D461-D197-42A2-8928-086333277E54} = {2E0B4682-FC63-4CCE-A52F-E8ED176B3EC6}
 		{4C55BDD7-F049-4742-9E00-CDD480E53A54} = {2E0B4682-FC63-4CCE-A52F-E8ED176B3EC6}
 		{6FC62387-6717-4577-A48B-D15848741F08} = {2E0B4682-FC63-4CCE-A52F-E8ED176B3EC6}
 		{D522B5D1-E475-4E17-9282-564952CAD281} = {2E0B4682-FC63-4CCE-A52F-E8ED176B3EC6}
-		{FFF4B94A-54F1-4C45-9027-211AD220391C} = {2E0B4682-FC63-4CCE-A52F-E8ED176B3EC6}
-		{F36EE8E1-F28E-48EE-852E-274186D49DF3} = {2E0B4682-FC63-4CCE-A52F-E8ED176B3EC6}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {754BC1FC-21E2-48A5-99EB-7FF1A25CBB33}
 	EndGlobalSection
 EndGlobal

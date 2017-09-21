@@ -103,10 +103,6 @@
       <Project>{f1a16cb9-a759-42c8-8f0b-3c9698a55336}</Project>
       <Name>SignaturePad.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SignaturePad.Forms\SignaturePad.Forms.csproj">
-      <Project>{B2AF970D-D640-451C-95AF-92AF531B8C1E}</Project>
-      <Name>SignaturePad.Forms</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
