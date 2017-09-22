@@ -5,6 +5,7 @@
 tools/
 output/
 **/Resources/Resource.Designer.cs
+component/*.xam
 
 # User-specific files
 *.suo
@@ -193,7 +194,6 @@ ClientBin/
 *~
 *.dbmdl
 *.dbproj.schemaview
-*.pfx
 *.publishsettings
 node_modules/
 orleans.codegen.cs
