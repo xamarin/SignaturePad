@@ -16,6 +16,7 @@
     <SynthesizeLinkMetadata>true</SynthesizeLinkMetadata>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>Sample.WindowsRuntime81.Windows_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateThumbprint>A5BD6E13A4986D9ECBC53BAB3EC9B9ABCB9E1C3C</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
