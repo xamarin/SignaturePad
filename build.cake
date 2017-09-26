@@ -140,6 +140,7 @@ var buildSpec = new BuildSpec () {
 		},
 		new SolutionBuilder {
 			SolutionPath = "./samples/Sample.iOS/Sample.iOS.sln",
+			Platform = "iPhone",
 			BuildsOn = BuildPlatforms.Mac,
 			Verbosity = VERBOSITY
 		},
