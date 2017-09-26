@@ -208,6 +208,14 @@ var buildSpec = new BuildSpec () {
 	},
 };
 
+Task ("nuget")
+	.IsDependentOn ("nuget-base")
+	.Does (() =>
+{
+	DeleteFiles("./component/*.xam");
+	DeleteFiles("./output/*.xam");
+});
+
 SetupXamarinBuildTasks (buildSpec, Tasks, Task);
 
 Task ("CI")
