@@ -465,5 +465,14 @@ namespace Xamarin.Controls
 		{
 			ClearLabel.Visibility = IsBlank ? ViewStates.Invisible : ViewStates.Visible;
 		}
+
+		public override bool OnInterceptTouchEvent(MotionEvent ev)
+		{
+			// don't accept touch when the view is disabled
+			if (!Enabled)
+				return true;
+			
+			return base.OnInterceptTouchEvent(ev);
+		}
 	}
 }

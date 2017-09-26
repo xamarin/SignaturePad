@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Android.Content;
 using Android.Graphics;
 using Android.Util;
+using Android.Views;
 using Android.Widget;
 
 namespace Xamarin.Controls
@@ -158,6 +159,15 @@ namespace Xamarin.Controls
 			}
 
 			return null;
+		}
+
+		public override bool OnInterceptTouchEvent(MotionEvent ev)
+		{
+			// don't accept touch when the view is disabled
+			if (!Enabled)
+				return true;
+
+			return base.OnInterceptTouchEvent(ev);
 		}
 	}
 }
