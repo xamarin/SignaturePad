@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace SignaturePad.Forms
 {
-	public class SignaturePadView : Grid
+	public partial class SignaturePadView : Grid
 	{
 		public static readonly BindableProperty CaptionTextProperty = BindableProperty.Create (
 			nameof (CaptionText),
