@@ -204,7 +204,7 @@ var buildSpec = new BuildSpec () {
 	Components = new [] {
 		new Component {
 			ManifestDirectory = "./component",
-			BuildsOn = BuildPlatforms.Mac | BuildPlatforms.Windows,
+			BuildsOn = BuildPlatforms.Windows, // there is a bug in the NuGet2 library with PCL
 		},
 	},
 };
