@@ -49,8 +49,6 @@ var signature = new SignaturePad () {
 
 Once the user has written his/her signature, you can export that signature as a native bitmap.
 
-On iOS:
-
 ```csharp
 // iOS
 UIImage image = signature.GetImage ();
