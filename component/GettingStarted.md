@@ -1,63 +1,116 @@
-Signature Pad makes capturing, saving, exporting, and displaying
-signatures extremely simple.
+Signature Pad makes capturing, saving, exporting, and displaying signatures extremely simple.
 
-## Examples
+There are controls for both native apps and Xamarin.Forms apps for most .NET platforms:
 
-### Displaying a signature pad
+ - Xamarin.Android
+ - Xamarin.iOS
+ - Windows 10 UWP
+ - Windows Store 8+
+ - Windows Phone 8+
+
+## Using Signature Pad
+
+Signature Pad has many features that are easy to use.
+
+_Signature Pad can be used with Xamarin.Forms, however this component does not contain those libraries. In order to use Signature Pad with Xamarin.Forms, you can install the ["Xamarin.Controls.SignaturePad.Forms" NuGet](https://www.nuget.org/packages/Xamarin.Controls.SignaturePad.Forms)._
+
+### Capturing & Displaying Signatures
+
+The Signature Pad control can be added to your app's view hierarchy using drag-and-drop with the designers or by writing simple code.
 
 On iOS:
 
 ```csharp
-using SignaturePad;
-...
-
-public override void ViewDidLoad ()
-{
-	...
-	var signature = new SignaturePadView (View.Frame) {
-		LineWidth = 3f
-	};
-	View.AddSubview (signature);
-}
+var signature = new SignaturePadView () {
+	StrokeWidth = 3f,
+	StrokeColor = UIColor.Black
+};
 ```
 
 On Android:
 
 ```csharp
-using SignaturePad;
-...
-
-protected override void OnCreate (Bundle bundle)
-{
-	base.OnCreate (bundle);
-
-	var signature = new SignaturePadView (this) {
-		LineWidth = 3f
-	};
-	AddContentView (signature,
-		new ViewGroup.LayoutParams (ViewGroup.LayoutParams.FillParent, ViewGroup.LayoutParams.FillParent));
-}
+var signature = new SignaturePadView (this) {
+	StrokeWidth = 3f,
+	StrokeColor = Color.Black
+};
 ```
 
-### Getting the signature as an image
+On Windows:
 
 ```csharp
-// on iOS:
+var signature = new SignaturePad () {
+	StrokeWidth = 3f,
+	StrokeColor = Colors.Black
+};
+```
+
+### Exporting Signature Images
+
+Once the user has written his/her signature, you can export that signature as a native bitmap.
+
+On iOS:
+
+```csharp
+// iOS
 UIImage image = signature.GetImage ();
 
-// on Android:
+// Android
 Bitmap image = signature.GetImage ();
+
+// Windows
+WriteableBitmap image = signature.GetImage ();
 ```
 
-### Getting the signature as a point array
+### Exporting Signature Points
+
+If you have to save and restore a user's signature, you can also capture the raw stoke points.
 
 ```csharp
-// Discontinuous lines are separated by PointF.Empty
+// iOS
+CGPoint[] points = signature.Points;
+CGPoint[][] strokes = signature.Strokes;
+
+// Android
 PointF[] points = signature.Points;
+PointF[][] strokes = signature.Strokes;
+
+// Windows
+Point[] points = signature.Points;
+Point[][] strokes = signature.Strokes;
 ```
 
-### Loading a signature from a point array
+### Importing Signature Points
 
 ```csharp
 signature.LoadPoints (points);
+signature.LoadStrokes (strokes);
+```
+
+## Using Signature Pad with Xamarin.Forms
+
+Signature Pad can be used with Xamarin.Forms, however this component does not contain those libraries. In order to use Signature Pad with Xamarin.Forms, you can install the ["Xamarin.Controls.SignaturePad.Forms" NuGet](https://www.nuget.org/packages/Xamarin.Controls.SignaturePad.Forms).
+
+Like with the native controls, you can create the views in code, but you can also use XAML:
+
+```xml
+<ContentPage xmlns:sig="clr-namespace:SignaturePad.Forms;assembly=SignaturePad.Forms">
+	<sig:SignaturePadView
+		x:Name="signature"
+		StrokeWidth="3"
+		StrokeColor="Black" />
+</ContentPage>
+```
+
+Once you have the control in your app, you can access the signature just like you could with the native controls:
+
+```csharp
+// export the signature bitmap
+Stream image = await signature.GetImageStreamAsync (SignatureImageFormat.Png);
+
+// export the raw signature points
+Point[] points = signature.Points.ToArray ();
+
+// import the signature points
+signature.Points = points;
 ```
