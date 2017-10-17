@@ -94,8 +94,11 @@ These points can be used to save and restore a signature:
 // save points
 var points = signature.Points
 
-// restore points
+// restore points (native)
 signature.LoadPoints (points);
+
+// restore points (Xamarin.Forms)
+signature.Points = points;
 ```
 
 ## Customization
