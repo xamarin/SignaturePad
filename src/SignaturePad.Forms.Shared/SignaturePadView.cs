@@ -106,32 +106,41 @@ namespace SignaturePad.Forms
 			RowSpacing = 0;
 			ColumnSpacing = 0;
 
-			RowDefinitions.Add (new RowDefinition { Height = new GridLength (1, GridUnitType.Star) });
-			RowDefinitions.Add (new RowDefinition { Height = GridLength.Auto });
+			// create the chrome layout
+			var chromeStack = new StackLayout ();
+			chromeStack.Spacing = 0;
+			chromeStack.Padding = 0;
+			chromeStack.Margin = 0;
+			Children.Add (chromeStack);
 
 			// add the background view
 			{
 				BackgroundImageView = new Image ();
-				BackgroundImageView.SetValue (Grid.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
-				BackgroundImageView.SetValue (Grid.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
-				BackgroundImageView.SetValue (Grid.RowProperty, 0);
-				Children.Add (BackgroundImageView);
+				BackgroundImageView.SetValue (View.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
+				chromeStack.Children.Add (BackgroundImageView);
 			}
 
-			// add the main signature view
+			// add the prompt
 			{
-				SignaturePadCanvas = new SignaturePadCanvasView ();
-				SignaturePadCanvas.SetValue (Grid.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
-				SignaturePadCanvas.SetValue (Grid.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
-				SignaturePadCanvas.SetValue (Grid.RowProperty, 0);
-				SignaturePadCanvas.SetValue (Grid.RowSpanProperty, 2);
-				SignaturePadCanvas.StrokeCompleted += (sender, e) =>
+				SignaturePrompt = new Label
 				{
-					UpdateUi ();
-					StrokeCompleted?.Invoke (this, EventArgs.Empty);
+					Text = "X",
+					FontSize = 20,
+					FontAttributes = FontAttributes.Bold,
+					Margin = new Thickness (ThickPad, 0, 0, 0)
 				};
-				SignaturePadCanvas.Cleared += (sender, e) => Cleared?.Invoke (this, EventArgs.Empty);
-				Children.Add (SignaturePadCanvas);
+				chromeStack.Children.Add (SignaturePrompt);
+			}
+
+			// add the signature line
+			{
+				SignatureLine = new BoxView
+				{
+					BackgroundColor = Color.Gray,
+					HeightRequest = LineHeight,
+					Margin = new Thickness (ThickPad, 0, ThickPad, 0)
+				};
+				chromeStack.Children.Add (SignatureLine);
 			}
 
 			// add the caption
@@ -144,37 +153,21 @@ namespace SignaturePad.Forms
 					HorizontalTextAlignment = TextAlignment.Center,
 					Margin = new Thickness (ThinPad)
 				};
-				CaptionLabel.SetValue (Grid.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
-				CaptionLabel.SetValue (Grid.VerticalOptionsProperty, LayoutOptions.End);
-				CaptionLabel.SetValue (Grid.RowProperty, 1);
-				Children.Add (CaptionLabel);
+				chromeStack.Children.Add (CaptionLabel);
 			}
 
-			// add the signature line
+			// add the main signature view
 			{
-				SignatureLine = new BoxView
+				SignaturePadCanvas = new SignaturePadCanvasView ();
+				SignaturePadCanvas.SetValue (View.HorizontalOptionsProperty, LayoutOptions.Fill);
+				SignaturePadCanvas.SetValue (View.VerticalOptionsProperty, LayoutOptions.Fill);
+				SignaturePadCanvas.StrokeCompleted += (sender, e) =>
 				{
-					BackgroundColor = Color.Gray,
-					HeightRequest = LineHeight,
-					Margin = new Thickness (ThickPad, 0, ThickPad, 0)
+					UpdateUi ();
+					StrokeCompleted?.Invoke (this, EventArgs.Empty);
 				};
-				SignatureLine.SetValue (Grid.HorizontalOptionsProperty, LayoutOptions.FillAndExpand);
-				SignatureLine.SetValue (Grid.VerticalOptionsProperty, LayoutOptions.End);
-				Children.Add (SignatureLine);
-			}
-
-			// add the prompt
-			{
-				SignaturePrompt = new Label
-				{
-					Text = "X",
-					FontSize = 20,
-					FontAttributes = FontAttributes.Bold,
-					Margin = new Thickness (ThickPad, 0, 0, ThinPad)
-				};
-				SignaturePrompt.SetValue (Grid.HorizontalOptionsProperty, LayoutOptions.Start);
-				SignaturePrompt.SetValue (Grid.VerticalOptionsProperty, LayoutOptions.End);
-				Children.Add (SignaturePrompt);
+				SignaturePadCanvas.Cleared += (sender, e) => Cleared?.Invoke (this, EventArgs.Empty);
+				Children.Add (SignaturePadCanvas);
 			}
 
 			// add the clear label
@@ -188,8 +181,8 @@ namespace SignaturePad.Forms
 					TextColor = Color.Gray,
 					Margin = new Thickness (0, ThickPad, ThickPad, 0)
 				};
-				ClearLabel.SetValue (Grid.HorizontalOptionsProperty, LayoutOptions.End);
-				ClearLabel.SetValue (Grid.VerticalOptionsProperty, LayoutOptions.Start);
+				ClearLabel.SetValue (View.HorizontalOptionsProperty, LayoutOptions.End);
+				ClearLabel.SetValue (View.VerticalOptionsProperty, LayoutOptions.Start);
 				Children.Add (ClearLabel);
 
 				// attach the "clear" command
