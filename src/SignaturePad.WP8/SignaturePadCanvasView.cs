@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 
 namespace Xamarin.Controls
 {
-	public partial class SignaturePadCanvasView : Grid
+	public partial class SignaturePadCanvasView : ContentControl
 	{
 		private Color strokeColor;
 		private float lineWidth;
@@ -26,11 +26,13 @@ namespace Xamarin.Controls
 
 		private void Initialize ()
 		{
+			var grid = new Grid ();
+
 			inkPresenter = new InkPresenter ();
 			inkPresenter.SetValue (Grid.HorizontalAlignmentProperty, HorizontalAlignment.Stretch);
 			inkPresenter.SetValue (Grid.VerticalAlignmentProperty, VerticalAlignment.Stretch);
 			inkPresenter.Background = new SolidColorBrush (Colors.Transparent);
-			Children.Add (inkPresenter);
+			grid.Children.Add (inkPresenter);
 
 			inkPresenter.MouseLeftButtonDown += OnMouseDown;
 			inkPresenter.MouseMove += OnMouseMove;
@@ -43,6 +45,10 @@ namespace Xamarin.Controls
 
 			StrokeWidth = settings.StrokeWidth.Value;
 			StrokeColor = settings.StrokeColor.Value;
+
+			HorizontalContentAlignment = HorizontalAlignment.Stretch;
+			VerticalContentAlignment = VerticalAlignment.Stretch;
+			Content = grid;
 		}
 
 		public Color StrokeColor
@@ -147,6 +153,11 @@ namespace Xamarin.Controls
 
 		private void OnMouseDown (object sender, MouseButtonEventArgs e)
 		{
+			if (!IsEnabled)
+			{
+				return;
+			}
+
 			inkPresenter.CaptureMouse ();
 
 			var points = new StylusPointCollection ();
@@ -166,6 +177,11 @@ namespace Xamarin.Controls
 
 		private void OnMouseMove (object sender, MouseEventArgs e)
 		{
+			if (!IsEnabled)
+			{
+				return;
+			}
+
 			if (currentStroke != null)
 			{
 				currentStroke.StylusPoints.Add (e.StylusDevice.GetStylusPoints (inkPresenter));
@@ -174,6 +190,11 @@ namespace Xamarin.Controls
 
 		private void OnMouseLost (object sender, MouseEventArgs e)
 		{
+			if (!IsEnabled)
+			{
+				return;
+			}
+
 			var curr = currentStroke;
 
 			if (curr != null)
@@ -192,6 +213,10 @@ namespace Xamarin.Controls
 
 		private void OnMouseUp (object sender, MouseButtonEventArgs e)
 		{
+			if (!IsEnabled)
+			{
+				return;
+			}
 		}
 	}
 }

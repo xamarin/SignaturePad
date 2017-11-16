@@ -16,7 +16,7 @@ using Microsoft.Graphics.Canvas;
 
 namespace Xamarin.Controls
 {
-	public partial class SignaturePadCanvasView : Grid
+	public partial class SignaturePadCanvasView : ContentControl
 	{
 		private Color strokeColor;
 		private float lineWidth;
@@ -31,10 +31,12 @@ namespace Xamarin.Controls
 
 		private void Initialize ()
 		{
+			var grid = new Grid ();
+
 			inkCanvas = new InkCanvas ();
 			inkCanvas.SetValue (Grid.HorizontalAlignmentProperty, HorizontalAlignment.Stretch);
 			inkCanvas.SetValue (Grid.VerticalAlignmentProperty, VerticalAlignment.Stretch);
-			Children.Add (inkCanvas);
+			grid.Children.Add (inkCanvas);
 
 			inkPresenter = inkCanvas.InkPresenter;
 			inkPresenter.StrokesCollected += (sender, e) => OnStrokeCompleted ();
@@ -46,6 +48,15 @@ namespace Xamarin.Controls
 
 			StrokeWidth = settings.StrokeWidth.Value;
 			StrokeColor = settings.StrokeColor.Value;
+
+			HorizontalContentAlignment = HorizontalAlignment.Stretch;
+			VerticalContentAlignment = VerticalAlignment.Stretch;
+			Content = grid;
+
+			IsEnabledChanged += delegate
+			{
+				inkPresenter.IsInputEnabled = IsEnabled;
+			};
 		}
 
 		public Color StrokeColor

@@ -11,7 +11,7 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace Xamarin.Controls
 {
-	public class SignaturePad : Grid
+	public class SignaturePad : ContentControl
 	{
 		public SignaturePad ()
 		{
@@ -24,8 +24,10 @@ namespace Xamarin.Controls
 			const int ThickPad = 20;
 			const int LineHeight = 2;
 
-			RowDefinitions.Add (new RowDefinition { Height = new GridLength (1, GridUnitType.Star) });
-			RowDefinitions.Add (new RowDefinition { Height = GridLength.Auto });
+			var grid = new Grid ();
+
+			grid.RowDefinitions.Add (new RowDefinition { Height = new GridLength (1, GridUnitType.Star) });
+			grid.RowDefinitions.Add (new RowDefinition { Height = GridLength.Auto });
 
 			// add the background view
 			{
@@ -33,7 +35,7 @@ namespace Xamarin.Controls
 				BackgroundImageView.SetValue (Grid.HorizontalAlignmentProperty, HorizontalAlignment.Stretch);
 				BackgroundImageView.SetValue (Grid.VerticalAlignmentProperty, VerticalAlignment.Stretch);
 				BackgroundImageView.SetValue (Grid.RowProperty, 0);
-				Children.Add (BackgroundImageView);
+				grid.Children.Add (BackgroundImageView);
 			}
 
 			// add the main signature view
@@ -48,7 +50,7 @@ namespace Xamarin.Controls
 					StrokeCompleted?.Invoke (this, EventArgs.Empty);
 				};
 				SignaturePadCanvas.Cleared += (sender, e) => Cleared?.Invoke (this, EventArgs.Empty);
-				Children.Add (SignaturePadCanvas);
+				grid.Children.Add (SignaturePadCanvas);
 			}
 
 			// add the caption
@@ -64,7 +66,7 @@ namespace Xamarin.Controls
 				Caption.SetValue (Grid.HorizontalAlignmentProperty, HorizontalAlignment.Stretch);
 				Caption.SetValue (Grid.VerticalAlignmentProperty, VerticalAlignment.Bottom);
 				Caption.SetValue (Grid.RowProperty, 1);
-				Children.Add (Caption);
+				grid.Children.Add (Caption);
 			}
 
 			// add the signature line
@@ -77,7 +79,7 @@ namespace Xamarin.Controls
 				};
 				SignatureLine.SetValue (Grid.HorizontalAlignmentProperty, HorizontalAlignment.Stretch);
 				SignatureLine.SetValue (Grid.VerticalAlignmentProperty, VerticalAlignment.Bottom);
-				Children.Add (SignatureLine);
+				grid.Children.Add (SignatureLine);
 			}
 
 			// add the prompt
@@ -91,7 +93,7 @@ namespace Xamarin.Controls
 				};
 				SignaturePrompt.SetValue (Grid.HorizontalAlignmentProperty, HorizontalAlignment.Left);
 				SignaturePrompt.SetValue (Grid.VerticalAlignmentProperty, VerticalAlignment.Bottom);
-				Children.Add (SignaturePrompt);
+				grid.Children.Add (SignaturePrompt);
 			}
 
 			// add the clear label
@@ -107,11 +109,15 @@ namespace Xamarin.Controls
 				};
 				ClearLabel.SetValue (Grid.HorizontalAlignmentProperty, HorizontalAlignment.Right);
 				ClearLabel.SetValue (Grid.VerticalAlignmentProperty, VerticalAlignment.Top);
-				Children.Add (ClearLabel);
+				grid.Children.Add (ClearLabel);
 
 				// attach the "clear" command
 				ClearLabel.Tapped += (sender, e) => Clear ();
 			}
+
+			HorizontalContentAlignment = HorizontalAlignment.Stretch;
+			VerticalContentAlignment = VerticalAlignment.Stretch;
+			Content = grid;
 
 			// clear / initialize the view
 			Clear ();

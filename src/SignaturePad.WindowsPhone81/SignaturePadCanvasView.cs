@@ -5,6 +5,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
@@ -16,7 +17,7 @@ using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Xamarin.Controls
 {
-	public partial class SignaturePadCanvasView : Grid
+	public partial class SignaturePadCanvasView : ContentControl
 	{
 		private Color strokeColor;
 		private float lineWidth;
@@ -30,12 +31,14 @@ namespace Xamarin.Controls
 
 		private void Initialize ()
 		{
+			var grid = new Grid ();
+
 			inkPresenter = new InkPresenter ();
 			inkPresenter.ClipToBounds = true;
 			inkPresenter.StrokeCompleted += OnStrokeCompleted;
 			inkPresenter.SetValue (Grid.HorizontalAlignmentProperty, Windows.UI.Xaml.HorizontalAlignment.Stretch);
 			inkPresenter.SetValue (Grid.VerticalAlignmentProperty, Windows.UI.Xaml.VerticalAlignment.Stretch);
-			Children.Add (inkPresenter);
+			grid.Children.Add (inkPresenter);
 
 			// get some defaults
 			var settings = new ImageConstructionSettings ();
@@ -43,6 +46,15 @@ namespace Xamarin.Controls
 
 			StrokeWidth = settings.StrokeWidth.Value;
 			StrokeColor = settings.StrokeColor.Value;
+
+			HorizontalContentAlignment = HorizontalAlignment.Stretch;
+			VerticalContentAlignment = VerticalAlignment.Stretch;
+			Content = grid;
+
+			IsEnabledChanged += delegate
+			{
+				inkPresenter.IsInputEnabled = IsEnabled;
+			};
 		}
 
 		/// <summary>

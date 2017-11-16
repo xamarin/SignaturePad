@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -91,6 +92,8 @@ namespace SignaturePad.Forms
 			typeof (SignaturePadView),
 			(double)0,
 			propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).BackgroundImageView.Opacity = (double)newValue);
+
+		private TapGestureRecognizer clearLabelTap;
 
 		public SignaturePadView ()
 		{
@@ -186,11 +189,26 @@ namespace SignaturePad.Forms
 				Children.Add (ClearLabel);
 
 				// attach the "clear" command
-				ClearLabel.GestureRecognizers.Add (new TapGestureRecognizer { Command = new Command (() => Clear ()) });
+				clearLabelTap = new TapGestureRecognizer { Command = new Command (() => Clear ()) };
+				ClearLabel.GestureRecognizers.Add (clearLabelTap);
 			}
 
 			// clear / initialize the view
 			Clear ();
+		}
+
+		protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		{
+			base.OnPropertyChanged(propertyName);
+
+			if (propertyName == IsEnabledProperty.PropertyName)
+			{
+				SignaturePadCanvas.IsEnabled = IsEnabled;
+				if (IsEnabled)
+					ClearLabel.GestureRecognizers.Add (clearLabelTap);
+				else
+					ClearLabel.GestureRecognizers.Remove (clearLabelTap);
+			}
 		}
 
 		public IEnumerable<IEnumerable<Point>> Strokes

@@ -36,6 +36,7 @@ namespace Xamarin.Controls
 			PointerReleased += OnCanvasPointerReleased;
 
 			// defaults
+			IsInputEnabled = true;
 			Background = new SolidColorBrush (Colors.Transparent);
 			StrokeColor = ImageConstructionSettings.Black;
 			StrokeWidth = 2f;
@@ -61,6 +62,8 @@ namespace Xamarin.Controls
 				}
 			}
 		}
+
+		public bool IsInputEnabled { get; set; }
 
 		private void OnSizeChanged (object sender, SizeChangedEventArgs e)
 		{
@@ -144,6 +147,11 @@ namespace Xamarin.Controls
 
 		private void OnCanvasPointerPressed (object sender, PointerRoutedEventArgs e)
 		{
+			if (!IsInputEnabled)
+			{
+				return;
+			}
+
 			if (currentPointerId != 0)
 			{
 				// we only handle a single "pen" at a time
@@ -171,6 +179,11 @@ namespace Xamarin.Controls
 
 		private void OnCanvasPointerMoved (object sender, PointerRoutedEventArgs e)
 		{
+			if (!IsInputEnabled)
+			{
+				return;
+			}
+
 			var pointerPoint = e.GetCurrentPoint (this);
 
 			if (pointerPoint.PointerId == currentPointerId)
@@ -185,6 +198,11 @@ namespace Xamarin.Controls
 
 		private void OnCanvasPointerReleased (object sender, PointerRoutedEventArgs e)
 		{
+			if (!IsInputEnabled)
+			{
+				return;
+			}
+
 			var pointerPoint = e.GetCurrentPoint (this);
 
 			if (pointerPoint.PointerId == currentPointerId)

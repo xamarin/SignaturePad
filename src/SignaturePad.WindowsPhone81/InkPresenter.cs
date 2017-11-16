@@ -34,6 +34,7 @@ namespace Xamarin.Controls
 			Children.Add (tempPathShape);
 
 			Background = new SolidColorBrush (Colors.Transparent);
+			IsInputEnabled = true;
 
 			//PointerEntered += OnPointerEntered;
 			//PointerExited += OnPointerExited;
@@ -42,6 +43,8 @@ namespace Xamarin.Controls
 			PointerReleased += OnPointerReleased;
 			PointerCanceled += OnPointerCancelled;
 		}
+
+		public bool IsInputEnabled { get; set; }
 
 		public bool ClipToBounds
 		{
@@ -85,6 +88,11 @@ namespace Xamarin.Controls
 
 		private void OnPointerPressed (object sender, PointerRoutedEventArgs e)
 		{
+			if (!IsInputEnabled)
+			{
+				return;
+			}
+
 			// capture the pointer
 			CapturePointer (e.Pointer);
 
@@ -109,6 +117,11 @@ namespace Xamarin.Controls
 
 		private void OnPointerMoved (object sender, PointerRoutedEventArgs e)
 		{
+			if (!IsInputEnabled)
+			{
+				return;
+			}
+
 			// obtain the location of the touch
 			var point = e.GetCurrentPoint (this);
 			var touchX = point.Position.X;
@@ -127,6 +140,11 @@ namespace Xamarin.Controls
 
 		private void OnPointerReleased (object sender, PointerRoutedEventArgs e)
 		{
+			if (!IsInputEnabled)
+			{
+				return;
+			}
+
 			OnPointerMoved (sender, e);
 
 			// add the current path and points to their respective lists.

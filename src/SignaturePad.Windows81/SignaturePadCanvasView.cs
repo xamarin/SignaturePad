@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace Xamarin.Controls
 {
-	public partial class SignaturePadCanvasView : Grid
+	public partial class SignaturePadCanvasView : ContentControl
 	{
 		private InkPresenter inkPresenter;
 
@@ -25,12 +25,14 @@ namespace Xamarin.Controls
 
 		private void Initialize ()
 		{
+			var grid = new Grid ();
+
 			inkPresenter = new InkPresenter ();
 			inkPresenter.ClipToBounds = true;
 			inkPresenter.StrokeCompleted += OnStrokeCompleted;
 			inkPresenter.SetValue (Grid.HorizontalAlignmentProperty, HorizontalAlignment.Stretch);
 			inkPresenter.SetValue (Grid.VerticalAlignmentProperty, VerticalAlignment.Stretch);
-			Children.Add (inkPresenter);
+			grid.Children.Add (inkPresenter);
 
 			// get some defaults
 			var settings = new ImageConstructionSettings ();
@@ -38,6 +40,15 @@ namespace Xamarin.Controls
 
 			StrokeWidth = settings.StrokeWidth.Value;
 			StrokeColor = settings.StrokeColor.Value;
+
+			HorizontalContentAlignment = HorizontalAlignment.Stretch;
+			VerticalContentAlignment = VerticalAlignment.Stretch;
+			Content = grid;
+
+			IsEnabledChanged += delegate
+			{
+				inkPresenter.IsInputEnabled = IsEnabled;
+			};
 		}
 
 		/// <summary>
