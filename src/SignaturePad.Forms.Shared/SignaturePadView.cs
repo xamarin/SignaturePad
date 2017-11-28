@@ -72,7 +72,21 @@ namespace SignaturePad.Forms
 			(float)0,
 			propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).SignaturePadCanvas.StrokeWidth = (float)newValue);
 
-		public static readonly BindableProperty BackgroundImageProperty = BindableProperty.Create (
+        public static readonly BindableProperty StrokesProperty = BindableProperty.Create(
+            nameof (Strokes),
+            typeof (IEnumerable<IEnumerable<Point>>),
+            typeof (SignaturePadView),
+            null,
+            propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).SignaturePadCanvas.Strokes = (IEnumerable<IEnumerable<Point>>)newValue);
+
+	    public static readonly BindableProperty PointsProperty = BindableProperty.Create(
+            nameof (Points),
+            typeof (IEnumerable<Point>),
+            typeof (SignaturePadView),
+            null,
+            propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).SignaturePadCanvas.Points = (IEnumerable<Point>)newValue);
+
+        public static readonly BindableProperty BackgroundImageProperty = BindableProperty.Create (
 			nameof (BackgroundImage),
 			typeof (ImageSource),
 			typeof (SignaturePadView),
@@ -92,7 +106,7 @@ namespace SignaturePad.Forms
 			typeof (SignaturePadView),
 			(double)0,
 			propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).BackgroundImageView.Opacity = (double)newValue);
-
+        
 		private TapGestureRecognizer clearLabelTap;
 
 		public SignaturePadView ()
