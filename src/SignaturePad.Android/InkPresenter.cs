@@ -102,12 +102,13 @@ namespace Xamarin.Controls
 
 				// update the dirty rectangle
 				UpdateBounds (touchX, touchY);
-				if (update)
-				{
-					Invalidate (DirtyRect);
-				}
 			}
-		}
+            //Using the S-Pen never forces a redraw with the original code. Moving it out of "if (HasMovedFarEnough ..." works fine.
+            if (update)
+            {
+                Invalidate(DirtyRect);
+            }
+        }
 
 		private void TouchesEnded (MotionEvent e)
 		{
