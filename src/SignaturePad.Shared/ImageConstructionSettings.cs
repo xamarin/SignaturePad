@@ -85,7 +85,7 @@ namespace Xamarin.Controls
 		public float Y { get; set; }
 
 		public SizeOrScaleType Type { get; set; }
-		
+
 		public bool KeepAspectRatio { get; set; }
 
 		public bool IsValid => X > 0 && Y > 0;

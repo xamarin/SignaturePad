@@ -161,13 +161,13 @@ namespace Xamarin.Controls
 			return null;
 		}
 
-		public override bool OnInterceptTouchEvent(MotionEvent ev)
+		public override bool OnInterceptTouchEvent (MotionEvent ev)
 		{
 			// don't accept touch when the view is disabled
 			if (!Enabled)
 				return true;
 
-			return base.OnInterceptTouchEvent(ev);
+			return base.OnInterceptTouchEvent (ev);
 		}
 	}
 }

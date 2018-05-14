@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
@@ -466,13 +466,13 @@ namespace Xamarin.Controls
 			ClearLabel.Visibility = IsBlank ? ViewStates.Invisible : ViewStates.Visible;
 		}
 
-		public override bool OnInterceptTouchEvent(MotionEvent ev)
+		public override bool OnInterceptTouchEvent (MotionEvent ev)
 		{
 			// don't accept touch when the view is disabled
 			if (!Enabled)
 				return true;
-			
-			return base.OnInterceptTouchEvent(ev);
+
+			return base.OnInterceptTouchEvent (ev);
 		}
 	}
 }

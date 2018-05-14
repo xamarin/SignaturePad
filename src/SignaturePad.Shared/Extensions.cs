@@ -39,7 +39,7 @@ namespace Xamarin.Controls
 		{
 			return new System.Drawing.SizeF (image.Width, image.Height);
 		}
-		
+
 		public static System.Drawing.SizeF GetSize (this View view)
 		{
 			return new System.Drawing.SizeF (view.Width, view.Height);
@@ -66,7 +66,7 @@ namespace Xamarin.Controls
 		{
 			path.AddLineTo (new CGPoint (x, y));
 		}
-		
+
 		public static CGSize GetSize (this UIView view)
 		{
 			return view.Bounds.Size;
@@ -195,7 +195,7 @@ namespace Xamarin.Controls
 #elif WINDOWS_UWP
 
 		private const float DefaultPressure = 0.5f;
-		
+
 		public static void MoveTo (this List<Point> stroke, double x, double y)
 		{
 			stroke.Add (new Point (x, y));

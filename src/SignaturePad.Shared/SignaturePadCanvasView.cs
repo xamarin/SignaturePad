@@ -511,7 +511,7 @@ namespace Xamarin.Controls
 				OnStrokeCompleted ();
 			}
 		}
-		
+
 		private void OnCleared ()
 		{
 			Cleared?.Invoke (this, EventArgs.Empty);

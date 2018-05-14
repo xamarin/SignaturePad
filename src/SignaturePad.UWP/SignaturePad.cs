@@ -296,7 +296,7 @@ namespace Xamarin.Controls
 
 			UpdateUi ();
 		}
-		
+
 		public void LoadPoints (Point[] points)
 		{
 			SignaturePadCanvas.LoadPoints (points);
