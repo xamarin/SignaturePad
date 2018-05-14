@@ -90,8 +90,11 @@
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <None Include="project.json" />
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.0.8" />
+    <PackageReference Include="Xamarin.Forms" Version="2.5.0.280555" />
+    <PackageReference Include="Win2D.uwp" Version="1.21.0" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Samples.UWP_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
