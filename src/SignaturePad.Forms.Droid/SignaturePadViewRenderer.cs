@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using System;
+using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
 [assembly: ExportRenderer (typeof (SignaturePad.Forms.SignaturePadView), typeof (SignaturePad.Forms.SignaturePadViewRenderer))]
@@ -16,6 +17,16 @@ namespace SignaturePad.Forms
 
 	internal class SignaturePadViewRenderer : VisualElementRenderer<Grid>
 	{
+		[Obsolete ("This constructor is obsolete as of version 2.5. Please use 'SignaturePadCanvasRenderer (Context)' instead.")]
+		public SignaturePadViewRenderer ()
+		{
+		}
+
+		public SignaturePadViewRenderer (Android.Content.Context context)
+			: base (context)
+		{
+		}
+
 		public override bool OnInterceptTouchEvent (Android.Views.MotionEvent ev)
 		{
 			if (!Enabled || Element?.IsEnabled == false)

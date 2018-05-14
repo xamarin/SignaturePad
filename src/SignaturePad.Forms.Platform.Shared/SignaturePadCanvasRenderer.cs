@@ -33,6 +33,20 @@ namespace SignaturePad.Forms
 {
 	public class SignaturePadCanvasRenderer : ViewRenderer<SignaturePadCanvasView, NativeSignaturePadCanvasView>
 	{
+#if __ANDROID__
+		[Obsolete ("This constructor is obsolete as of version 2.5. Please use 'SignaturePadCanvasRenderer (Context)' instead.")]
+#endif
+		public SignaturePadCanvasRenderer ()
+		{
+		}
+
+#if __ANDROID__
+		public SignaturePadCanvasRenderer (Android.Content.Context context)
+			: base (context)
+		{
+		}
+#endif
+
 		protected override void OnElementChanged (ElementChangedEventArgs<SignaturePadCanvasView> e)
 		{
 			base.OnElementChanged (e);
@@ -41,7 +55,7 @@ namespace SignaturePad.Forms
 			{
 				// Instantiate the native control and assign it to the Control property
 #if __ANDROID__
-				var native = new NativeSignaturePadCanvasView (Xamarin.Forms.Forms.Context);
+				var native = new NativeSignaturePadCanvasView (Context);
 #else
 				var native = new NativeSignaturePadCanvasView ();
 #endif
