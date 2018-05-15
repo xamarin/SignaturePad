@@ -33,7 +33,7 @@ nuget install Xamarin.Controls.SignaturePad.Forms
 ```csharp
 using Xamarin.Controls;
 
-var signature = new SignaturePadView (View.Frame) {
+var signatureView = new SignaturePadView (View.Frame) {
 	StrokeWidth = 3f,
 	StrokeColor = UIColor.Black,
 	BackgroundColor = UIColor.White,
@@ -45,7 +45,7 @@ var signature = new SignaturePadView (View.Frame) {
 ```csharp
 using Xamarin.Controls;
 
-var signature = new SignaturePadView (this) {
+var signatureView = new SignaturePadView (this) {
 	StrokeWidth = 3f,
 	StrokeColor = Color.White,
 	BackgroundColor = Color.Black
@@ -83,48 +83,39 @@ method overloads. The resulting image will be in the native platform image type:
 
 ```csharp
 // iOS
-UIImage image = signature.GetImage ();
+UIImage image = signatureView.GetImage ();
 
 // Android
-Bitmap image = signature.GetImage ();
+Bitmap image = signatureView.GetImage ();
 
 // Windows
 WriteableBitmap bitmap = signatureView.GetImage ();
+```
 
-// Xamarin.Forms
+For Xamarin.Forms, there is no "native" image format, but `GetImageStreamAsync` can be used instead
+to retrieve an encoded (jpeg or png) image stream:
+
+```csharp
 Stream bitmap = await signatureView.GetImageStreamAsync (SignatureImageFormat.Png);
 ```
 
 ### Obtaining the Signature Points
 
 In addition to retrieving the signature as an image, the signature can also be retrieved as
-as an array of points. Each line is separated with a `{ 0, 0 }` point:
+as an array of points:
 
 ```csharp
-// iOS
-CGPoint[] points = signature.Points;
-
-// Android
-PointF[] points = signature.Points;
-
-// Windows
-Point[] points = signature.Points;
-
-// Xamarin.Forms
-IEnumerable<Point> points = signature.Points;
+var strokes = signatureView.Strokes;
 ```
 
-These points can be used to save and restore a signature:
+These strokes can be used to save and restore a signature:
 
 ```csharp
-// save points
-var points = signature.Points;
+// restore strokes (iOS, Android, Windows)
+signatureView.LoadStrokes (newStrokes);
 
-// restore points (iOS, Android, Windows)
-signature.LoadPoints (points);
-
-// restore points (Xamarin.Forms)
-signature.Points = points;
+// restore strokes (Xamarin.Forms)
+signatureView.Strokes = newStrokes;
 ```
 
 ---
