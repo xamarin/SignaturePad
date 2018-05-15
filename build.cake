@@ -5,7 +5,15 @@
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 var packageVersion = Argument("packageVersion", "1.0.0");
-var majorVersion = packageVersion.Substring(0, packageVersion.IndexOf("."));
+var majorVersion = $"{packageVersion.Substring(0, packageVersion.IndexOf("."))}.0.0.0";
+var buildVersion = Argument("buildVersion", EnvironmentVariable("BUILD_NUMBER") ?? "");
+if (!string.IsNullOrEmpty(buildVersion)) {
+    buildVersion = $"-{buildVersion}";
+}
+
+Information("{0}", packageVersion);
+Information("{0}", majorVersion);
+Information("{0}", buildVersion);
 
 ///////////////////////////////////////////////////////////////////////////////
 // TASKS
@@ -23,7 +31,7 @@ Task("libs")
         MSBuildPlatform = MSBuildPlatform.x86,
         ArgumentCustomization = args => args.Append("/restore"),
         Properties = {
-            { "AssemblyVersion", new [] { $"{majorVersion}.0.0.0" } },
+            { "AssemblyVersion", new [] { majorVersion } },
             { "Version", new [] { packageVersion } },
         },
     });
@@ -52,16 +60,22 @@ Task("nuget")
     .Does(() =>
 {
     var nuget = Context.Tools.Resolve("nuget.exe");
-
-    EnsureDirectoryExists("./output");
-    NuGetPack(GetFiles("./nuget/*.nuspec"), new NuGetPackSettings {
+    var nuspecs = GetFiles("./nuget/*.nuspec");
+    var settings = new NuGetPackSettings {
         BasePath = ".",
         OutputDirectory = "./output",
         Properties = new Dictionary<string, string> {
             { "configuration", configuration },
             { "version", packageVersion },
         },
-    });
+    };
+
+    EnsureDirectoryExists("./output");
+
+    NuGetPack(nuspecs, settings);
+
+    settings.Properties["version"] = $"{packageVersion}-preview{buildVersion}";
+    NuGetPack(nuspecs, settings);
 });
 
 Task("samples")
