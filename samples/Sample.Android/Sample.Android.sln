@@ -9,9 +9,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.Android", "..\
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SignaturePad.Shared", "..\..\src\SignaturePad.Shared\SignaturePad.Shared.shproj", "{05D1E7C0-73FC-41DE-A7D6-01AE4C1A4DD3}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SignaturePad.InkPresenter.Shared", "..\..\src\SignaturePad.InkPresenter.Shared\SignaturePad.InkPresenter.Shared.shproj", "{A839EE31-E686-433E-B1F4-52A56C384D30}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		..\..\src\SignaturePad.Shared\SignaturePad.Shared.projitems*{05d1e7c0-73fc-41de-a7d6-01ae4c1a4dd3}*SharedItemsImports = 13
+		..\..\src\SignaturePad.InkPresenter.Shared\SignaturePad.InkPresenter.Shared.projitems*{a839ee31-e686-433e-b1f4-52a56c384d30}*SharedItemsImports = 13
 		..\..\src\SignaturePad.InkPresenter.Shared\SignaturePad.InkPresenter.Shared.projitems*{f1a16cb9-a759-42c8-8f0b-3c9698a55336}*SharedItemsImports = 4
 		..\..\src\SignaturePad.Shared\SignaturePad.Shared.projitems*{f1a16cb9-a759-42c8-8f0b-3c9698a55336}*SharedItemsImports = 4
 	EndGlobalSection
@@ -33,6 +36,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0684DA9F-D626-4CEC-B4F2-0C49327E9F9F}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Sample.Android.csproj

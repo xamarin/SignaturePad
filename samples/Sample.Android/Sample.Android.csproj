@@ -60,6 +60,12 @@
     <PackageReference Include="Xamarin.Android.Support.Vector.Drawable" Version="25.4.0.2" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\SignaturePad.Android\SignaturePad.Android.csproj">
+      <Project>{f1a16cb9-a759-42c8-8f0b-3c9698a55336}</Project>
+      <Name>SignaturePad.Android</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -68,20 +74,15 @@
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\Main.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\values\Strings.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\Icon.png" />
-    <AndroidResource Include="Resources\drawable\logo_galaxy_black_64.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\SignaturePad.Android\SignaturePad.Android.csproj">
-      <Project>{f1a16cb9-a759-42c8-8f0b-3c9698a55336}</Project>
-      <Name>SignaturePad.Android</Name>
-    </ProjectReference>
+    <AndroidResource Include="Resources\layout\main.axml" />
+    <AndroidResource Include="Resources\values\strings.xml" />
+    <AndroidResource Include="Resources\drawable\ic_launcher.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\drawable-ldpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_launcher.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>
