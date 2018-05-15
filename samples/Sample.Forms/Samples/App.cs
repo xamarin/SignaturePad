@@ -2,9 +2,12 @@
 using System.Reflection;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
 using Samples.ViewModels;
 using Samples.Views;
+
+[assembly: XamlCompilation (XamlCompilationOptions.Compile)]
 
 namespace Samples
 {
