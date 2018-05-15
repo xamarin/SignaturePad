@@ -2,21 +2,42 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.0</TargetFramework>
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-    <AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
     <RootNamespace>SignaturePad.Forms</RootNamespace>
     <AssemblyName>SignaturePad.Forms</AssemblyName>
+    <AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
+    <DocumentationFile>bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Version>1.0.0</Version>
+    <PackageId>Xamarin.Controls.SignaturePad.Forms</PackageId>
+    <Title>SignaturePad for Xamarin.Forms</Title>
+    <Product>$(AssemblyName) ($(TargetFramework))</Product>
+    <Authors>Microsoft</Authors>
+    <Owners>Microsoft</Owners>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Summary>Makes capturing, saving, and displaying signatures extremely simple.</Summary>
+    <Description>Makes capturing, saving, and displaying signatures extremely simple.</Description>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageIconUrl>https://cdn.rawgit.com/xamarin/SignaturePad/v2.0/component/icons/signature-pad_256x256.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/xamarin/SignaturePad</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/xamarin/SignaturePad</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/xamarin/SignaturePad/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageReleaseNotes>https://github.com/xamarin/SignaturePad/releases</PackageReleaseNotes>
+    <PackageTags>xamarin,signature,handwriting,windows,ios,android,uwp</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\SignaturePad\Properties\AssemblyInfo.Common.cs" Link="AssemblyInfo.Common.cs" />
-    <Compile Include="..\SignaturePad\Properties\AssemblyInfo.Forms.cs" Link="AssemblyInfo.Forms.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.4.0" PrivateAssets="All" />
     <PackageReference Include="Xamarin.Forms" Version="2.5.0.280555" />
   </ItemGroup>
 
-  <Import Project="..\SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.projitems" Label="Shared" />
+  <ItemGroup>
+    <Compile Include="..\SignaturePad.Forms.Shared\**\*.cs" Link="shared\%(filename).%(Extension)" />
+  </ItemGroup>
+
+  <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
 
 </Project>

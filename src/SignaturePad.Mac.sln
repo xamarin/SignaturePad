@@ -3,40 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26228.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.iOS", "SignaturePad.iOS\SignaturePad.iOS.csproj", "{BEF71536-787B-431F-AC7F-A6469710D11F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignaturePad.iOS", "SignaturePad.iOS\SignaturePad.iOS.csproj", "{BEF71536-787B-431F-AC7F-A6469710D11F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.Android", "SignaturePad.Android\SignaturePad.Android.csproj", "{F1A16CB9-A759-42C8-8F0B-3C9698A55336}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignaturePad.Android", "SignaturePad.Android\SignaturePad.Android.csproj", "{F1A16CB9-A759-42C8-8F0B-3C9698A55336}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignaturePad.Forms", "SignaturePad.Forms\SignaturePad.Forms.csproj", "{B2AF970D-D640-451C-95AF-92AF531B8C1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.Forms.Droid", "SignaturePad.Forms.Droid\SignaturePad.Forms.Droid.csproj", "{1D5482F6-AA89-422C-9E34-88A8A1AD8AB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignaturePad.Forms.Droid", "SignaturePad.Forms.Droid\SignaturePad.Forms.Droid.csproj", "{1D5482F6-AA89-422C-9E34-88A8A1AD8AB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.Forms.iOS", "SignaturePad.Forms.iOS\SignaturePad.Forms.iOS.csproj", "{B12D20AA-0EDF-4903-B385-BB8090848532}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SignaturePad.Forms.Platform.Shared", "SignaturePad.Forms.Platform.Shared\SignaturePad.Forms.Platform.Shared.shproj", "{4C55BDD7-F049-4742-9E00-CDD480E53A54}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SignaturePad.Shared", "SignaturePad.Shared\SignaturePad.Shared.shproj", "{05D1E7C0-73FC-41DE-A7D6-01AE4C1A4DD3}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SignaturePad.InkPresenter.Shared", "SignaturePad.InkPresenter.Shared\SignaturePad.InkPresenter.Shared.shproj", "{A839EE31-E686-433E-B1F4-52A56C384D30}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SignaturePad.Forms.Shared", "SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.shproj", "{D522B5D1-E475-4E17-9282-564952CAD281}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignaturePad.Forms.iOS", "SignaturePad.Forms.iOS\SignaturePad.Forms.iOS.csproj", "{B12D20AA-0EDF-4903-B385-BB8090848532}"
 EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		SignaturePad.Shared\SignaturePad.Shared.projitems*{05d1e7c0-73fc-41de-a7d6-01ae4c1a4dd3}*SharedItemsImports = 13
-		SignaturePad.Forms.Platform.Shared\SignaturePad.Forms.Platform.Shared.projitems*{1d5482f6-aa89-422c-9e34-88a8a1ad8ab6}*SharedItemsImports = 4
-		SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.projitems*{1d5482f6-aa89-422c-9e34-88a8a1ad8ab6}*SharedItemsImports = 4
-		SignaturePad.Forms.Platform.Shared\SignaturePad.Forms.Platform.Shared.projitems*{4c55bdd7-f049-4742-9e00-cdd480e53a54}*SharedItemsImports = 13
-		SignaturePad.InkPresenter.Shared\SignaturePad.InkPresenter.Shared.projitems*{a839ee31-e686-433e-b1f4-52a56c384d30}*SharedItemsImports = 13
-		SignaturePad.Forms.Platform.Shared\SignaturePad.Forms.Platform.Shared.projitems*{b12d20aa-0edf-4903-b385-bb8090848532}*SharedItemsImports = 4
-		SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.projitems*{b12d20aa-0edf-4903-b385-bb8090848532}*SharedItemsImports = 4
-		SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.projitems*{b2af970d-d640-451c-95af-92af531b8c1e}*SharedItemsImports = 4
-		SignaturePad.InkPresenter.Shared\SignaturePad.InkPresenter.Shared.projitems*{bef71536-787b-431f-ac7f-a6469710d11f}*SharedItemsImports = 4
-		SignaturePad.Shared\SignaturePad.Shared.projitems*{bef71536-787b-431f-ac7f-a6469710d11f}*SharedItemsImports = 4
-		SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.projitems*{d522b5d1-e475-4e17-9282-564952cad281}*SharedItemsImports = 13
-		SignaturePad.InkPresenter.Shared\SignaturePad.InkPresenter.Shared.projitems*{f1a16cb9-a759-42c8-8f0b-3c9698a55336}*SharedItemsImports = 4
-		SignaturePad.Shared\SignaturePad.Shared.projitems*{f1a16cb9-a759-42c8-8f0b-3c9698a55336}*SharedItemsImports = 4
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

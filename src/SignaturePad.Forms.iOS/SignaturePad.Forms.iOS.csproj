@@ -1,64 +1,46 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B12D20AA-0EDF-4903-B385-BB8090848532}</ProjectGuid>
-    <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <OutputType>Library</OutputType>
+    <TargetFramework>xamarin.ios1.0</TargetFramework>
     <RootNamespace>SignaturePad.Forms</RootNamespace>
-    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>SignaturePad.Forms</AssemblyName>
+    <AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
+    <MSBuildWarningsAsMessages>$(MSBuildWarningsAsMessages);VSX1000</MSBuildWarningsAsMessages>
+    <DocumentationFile>bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;__IOS__</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
-    <MtouchDebug>true</MtouchDebug>
-    <CodesignKey>iPhone Developer</CodesignKey>
+
+  <PropertyGroup>
+    <Version>1.0.0</Version>
+    <PackageId>Xamarin.Controls.SignaturePad.Forms</PackageId>
+    <Title>SignaturePad for Xamarin.Forms</Title>
+    <Product>$(AssemblyName) ($(TargetFramework))</Product>
+    <Authors>Microsoft</Authors>
+    <Owners>Microsoft</Owners>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Summary>Makes capturing, saving, and displaying signatures extremely simple.</Summary>
+    <Description>Makes capturing, saving, and displaying signatures extremely simple.</Description>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageIconUrl>https://cdn.rawgit.com/xamarin/SignaturePad/v2.0/component/icons/signature-pad_256x256.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/xamarin/SignaturePad</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/xamarin/SignaturePad</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/xamarin/SignaturePad/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageReleaseNotes>https://github.com/xamarin/SignaturePad/releases</PackageReleaseNotes>
+    <PackageTags>xamarin,signature,handwriting,windows,ios,android,uwp</PackageTags>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
-    <CodesignKey>iPhone Developer</CodesignKey>
-    <DefineConstants>__IOS__</DefineConstants>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Compile Include="..\SignaturePad\Properties\AssemblyInfo.Common.cs">
-      <Link>Properties\AssemblyInfo.Common.cs</Link>
-    </Compile>
-    <Compile Include="..\SignaturePad\Properties\AssemblyInfo.Forms.cs">
-      <Link>Properties\AssemblyInfo.Forms.cs</Link>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
-    <Reference Include="Xamarin.iOS" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SignaturePad.iOS\SignaturePad.iOS.csproj">
-      <Project>{bef71536-787b-431f-ac7f-a6469710d11f}</Project>
-      <Name>SignaturePad.iOS</Name>
-      <IsAppExtension>false</IsAppExtension>
-      <IsWatchApp>false</IsWatchApp>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
+    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.4.0" PrivateAssets="All" />
     <PackageReference Include="Xamarin.Forms" Version="2.5.0.280555" />
+    <ProjectReference Include="..\SignaturePad.iOS\SignaturePad.iOS.csproj" />
   </ItemGroup>
-  <Import Project="..\SignaturePad.Forms.Platform.Shared\SignaturePad.Forms.Platform.Shared.projitems" Label="Shared" />
-  <Import Project="..\SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.projitems" Label="Shared" />
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+
+  <ItemGroup>
+    <Compile Include="..\SignaturePad.Forms.Shared\**\*.cs" Link="shared\%(filename).%(Extension)" />
+    <Compile Include="..\SignaturePad.Forms.Platform.Shared\**\*.cs" Link="platform\%(filename).%(Extension)" />
+  </ItemGroup>
+
+  <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
+
 </Project>

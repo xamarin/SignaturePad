@@ -3,55 +3,29 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26228.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.iOS", "..\..\src\SignaturePad.iOS\SignaturePad.iOS.csproj", "{BEF71536-787B-431F-AC7F-A6469710D11F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignaturePad.iOS", "..\..\src\SignaturePad.iOS\SignaturePad.iOS.csproj", "{BEF71536-787B-431F-AC7F-A6469710D11F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.Android", "..\..\src\SignaturePad.Android\SignaturePad.Android.csproj", "{F1A16CB9-A759-42C8-8F0B-3C9698A55336}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignaturePad.Android", "..\..\src\SignaturePad.Android\SignaturePad.Android.csproj", "{F1A16CB9-A759-42C8-8F0B-3C9698A55336}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.Forms", "..\..\src\SignaturePad.Forms\SignaturePad.Forms.csproj", "{B2AF970D-D640-451C-95AF-92AF531B8C1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignaturePad.Forms", "..\..\src\SignaturePad.Forms\SignaturePad.Forms.csproj", "{B2AF970D-D640-451C-95AF-92AF531B8C1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.Forms.Droid", "..\..\src\SignaturePad.Forms.Droid\SignaturePad.Forms.Droid.csproj", "{1D5482F6-AA89-422C-9E34-88A8A1AD8AB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignaturePad.Forms.Droid", "..\..\src\SignaturePad.Forms.Droid\SignaturePad.Forms.Droid.csproj", "{1D5482F6-AA89-422C-9E34-88A8A1AD8AB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.Forms.iOS", "..\..\src\SignaturePad.Forms.iOS\SignaturePad.Forms.iOS.csproj", "{B12D20AA-0EDF-4903-B385-BB8090848532}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignaturePad.Forms.iOS", "..\..\src\SignaturePad.Forms.iOS\SignaturePad.Forms.iOS.csproj", "{B12D20AA-0EDF-4903-B385-BB8090848532}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples", "Samples\Samples.csproj", "{CC18E151-5792-4DA5-ADE6-7CFBA16A593E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samples", "Samples\Samples.csproj", "{CC18E151-5792-4DA5-ADE6-7CFBA16A593E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples.Android", "Samples.Android\Samples.Android.csproj", "{3AC4ED82-3D1E-4767-8C17-39EF6337AA64}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples.iOS", "Samples.iOS\Samples.iOS.csproj", "{2142B859-21E9-484D-880A-26AD708569DB}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SignaturePad.Forms.Platform.Shared", "..\..\src\SignaturePad.Forms.Platform.Shared\SignaturePad.Forms.Platform.Shared.shproj", "{4C55BDD7-F049-4742-9E00-CDD480E53A54}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples.UWP", "Samples.UWP\Samples.UWP.csproj", "{DDFB13E8-92EC-4F6F-AAEF-90A71F12812E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.UWP", "..\..\src\SignaturePad.UWP\SignaturePad.UWP.csproj", "{16131FDC-D50B-4EF2-8ECC-661184FF80DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignaturePad.UWP", "..\..\src\SignaturePad.UWP\SignaturePad.UWP.csproj", "{16131FDC-D50B-4EF2-8ECC-661184FF80DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.Forms.UWP", "..\..\src\SignaturePad.Forms.UWP\SignaturePad.Forms.UWP.csproj", "{6FC62387-6717-4577-A48B-D15848741F08}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SignaturePad.Shared", "..\..\src\SignaturePad.Shared\SignaturePad.Shared.shproj", "{05D1E7C0-73FC-41DE-A7D6-01AE4C1A4DD3}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SignaturePad.InkPresenter.Shared", "..\..\src\SignaturePad.InkPresenter.Shared\SignaturePad.InkPresenter.Shared.shproj", "{A839EE31-E686-433E-B1F4-52A56C384D30}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SignaturePad.Forms.Shared", "..\..\src\SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.shproj", "{D522B5D1-E475-4E17-9282-564952CAD281}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignaturePad.Forms.UWP", "..\..\src\SignaturePad.Forms.UWP\SignaturePad.Forms.UWP.csproj", "{6FC62387-6717-4577-A48B-D15848741F08}"
 EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		..\..\src\SignaturePad.Shared\SignaturePad.Shared.projitems*{05d1e7c0-73fc-41de-a7d6-01ae4c1a4dd3}*SharedItemsImports = 13
-		..\..\src\SignaturePad.Shared\SignaturePad.Shared.projitems*{16131fdc-d50b-4ef2-8ecc-661184ff80db}*SharedItemsImports = 4
-		..\..\src\SignaturePad.Forms.Platform.Shared\SignaturePad.Forms.Platform.Shared.projitems*{1d5482f6-aa89-422c-9e34-88a8a1ad8ab6}*SharedItemsImports = 4
-		..\..\src\SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.projitems*{1d5482f6-aa89-422c-9e34-88a8a1ad8ab6}*SharedItemsImports = 4
-		..\..\src\SignaturePad.Forms.Platform.Shared\SignaturePad.Forms.Platform.Shared.projitems*{4c55bdd7-f049-4742-9e00-cdd480e53a54}*SharedItemsImports = 13
-		..\..\src\SignaturePad.Forms.Platform.Shared\SignaturePad.Forms.Platform.Shared.projitems*{6fc62387-6717-4577-a48b-d15848741f08}*SharedItemsImports = 4
-		..\..\src\SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.projitems*{6fc62387-6717-4577-a48b-d15848741f08}*SharedItemsImports = 4
-		..\..\src\SignaturePad.InkPresenter.Shared\SignaturePad.InkPresenter.Shared.projitems*{a839ee31-e686-433e-b1f4-52a56c384d30}*SharedItemsImports = 13
-		..\..\src\SignaturePad.Forms.Platform.Shared\SignaturePad.Forms.Platform.Shared.projitems*{b12d20aa-0edf-4903-b385-bb8090848532}*SharedItemsImports = 4
-		..\..\src\SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.projitems*{b12d20aa-0edf-4903-b385-bb8090848532}*SharedItemsImports = 4
-		..\..\src\SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.projitems*{b2af970d-d640-451c-95af-92af531b8c1e}*SharedItemsImports = 4
-		..\..\src\SignaturePad.InkPresenter.Shared\SignaturePad.InkPresenter.Shared.projitems*{bef71536-787b-431f-ac7f-a6469710d11f}*SharedItemsImports = 4
-		..\..\src\SignaturePad.Shared\SignaturePad.Shared.projitems*{bef71536-787b-431f-ac7f-a6469710d11f}*SharedItemsImports = 4
-		..\..\src\SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.projitems*{d522b5d1-e475-4e17-9282-564952cad281}*SharedItemsImports = 13
-		..\..\src\SignaturePad.InkPresenter.Shared\SignaturePad.InkPresenter.Shared.projitems*{f1a16cb9-a759-42c8-8f0b-3c9698a55336}*SharedItemsImports = 4
-		..\..\src\SignaturePad.Shared\SignaturePad.Shared.projitems*{f1a16cb9-a759-42c8-8f0b-3c9698a55336}*SharedItemsImports = 4
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM = Debug|ARM
@@ -247,8 +221,8 @@ Global
 		{3AC4ED82-3D1E-4767-8C17-39EF6337AA64}.Release|x86.ActiveCfg = Release|Any CPU
 		{3AC4ED82-3D1E-4767-8C17-39EF6337AA64}.Release|x86.Build.0 = Release|Any CPU
 		{3AC4ED82-3D1E-4767-8C17-39EF6337AA64}.Release|x86.Deploy.0 = Release|Any CPU
-		{2142B859-21E9-484D-880A-26AD708569DB}.Debug|Any CPU.ActiveCfg = Debug|iPhoneSimulator
-		{2142B859-21E9-484D-880A-26AD708569DB}.Debug|Any CPU.Build.0 = Debug|iPhoneSimulator
+		{2142B859-21E9-484D-880A-26AD708569DB}.Debug|Any CPU.ActiveCfg = Debug|iPhone
+		{2142B859-21E9-484D-880A-26AD708569DB}.Debug|Any CPU.Build.0 = Debug|iPhone
 		{2142B859-21E9-484D-880A-26AD708569DB}.Debug|ARM.ActiveCfg = Debug|iPhone
 		{2142B859-21E9-484D-880A-26AD708569DB}.Debug|ARM.Build.0 = Debug|iPhone
 		{2142B859-21E9-484D-880A-26AD708569DB}.Debug|iPhone.ActiveCfg = Debug|iPhone
@@ -259,8 +233,8 @@ Global
 		{2142B859-21E9-484D-880A-26AD708569DB}.Debug|x64.Build.0 = Debug|iPhoneSimulator
 		{2142B859-21E9-484D-880A-26AD708569DB}.Debug|x86.ActiveCfg = Debug|iPhoneSimulator
 		{2142B859-21E9-484D-880A-26AD708569DB}.Debug|x86.Build.0 = Debug|iPhoneSimulator
-		{2142B859-21E9-484D-880A-26AD708569DB}.Release|Any CPU.ActiveCfg = Release|iPhoneSimulator
-		{2142B859-21E9-484D-880A-26AD708569DB}.Release|Any CPU.Build.0 = Release|iPhoneSimulator
+		{2142B859-21E9-484D-880A-26AD708569DB}.Release|Any CPU.ActiveCfg = Release|iPhone
+		{2142B859-21E9-484D-880A-26AD708569DB}.Release|Any CPU.Build.0 = Release|iPhone
 		{2142B859-21E9-484D-880A-26AD708569DB}.Release|ARM.ActiveCfg = Release|iPhone
 		{2142B859-21E9-484D-880A-26AD708569DB}.Release|ARM.Build.0 = Release|iPhone
 		{2142B859-21E9-484D-880A-26AD708569DB}.Release|iPhone.ActiveCfg = Release|iPhone
@@ -271,9 +245,9 @@ Global
 		{2142B859-21E9-484D-880A-26AD708569DB}.Release|x64.Build.0 = Release|iPhoneSimulator
 		{2142B859-21E9-484D-880A-26AD708569DB}.Release|x86.ActiveCfg = Release|iPhoneSimulator
 		{2142B859-21E9-484D-880A-26AD708569DB}.Release|x86.Build.0 = Release|iPhoneSimulator
-		{DDFB13E8-92EC-4F6F-AAEF-90A71F12812E}.Debug|Any CPU.ActiveCfg = Debug|x64
-		{DDFB13E8-92EC-4F6F-AAEF-90A71F12812E}.Debug|Any CPU.Build.0 = Debug|x64
-		{DDFB13E8-92EC-4F6F-AAEF-90A71F12812E}.Debug|Any CPU.Deploy.0 = Debug|x64
+		{DDFB13E8-92EC-4F6F-AAEF-90A71F12812E}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{DDFB13E8-92EC-4F6F-AAEF-90A71F12812E}.Debug|Any CPU.Build.0 = Debug|x86
+		{DDFB13E8-92EC-4F6F-AAEF-90A71F12812E}.Debug|Any CPU.Deploy.0 = Debug|x86
 		{DDFB13E8-92EC-4F6F-AAEF-90A71F12812E}.Debug|ARM.ActiveCfg = Debug|ARM
 		{DDFB13E8-92EC-4F6F-AAEF-90A71F12812E}.Debug|ARM.Build.0 = Debug|ARM
 		{DDFB13E8-92EC-4F6F-AAEF-90A71F12812E}.Debug|ARM.Deploy.0 = Debug|ARM

@@ -1,140 +1,99 @@
-#tool nuget:?package=XamarinComponent&version=1.1.0.60
+///////////////////////////////////////////////////////////////////////////////
+// ARGUMENTS
+///////////////////////////////////////////////////////////////////////////////
 
-#addin nuget:?package=Cake.Xamarin&version=1.3.0.15
-#addin nuget:?package=Cake.Xamarin.Build&version=2.0.22
+var target = Argument("target", "Default");
+var configuration = Argument("configuration", "Release");
+var packageVersion = Argument("packageVersion", "1.0.0");
+var majorVersion = packageVersion.Substring(0, packageVersion.IndexOf("."));
 
-var TARGET = Argument ("t", Argument ("target", Argument ("Target", "Default")));
-var VERBOSITY = (Verbosity) Enum.Parse (typeof(Verbosity), Argument ("v", Argument ("verbosity", Argument ("Verbosity", "Verbose"))), true);
+///////////////////////////////////////////////////////////////////////////////
+// TASKS
+///////////////////////////////////////////////////////////////////////////////
 
-class SolutionBuilder : DefaultSolutionBuilder 
+Task("libs")
+    .Does(() =>
 {
-	public override void RunBuild (FilePath solution)
-	{
-		CakeContext.MSBuild (solution, c => {
-			if (CakeContext.GetOperatingSystem() == PlatformFamily.OSX)
-				c.ToolPath = "/Library/Frameworks/Mono.framework/Versions/Current/Commands/msbuild";
-			if (Verbosity.HasValue)
-				c.Verbosity = Verbosity.Value;
-			c.Configuration = "Release";
-			if (!string.IsNullOrEmpty (Platform))
-				c.Properties["Platform"] = new[] { Platform };
-			c.MSBuildPlatform = MSBuildPlatform.x86;
-		});
-	}
-}
+    var sln = IsRunningOnWindows() ? "./src/SignaturePad.sln" : "./src/SignaturePad.Mac.sln";
 
-var buildSpec = new BuildSpec () {
-	Libs = new ISolutionBuilder [] {
-		new SolutionBuilder {
-			SolutionPath = "src/SignaturePad.Mac.sln",
-			BuildsOn = BuildPlatforms.Mac,
-			Verbosity = VERBOSITY,
-			OutputFiles = new [] {
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Forms/bin/Release/SignaturePad.Forms.dll",
-					ToDirectory = "output/netstandard",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Android/bin/Release/SignaturePad.dll",
-					ToDirectory = "output/android",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Forms.Droid/bin/Release/SignaturePad.Forms.dll",
-					ToDirectory = "output/android",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.iOS/bin/unified/Release/SignaturePad.dll",
-					ToDirectory = "output/ios",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Forms.iOS/bin/Release/SignaturePad.Forms.dll",
-					ToDirectory = "output/ios",
-				},
-			}
-		},
-		new SolutionBuilder {
-			SolutionPath = "src/SignaturePad.sln",
-			BuildsOn = BuildPlatforms.Windows,
-			Verbosity = VERBOSITY,
-			OutputFiles = new [] {
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Forms/bin/Release/SignaturePad.Forms.dll",
-					ToDirectory = "output/netstandard",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Android/bin/Release/SignaturePad.dll",
-					ToDirectory = "output/android",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Forms.Droid/bin/Release/SignaturePad.Forms.dll",
-					ToDirectory = "output/android",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.iOS/bin/unified/Release/SignaturePad.dll",
-					ToDirectory = "output/ios",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Forms.iOS/bin/Release/SignaturePad.Forms.dll",
-					ToDirectory = "output/ios",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.UWP/bin/Release/SignaturePad.dll",
-					ToDirectory = "output/uwp",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Forms.UWP/bin/Release/SignaturePad.Forms.dll",
-					ToDirectory = "output/uwp",
-				},
-			}
-		}
-	},
+    MSBuild(sln, new MSBuildSettings {
+        Targets = { "Restore", "Build" },
+        Verbosity = Verbosity.Minimal,
+        Configuration = configuration,
+        PlatformTarget = PlatformTarget.MSIL,
+        MSBuildPlatform = MSBuildPlatform.x86,
+        Properties = {
+            { "AssemblyVersion", new [] { $"{majorVersion}.0.0.0" } },
+            { "Version", new [] { packageVersion } },
+        },
+    });
 
-	Samples = new ISolutionBuilder [] {
-		new SolutionBuilder {
-			SolutionPath = "./samples/Sample.Android/Sample.Android.sln",
-			BuildsOn = BuildPlatforms.Mac | BuildPlatforms.Windows,
-			Verbosity = VERBOSITY
-		},
-		new SolutionBuilder {
-			SolutionPath = "./samples/Sample.iOS/Sample.iOS.sln",
-			Platform = "iPhone",
-			BuildsOn = BuildPlatforms.Mac,
-			Verbosity = VERBOSITY
-		},
-		new SolutionBuilder {
-			SolutionPath = "./samples/Sample.UWP/Sample.UWP.sln",
-			BuildsOn = BuildPlatforms.Windows,
-			Verbosity = VERBOSITY
-		},
-		new SolutionBuilder {
-			SolutionPath = "./samples/Sample.Forms/Sample.Forms.Mac.sln",
-			BuildsOn = BuildPlatforms.Mac,
-			Verbosity = VERBOSITY
-		},
-		new SolutionBuilder {
-			SolutionPath = "./samples/Sample.Forms/Sample.Forms.Win.sln",
-			BuildsOn = BuildPlatforms.Windows,
-			Verbosity = VERBOSITY
-		},
-	},
+    EnsureDirectoryExists("./output/android/");
+    EnsureDirectoryExists("./output/ios/");
+    EnsureDirectoryExists("./output/uwp/");
+    EnsureDirectoryExists("./output/uwp/Themes");
+    EnsureDirectoryExists("./output/netstandard/");
 
-	NuGets = new [] {
-		new NuGetInfo {
-			NuSpec = "./nuget/Xamarin.Controls.SignaturePad.nuspec",
-			BuildsOn = BuildPlatforms.Mac | BuildPlatforms.Windows,
-		},
-		new NuGetInfo {
-			NuSpec = "./nuget/Xamarin.Controls.SignaturePad.Forms.nuspec",
-			BuildsOn = BuildPlatforms.Mac | BuildPlatforms.Windows,
-		},
-	},
-};
+    CopyFiles("./src/SignaturePad.Android/bin/Debug/SignaturePad.*", "./output/android/");
+    CopyFiles("./src/SignaturePad.iOS/bin/Debug/SignaturePad.*", "./output/ios/");
+    CopyFiles("./src/SignaturePad.UWP/bin/Debug/SignaturePad.*", "./output/uwp/");
+    CopyFiles("./src/SignaturePad.UWP/bin/Debug/Themes/*", "./output/uwp/Themes");
 
-SetupXamarinBuildTasks (buildSpec, Tasks, Task);
+    CopyFiles("./src/SignaturePad.Forms.Android/bin/Debug/SignaturePad.Forms.*", "./output/android/");
+    CopyFiles("./src/SignaturePad.Forms.iOS/bin/Debug/SignaturePad.Forms.*", "./output/ios/");
+    CopyFiles("./src/SignaturePad.Forms.UWP/bin/Debug/SignaturePad.Forms.*", "./output/uwp/");
+    CopyFiles("./src/SignaturePad.Forms.UWP/bin/Debug/Themes/*", "./output/uwp/Themes");
+    CopyFiles("./src/SignaturePad.Forms/bin/Debug/SignaturePad.Forms.*", "./output/netstandard/");
+});
 
-Task ("CI")
-	.IsDependentOn ("libs")
-	.IsDependentOn ("nuget")
-	.IsDependentOn ("samples");
+Task("nuget")
+    .IsDependentOn("libs")
+    .Does(() =>
+{
+    var nuget = Context.Tools.Resolve("nuget.exe");
 
-RunTarget (TARGET);
+    EnsureDirectoryExists("./output");
+    NuGetPack(GetFiles("./nuget/*.nuspec"), new NuGetPackSettings {
+        BasePath = ".",
+        OutputDirectory = "./output",
+        Properties = new Dictionary<string, string> {
+            { "configuration", configuration },
+            { "version", packageVersion },
+        },
+    });
+});
+
+Task("samples")
+    .IsDependentOn("libs")
+    .Does(() =>
+{
+    var settings = new MSBuildSettings {
+        Targets = { "Restore", "Build" },
+        Verbosity = Verbosity.Minimal,
+        Configuration = configuration,
+        PlatformTarget = PlatformTarget.MSIL,
+        MSBuildPlatform = MSBuildPlatform.x86,
+    };
+
+    if (!IsRunningOnWindows()) {
+        MSBuild("./samples/Sample.Android/Sample.Android.sln", settings);
+        MSBuild("./samples/Sample.iOS/Sample.iOS.sln", settings);
+        MSBuild("./samples/Sample.UWP/Sample.UWP.sln", settings);
+        MSBuild("./samples/Sample.Forms/Sample.Forms.sln", settings);
+    } else {
+        MSBuild("./samples/Sample.Android/Sample.Android.sln", settings);
+        MSBuild("./samples/Sample.iOS/Sample.iOS.sln", settings);
+        MSBuild("./samples/Sample.Forms/Sample.Forms.Mac.sln", settings);
+    }
+
+});
+
+Task("Default")
+    .IsDependentOn("libs")
+    .IsDependentOn("nuget")
+    .IsDependentOn("samples");
+
+Task("CI")
+    .IsDependentOn("Default");
+
+RunTarget(target);

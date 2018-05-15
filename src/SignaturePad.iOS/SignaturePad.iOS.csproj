@@ -1,54 +1,44 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProjectGuid>{BEF71536-787B-431F-AC7F-A6469710D11F}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <TargetFramework>xamarin.ios1.0</TargetFramework>
     <RootNamespace>Xamarin.Controls</RootNamespace>
-    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>SignaturePad</AssemblyName>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
+    <AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
+    <MSBuildWarningsAsMessages>$(MSBuildWarningsAsMessages);VSX1000</MSBuildWarningsAsMessages>
+    <DocumentationFile>bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\unified\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
+
+  <PropertyGroup>
+    <Version>1.0.0</Version>
+    <PackageId>Xamarin.Controls.SignaturePad</PackageId>
+    <Title>SignaturePad for Xamarin and Windows</Title>
+    <Product>$(AssemblyName) ($(TargetFramework))</Product>
+    <Authors>Microsoft</Authors>
+    <Owners>Microsoft</Owners>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Summary>Makes capturing, saving, and displaying signatures extremely simple.</Summary>
+    <Description>Makes capturing, saving, and displaying signatures extremely simple.</Description>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageIconUrl>https://cdn.rawgit.com/xamarin/SignaturePad/v2.0/component/icons/signature-pad_256x256.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/xamarin/SignaturePad</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/xamarin/SignaturePad</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/xamarin/SignaturePad/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageReleaseNotes>https://github.com/xamarin/SignaturePad/releases</PackageReleaseNotes>
+    <PackageTags>xamarin,signature,handwriting,windows,ios,android,uwp</PackageTags>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\unified\Release</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
-    <Reference Include="Xamarin.iOS" />
+    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.4.0" PrivateAssets="All" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+
   <ItemGroup>
-    <Compile Include="..\SignaturePad\Properties\AssemblyInfo.Common.cs">
-      <Link>Properties\AssemblyInfo.Common.cs</Link>
-    </Compile>
-    <Compile Include="..\SignaturePad\Properties\AssemblyInfo.Native.cs">
-      <Link>Properties\AssemblyInfo.Native.cs</Link>
-    </Compile>
-    <Compile Include="InkPresenter.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SignaturePadCanvasView.cs" />
-    <Compile Include="SignaturePadView.cs" />
+    <Compile Include="..\SignaturePad.Shared\**\*.cs" Link="shared\%(filename).%(Extension)" />
+    <Compile Include="..\SignaturePad.InkPresenter.Shared\**\*.cs" Link="inking\%(filename).%(Extension)" />
   </ItemGroup>
-  <Import Project="..\SignaturePad.Shared\SignaturePad.Shared.projitems" Label="Shared" />
-  <Import Project="..\SignaturePad.InkPresenter.Shared\SignaturePad.InkPresenter.Shared.projitems" Label="Shared" />
+
+  <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
+
 </Project>
