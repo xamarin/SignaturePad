@@ -3,17 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26228.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.UWP", "Sample.UWP\Sample.UWP.csproj", "{1864E65A-B7F5-49AE-BF54-6A06C5CFD625}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.UWP", "Sample.UWP.csproj", "{1864E65A-B7F5-49AE-BF54-6A06C5CFD625}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.UWP", "..\..\src\SignaturePad.UWP\SignaturePad.UWP.csproj", "{16131FDC-D50B-4EF2-8ECC-661184FF80DB}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SignaturePad.Shared", "..\..\src\SignaturePad.Shared\SignaturePad.Shared.shproj", "{05D1E7C0-73FC-41DE-A7D6-01AE4C1A4DD3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignaturePad.UWP", "..\..\src\SignaturePad.UWP\SignaturePad.UWP.csproj", "{16131FDC-D50B-4EF2-8ECC-661184FF80DB}"
 EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		..\..\src\SignaturePad.Shared\SignaturePad.Shared.projitems*{05d1e7c0-73fc-41de-a7d6-01ae4c1a4dd3}*SharedItemsImports = 13
-		..\..\src\SignaturePad.Shared\SignaturePad.Shared.projitems*{16131fdc-d50b-4ef2-8ecc-661184ff80db}*SharedItemsImports = 4
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM = Debug|ARM
@@ -26,6 +20,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{1864E65A-B7F5-49AE-BF54-6A06C5CFD625}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{1864E65A-B7F5-49AE-BF54-6A06C5CFD625}.Debug|Any CPU.Build.0 = Debug|x86
+		{1864E65A-B7F5-49AE-BF54-6A06C5CFD625}.Debug|Any CPU.Deploy.0 = Debug|x86
 		{1864E65A-B7F5-49AE-BF54-6A06C5CFD625}.Debug|ARM.ActiveCfg = Debug|ARM
 		{1864E65A-B7F5-49AE-BF54-6A06C5CFD625}.Debug|ARM.Build.0 = Debug|ARM
 		{1864E65A-B7F5-49AE-BF54-6A06C5CFD625}.Debug|ARM.Deploy.0 = Debug|ARM
@@ -36,6 +32,8 @@ Global
 		{1864E65A-B7F5-49AE-BF54-6A06C5CFD625}.Debug|x86.Build.0 = Debug|x86
 		{1864E65A-B7F5-49AE-BF54-6A06C5CFD625}.Debug|x86.Deploy.0 = Debug|x86
 		{1864E65A-B7F5-49AE-BF54-6A06C5CFD625}.Release|Any CPU.ActiveCfg = Release|x86
+		{1864E65A-B7F5-49AE-BF54-6A06C5CFD625}.Release|Any CPU.Build.0 = Release|x86
+		{1864E65A-B7F5-49AE-BF54-6A06C5CFD625}.Release|Any CPU.Deploy.0 = Release|x86
 		{1864E65A-B7F5-49AE-BF54-6A06C5CFD625}.Release|ARM.ActiveCfg = Release|ARM
 		{1864E65A-B7F5-49AE-BF54-6A06C5CFD625}.Release|ARM.Build.0 = Release|ARM
 		{1864E65A-B7F5-49AE-BF54-6A06C5CFD625}.Release|ARM.Deploy.0 = Release|ARM
@@ -64,5 +62,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C5C464A1-5A66-41CD-9338-F56E7C671A9A}
 	EndGlobalSection
 EndGlobal

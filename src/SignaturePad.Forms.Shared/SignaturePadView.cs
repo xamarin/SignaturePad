@@ -197,9 +197,9 @@ namespace SignaturePad.Forms
 			Clear ();
 		}
 
-		protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		protected override void OnPropertyChanged ([CallerMemberName] string propertyName = null)
 		{
-			base.OnPropertyChanged(propertyName);
+			base.OnPropertyChanged (propertyName);
 
 			if (propertyName == IsEnabledProperty.PropertyName)
 			{

@@ -23,11 +23,11 @@
 	<key>MinimumOSVersion</key>
 	<string>8.0</string>
 	<key>CFBundleDisplayName</key>
-	<string>Xamarin.Forms SignaturePad</string>
+	<string>Signature Pad</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.your_company.samples.signaturepad</string>
+	<string>com.xamarin.signaturepad.forms</string>
 	<key>CFBundleVersion</key>
-	<string>1.0.0.0</string>
+	<string>1</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>NSMainNibFile</key>
@@ -36,5 +36,11 @@
 	<string></string>
 	<key>UIStatusBarHidden~ipad</key>
 	<true/>
+	<key>XSAppIconAssets</key>
+	<string>Resources/Assets.xcassets/AppIcons.appiconset</string>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app saves signatures in the photo library.</string>
 </dict>
 </plist>

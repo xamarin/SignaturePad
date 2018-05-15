@@ -13,6 +13,13 @@ namespace Xamarin.Controls
 	{
 		static InkPresenter ()
 		{
+			// we may be in a designer
+			if (Application.Context == null)
+			{
+				ScreenDensity = 1f;
+				return;
+			}
+
 			var wndMngr = Application.Context.GetSystemService (Context.WindowService).JavaCast<IWindowManager> ();
 			var dm = new DisplayMetrics ();
 			wndMngr.DefaultDisplay.GetMetrics (dm);

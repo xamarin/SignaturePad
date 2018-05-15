@@ -28,10 +28,10 @@ namespace Xamarin.Controls
 		{
 			Opaque = false;
 		}
-		
+
 		// If you put SignaturePad inside a ScrollView, this line of code prevent that the gesture inside 
 		// an InkPresenter are dispatched to the ScrollView below
-		public override bool GestureRecognizerShouldBegin(UIGestureRecognizer gestureRecognizer) => false;
+		public override bool GestureRecognizerShouldBegin (UIGestureRecognizer gestureRecognizer) => false;
 
 		public override void TouchesBegan (NSSet touches, UIEvent evt)
 		{

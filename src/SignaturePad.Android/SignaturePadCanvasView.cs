@@ -39,12 +39,8 @@ namespace Xamarin.Controls
 			inkPresenter.StrokeCompleted += OnStrokeCompleted;
 			AddView (inkPresenter);
 
-			// get some defaults
-			var settings = new ImageConstructionSettings ();
-			settings.ApplyDefaults ();
-
-			StrokeWidth = settings.StrokeWidth.Value;
-			StrokeColor = settings.StrokeColor.Value;
+			StrokeWidth = ImageConstructionSettings.DefaultStrokeWidth;
+			StrokeColor = ImageConstructionSettings.DefaultStrokeColor;
 		}
 
 		/// <summary>
@@ -161,13 +157,13 @@ namespace Xamarin.Controls
 			return null;
 		}
 
-		public override bool OnInterceptTouchEvent(MotionEvent ev)
+		public override bool OnInterceptTouchEvent (MotionEvent ev)
 		{
 			// don't accept touch when the view is disabled
 			if (!Enabled)
 				return true;
 
-			return base.OnInterceptTouchEvent(ev);
+			return base.OnInterceptTouchEvent (ev);
 		}
 	}
 }

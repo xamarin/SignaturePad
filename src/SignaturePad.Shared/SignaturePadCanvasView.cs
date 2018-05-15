@@ -44,7 +44,7 @@ namespace Xamarin.Controls
 
 		public event EventHandler Cleared;
 
-		public bool IsBlank => inkPresenter.GetStrokes ().Count == 0;
+		public bool IsBlank => inkPresenter == null ? true : inkPresenter.GetStrokes ().Count == 0;
 
 		public NativePoint[] Points
 		{
@@ -383,7 +383,7 @@ namespace Xamarin.Controls
 
 		private bool GetImageConstructionArguments (ImageConstructionSettings settings, out NativeSize scale, out NativeRect signatureBounds, out NativeSize imageSize, out float strokeWidth, out NativeColor strokeColor, out NativeColor backgroundColor)
 		{
-			settings.ApplyDefaults (StrokeWidth, StrokeColor);
+			settings.ApplyDefaults ((float)StrokeWidth, StrokeColor);
 
 			if (IsBlank || settings.DesiredSizeOrScale?.IsValid != true)
 			{
@@ -447,7 +447,7 @@ namespace Xamarin.Controls
 				return;
 			}
 
-			inkPresenter.AddStrokes (loadedStrokes, StrokeColor, StrokeWidth);
+			inkPresenter.AddStrokes (loadedStrokes, StrokeColor, (float)StrokeWidth);
 
 			if (!IsBlank)
 			{
@@ -504,14 +504,14 @@ namespace Xamarin.Controls
 			}
 			while (startIndex < emptyIndex);
 
-			inkPresenter.AddStrokes (strokes, StrokeColor, StrokeWidth);
+			inkPresenter.AddStrokes (strokes, StrokeColor, (float)StrokeWidth);
 
 			if (!IsBlank)
 			{
 				OnStrokeCompleted ();
 			}
 		}
-		
+
 		private void OnCleared ()
 		{
 			Cleared?.Invoke (this, EventArgs.Empty);
