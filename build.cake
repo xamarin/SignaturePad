@@ -76,7 +76,7 @@ Task("samples")
         ArgumentCustomization = args => args.Append("/restore"),
     };
 
-    if (!IsRunningOnWindows()) {
+    if (IsRunningOnWindows()) {
         MSBuild("./samples/Sample.Android/Sample.Android.sln", settings);
         MSBuild("./samples/Sample.iOS/Sample.iOS.sln", settings);
         MSBuild("./samples/Sample.UWP/Sample.UWP.sln", settings);
