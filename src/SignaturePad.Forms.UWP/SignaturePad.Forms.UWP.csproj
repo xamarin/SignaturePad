@@ -49,7 +49,6 @@
       <Link>Properties\AssemblyInfo.Forms.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Properties\SignaturePad.Forms.UWP.rd.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SignaturePad.UWP\SignaturePad.UWP.csproj">

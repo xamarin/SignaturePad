@@ -51,7 +51,6 @@
     <Compile Include="SignaturePad.cs" />
     <Compile Include="SignaturePadCanvasView.cs" />
     <Page Include="Themes\Generic.xaml" Generator="MSBuild:Compile" />
-    <EmbeddedResource Include="Properties\SignaturePad.UWP.rd.xml" />
   </ItemGroup>
   <Import Project="..\SignaturePad.Shared\SignaturePad.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
