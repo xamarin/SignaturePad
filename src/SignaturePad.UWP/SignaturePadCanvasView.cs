@@ -2,9 +2,9 @@
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
-using Windows.Graphics.Display;
 using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.Core;
@@ -16,86 +16,65 @@ using Microsoft.Graphics.Canvas;
 
 namespace Xamarin.Controls
 {
-	public partial class SignaturePadCanvasView : ContentControl
+	[TemplatePart (Name = PartInkCanvas, Type = typeof (InkCanvas))]
+	public partial class SignaturePadCanvasView : Control
 	{
-		private Color strokeColor;
-		private float lineWidth;
+		public static readonly DependencyProperty StrokeColorProperty;
+		public static readonly DependencyProperty StrokeWidthProperty;
 
-		private InkCanvas inkCanvas;
+		private const string PartInkCanvas = "InkCanvas";
+
 		private InkPresenter inkPresenter;
+
+		static SignaturePadCanvasView ()
+		{
+			StrokeColorProperty = DependencyProperty.Register (nameof (StrokeColor), typeof (Color), typeof (SignaturePadCanvasView), new PropertyMetadata (ImageConstructionSettings.DefaultStrokeColor, OnStrokePropertiesChanged));
+			StrokeWidthProperty = DependencyProperty.Register (nameof (StrokeWidth), typeof (float), typeof (SignaturePadCanvasView), new PropertyMetadata (ImageConstructionSettings.DefaultStrokeWidth, OnStrokePropertiesChanged));
+		}
 
 		public SignaturePadCanvasView ()
 		{
-			Initialize ();
-		}
-
-		private void Initialize ()
-		{
-			var grid = new Grid ();
-
-			inkCanvas = new InkCanvas ();
-			inkCanvas.SetValue (Grid.HorizontalAlignmentProperty, HorizontalAlignment.Stretch);
-			inkCanvas.SetValue (Grid.VerticalAlignmentProperty, VerticalAlignment.Stretch);
-			grid.Children.Add (inkCanvas);
-
-			inkPresenter = inkCanvas.InkPresenter;
-			inkPresenter.StrokesCollected += (sender, e) => OnStrokeCompleted ();
-			inkPresenter.InputDeviceTypes = CoreInputDeviceTypes.Touch | CoreInputDeviceTypes.Pen | CoreInputDeviceTypes.Mouse;
-
-			// get some defaults
-			var settings = new ImageConstructionSettings ();
-			settings.ApplyDefaults ();
-
-			StrokeWidth = settings.StrokeWidth.Value;
-			StrokeColor = settings.StrokeColor.Value;
-
-			HorizontalContentAlignment = HorizontalAlignment.Stretch;
-			VerticalContentAlignment = VerticalAlignment.Stretch;
-			Content = grid;
+			DefaultStyleKey = typeof (SignaturePadCanvasView);
 
 			IsEnabledChanged += delegate
 			{
-				inkPresenter.IsInputEnabled = IsEnabled;
+				var ip = inkPresenter;
+				if (ip != null)
+					ip.IsInputEnabled = IsEnabled;
 			};
 		}
 
+		protected override void OnApplyTemplate ()
+		{
+			inkPresenter = InkCanvas?.InkPresenter;
+			inkPresenter.StrokesCollected += (sender, e) => OnStrokeCompleted ();
+			inkPresenter.InputDeviceTypes = CoreInputDeviceTypes.Touch | CoreInputDeviceTypes.Pen | CoreInputDeviceTypes.Mouse;
+
+			OnStrokePropertiesChanged (this, null);
+		}
+
+		private InkCanvas InkCanvas => GetTemplateChild (PartInkCanvas) as InkCanvas;
+
 		public Color StrokeColor
 		{
-			get { return strokeColor; }
-			set
-			{
-				strokeColor = value;
-				foreach (var stroke in inkPresenter.StrokeContainer.GetStrokes ())
-				{
-					stroke.DrawingAttributes.Color = strokeColor;
-				}
-				var da = inkPresenter.CopyDefaultDrawingAttributes ();
-				da.Color = strokeColor;
-				inkPresenter.UpdateDefaultDrawingAttributes (da);
-			}
+			get { return (Color)GetValue (StrokeColorProperty); }
+			set { SetValue (StrokeColorProperty, value); }
 		}
 
 		public float StrokeWidth
 		{
-			get { return lineWidth; }
-			set
-			{
-				lineWidth = value;
-				foreach (var stroke in inkPresenter.StrokeContainer.GetStrokes ())
-				{
-					stroke.DrawingAttributes.Size = new Size (lineWidth, lineWidth);
-				}
-				var da = inkPresenter.CopyDefaultDrawingAttributes ();
-				da.Size = new Size (lineWidth, lineWidth);
-				inkPresenter.UpdateDefaultDrawingAttributes (da);
-			}
+			get { return (float)GetValue (StrokeWidthProperty); }
+			set { SetValue (StrokeWidthProperty, value); }
 		}
 
 		public void Clear ()
 		{
-			inkPresenter.StrokeContainer.Clear ();
+			if (inkPresenter != null)
+			{
+				inkPresenter.StrokeContainer.Clear ();
 
-			OnCleared ();
+				OnCleared ();
+			}
 		}
 
 		private async Task<Stream> GetImageStreamInternal (SignatureImageFormat format, Size scale, Rect signatureBounds, Size imageSize, float strokeWidth, Color strokeColor, Color backgroundColor)
@@ -156,7 +135,7 @@ namespace Xamarin.Controls
 					s = s.Clone ();
 					var attr = s.DrawingAttributes;
 					attr.Color = strokeColor;
-					attr.Size = new Size (lineWidth, lineWidth);
+					attr.Size = new Size (StrokeWidth, StrokeWidth);
 					s.DrawingAttributes = attr;
 					return s;
 				});
@@ -165,6 +144,26 @@ namespace Xamarin.Controls
 			}
 
 			return offscreen;
+		}
+
+		private static void OnStrokePropertiesChanged (DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			var signaturePad = d as SignaturePadCanvasView;
+
+			var inkPresenter = signaturePad.inkPresenter;
+			if (inkPresenter != null)
+			{
+				var da = inkPresenter.CopyDefaultDrawingAttributes ();
+				da.Color = signaturePad.StrokeColor;
+				da.Size = new Size (signaturePad.StrokeWidth, signaturePad.StrokeWidth);
+
+				inkPresenter.UpdateDefaultDrawingAttributes (da);
+
+				foreach (var stroke in inkPresenter.StrokeContainer.GetStrokes ())
+				{
+					stroke.DrawingAttributes = da;
+				}
+			}
 		}
 	}
 }

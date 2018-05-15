@@ -1,474 +1,224 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.UI;
-using Windows.UI.Text;
+﻿using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
 
 namespace Xamarin.Controls
 {
-	public class SignaturePad : ContentControl
+	[TemplatePart (Name = PartBackgroundImageView, Type = typeof (Image))]
+	[TemplatePart (Name = PartSignaturePadCanvas, Type = typeof (SignaturePadCanvasView))]
+	[TemplatePart (Name = PartCaption, Type = typeof (TextBlock))]
+	[TemplatePart (Name = PartSignatureLine, Type = typeof (Border))]
+	[TemplatePart (Name = PartSignaturePrompt, Type = typeof (TextBlock))]
+	[TemplatePart (Name = PartClearLabel, Type = typeof (TextBlock))]
+	public partial class SignaturePad : Control
 	{
+		private const string PartBackgroundImageView = "BackgroundImageView";
+		private const string PartSignaturePadCanvas = "SignaturePadCanvas";
+		private const string PartCaption = "Caption";
+		private const string PartSignatureLine = "SignatureLine";
+		private const string PartSignaturePrompt = "SignaturePrompt";
+		private const string PartClearLabel = "ClearLabel";
+
+		public static readonly DependencyProperty StrokeColorProperty;
+		public static readonly DependencyProperty StrokeWidthProperty;
+		public static readonly DependencyProperty SignatureLineBrushProperty;
+		public static readonly DependencyProperty SignatureLineThicknessProperty;
+		public static readonly DependencyProperty SignatureLineSpacingProperty;
+		public static readonly DependencyProperty CaptionTextProperty;
+		public static readonly DependencyProperty CaptionFontSizeProperty;
+		public static readonly DependencyProperty CaptionForegroundProperty;
+		public static readonly DependencyProperty SignaturePromptTextProperty;
+		public static readonly DependencyProperty SignaturePromptFontSizeProperty;
+		public static readonly DependencyProperty SignaturePromptForegroundProperty;
+		public static readonly DependencyProperty ClearLabelTextProperty;
+		public static readonly DependencyProperty ClearLabelFontSizeProperty;
+		public static readonly DependencyProperty ClearLabelForegroundProperty;
+		public static readonly DependencyProperty BackgroundImageProperty;
+		public static readonly DependencyProperty BackgroundImageStretchProperty;
+		public static readonly DependencyProperty BackgroundImageOpacityProperty;
+
+		static SignaturePad ()
+		{
+			StrokeColorProperty = DependencyProperty.Register (nameof (StrokeColor), typeof (Color), typeof (SignaturePad), new PropertyMetadata (ImageConstructionSettings.DefaultStrokeColor));
+			StrokeWidthProperty = DependencyProperty.Register (nameof (StrokeWidth), typeof (float), typeof (SignaturePad), new PropertyMetadata (ImageConstructionSettings.DefaultStrokeWidth));
+			SignatureLineBrushProperty = DependencyProperty.Register (nameof (SignatureLineBrush), typeof (Brush), typeof (SignaturePad), new PropertyMetadata (new SolidColorBrush (SignaturePadDarkColor)));
+			SignatureLineThicknessProperty = DependencyProperty.Register (nameof (SignatureLineThickness), typeof (double), typeof (SignaturePad), new PropertyMetadata (DefaultLineThickness));
+			SignatureLineSpacingProperty = DependencyProperty.Register (nameof (SignatureLineSpacing), typeof (double), typeof (SignaturePad), new PropertyMetadata (DefaultNarrowSpacing));
+			CaptionTextProperty = DependencyProperty.Register (nameof (CaptionText), typeof (string), typeof (SignaturePad), new PropertyMetadata (DefaultCaptionText));
+			CaptionFontSizeProperty = DependencyProperty.Register (nameof (CaptionFontSize), typeof (double), typeof (SignaturePad), new PropertyMetadata (DefaultFontSize));
+			CaptionForegroundProperty = DependencyProperty.Register (nameof (CaptionForeground), typeof (Brush), typeof (SignaturePad), new PropertyMetadata (new SolidColorBrush (SignaturePadDarkColor)));
+			SignaturePromptTextProperty = DependencyProperty.Register (nameof (SignaturePromptText), typeof (string), typeof (SignaturePad), new PropertyMetadata (DefaultPromptText));
+			SignaturePromptFontSizeProperty = DependencyProperty.Register (nameof (SignaturePromptFontSize), typeof (double), typeof (SignaturePad), new PropertyMetadata (DefaultFontSize));
+			SignaturePromptForegroundProperty = DependencyProperty.Register (nameof (SignaturePromptForeground), typeof (Brush), typeof (SignaturePad), new PropertyMetadata (new SolidColorBrush (SignaturePadDarkColor)));
+			ClearLabelTextProperty = DependencyProperty.Register (nameof (ClearLabelText), typeof (string), typeof (SignaturePad), new PropertyMetadata (DefaultClearLabelText));
+			ClearLabelFontSizeProperty = DependencyProperty.Register (nameof (ClearLabelFontSize), typeof (double), typeof (SignaturePad), new PropertyMetadata (DefaultFontSize));
+			ClearLabelForegroundProperty = DependencyProperty.Register (nameof (ClearLabelForeground), typeof (Brush), typeof (SignaturePad), new PropertyMetadata (new SolidColorBrush (SignaturePadDarkColor)));
+			BackgroundImageProperty = DependencyProperty.Register (nameof (BackgroundImage), typeof (ImageSource), typeof (SignaturePad), new PropertyMetadata (null));
+			BackgroundImageStretchProperty = DependencyProperty.Register (nameof (BackgroundImageStretch), typeof (Stretch), typeof (SignaturePad), new PropertyMetadata (Stretch.None));
+			BackgroundImageOpacityProperty = DependencyProperty.Register (nameof (BackgroundImageOpacity), typeof (double), typeof (SignaturePad), new PropertyMetadata (1.0));
+		}
+
 		public SignaturePad ()
 		{
-			Initialize ();
+			DefaultStyleKey = typeof (SignaturePad);
+
+			RegisterPropertyChangedCallback (PaddingProperty, OnPaddingChanged);
+
+			Padding = new Thickness (DefaultWideSpacing, DefaultWideSpacing, DefaultWideSpacing, DefaultNarrowSpacing);
+			Background = new SolidColorBrush (SignaturePadLightColor);
+			BorderBrush = new SolidColorBrush (SignaturePadDarkColor);
 		}
 
-		private void Initialize ()
+		protected override void OnApplyTemplate ()
 		{
-			const int ThinPad = 3;
-			const int ThickPad = 20;
-			const int LineHeight = 2;
-
-			var grid = new Grid ();
-
-			grid.RowDefinitions.Add (new RowDefinition { Height = new GridLength (1, GridUnitType.Star) });
-			grid.RowDefinitions.Add (new RowDefinition { Height = GridLength.Auto });
-
-			// add the background view
+			SignaturePadCanvas.StrokeCompleted += delegate
 			{
-				BackgroundImageView = new Image ();
-				BackgroundImageView.SetValue (Grid.HorizontalAlignmentProperty, HorizontalAlignment.Stretch);
-				BackgroundImageView.SetValue (Grid.VerticalAlignmentProperty, VerticalAlignment.Stretch);
-				BackgroundImageView.SetValue (Grid.RowProperty, 0);
-				grid.Children.Add (BackgroundImageView);
-			}
-
-			// add the main signature view
+				OnSignatureStrokeCompleted ();
+			};
+			SignaturePadCanvas.Cleared += delegate
 			{
-				SignaturePadCanvas = new SignaturePadCanvasView ();
-				SignaturePadCanvas.SetValue (Grid.HorizontalAlignmentProperty, HorizontalAlignment.Stretch);
-				SignaturePadCanvas.SetValue (Grid.VerticalAlignmentProperty, VerticalAlignment.Stretch);
-				SignaturePadCanvas.SetValue (Grid.RowProperty, 0);
-				SignaturePadCanvas.StrokeCompleted += (sender, e) =>
-				{
-					UpdateUi ();
-					StrokeCompleted?.Invoke (this, EventArgs.Empty);
-				};
-				SignaturePadCanvas.Cleared += (sender, e) => Cleared?.Invoke (this, EventArgs.Empty);
-				grid.Children.Add (SignaturePadCanvas);
-			}
-
-			// add the caption
+				OnSignatureCleared ();
+			};
+			ClearLabel.Tapped += delegate
 			{
-				Caption = new TextBlock ()
-				{
-					Text = "Sign here.",
-					FontSize = 11,
-					Foreground = new SolidColorBrush (Colors.Gray),
-					TextAlignment = TextAlignment.Center,
-					Margin = new Thickness (ThinPad)
-				};
-				Caption.SetValue (Grid.HorizontalAlignmentProperty, HorizontalAlignment.Stretch);
-				Caption.SetValue (Grid.VerticalAlignmentProperty, VerticalAlignment.Bottom);
-				Caption.SetValue (Grid.RowProperty, 1);
-				grid.Children.Add (Caption);
-			}
+				OnClearTapped ();
+			};
 
-			// add the signature line
-			{
-				SignatureLine = new Border ()
-				{
-					Background = new SolidColorBrush (Colors.Gray),
-					Height = LineHeight,
-					Margin = new Thickness (ThickPad, 0, ThickPad, 0)
-				};
-				SignatureLine.SetValue (Grid.HorizontalAlignmentProperty, HorizontalAlignment.Stretch);
-				SignatureLine.SetValue (Grid.VerticalAlignmentProperty, VerticalAlignment.Bottom);
-				grid.Children.Add (SignatureLine);
-			}
-
-			// add the prompt
-			{
-				SignaturePrompt = new TextBlock ()
-				{
-					Text = "X",
-					FontSize = 20,
-					FontWeight = FontWeights.Bold,
-					Margin = new Thickness (ThickPad, 0, 0, ThinPad)
-				};
-				SignaturePrompt.SetValue (Grid.HorizontalAlignmentProperty, HorizontalAlignment.Left);
-				SignaturePrompt.SetValue (Grid.VerticalAlignmentProperty, VerticalAlignment.Bottom);
-				grid.Children.Add (SignaturePrompt);
-			}
-
-			// add the clear label
-			{
-				ClearLabel = new TextBlock ()
-				{
-					Text = "Clear",
-					FontSize = 11,
-					FontWeight = FontWeights.Bold,
-					Visibility = Visibility.Collapsed,
-					Foreground = new SolidColorBrush (Colors.Gray),
-					Margin = new Thickness (0, ThickPad, ThickPad, 0)
-				};
-				ClearLabel.SetValue (Grid.HorizontalAlignmentProperty, HorizontalAlignment.Right);
-				ClearLabel.SetValue (Grid.VerticalAlignmentProperty, VerticalAlignment.Top);
-				grid.Children.Add (ClearLabel);
-
-				// attach the "clear" command
-				ClearLabel.Tapped += (sender, e) => Clear ();
-			}
-
-			HorizontalContentAlignment = HorizontalAlignment.Stretch;
-			VerticalContentAlignment = VerticalAlignment.Stretch;
-			Content = grid;
-
-			// clear / initialize the view
-			Clear ();
+			OnPaddingChanged (this, PaddingProperty);
+			UpdateUi ();
 		}
 
-		public Point[][] Strokes => SignaturePadCanvas.Strokes;
-
-		public Point[] Points => SignaturePadCanvas.Points;
-
-		public bool IsBlank => SignaturePadCanvas.IsBlank;
-
-		public SignaturePadCanvasView SignaturePadCanvas { get; private set; }
-
-		public Color StrokeColor
-		{
-			get { return SignaturePadCanvas.StrokeColor; }
-			set { SignaturePadCanvas.StrokeColor = value; }
-		}
-
-		public float StrokeWidth
-		{
-			get { return SignaturePadCanvas.StrokeWidth; }
-			set { SignaturePadCanvas.StrokeWidth = value; }
-		}
+		/// <summary>
+		/// The real signature canvas view
+		/// </summary>
+		public SignaturePadCanvasView SignaturePadCanvas => GetTemplateChild (PartSignaturePadCanvas) as SignaturePadCanvasView;
 
 		/// <summary>
 		/// The prompt displayed at the beginning of the signature line.
 		/// </summary>
-		/// <remarks>
-		/// Text value defaults to 'X'.
-		/// </remarks>
-		/// <value>The signature prompt.</value>
-		public TextBlock SignaturePrompt { get; private set; }
+		public TextBlock SignaturePrompt => GetTemplateChild (PartSignaturePrompt) as TextBlock;
 
 		/// <summary>
 		/// The caption displayed under the signature line.
 		/// </summary>
-		/// <remarks>
-		/// Text value defaults to 'Sign here.'
-		/// </remarks>
-		/// <value>The caption.</value>
-		public TextBlock Caption { get; private set; }
+		public TextBlock Caption => GetTemplateChild (PartCaption) as TextBlock;
 
 		/// <summary>
-		/// The brush of the signature line.
+		/// An image view that may be used as a watermark or as a texture for the signature pad.
 		/// </summary>
-		/// <value>The brush of the signature line.</value>
-		public Brush SignatureLineBrush
-		{
-			get { return SignatureLine.Background; }
-			set { SignatureLine.Background = value; }
-		}
-
-		/// <summary>
-		/// The color of the signature line.
-		/// </summary>
-		/// <value>The color of the signature line.</value>
-		public Color SignatureLineColor
-		{
-			get
-			{
-				var scb = SignatureLine.Background as SolidColorBrush;
-				return scb == null ? Colors.Transparent : scb.Color;
-			}
-			set { SignatureLine.Background = new SolidColorBrush (value); }
-		}
-
-		/// <summary>
-		///  An image view that may be used as a watermark or as a texture
-		///  for the signature pad.
-		/// </summary>
-		/// <value>The background image view.</value>
-		public Image BackgroundImageView { get; private set; }
-
-		/// <summary>
-		/// The color of the background.
-		/// </summary>
-		/// <value>The color of the background.</value>
-		public Color BackgroundColor
-		{
-			get
-			{
-				var scb = Background as SolidColorBrush;
-				return scb == null ? Colors.Transparent : scb.Color;
-			}
-			set { Background = new SolidColorBrush (value); }
-		}
-
-		/// <summary>
-		///  An image view that may be used as a watermark or as a texture
-		///  for the signature pad.
-		/// </summary>
-		/// <value>The background image.</value>
-		public ImageSource BackgroundImage
-		{
-			get { return BackgroundImageView.Source; }
-			set { BackgroundImageView.Source = value; }
-		}
-
-		/// <summary>
-		///  An image view that may be used as a watermark or as a texture
-		///  for the signature pad.
-		/// </summary>
-		/// <value>The background image.</value>
-		public Stretch BackgroundImageStretch
-		{
-			get { return BackgroundImageView.Stretch; }
-			set { BackgroundImageView.Stretch = value; }
-		}
-
-		/// <summary>
-		///  The transparency of the watermark.
-		/// </summary>
-		/// <value>The background image.</value>
-		public double BackgroundImageOpacity
-		{
-			get { return BackgroundImageView.Opacity; }
-			set { BackgroundImageView.Opacity = value; }
-		}
-
-		/// <summary>
-		/// The text for the prompt displayed at the beginning of the signature line.
-		/// </summary>
-		/// <remarks>
-		/// Text value defaults to 'X'.
-		/// </remarks>
-		/// <value>The signature prompt.</value>
-		public string SignaturePromptText
-		{
-			get { return SignaturePrompt.Text; }
-			set { SignaturePrompt.Text = value; }
-		}
-
-		/// <summary>
-		/// The text for the caption displayed under the signature line.
-		/// </summary>
-		/// <remarks>
-		/// Text value defaults to 'Sign here.'
-		/// </remarks>
-		/// <value>The caption.</value>
-		public string CaptionText
-		{
-			get { return Caption.Text; }
-			set { Caption.Text = value; }
-		}
-
-		/// <summary>
-		/// Gets the text for the label that clears the pad when clicked.
-		/// </summary>
-		/// <value>The clear label.</value>
-		public string ClearLabelText
-		{
-			get { return ClearLabel.Text; }
-			set { ClearLabel.Text = value; }
-		}
+		public Image BackgroundImageView => GetTemplateChild (PartBackgroundImageView) as Image;
 
 		/// <summary>
 		/// Gets the label that clears the pad when clicked.
 		/// </summary>
-		/// <value>The clear label.</value>
-		public TextBlock ClearLabel { get; private set; }
+		public TextBlock ClearLabel => GetTemplateChild (PartClearLabel) as TextBlock;
 
 		/// <summary>
 		/// Gets the horizontal line that goes in the lower part of the pad.
 		/// </summary>
-		/// <value>The signature line.</value>
-		public Border SignatureLine { get; private set; }
+		public Border SignatureLine => GetTemplateChild (PartSignatureLine) as Border;
 
-		public event EventHandler StrokeCompleted;
-
-		public event EventHandler Cleared;
-
-		public void Clear ()
+		public Color StrokeColor
 		{
-			SignaturePadCanvas.Clear ();
-
-			UpdateUi ();
+			get { return (Color)GetValue (StrokeColorProperty); }
+			set { SetValue (StrokeColorProperty, value); }
 		}
 
-		public void LoadPoints (Point[] points)
+		public float StrokeWidth
 		{
-			SignaturePadCanvas.LoadPoints (points);
-
-			UpdateUi ();
+			get { return (float)GetValue (StrokeWidthProperty); }
+			set { SetValue (StrokeWidthProperty, value); }
 		}
 
-		public void LoadStrokes (Point[][] strokes)
+		public Brush SignatureLineBrush
 		{
-			SignaturePadCanvas.LoadStrokes (strokes);
-
-			UpdateUi ();
+			get { return (Brush)GetValue (SignatureLineBrushProperty); }
+			set { SetValue (SignatureLineBrushProperty, value); }
 		}
 
-		/// <summary>
-		/// Create an image of the currently drawn signature.
-		/// </summary>
-		public WriteableBitmap GetImage (bool shouldCrop = true, bool keepAspectRatio = true)
+		public Thickness SignatureLineThickness
 		{
-			return SignaturePadCanvas.GetImage (shouldCrop, keepAspectRatio);
+			get { return (Thickness)GetValue (SignatureLineThicknessProperty); }
+			set { SetValue (SignatureLineThicknessProperty, value); }
 		}
 
-		/// <summary>
-		/// Create an image of the currently drawn signature at the specified size.
-		/// </summary>
-		public WriteableBitmap GetImage (Size size, bool shouldCrop = true, bool keepAspectRatio = true)
+		public double SignatureLineSpacing
 		{
-			return SignaturePadCanvas.GetImage (size, shouldCrop, keepAspectRatio);
+			get { return (double)GetValue (SignatureLineSpacingProperty); }
+			set { SetValue (SignatureLineSpacingProperty, value); }
 		}
 
-		/// <summary>
-		/// Create an image of the currently drawn signature at the specified scale.
-		/// </summary>
-		public WriteableBitmap GetImage (float scale, bool shouldCrop = true, bool keepAspectRatio = true)
+		public string CaptionText
 		{
-			return SignaturePadCanvas.GetImage (scale, shouldCrop, keepAspectRatio);
+			get { return (string)GetValue (CaptionTextProperty); }
+			set { SetValue (CaptionTextProperty, value); }
 		}
 
-		/// <summary>
-		/// Create an image of the currently drawn signature with the specified stroke color.
-		/// </summary>
-		public WriteableBitmap GetImage (Color strokeColor, bool shouldCrop = true, bool keepAspectRatio = true)
+		public double CaptionFontSize
 		{
-			return SignaturePadCanvas.GetImage (strokeColor, shouldCrop, keepAspectRatio);
+			get { return (double)GetValue (CaptionFontSizeProperty); }
+			set { SetValue (CaptionFontSizeProperty, value); }
 		}
 
-		/// <summary>
-		/// Create an image of the currently drawn signature at the specified size with the specified stroke color.
-		/// </summary>
-		public WriteableBitmap GetImage (Color strokeColor, Size size, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Brush CaptionForeground
 		{
-			return SignaturePadCanvas.GetImage (strokeColor, size, shouldCrop, keepAspectRatio);
+			get { return (Brush)GetValue (CaptionForegroundProperty); }
+			set { SetValue (CaptionForegroundProperty, value); }
 		}
 
-		/// <summary>
-		/// Create an image of the currently drawn signature at the specified scale with the specified stroke color.
-		/// </summary>
-		public WriteableBitmap GetImage (Color strokeColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
+		public string SignaturePromptText
 		{
-			return SignaturePadCanvas.GetImage (strokeColor, scale, shouldCrop, keepAspectRatio);
+			get { return (string)GetValue (SignaturePromptTextProperty); }
+			set { SetValue (SignaturePromptTextProperty, value); }
 		}
 
-		/// <summary>
-		/// Create an image of the currently drawn signature with the specified stroke and background colors.
-		/// </summary>
-		public WriteableBitmap GetImage (Color strokeColor, Color fillColor, bool shouldCrop = true, bool keepAspectRatio = true)
+		public double SignaturePromptFontSize
 		{
-			return SignaturePadCanvas.GetImage (strokeColor, fillColor, shouldCrop, keepAspectRatio);
+			get { return (double)GetValue (SignaturePromptFontSizeProperty); }
+			set { SetValue (SignaturePromptFontSizeProperty, value); }
 		}
 
-		/// <summary>
-		/// Create an image of the currently drawn signature at the specified size with the specified stroke and background colors.
-		/// </summary>
-		public WriteableBitmap GetImage (Color strokeColor, Color fillColor, Size size, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Brush SignaturePromptForeground
 		{
-			return SignaturePadCanvas.GetImage (strokeColor, fillColor, size, shouldCrop, keepAspectRatio);
+			get { return (Brush)GetValue (SignaturePromptForegroundProperty); }
+			set { SetValue (SignaturePromptForegroundProperty, value); }
 		}
 
-		/// <summary>
-		/// Create an image of the currently drawn signature at the specified scale with the specified stroke and background colors.
-		/// </summary>
-		public WriteableBitmap GetImage (Color strokeColor, Color fillColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
+		public string ClearLabelText
 		{
-			return SignaturePadCanvas.GetImage (strokeColor, fillColor, scale, shouldCrop, keepAspectRatio);
+			get { return (string)GetValue (ClearLabelTextProperty); }
+			set { SetValue (ClearLabelTextProperty, value); }
 		}
 
-		/// <summary>
-		/// Create an image of the currently drawn signature using the specified settings.
-		/// </summary>
-		public WriteableBitmap GetImage (ImageConstructionSettings settings)
+		public double ClearLabelFontSize
 		{
-			return SignaturePadCanvas.GetImage (settings);
+			get { return (double)GetValue (ClearLabelFontSizeProperty); }
+			set { SetValue (ClearLabelFontSizeProperty, value); }
 		}
 
-		/// <summary>
-		/// Create an encoded image of the currently drawn signature.
-		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Color ClearLabelForeground
 		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, shouldCrop, keepAspectRatio);
+			get { return (Color)GetValue (ClearLabelForegroundProperty); }
+			set { SetValue (ClearLabelForegroundProperty, value); }
 		}
 
-		/// <summary>
-		/// Create an encoded image of the currently drawn signature at the specified size.
-		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Size size, bool shouldCrop = true, bool keepAspectRatio = true)
+		public ImageSource BackgroundImage
 		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, size, shouldCrop, keepAspectRatio);
+			get { return (ImageSource)GetValue (BackgroundImageProperty); }
+			set { SetValue (BackgroundImageProperty, value); }
 		}
 
-		/// <summary>
-		/// Create an encoded image of the currently drawn signature at the specified scale.
-		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
+		public Stretch BackgroundImageStretch
 		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, scale, shouldCrop, keepAspectRatio);
+			get { return (Stretch)GetValue (BackgroundImageStretchProperty); }
+			set { SetValue (BackgroundImageStretchProperty, value); }
 		}
 
-		/// <summary>
-		/// Create an encoded image of the currently drawn signature with the specified stroke color.
-		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, bool shouldCrop = true, bool keepAspectRatio = true)
+		public double BackgroundImageOpacity
 		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, shouldCrop, keepAspectRatio);
-		}
-
-		/// <summary>
-		/// Create an encoded image of the currently drawn signature at the specified size with the specified stroke color.
-		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, Size size, bool shouldCrop = true, bool keepAspectRatio = true)
-		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, size, shouldCrop, keepAspectRatio);
-		}
-
-		/// <summary>
-		/// Create an encoded image of the currently drawn signature at the specified scale with the specified stroke color.
-		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
-		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, scale, shouldCrop, keepAspectRatio);
-		}
-
-		/// <summary>
-		/// Create an encoded image of the currently drawn signature with the specified stroke and background colors.
-		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, Color fillColor, bool shouldCrop = true, bool keepAspectRatio = true)
-		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, fillColor, shouldCrop, keepAspectRatio);
-		}
-
-		/// <summary>
-		/// Create an encoded image of the currently drawn signature at the specified size with the specified stroke and background colors.
-		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, Color fillColor, Size size, bool shouldCrop = true, bool keepAspectRatio = true)
-		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, fillColor, size, shouldCrop, keepAspectRatio);
-		}
-
-		/// <summary>
-		/// Create an encoded image of the currently drawn signature at the specified scale with the specified stroke and background colors.
-		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, Color fillColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
-		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, fillColor, scale, shouldCrop, keepAspectRatio);
-		}
-
-		/// <summary>
-		/// Create an encoded image of the currently drawn signature using the specified settings.
-		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, ImageConstructionSettings settings)
-		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, settings);
+			get { return (double)GetValue (BackgroundImageOpacityProperty); }
+			set { SetValue (BackgroundImageOpacityProperty, value); }
 		}
 
 		private void UpdateUi ()
@@ -476,5 +226,27 @@ namespace Xamarin.Controls
 			ClearLabel.Visibility = IsBlank ? Visibility.Collapsed : Visibility.Visible;
 		}
 
+		private void OnPaddingChanged (DependencyObject sender, DependencyProperty dp)
+		{
+			var padding = Padding;
+			var spacing = SignatureLineSpacing;
+
+			if (SignatureLine != null)
+			{
+				SignatureLine.Margin = new Thickness (padding.Left, 0, padding.Right, 0);
+			}
+			if (Caption != null)
+			{
+				Caption.Margin = new Thickness (0, spacing, 0, padding.Bottom);
+			}
+			if (ClearLabel != null)
+			{
+				ClearLabel.Margin = new Thickness (0, padding.Top, padding.Right, 0);
+			}
+			if (SignaturePrompt != null)
+			{
+				SignaturePrompt.Margin = new Thickness (padding.Left, 0, 0, spacing);
+			}
+		}
 	}
 }

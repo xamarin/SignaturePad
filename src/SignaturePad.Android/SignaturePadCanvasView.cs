@@ -39,12 +39,8 @@ namespace Xamarin.Controls
 			inkPresenter.StrokeCompleted += OnStrokeCompleted;
 			AddView (inkPresenter);
 
-			// get some defaults
-			var settings = new ImageConstructionSettings ();
-			settings.ApplyDefaults ();
-
-			StrokeWidth = settings.StrokeWidth.Value;
-			StrokeColor = settings.StrokeColor.Value;
+			StrokeWidth = ImageConstructionSettings.DefaultStrokeWidth;
+			StrokeColor = ImageConstructionSettings.DefaultStrokeColor;
 		}
 
 		/// <summary>

@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.iOS", "Signatu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.Android", "SignaturePad.Android\SignaturePad.Android.csproj", "{F1A16CB9-A759-42C8-8F0B-3C9698A55336}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.Forms", "SignaturePad.Forms\SignaturePad.Forms.csproj", "{B2AF970D-D640-451C-95AF-92AF531B8C1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignaturePad.Forms", "SignaturePad.Forms\SignaturePad.Forms.csproj", "{B2AF970D-D640-451C-95AF-92AF531B8C1E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.Forms.Droid", "SignaturePad.Forms.Droid\SignaturePad.Forms.Droid.csproj", "{1D5482F6-AA89-422C-9E34-88A8A1AD8AB6}"
 EndProject
@@ -20,8 +20,6 @@ EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SignaturePad.InkPresenter.Shared", "SignaturePad.InkPresenter.Shared\SignaturePad.InkPresenter.Shared.shproj", "{A839EE31-E686-433E-B1F4-52A56C384D30}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SignaturePad.Forms.Shared", "SignaturePad.Forms.Shared\SignaturePad.Forms.Shared.shproj", "{D522B5D1-E475-4E17-9282-564952CAD281}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignaturePad.Forms.NetStandard", "SignaturePad.Forms.NetStandard\SignaturePad.Forms.NetStandard.csproj", "{8B2BC733-F111-4F13-B4EF-55AE66E7B676}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -64,10 +62,6 @@ Global
 		{B12D20AA-0EDF-4903-B385-BB8090848532}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B12D20AA-0EDF-4903-B385-BB8090848532}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B12D20AA-0EDF-4903-B385-BB8090848532}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8B2BC733-F111-4F13-B4EF-55AE66E7B676}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8B2BC733-F111-4F13-B4EF-55AE66E7B676}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8B2BC733-F111-4F13-B4EF-55AE66E7B676}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8B2BC733-F111-4F13-B4EF-55AE66E7B676}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

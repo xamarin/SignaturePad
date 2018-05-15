@@ -44,7 +44,7 @@ namespace Xamarin.Controls
 
 		public event EventHandler Cleared;
 
-		public bool IsBlank => inkPresenter.GetStrokes ().Count == 0;
+		public bool IsBlank => inkPresenter == null ? true : inkPresenter.GetStrokes ().Count == 0;
 
 		public NativePoint[] Points
 		{

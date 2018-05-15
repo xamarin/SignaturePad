@@ -135,6 +135,9 @@ namespace Xamarin.Controls
 		internal static readonly NativeColor Transparent = NativeColor.FromArgb (0, 0, 0, 0);
 #endif
 
+		public static readonly float DefaultStrokeWidth = 2f;
+		public static readonly NativeColor DefaultStrokeColor = Black;
+
 		public bool? ShouldCrop { get; set; }
 
 		public SizeOrScale? DesiredSizeOrScale { get; set; }
@@ -149,7 +152,7 @@ namespace Xamarin.Controls
 
 		internal void ApplyDefaults ()
 		{
-			ApplyDefaults (1f, Black);
+			ApplyDefaults (DefaultStrokeWidth, DefaultStrokeColor);
 		}
 
 		internal void ApplyDefaults (float strokeWidth, NativeColor strokeColor)

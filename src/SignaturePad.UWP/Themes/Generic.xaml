@@ -1,0 +1,102 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Xamarin.Controls">
+
+    <Style TargetType="local:SignaturePad">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:SignaturePad">
+                    <Border
+                        BorderThickness="1"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        Background="{TemplateBinding Background}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Image
+                                Name="BackgroundImageView"
+                                Source="{TemplateBinding BackgroundImage}"
+                                Stretch="{TemplateBinding BackgroundImageStretch}"
+                                Opacity="{TemplateBinding BackgroundImageOpacity}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Grid.RowSpan="2" />
+
+                            <local:SignaturePadCanvasView
+                                Name="SignaturePadCanvas"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                StrokeColor="{TemplateBinding StrokeColor}"
+                                StrokeWidth="{TemplateBinding StrokeWidth}"
+                                Grid.RowSpan="2" />
+
+                            <TextBlock
+                                Name="SignaturePrompt"
+                                Text="{TemplateBinding SignaturePromptText}"
+                                FontSize="{TemplateBinding SignaturePromptFontSize}"
+                                Foreground="{TemplateBinding SignaturePromptForeground}"
+                                IsHitTestVisible="False"
+                                FontWeight="Bold"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Bottom" />
+
+                            <TextBlock
+                                Name="ClearLabel"
+                                Text="{TemplateBinding ClearLabelText}"
+                                FontSize="{TemplateBinding ClearLabelFontSize}"
+                                Foreground="{TemplateBinding ClearLabelForeground}"
+                                FontWeight="Bold"
+                                Visibility="Collapsed"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top" />
+
+                            <TextBlock
+                                Name="Caption"
+                                Text="{TemplateBinding CaptionText}"
+                                FontSize="{TemplateBinding CaptionFontSize}"
+                                Foreground="{TemplateBinding CaptionForeground}"
+                                IsHitTestVisible="False"
+                                TextAlignment="Center"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Bottom"
+                                Grid.Row="1" />
+
+                            <Border
+                                Name="SignatureLine"
+                                Background="{TemplateBinding SignatureLineBrush}"
+                                IsHitTestVisible="False"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Bottom"
+                                Height="{TemplateBinding SignatureLineThickness}" />
+
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="local:SignaturePadCanvasView">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:SignaturePadCanvasView">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <InkCanvas Name="InkCanvas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

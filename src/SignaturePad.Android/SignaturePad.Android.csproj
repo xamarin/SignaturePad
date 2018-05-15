@@ -11,6 +11,8 @@
     <RootNamespace>Xamarin.Controls</RootNamespace>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
+    <AndroidResgenClass>Resource</AndroidResgenClass>
+    <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AssemblyName>SignaturePad</AssemblyName>
     <TargetFrameworkVersion>v4.0.3</TargetFrameworkVersion>
     <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
@@ -41,7 +43,6 @@
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ItemGroup>
     <Compile Include="..\SignaturePad\Properties\AssemblyInfo.Common.cs">
       <Link>Properties\AssemblyInfo.Common.cs</Link>
@@ -51,9 +52,16 @@
     </Compile>
     <Compile Include="InkPresenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="SignaturePadCanvasView.cs" />
     <Compile Include="SignaturePadView.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\signature_pad_background.xml" SubType="Designer" />
+    <AndroidResource Include="Resources\values\signature_pad_defaults.xml" SubType="Designer" />
+    <AndroidResource Include="Resources\layout\signature_pad_layout.axml" SubType="Designer" />
+  </ItemGroup>
   <Import Project="..\SignaturePad.Shared\SignaturePad.Shared.projitems" Label="Shared" />
   <Import Project="..\SignaturePad.InkPresenter.Shared\SignaturePad.InkPresenter.Shared.projitems" Label="Shared" />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

@@ -5,25 +5,12 @@ using Android.Graphics.Drawables;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using System.Threading.Tasks;
-using System.IO;
 
 namespace Xamarin.Controls
 {
 	public partial class SignaturePadView : RelativeLayout
 	{
 		private static Random rnd = new Random ();
-
-		private static int GenerateId (View view)
-		{
-			int id;
-			do
-			{
-				id = rnd.Next (1, 0x00FFFFFF);
-			}
-			while (view.FindViewById<View> (id) != null);
-			return id;
-		}
 
 		public SignaturePadView (Context context)
 			: base (context)
@@ -45,114 +32,28 @@ namespace Xamarin.Controls
 
 		private void Initialize ()
 		{
-			// add the background view
-			{
-				BackgroundImageView = new ImageView (Context)
-				{
-					Id = GenerateId (this),
-					LayoutParameters = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.MatchParent, RelativeLayout.LayoutParams.MatchParent)
-				};
-				AddView (BackgroundImageView);
-			}
+			Inflate (Context, Resource.Layout.signature_pad_layout, this);
 
-			// add the main signature view
-			{
-				SignaturePadCanvas = new SignaturePadCanvasView (Context)
-				{
-					Id = GenerateId (this),
-					LayoutParameters = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.MatchParent, RelativeLayout.LayoutParams.MatchParent)
-				};
-				SignaturePadCanvas.StrokeCompleted += (sender, e) =>
-				{
-					UpdateUi ();
-					StrokeCompleted?.Invoke (this, EventArgs.Empty);
-				};
-				SignaturePadCanvas.Cleared += (sender, e) => Cleared?.Invoke (this, EventArgs.Empty);
-				AddView (SignaturePadCanvas);
-			}
+			SetBackgroundResource (Resource.Drawable.signature_pad_background);
 
-			// add the caption
-			{
-				Caption = new TextView (Context)
-				{
-					Id = GenerateId (this),
-					Text = "Sign Here"
-				};
-				var layout = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.WrapContent, RelativeLayout.LayoutParams.WrapContent)
-				{
-					AlignWithParent = true,
-					BottomMargin = 6
-				};
-				layout.AddRule (LayoutRules.AlignBottom);
-				layout.AddRule (LayoutRules.CenterHorizontal);
-				Caption.LayoutParameters = layout;
-				Caption.SetIncludeFontPadding (true);
-				Caption.SetPadding (0, 0, 0, 6);
-				AddView (Caption);
-			}
+			BackgroundImageView = FindViewById<ImageView> (Resource.Id.background_image);
 
-			// add the signature line
-			{
-				SignatureLine = new View (Context)
-				{
-					Id = GenerateId (this)
-				};
-				SignatureLine.SetBackgroundColor (Color.Gray);
-				var layout = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.MatchParent, 1);
-				layout.SetMargins (10, 0, 10, 5);
-				layout.AddRule (LayoutRules.Above, Caption.Id);
-				SignatureLine.LayoutParameters = layout;
-				AddView (SignatureLine);
-			}
+			SignaturePadCanvas = FindViewById<SignaturePadCanvasView> (Resource.Id.signature_canvas);
+			SignaturePadCanvas.StrokeCompleted += (sender, e) => OnSignatureStrokeCompleted ();
+			SignaturePadCanvas.Cleared += (sender, e) => OnSignatureCleared ();
 
-			// add the prompt
-			{
-				SignaturePrompt = new TextView (Context)
-				{
-					Id = GenerateId (this),
-					Text = "X"
-				};
-				SignaturePrompt.SetTypeface (null, TypefaceStyle.Bold);
-				var layout = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.WrapContent, RelativeLayout.LayoutParams.WrapContent)
-				{
-					LeftMargin = 11
-				};
-				layout.AddRule (LayoutRules.Above, SignatureLine.Id);
-				SignaturePrompt.LayoutParameters = layout;
-				AddView (SignaturePrompt);
-			}
+			Caption = FindViewById<TextView> (Resource.Id.caption);
 
-			// add the clear label
-			{
-				ClearLabel = new TextView (Context)
-				{
-					Id = GenerateId (this),
-					Text = "Clear",
-					Visibility = ViewStates.Invisible
-				};
-				var layout = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.WrapContent, RelativeLayout.LayoutParams.WrapContent)
-				{
-					AlignWithParent = true
-				};
-				layout.SetMargins (0, 10, 22, 0);
-				layout.AddRule (LayoutRules.AlignRight);
-				layout.AddRule (LayoutRules.AlignTop);
-				ClearLabel.LayoutParameters = layout;
-				AddView (ClearLabel);
+			SignatureLine = FindViewById<View> (Resource.Id.signature_line);
 
-				// attach the "clear" command
-				ClearLabel.Click += (sender, e) => Clear ();
-			}
+			SignaturePrompt = FindViewById<TextView> (Resource.Id.signature_prompt);
+
+			ClearLabel = FindViewById<TextView> (Resource.Id.clear_label);
+			ClearLabel.Click += (sender, e) => OnClearTapped ();
 
 			// clear / initialize the view
 			Clear ();
 		}
-
-		public System.Drawing.PointF[] Points => SignaturePadCanvas.Points;
-
-		public System.Drawing.PointF[][] Strokes => SignaturePadCanvas.Strokes;
-
-		public bool IsBlank => SignaturePadCanvas.IsBlank;
 
 		public SignaturePadCanvasView SignaturePadCanvas { get; private set; }
 
@@ -275,191 +176,6 @@ namespace Xamarin.Controls
 		/// </summary>
 		/// <value>The signature line.</value>
 		public View SignatureLine { get; private set; }
-
-		public event EventHandler StrokeCompleted;
-
-		public event EventHandler Cleared;
-
-		public void Clear ()
-		{
-			SignaturePadCanvas.Clear ();
-
-			UpdateUi ();
-		}
-
-		public void LoadPoints (System.Drawing.PointF[] points)
-		{
-			SignaturePadCanvas.LoadPoints (points);
-
-			UpdateUi ();
-		}
-
-		public void LoadStrokes (System.Drawing.PointF[][] strokes)
-		{
-			SignaturePadCanvas.LoadStrokes (strokes);
-
-			UpdateUi ();
-		}
-
-		/// <summary>
-		/// Create an image of the currently drawn signature.
-		/// </summary>
-		public Bitmap GetImage (bool shouldCrop = true, bool keepAspectRatio = true)
-		{
-			return SignaturePadCanvas.GetImage (shouldCrop, keepAspectRatio);
-		}
-
-		/// <summary>
-		/// Create an image of the currently drawn signature at the specified size.
-		/// </summary>
-		public Bitmap GetImage (System.Drawing.SizeF size, bool shouldCrop = true, bool keepAspectRatio = true)
-		{
-			return SignaturePadCanvas.GetImage (size, shouldCrop, keepAspectRatio);
-		}
-
-		/// <summary>
-		/// Create an image of the currently drawn signature at the specified scale.
-		/// </summary>
-		public Bitmap GetImage (float scale, bool shouldCrop = true, bool keepAspectRatio = true)
-		{
-			return SignaturePadCanvas.GetImage (scale, shouldCrop, keepAspectRatio);
-		}
-
-		/// <summary>
-		/// Create an image of the currently drawn signature with the specified stroke color.
-		/// </summary>
-		public Bitmap GetImage (Color strokeColor, bool shouldCrop = true, bool keepAspectRatio = true)
-		{
-			return SignaturePadCanvas.GetImage (strokeColor, shouldCrop, keepAspectRatio);
-		}
-
-		/// <summary>
-		/// Create an image of the currently drawn signature at the specified size with the specified stroke color.
-		/// </summary>
-		public Bitmap GetImage (Color strokeColor, System.Drawing.SizeF size, bool shouldCrop = true, bool keepAspectRatio = true)
-		{
-			return SignaturePadCanvas.GetImage (strokeColor, size, shouldCrop, keepAspectRatio);
-		}
-
-		/// <summary>
-		/// Create an image of the currently drawn signature at the specified scale with the specified stroke color.
-		/// </summary>
-		public Bitmap GetImage (Color strokeColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
-		{
-			return SignaturePadCanvas.GetImage (strokeColor, scale, shouldCrop, keepAspectRatio);
-		}
-
-		/// <summary>
-		/// Create an image of the currently drawn signature with the specified stroke and background colors.
-		/// </summary>
-		public Bitmap GetImage (Color strokeColor, Color fillColor, bool shouldCrop = true, bool keepAspectRatio = true)
-		{
-			return SignaturePadCanvas.GetImage (strokeColor, fillColor, shouldCrop, keepAspectRatio);
-		}
-
-		/// <summary>
-		/// Create an image of the currently drawn signature at the specified size with the specified stroke and background colors.
-		/// </summary>
-		public Bitmap GetImage (Color strokeColor, Color fillColor, System.Drawing.SizeF size, bool shouldCrop = true, bool keepAspectRatio = true)
-		{
-			return SignaturePadCanvas.GetImage (strokeColor, fillColor, size, shouldCrop, keepAspectRatio);
-		}
-
-		/// <summary>
-		/// Create an image of the currently drawn signature at the specified scale with the specified stroke and background colors.
-		/// </summary>
-		public Bitmap GetImage (Color strokeColor, Color fillColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
-		{
-			return SignaturePadCanvas.GetImage (strokeColor, fillColor, scale, shouldCrop, keepAspectRatio);
-		}
-
-		/// <summary>
-		/// Create an image of the currently drawn signature using the specified settings.
-		/// </summary>
-		public Bitmap GetImage (ImageConstructionSettings settings)
-		{
-			return SignaturePadCanvas.GetImage (settings);
-		}
-
-		/// <summary>
-		/// Create an encoded image of the currently drawn signature.
-		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, bool shouldCrop = true, bool keepAspectRatio = true)
-		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, shouldCrop, keepAspectRatio);
-		}
-
-		/// <summary>
-		/// Create an encoded image of the currently drawn signature at the specified size.
-		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, System.Drawing.SizeF size, bool shouldCrop = true, bool keepAspectRatio = true)
-		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, size, shouldCrop, keepAspectRatio);
-		}
-
-		/// <summary>
-		/// Create an encoded image of the currently drawn signature at the specified scale.
-		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
-		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, scale, shouldCrop, keepAspectRatio);
-		}
-
-		/// <summary>
-		/// Create an encoded image of the currently drawn signature with the specified stroke color.
-		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, bool shouldCrop = true, bool keepAspectRatio = true)
-		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, shouldCrop, keepAspectRatio);
-		}
-
-		/// <summary>
-		/// Create an encoded image of the currently drawn signature at the specified size with the specified stroke color.
-		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, System.Drawing.SizeF size, bool shouldCrop = true, bool keepAspectRatio = true)
-		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, size, shouldCrop, keepAspectRatio);
-		}
-
-		/// <summary>
-		/// Create an encoded image of the currently drawn signature at the specified scale with the specified stroke color.
-		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
-		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, scale, shouldCrop, keepAspectRatio);
-		}
-
-		/// <summary>
-		/// Create an encoded image of the currently drawn signature with the specified stroke and background colors.
-		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, Color fillColor, bool shouldCrop = true, bool keepAspectRatio = true)
-		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, fillColor, shouldCrop, keepAspectRatio);
-		}
-
-		/// <summary>
-		/// Create an encoded image of the currently drawn signature at the specified size with the specified stroke and background colors.
-		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, Color fillColor, System.Drawing.SizeF size, bool shouldCrop = true, bool keepAspectRatio = true)
-		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, fillColor, size, shouldCrop, keepAspectRatio);
-		}
-
-		/// <summary>
-		/// Create an encoded image of the currently drawn signature at the specified scale with the specified stroke and background colors.
-		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, Color strokeColor, Color fillColor, float scale, bool shouldCrop = true, bool keepAspectRatio = true)
-		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, strokeColor, fillColor, scale, shouldCrop, keepAspectRatio);
-		}
-
-		/// <summary>
-		/// Create an encoded image of the currently drawn signature using the specified settings.
-		/// </summary>
-		public Task<Stream> GetImageStreamAsync (SignatureImageFormat format, ImageConstructionSettings settings)
-		{
-			return SignaturePadCanvas.GetImageStreamAsync (format, settings);
-		}
 
 		private void UpdateUi ()
 		{
