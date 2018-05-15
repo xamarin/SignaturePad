@@ -5,10 +5,10 @@
     xmlns:local="using:Sample.UWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:my="using:Xamarin.Controls"
+    xmlns:controls="using:Xamarin.Controls"
     mc:Ignorable="d">
 
-    <Grid x:Name="LayoutRoot" Background="LightGray" Padding="12">
+    <Grid x:Name="LayoutRoot" Padding="12">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -16,19 +16,17 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <my:SignaturePad x:Name="signatureView" Grid.Row="0" />
+        <controls:SignaturePad x:Name="signatureView" Grid.Row="0"
+                                   StrokeCompleted="SignatureChanged" Cleared="SignatureChanged" />
 
-        <Button x:Name="btnSave" Content="Save" Click="btnSave_Click" 
-                Background="DarkGray" Foreground="Black" BorderBrush="Black" 
+        <Button x:Name="btnSave" Content="Save Vector" Click="SaveVectorClicked"
                 HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="2" />
 
-        <Button x:Name="btnLoad" Content="Load Last" Click="btnLoad_Click" 
-                Background="DarkGray" Foreground="Black" BorderBrush="Black" 
-                HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="2" />
-
-        <Button x:Name="btnSaveImage" Content="Save Image" Click="btnSaveImage_Click" 
-                Background="DarkGray" Foreground="Black" BorderBrush="Black" 
+        <Button x:Name="btnLoad" Content="Load Vector" Click="LoadVectorClicked"
                 HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Row="2" />
+
+        <Button x:Name="btnSaveImage" Content="Save Image" Click="SaveImageClicked"
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="2" />
 
     </Grid>
 

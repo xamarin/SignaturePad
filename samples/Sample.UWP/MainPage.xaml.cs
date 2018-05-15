@@ -3,9 +3,9 @@ using System.IO;
 using Windows.Foundation;
 using Windows.Storage;
 using Windows.UI;
-using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+
 using Xamarin.Controls;
 
 namespace Sample.UWP
@@ -18,34 +18,37 @@ namespace Sample.UWP
 		{
 			InitializeComponent ();
 
-			signatureView.StrokeCompleted += (sender, e) => UpdateUi ();
-			signatureView.Cleared += (sender, e) => UpdateUi ();
-
-			UpdateUi ();
+			UpdateControls ();
 		}
 
-		private async void btnSave_Click (object sender, RoutedEventArgs e)
-		{
-			points = signatureView.Points;
-
-			await new MessageDialog ("Vector saved!").ShowAsync ();
-
-			UpdateUi ();
-		}
-
-		private void UpdateUi ()
+		private void UpdateControls ()
 		{
 			btnSave.IsEnabled = !signatureView.IsBlank;
 			btnSaveImage.IsEnabled = !signatureView.IsBlank;
 			btnLoad.IsEnabled = points != null;
 		}
 
-		private void btnLoad_Click (object sender, RoutedEventArgs e)
+		private void SaveVectorClicked (object sender, RoutedEventArgs e)
+		{
+			points = signatureView.Points;
+			UpdateControls ();
+
+			var flyout = new Flyout
+			{
+				Content = new TextBlock
+				{
+					Text = "Vector signature saved to memory."
+				}
+			};
+			flyout.ShowAt (btnSave);
+		}
+
+		private void LoadVectorClicked (object sender, RoutedEventArgs e)
 		{
 			signatureView.LoadPoints (points);
 		}
 
-		private async void btnSaveImage_Click (object sender, RoutedEventArgs e)
+		private async void SaveImageClicked (object sender, RoutedEventArgs e)
 		{
 			var storageFolder = await KnownFolders.GetFolderForUserAsync (null, KnownFolderId.PicturesLibrary);
 			var file = await storageFolder.CreateFileAsync ("signature.png", CreationCollisionOption.ReplaceExisting);
@@ -57,7 +60,19 @@ namespace Sample.UWP
 				await bitmap.CopyToAsync (dest);
 			}
 
-			await new MessageDialog ("Picture saved to photo library!").ShowAsync ();
+			var flyout = new Flyout
+			{
+				Content = new TextBlock
+				{
+					Text = "Raster signature saved to the photo library."
+				}
+			};
+			flyout.ShowAt (btnSaveImage);
+		}
+
+		private void SignatureChanged (object sender, EventArgs e)
+		{
+			UpdateControls ();
 		}
 	}
 }

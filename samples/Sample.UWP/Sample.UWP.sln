@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26228.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.UWP", "Sample.UWP\Sample.UWP.csproj", "{1864E65A-B7F5-49AE-BF54-6A06C5CFD625}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.UWP", "Sample.UWP.csproj", "{1864E65A-B7F5-49AE-BF54-6A06C5CFD625}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignaturePad.UWP", "..\..\src\SignaturePad.UWP\SignaturePad.UWP.csproj", "{16131FDC-D50B-4EF2-8ECC-661184FF80DB}"
 EndProject
@@ -64,5 +64,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C5C464A1-5A66-41CD-9338-F56E7C671A9A}
 	EndGlobalSection
 EndGlobal
