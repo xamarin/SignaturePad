@@ -14,8 +14,17 @@ Not only is Signature Pad available for native apps, but also available in Xamar
 
 ## Using Signature Pad
 
-Prebuilt versions of Signature Pad are available at the [Xamarin Component Store][comp-store-link]
-and on [NuGet.org][nuget-link].
+Signature Pad can be installed from [NuGet.org][nuget-link] for native Xamarin and Windows app:
+
+```
+nuget install Xamarin.Controls.SignaturePad
+```
+
+And also for Xamarin.Forms apps:
+
+```
+nuget install Xamarin.Controls.SignaturePad.Forms
+```
 
 ### Using Signature Pad on iOS
 
