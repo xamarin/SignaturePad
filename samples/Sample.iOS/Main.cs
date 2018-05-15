@@ -1,4 +1,4 @@
-using UIKit;
+﻿using UIKit;
 
 namespace Sample.iOS
 {
@@ -6,7 +6,7 @@ namespace Sample.iOS
 	{
 		static void Main (string[] args)
 		{
-			UIApplication.Main (args, null, "AppDelegate");
+			UIApplication.Main (args, null, nameof (AppDelegate));
 		}
 	}
 }

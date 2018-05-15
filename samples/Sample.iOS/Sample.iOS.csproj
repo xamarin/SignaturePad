@@ -3,142 +3,73 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+    <ProjectGuid>{101E3060-8799-4119-8A7A-4F86A01C0C84}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProjectGuid>{36FA6AFC-AF0C-4C0B-87B8-6DC29B00AF8C}</ProjectGuid>
+    <TemplateGuid>{edc1b0fa-90cd-4038-8fad-98fe74adb368}</TemplateGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>Sample.iOS</RootNamespace>
-    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>SampleiOS</AssemblyName>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\unified\iPhoneSimulator\Debug</OutputPath>
-    <IntermediateOutputPath>obj\unified\iPhoneSimulator\Debug</IntermediateOutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <MtouchArch>i386, x86_64</MtouchArch>
+    <MtouchArch>x86_64</MtouchArch>
     <MtouchLink>None</MtouchLink>
     <MtouchDebug>true</MtouchDebug>
-    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
-    <DebugType>full</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\unified\iPhoneSimulator\Release</OutputPath>
-    <IntermediateOutputPath>obj\unified\iPhoneSimulator\Release</IntermediateOutputPath>
+    <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <MtouchLink>None</MtouchLink>
-    <MtouchArch>i386, x86_64</MtouchArch>
+    <MtouchLink>Full</MtouchLink>
+    <MtouchArch>x86_64</MtouchArch>
     <ConsolePause>false</ConsolePause>
-    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignProvision />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\unified\iPhone\Debug</OutputPath>
-    <IntermediateOutputPath>obj\unified\iPhone\Debug</IntermediateOutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <OutputPath>bin\iPhone\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <MtouchArch>ARMv7, ARMv7s, ARM64</MtouchArch>
+    <MtouchArch>ARM64</MtouchArch>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <CodesignKey>iPhone Developer</CodesignKey>
-    <MtouchDebug>True</MtouchDebug>
-    <MtouchSdkVersion></MtouchSdkVersion>
-    <MtouchLink>SdkOnly</MtouchLink>
-    <MtouchProfiling>False</MtouchProfiling>
-    <MtouchFastDev>False</MtouchFastDev>
-    <MtouchUseLlvm>False</MtouchUseLlvm>
-    <MtouchUseThumb>False</MtouchUseThumb>
-    <MtouchEnableBitcode>False</MtouchEnableBitcode>
-    <OptimizePNGs>True</OptimizePNGs>
-    <MtouchTlsProvider>Default</MtouchTlsProvider>
-    <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
-    <MtouchFloat32>False</MtouchFloat32>
-    <DeviceSpecificBuild>False</DeviceSpecificBuild>
+    <MtouchDebug>true</MtouchDebug>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
-    <DebugType>full</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\unified\iPhone\Release</OutputPath>
-    <IntermediateOutputPath>obj\unified\iPhone\Release</IntermediateOutputPath>
+    <OutputPath>bin\iPhone\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
-    <MtouchArch>ARMv7, ARMv7s, ARM64</MtouchArch>
+    <MtouchArch>ARM64</MtouchArch>
     <ConsolePause>false</ConsolePause>
     <CodesignKey>iPhone Developer</CodesignKey>
-    <MtouchSdkVersion></MtouchSdkVersion>
     <MtouchLink>Full</MtouchLink>
-    <MtouchDebug>False</MtouchDebug>
-    <MtouchProfiling>False</MtouchProfiling>
-    <MtouchFastDev>False</MtouchFastDev>
-    <MtouchUseLlvm>False</MtouchUseLlvm>
-    <MtouchUseThumb>False</MtouchUseThumb>
-    <MtouchEnableBitcode>False</MtouchEnableBitcode>
-    <OptimizePNGs>True</OptimizePNGs>
-    <MtouchTlsProvider>Default</MtouchTlsProvider>
-    <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
-    <MtouchFloat32>False</MtouchFloat32>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
+    <AppExtensionDebugBundleId />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\Default-586h%402x.png" />
-    <BundleResource Include="Resources\Default-586h%402x%402x.png" />
-    <BundleResource Include="Resources\Default-586h%402x-568h%402x.png" />
-    <BundleResource Include="Resources\Default-586h%402x-Landscape.png" />
-    <BundleResource Include="Resources\Default-586h%402x-Landscape%402x.png" />
-    <BundleResource Include="Resources\Default-586h%402x-Portrait.png" />
-    <BundleResource Include="Resources\Default-586h%402x-Portrait%402x.png" />
-    <BundleResource Include="Resources\Icon.png" />
-    <BundleResource Include="Resources\Icon%402x.png" />
-    <BundleResource Include="Resources\Icon-60%402x.png" />
-    <BundleResource Include="Resources\Icon-72.png" />
-    <BundleResource Include="Resources\Icon-72%402x.png" />
-    <BundleResource Include="Resources\Icon-76.png" />
-    <BundleResource Include="Resources\Icon-76%402x.png" />
-    <BundleResource Include="Resources\Icon-Small.png" />
-    <BundleResource Include="Resources\Icon-Small%402x.png" />
-    <BundleResource Include="Resources\Icon-Small-40.png" />
-    <BundleResource Include="Resources\Icon-Small-40%402x.png" />
-    <BundleResource Include="Resources\Icon-Small-50.png" />
-    <BundleResource Include="Resources\Icon-Small-50%402x.png" />
-    <BundleResource Include="Resources\logo-galaxy-black-64.png" />
-    <BundleResource Include="Default-568h%402x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Info.plist" />
-    <None Include="Entitlements.plist" />
-    <InterfaceDefinition Include="MainStoryboard.storyboard" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="CodeBehindViewController.cs" />
-    <Compile Include="CodeBehindViewController.designer.cs">
-      <DependentUpon>CodeBehindViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Main.cs" />
-    <Compile Include="AppDelegate.cs" />
-    <Compile Include="SampleViewController.cs" />
-    <Compile Include="SampleViewController.designer.cs">
-      <DependentUpon>SampleViewController.cs</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
-  <ItemGroup>
-    <ITunesArtwork Include="iTunesArtwork.png" />
-    <ITunesArtwork Include="iTunesArtwork%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\SignaturePad.iOS\SignaturePad.iOS.csproj">
@@ -148,4 +79,45 @@
       <IsWatchApp>false</IsWatchApp>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons.appiconset\Contents.json" Visible="False" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons.appiconset\Icon-App-20x20@1x.png" Visible="False" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons.appiconset\Icon-App-20x20@2x.png" Visible="False" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons.appiconset\Icon-App-20x20@3x.png" Visible="False" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons.appiconset\Icon-App-29x29@1x.png" Visible="False" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons.appiconset\Icon-App-29x29@2x.png" Visible="False" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons.appiconset\Icon-App-29x29@3x.png" Visible="False" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons.appiconset\Icon-App-40x40@1x.png" Visible="False" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons.appiconset\Icon-App-40x40@2x.png" Visible="False" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons.appiconset\Icon-App-40x40@3x.png" Visible="False" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons.appiconset\Icon-App-60x60@2x.png" Visible="False" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons.appiconset\Icon-App-60x60@3x.png" Visible="False" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons.appiconset\Icon-App-76x76@1x.png" Visible="False" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons.appiconset\Icon-App-76x76@2x.png" Visible="False" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons.appiconset\Icon-App-83.5x83.5@2x.png" Visible="False" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons.appiconset\ItunesArtwork@2x.png" Visible="False" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\signature-pad-glyph.png" />
+    <BundleResource Include="Resources\gradient.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="LaunchScreen.storyboard" />
+    <InterfaceDefinition Include="Main.storyboard" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Info.plist" />
+    <None Include="Entitlements.plist" />
+    <ITunesArtwork Include="iTunesArtwork" />
+    <ITunesArtwork Include="iTunesArtwork%402x" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Main.cs" />
+    <Compile Include="AppDelegate.cs" />
+    <Compile Include="ViewController.cs" />
+    <Compile Include="ViewController.designer.cs">
+      <DependentUpon>ViewController.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
