@@ -17,11 +17,11 @@ Task("libs")
     var sln = IsRunningOnWindows() ? "./src/SignaturePad.sln" : "./src/SignaturePad.Mac.sln";
 
     MSBuild(sln, new MSBuildSettings {
-        Targets = { "Restore", "Build" },
         Verbosity = Verbosity.Minimal,
         Configuration = configuration,
         PlatformTarget = PlatformTarget.MSIL,
         MSBuildPlatform = MSBuildPlatform.x86,
+        ArgumentCustomization = args => args.Append("/restore"),
         Properties = {
             { "AssemblyVersion", new [] { $"{majorVersion}.0.0.0" } },
             { "Version", new [] { packageVersion } },
@@ -34,20 +34,21 @@ Task("libs")
     EnsureDirectoryExists("./output/uwp/Themes");
     EnsureDirectoryExists("./output/netstandard/");
 
-    CopyFiles("./src/SignaturePad.Android/bin/Debug/SignaturePad.*", "./output/android/");
-    CopyFiles("./src/SignaturePad.iOS/bin/Debug/SignaturePad.*", "./output/ios/");
-    CopyFiles("./src/SignaturePad.UWP/bin/Debug/SignaturePad.*", "./output/uwp/");
-    CopyFiles("./src/SignaturePad.UWP/bin/Debug/Themes/*", "./output/uwp/Themes");
+    CopyFiles($"./src/SignaturePad.Android/bin/{configuration}/SignaturePad.*", "./output/android/");
+    CopyFiles($"./src/SignaturePad.iOS/bin/{configuration}/SignaturePad.*", "./output/ios/");
+    CopyFiles($"./src/SignaturePad.UWP/bin/{configuration}/SignaturePad.*", "./output/uwp/");
+    CopyFiles($"./src/SignaturePad.UWP/bin/{configuration}/Themes/*", "./output/uwp/Themes");
 
-    CopyFiles("./src/SignaturePad.Forms.Android/bin/Debug/SignaturePad.Forms.*", "./output/android/");
-    CopyFiles("./src/SignaturePad.Forms.iOS/bin/Debug/SignaturePad.Forms.*", "./output/ios/");
-    CopyFiles("./src/SignaturePad.Forms.UWP/bin/Debug/SignaturePad.Forms.*", "./output/uwp/");
-    CopyFiles("./src/SignaturePad.Forms.UWP/bin/Debug/Themes/*", "./output/uwp/Themes");
-    CopyFiles("./src/SignaturePad.Forms/bin/Debug/SignaturePad.Forms.*", "./output/netstandard/");
+    CopyFiles($"./src/SignaturePad.Forms.Android/bin/{configuration}/SignaturePad.Forms.*", "./output/android/");
+    CopyFiles($"./src/SignaturePad.Forms.iOS/bin/{configuration}/SignaturePad.Forms.*", "./output/ios/");
+    CopyFiles($"./src/SignaturePad.Forms.UWP/bin/{configuration}/SignaturePad.Forms.*", "./output/uwp/");
+    CopyFiles($"./src/SignaturePad.Forms.UWP/bin/{configuration}/Themes/*", "./output/uwp/Themes");
+    CopyFiles($"./src/SignaturePad.Forms/bin/{configuration}/SignaturePad.Forms.*", "./output/netstandard/");
 });
 
 Task("nuget")
     .IsDependentOn("libs")
+    .WithCriteria(IsRunningOnWindows())
     .Does(() =>
 {
     var nuget = Context.Tools.Resolve("nuget.exe");
@@ -68,11 +69,11 @@ Task("samples")
     .Does(() =>
 {
     var settings = new MSBuildSettings {
-        Targets = { "Restore", "Build" },
         Verbosity = Verbosity.Minimal,
         Configuration = configuration,
         PlatformTarget = PlatformTarget.MSIL,
         MSBuildPlatform = MSBuildPlatform.x86,
+        ArgumentCustomization = args => args.Append("/restore"),
     };
 
     if (!IsRunningOnWindows()) {
