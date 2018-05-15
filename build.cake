@@ -45,7 +45,7 @@ Task("libs")
     CopyFiles($"./src/SignaturePad.UWP/bin/{configuration}/SignaturePad.*", "./output/uwp/");
     CopyFiles($"./src/SignaturePad.UWP/bin/{configuration}/Themes/*", "./output/uwp/Themes");
 
-    CopyFiles($"./src/SignaturePad.Forms.Android/bin/{configuration}/SignaturePad.Forms.*", "./output/android/");
+    CopyFiles($"./src/SignaturePad.Forms.Droid/bin/{configuration}/SignaturePad.Forms.*", "./output/android/");
     CopyFiles($"./src/SignaturePad.Forms.iOS/bin/{configuration}/SignaturePad.Forms.*", "./output/ios/");
     CopyFiles($"./src/SignaturePad.Forms.UWP/bin/{configuration}/SignaturePad.Forms.*", "./output/uwp/");
     CopyFiles($"./src/SignaturePad.Forms.UWP/bin/{configuration}/Themes/*", "./output/uwp/Themes");
