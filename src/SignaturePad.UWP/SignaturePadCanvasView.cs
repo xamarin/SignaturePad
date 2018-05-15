@@ -29,7 +29,7 @@ namespace Xamarin.Controls
 		static SignaturePadCanvasView ()
 		{
 			StrokeColorProperty = DependencyProperty.Register (nameof (StrokeColor), typeof (Color), typeof (SignaturePadCanvasView), new PropertyMetadata (ImageConstructionSettings.DefaultStrokeColor, OnStrokePropertiesChanged));
-			StrokeWidthProperty = DependencyProperty.Register (nameof (StrokeWidth), typeof (double), typeof (SignaturePadCanvasView), new PropertyMetadata (ImageConstructionSettings.DefaultStrokeWidth, OnStrokePropertiesChanged));
+			StrokeWidthProperty = DependencyProperty.Register (nameof (StrokeWidth), typeof (double), typeof (SignaturePadCanvasView), new PropertyMetadata ((double)ImageConstructionSettings.DefaultStrokeWidth, OnStrokePropertiesChanged));
 		}
 
 		public SignaturePadCanvasView ()
