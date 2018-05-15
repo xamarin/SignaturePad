@@ -41,7 +41,7 @@ namespace Xamarin.Controls
 		static SignaturePad ()
 		{
 			StrokeColorProperty = DependencyProperty.Register (nameof (StrokeColor), typeof (Color), typeof (SignaturePad), new PropertyMetadata (ImageConstructionSettings.DefaultStrokeColor));
-			StrokeWidthProperty = DependencyProperty.Register (nameof (StrokeWidth), typeof (float), typeof (SignaturePad), new PropertyMetadata (ImageConstructionSettings.DefaultStrokeWidth));
+			StrokeWidthProperty = DependencyProperty.Register (nameof (StrokeWidth), typeof (double), typeof (SignaturePad), new PropertyMetadata ((double)ImageConstructionSettings.DefaultStrokeWidth));
 			SignatureLineBrushProperty = DependencyProperty.Register (nameof (SignatureLineBrush), typeof (Brush), typeof (SignaturePad), new PropertyMetadata (new SolidColorBrush (SignaturePadDarkColor)));
 			SignatureLineThicknessProperty = DependencyProperty.Register (nameof (SignatureLineThickness), typeof (double), typeof (SignaturePad), new PropertyMetadata (DefaultLineThickness));
 			SignatureLineSpacingProperty = DependencyProperty.Register (nameof (SignatureLineSpacing), typeof (double), typeof (SignaturePad), new PropertyMetadata (DefaultNarrowSpacing));
@@ -125,9 +125,9 @@ namespace Xamarin.Controls
 			set { SetValue (StrokeColorProperty, value); }
 		}
 
-		public float StrokeWidth
+		public double StrokeWidth
 		{
-			get { return (float)GetValue (StrokeWidthProperty); }
+			get { return (double)GetValue (StrokeWidthProperty); }
 			set { SetValue (StrokeWidthProperty, value); }
 		}
 
