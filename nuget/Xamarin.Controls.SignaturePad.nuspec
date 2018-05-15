@@ -28,16 +28,16 @@
   </metadata>
 
   <files>
-    <file src="src/SignaturePad.Android/bin/$configuration$/SignaturePad.dll" target="lib/MonoAndroid/SignaturePad.dll" />
-    <file src="src/SignaturePad.Android/bin/$configuration$/SignaturePad.xml" target="lib/MonoAndroid/SignaturePad.xml" />
+    <file src="output/android/SignaturePad.dll" target="lib/MonoAndroid/SignaturePad.dll" />
+    <file src="output/android/SignaturePad.xml" target="lib/MonoAndroid/SignaturePad.xml" />
 
-    <file src="src/SignaturePad.iOS/bin/$configuration$/SignaturePad.dll" target="lib/Xamarin.iOS/SignaturePad.dll" />
-    <file src="src/SignaturePad.iOS/bin/$configuration$/SignaturePad.xml" target="lib/Xamarin.iOS/SignaturePad.xml" />
+    <file src="output/ios/SignaturePad.dll" target="lib/Xamarin.iOS/SignaturePad.dll" />
+    <file src="output/ios/SignaturePad.xml" target="lib/Xamarin.iOS/SignaturePad.xml" />
 
-    <file src="src/SignaturePad.UWP/bin/$configuration$/SignaturePad.dll" target="lib/uap10.0/SignaturePad.dll" />
-    <file src="src/SignaturePad.UWP/bin/$configuration$/SignaturePad.xml" target="lib/uap10.0/SignaturePad.xml" />
-    <file src="src/SignaturePad.UWP/bin/$configuration$/SignaturePad.pri" target="lib/uap10.0/SignaturePad.pri" />
-    <file src="src/SignaturePad.UWP/bin/$configuration$/Themes/Generic.xbf" target="lib/uap10.0/Themes/Generic.xbf" />
+    <file src="output/uwp/SignaturePad.dll" target="lib/uap10.0/SignaturePad.dll" />
+    <file src="output/uwp/SignaturePad.xml" target="lib/uap10.0/SignaturePad.xml" />
+    <file src="output/uwp/SignaturePad.pri" target="lib/uap10.0/SignaturePad.pri" />
+    <file src="output/uwp/Themes/Generic.xbf" target="lib/uap10.0/Themes/Generic.xbf" />
   </files>
 
 </package>

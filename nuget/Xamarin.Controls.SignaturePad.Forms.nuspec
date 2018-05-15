@@ -37,18 +37,18 @@
   </metadata>
 
   <files>
-    <file src="src/SignaturePad.Forms.Droid/bin/$configuration$/SignaturePad.Forms.dll" target="lib/MonoAndroid/SignaturePad.Forms.dll" />
-    <file src="src/SignaturePad.Forms.Droid/bin/$configuration$/SignaturePad.Forms.xml" target="lib/MonoAndroid/SignaturePad.Forms.xml" />
+    <file src="output/android/SignaturePad.Forms.dll" target="lib/MonoAndroid/SignaturePad.Forms.dll" />
+    <file src="output/android/SignaturePad.Forms.xml" target="lib/MonoAndroid/SignaturePad.Forms.xml" />
 
-    <file src="src/SignaturePad.Forms.iOS/bin/$configuration$/SignaturePad.Forms.dll" target="lib/Xamarin.iOS/SignaturePad.Forms.dll" />
-    <file src="src/SignaturePad.Forms.iOS/bin/$configuration$/SignaturePad.Forms.xml" target="lib/Xamarin.iOS/SignaturePad.Forms.xml" />
+    <file src="output/ios/SignaturePad.Forms.dll" target="lib/Xamarin.iOS/SignaturePad.Forms.dll" />
+    <file src="output/ios/SignaturePad.Forms.xml" target="lib/Xamarin.iOS/SignaturePad.Forms.xml" />
 
-    <file src="src/SignaturePad.Forms.UWP/bin/$configuration$/SignaturePad.Forms.dll" target="lib/uap10.0/SignaturePad.Forms.dll" />
-    <file src="src/SignaturePad.Forms.UWP/bin/$configuration$/SignaturePad.Forms.xml" target="lib/uap10.0/SignaturePad.Forms.xml" />
-    <file src="src/SignaturePad.Forms.UWP/bin/$configuration$/SignaturePad.Forms.pri" target="lib/uap10.0/SignaturePad.Forms.pri" />
+    <file src="output/uwp/SignaturePad.Forms.dll" target="lib/uap10.0/SignaturePad.Forms.dll" />
+    <file src="output/uwp/SignaturePad.Forms.xml" target="lib/uap10.0/SignaturePad.Forms.xml" />
+    <file src="output/uwp/SignaturePad.Forms.pri" target="lib/uap10.0/SignaturePad.Forms.pri" />
 
-    <file src="src/SignaturePad.Forms/bin/$configuration$/SignaturePad.Forms.dll" target="lib/netstandard1.0/SignaturePad.Forms.dll" />
-    <file src="src/SignaturePad.Forms/bin/$configuration$/SignaturePad.Forms.xml" target="lib/netstandard1.0/SignaturePad.Forms.xml" />
+    <file src="output/netstandard/SignaturePad.Forms.dll" target="lib/netstandard1.0/SignaturePad.Forms.dll" />
+    <file src="output/netstandard/SignaturePad.Forms.xml" target="lib/netstandard1.0/SignaturePad.Forms.xml" />
   </files>
 
 </package>
