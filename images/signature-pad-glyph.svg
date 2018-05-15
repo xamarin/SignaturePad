@@ -7,7 +7,6 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="1024"
@@ -16,34 +15,12 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   sodipodi:docname="signature-pad.svg"
-   inkscape:export-filename="C:\Projects\SignaturePadv1\images\signature-pad_128x128.png"
-   inkscape:export-xdpi="12"
-   inkscape:export-ydpi="12">
+   sodipodi:docname="signature-pad-glyph.svg"
+   inkscape:export-filename="C:\Projects\SignaturePadv1\images\signature-pad-glyph.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96">
   <defs
      id="defs2">
-    <linearGradient
-       inkscape:collect="always"
-       id="linearGradient4543">
-      <stop
-         style="stop-color:#2d2d2d;stop-opacity:1"
-         offset="0"
-         id="stop4539" />
-      <stop
-         style="stop-color:#5a5a5a;stop-opacity:1"
-         offset="1"
-         id="stop4541" />
-    </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient4543"
-       id="linearGradient4545"
-       x1="129.81213"
-       y1="22.125051"
-       x2="129.81213"
-       y2="299.3602"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(0.56029424,-0.84411437)" />
     <filter
        style="color-interpolation-filters:sRGB;"
        inkscape:label="Drop Shadow"
@@ -85,7 +62,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.0304768"
-     inkscape:cx="358.00562"
+     inkscape:cx="417.48846"
      inkscape:cy="499.69383"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -106,7 +83,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -115,13 +92,6 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-26.06665)">
-    <rect
-       style="opacity:1;vector-effect:none;fill:url(#linearGradient4545);fill-opacity:1;stroke:none;stroke-width:1.66681039;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect4529"
-       width="277.8125"
-       height="277.8125"
-       x="-3.4395826"
-       y="22.627068" />
     <path
        style="fill:none;stroke:#ffffff;stroke-width:5.29166651;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter4630)"
        d="m 19.607987,240.7178 c 5.070358,-1.37341 10.284816,-2.80664 14.645124,-6.02049 12.817689,-7.81297 23.95653,-18.21572 33.559514,-29.69912 5.432484,-6.60776 10.31063,-13.65149 14.059793,-21.3511 0.181084,0.19256 -1.17138,2.75836 0.533573,-0.55329 5.561551,-10.5503 10.0426,-22.07335 10.731946,-34.0615 0.392523,-6.16299 -2.437905,-15.19027 -10.186138,-13.86943 -9.180873,1.74828 -15.058833,9.92951 -20.112191,17.09977 -6.794088,11.248 -11.000193,24.38815 -9.643866,37.61963 -0.01013,6.82785 2.768314,13.12527 6.172885,18.88177 4.203323,5.81341 9.374615,10.96052 15.976877,13.97977 8.863071,5.19306 18.955963,7.67739 28.589786,11.00444 9.17945,2.31238 18.2771,4.96019 27.64561,6.43628 9.16957,2.16405 27.6248,3.80334 39.0812,3.2566"
