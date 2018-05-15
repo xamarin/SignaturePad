@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
@@ -82,6 +83,8 @@ namespace Xamarin.Controls
 				TouchesBegan (e);
 			}
 
+			var hasMoved = false;
+
 			for (var i = 0; i < e.HistorySize; i++)
 			{
 				float historicalX = e.GetHistoricalX (i);
@@ -91,6 +94,7 @@ namespace Xamarin.Controls
 				{
 					// update the dirty rectangle
 					UpdateBounds (historicalX, historicalY);
+					hasMoved = true;
 
 					// add it to the current path
 					currentPath.Path.LineTo (historicalX, historicalY);
@@ -109,10 +113,12 @@ namespace Xamarin.Controls
 
 				// update the dirty rectangle
 				UpdateBounds (touchX, touchY);
-				if (update)
-				{
-					Invalidate (DirtyRect);
-				}
+				hasMoved = true;
+			}
+
+			if (update && hasMoved)
+			{
+				Invalidate (DirtyRect);
 			}
 		}
 
