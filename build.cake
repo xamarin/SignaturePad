@@ -2,18 +2,16 @@
 // ARGUMENTS
 ///////////////////////////////////////////////////////////////////////////////
 
+var CURRENT_PACKAGE_VERSION = "3.0.0";
+
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
-var packageVersion = Argument("packageVersion", "1.0.0");
+var packageVersion = Argument("packageVersion", CURRENT_PACKAGE_VERSION);
 var majorVersion = $"{packageVersion.Substring(0, packageVersion.IndexOf("."))}.0.0.0";
 var buildVersion = Argument("buildVersion", EnvironmentVariable("BUILD_NUMBER") ?? "");
 if (!string.IsNullOrEmpty(buildVersion)) {
     buildVersion = $"-{buildVersion}";
 }
-
-Information("{0}", packageVersion);
-Information("{0}", majorVersion);
-Information("{0}", buildVersion);
 
 ///////////////////////////////////////////////////////////////////////////////
 // TASKS
