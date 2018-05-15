@@ -31,63 +31,24 @@ var buildSpec = new BuildSpec () {
 			Verbosity = VERBOSITY,
 			OutputFiles = new [] {
 				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Android/bin/Release/SignaturePad.dll",
-					ToDirectory = "output/android",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.iOS/bin/unified/Release/SignaturePad.dll",
-					ToDirectory = "output/ios-unified",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Forms/bin/Release/SignaturePad.Forms.dll",
-					ToDirectory = "output/pcl",
-				},
-				new OutputFileCopy {
 					FromFile = "./src/SignaturePad.Forms.NetStandard/bin/Release/SignaturePad.Forms.dll",
 					ToDirectory = "output/netstandard",
+				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.Android/bin/Release/SignaturePad.dll",
+					ToDirectory = "output/android",
 				},
 				new OutputFileCopy {
 					FromFile = "./src/SignaturePad.Forms.Droid/bin/Release/SignaturePad.Forms.dll",
 					ToDirectory = "output/android",
 				},
 				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.iOS/bin/unified/Release/SignaturePad.dll",
+					ToDirectory = "output/ios",
+				},
+				new OutputFileCopy {
 					FromFile = "./src/SignaturePad.Forms.iOS/bin/Release/SignaturePad.Forms.dll",
-					ToDirectory = "output/ios-unified",
-				},
-			}
-		},
-		new SolutionBuilder {
-			SolutionPath = "src/SignaturePad.VS2015.sln",
-			BuildsOn = BuildPlatforms.Windows,
-			Verbosity = VERBOSITY,
-			OutputFiles = new [] {
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.WP8/bin/Release/SignaturePad.dll",
-					ToDirectory = "output/wp8",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Forms.WindowsPhone/bin/Release/SignaturePad.Forms.dll",
-					ToDirectory = "output/wp8",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Windows81/bin/Release/SignaturePad.dll",
-					ToDirectory = "output/win",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Forms.Windows81/bin/Release/SignaturePad.Forms.dll",
-					ToDirectory = "output/win",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.WindowsPhone81/bin/Release/SignaturePad.dll",
-					ToDirectory = "output/wpa",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Forms.WindowsPhone81/bin/Release/SignaturePad.Forms.dll",
-					ToDirectory = "output/wpa",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.WindowsRuntime81/bin/Release/SignaturePad.dll",
-					ToDirectory = "output/winrt",
+					ToDirectory = "output/ios",
 				},
 			}
 		},
@@ -97,28 +58,24 @@ var buildSpec = new BuildSpec () {
 			Verbosity = VERBOSITY,
 			OutputFiles = new [] {
 				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Android/bin/Release/SignaturePad.dll",
-					ToDirectory = "output/android",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.iOS/bin/unified/Release/SignaturePad.dll",
-					ToDirectory = "output/ios-unified",
-				},
-				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Forms/bin/Release/SignaturePad.Forms.dll",
-					ToDirectory = "output/pcl",
-				},
-				new OutputFileCopy {
 					FromFile = "./src/SignaturePad.Forms.NetStandard/bin/Release/SignaturePad.Forms.dll",
 					ToDirectory = "output/netstandard",
+				},
+				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.Android/bin/Release/SignaturePad.dll",
+					ToDirectory = "output/android",
 				},
 				new OutputFileCopy {
 					FromFile = "./src/SignaturePad.Forms.Droid/bin/Release/SignaturePad.Forms.dll",
 					ToDirectory = "output/android",
 				},
 				new OutputFileCopy {
+					FromFile = "./src/SignaturePad.iOS/bin/unified/Release/SignaturePad.dll",
+					ToDirectory = "output/ios",
+				},
+				new OutputFileCopy {
 					FromFile = "./src/SignaturePad.Forms.iOS/bin/Release/SignaturePad.Forms.dll",
-					ToDirectory = "output/ios-unified",
+					ToDirectory = "output/ios",
 				},
 				new OutputFileCopy {
 					FromFile = "./src/SignaturePad.UWP/bin/Release/SignaturePad.dll",
@@ -145,46 +102,17 @@ var buildSpec = new BuildSpec () {
 			Verbosity = VERBOSITY
 		},
 		new SolutionBuilder {
-			SolutionPath = "./samples/Sample.Forms/Sample.Forms.Mac.sln",
-			BuildsOn = BuildPlatforms.Mac,
-			Verbosity = VERBOSITY
-		},
-		new SolutionBuilder {
-			SolutionPath = "./samples/Sample.WP8/Sample.WP8.sln",
-			BuildsOn = BuildPlatforms.Windows,
-			Verbosity = VERBOSITY
-		},
-		new SolutionBuilder {
 			SolutionPath = "./samples/Sample.UWP/Sample.UWP.sln",
 			BuildsOn = BuildPlatforms.Windows,
 			Verbosity = VERBOSITY
 		},
 		new SolutionBuilder {
-			SolutionPath = "./samples/Sample.Windows81/Sample.Windows81.sln",
-			Platform = "ARM",
-			BuildsOn = BuildPlatforms.Windows,
-			Verbosity = VERBOSITY
-		},
-		new SolutionBuilder {
-			SolutionPath = "./samples/Sample.WindowsPhone81/Sample.WindowsPhone81.sln",
-			Platform = "ARM",
-			BuildsOn = BuildPlatforms.Windows,
-			Verbosity = VERBOSITY
-		},
-		new SolutionBuilder {
-			SolutionPath = "./samples/Sample.WindowsRuntime81/Sample.WindowsRuntime81.sln",
-			Platform = "ARM",
-			BuildsOn = BuildPlatforms.Windows,
+			SolutionPath = "./samples/Sample.Forms/Sample.Forms.Mac.sln",
+			BuildsOn = BuildPlatforms.Mac,
 			Verbosity = VERBOSITY
 		},
 		new SolutionBuilder {
 			SolutionPath = "./samples/Sample.Forms/Sample.Forms.Win.sln",
-			BuildsOn = BuildPlatforms.Windows,
-			Verbosity = VERBOSITY
-		},
-		new SolutionBuilder {
-			SolutionPath = "./samples/Sample.Forms/Sample.Forms.Win.VS2015.sln",
-			Platform = "ARM",
 			BuildsOn = BuildPlatforms.Windows,
 			Verbosity = VERBOSITY
 		},
@@ -200,29 +128,13 @@ var buildSpec = new BuildSpec () {
 			BuildsOn = BuildPlatforms.Mac | BuildPlatforms.Windows,
 		},
 	},
-
-	Components = new [] {
-		new Component {
-			ManifestDirectory = "./component",
-			BuildsOn = BuildPlatforms.Windows, // there is a bug in the NuGet2 library with PCL
-		},
-	},
 };
-
-Task ("nuget")
-	.IsDependentOn ("nuget-base")
-	.Does (() =>
-{
-	DeleteFiles("./component/*.xam");
-	DeleteFiles("./output/*.xam");
-});
 
 SetupXamarinBuildTasks (buildSpec, Tasks, Task);
 
 Task ("CI")
 	.IsDependentOn ("libs")
 	.IsDependentOn ("nuget")
-	.IsDependentOn ("component")
 	.IsDependentOn ("samples");
 
 RunTarget (TARGET);
