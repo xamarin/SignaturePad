@@ -31,7 +31,7 @@ var buildSpec = new BuildSpec () {
 			Verbosity = VERBOSITY,
 			OutputFiles = new [] {
 				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Forms.NetStandard/bin/Release/SignaturePad.Forms.dll",
+					FromFile = "./src/SignaturePad.Forms/bin/Release/SignaturePad.Forms.dll",
 					ToDirectory = "output/netstandard",
 				},
 				new OutputFileCopy {
@@ -58,7 +58,7 @@ var buildSpec = new BuildSpec () {
 			Verbosity = VERBOSITY,
 			OutputFiles = new [] {
 				new OutputFileCopy {
-					FromFile = "./src/SignaturePad.Forms.NetStandard/bin/Release/SignaturePad.Forms.dll",
+					FromFile = "./src/SignaturePad.Forms/bin/Release/SignaturePad.Forms.dll",
 					ToDirectory = "output/netstandard",
 				},
 				new OutputFileCopy {
