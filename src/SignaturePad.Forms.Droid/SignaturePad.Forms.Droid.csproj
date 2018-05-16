@@ -37,8 +37,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\SignaturePad.Forms.Shared\**\*.cs" Link="shared\%(filename).%(Extension)" />
-    <Compile Include="..\SignaturePad.Forms.Platform.Shared\**\*.cs" Link="platform\%(filename).%(Extension)" />
+    <Compile Include="..\SignaturePad.Forms.Shared\**\*.cs" Link="%(filename).shared%(Extension)" />
+    <Compile Include="..\SignaturePad.Forms.Platform.Shared\**\*.cs" Link="%(filename).platform%(Extension)" />
     <Folder Include="Resources" />
   </ItemGroup>
 

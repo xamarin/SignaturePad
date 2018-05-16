@@ -37,8 +37,8 @@
 
   <ItemGroup>
     <Compile Include="*.cs" />
-    <Compile Include="..\SignaturePad.Shared\**\*.cs" Link="shared\%(filename).%(Extension)" />
-    <Compile Include="..\SignaturePad.InkPresenter.Shared\**\*.cs" Link="inking\%(filename).%(Extension)" />
+    <Compile Include="..\SignaturePad.Shared\**\*.cs" Link="%(filename).shared%(Extension)" />
+    <Compile Include="..\SignaturePad.InkPresenter.Shared\**\*.cs" Link="%(filename).shared%(Extension)" />
     <AndroidResource Include="Resources\**\*.axml" />
     <AndroidResource Include="Resources\**\*.xml" />
   </ItemGroup>

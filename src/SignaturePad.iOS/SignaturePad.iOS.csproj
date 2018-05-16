@@ -35,8 +35,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\SignaturePad.Shared\**\*.cs" Link="shared\%(filename).%(Extension)" />
-    <Compile Include="..\SignaturePad.InkPresenter.Shared\**\*.cs" Link="inking\%(filename).%(Extension)" />
+    <Compile Include="..\SignaturePad.Shared\**\*.cs" Link="%(filename).shared%(Extension)" />
+    <Compile Include="..\SignaturePad.InkPresenter.Shared\**\*.cs" Link="%(filename).shared%(Extension)" />
   </ItemGroup>
 
   <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
