@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
   <string name="signature_pad_clear_label_text">clear</string>
   <string name="signature_pad_prompt_text">▶</string>
   <string name="signature_pad_caption_text">sign above the line</string>
@@ -10,22 +9,4 @@
   <dimen name="signature_pad_narrow_spacing">3dip</dimen>
   <dimen name="signature_pad_line_thickness">1dip</dimen>
   <dimen name="signature_pad_font_size">15dip</dimen>
-
-  <declare-styleable name="SignaturePadView">
-    <attr name="strokeColor" format="color" />
-    <attr name="strokeWidth" format="dimension" />
-    <attr name="signatureLineColor" format="color" />
-    <attr name="signatureLineWidth" format="dimension" />
-    <attr name="signatureLineSpacing" format="dimension" />
-    <attr name="captionText" format="string" />
-    <attr name="captionTextSize" format="dimension" />
-    <attr name="captionTextColor" format="color" />
-    <attr name="signaturePromptText" format="string" />
-    <attr name="signaturePromptTextSize" format="dimension" />
-    <attr name="signaturePromptTextColor" format="color" />
-    <attr name="clearLabelText" format="string" />
-    <attr name="clearLabelTextSize" format="dimension" />
-    <attr name="clearLabelTextColor" format="color" />
-  </declare-styleable>
-
 </resources>
