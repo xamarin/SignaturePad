@@ -2,6 +2,8 @@
 using System.Linq;
 using Xamarin.Forms;
 
+using SignaturePad.Forms;
+
 namespace Samples
 {
 	public partial class MainPage : ContentPage
@@ -37,17 +39,16 @@ namespace Samples
 
 		private async void SaveImageClicked (object sender, EventArgs e)
 		{
-			//var storageFolder = await KnownFolders.GetFolderForUserAsync (null, KnownFolderId.PicturesLibrary);
-			//var file = await storageFolder.CreateFileAsync ("signature.png", CreationCollisionOption.ReplaceExisting);
+			bool saved;
+			using (var bitmap = await signatureView.GetImageStreamAsync (SignatureImageFormat.Png, Color.Black, Color.White, 1f))
+			{
+				saved = await App.SaveSignature (bitmap, "signature.png");
+			}
 
-			//using (var bitmap = await signatureView.GetImageStreamAsync (SignatureImageFormat.Png, Colors.Black, Colors.White, 1f))
-			//using (var stream = await file.OpenAsync (FileAccessMode.ReadWrite))
-			//using (var dest = stream.AsStreamForWrite ())
-			//{
-			//	await bitmap.CopyToAsync (dest);
-			//}
-
-			await DisplayAlert ("Signature Pad", "Raster signature saved to the photo library.", "OK");
+			if (saved)
+				await DisplayAlert ("Signature Pad", "Raster signature saved to the photo library.", "OK");
+			else
+				await DisplayAlert ("Signature Pad", "There was an error saving the signature.", "OK");
 		}
 
 		private void SignatureChanged (object sender, EventArgs e)

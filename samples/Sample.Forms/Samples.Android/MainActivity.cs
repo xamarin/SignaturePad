@@ -1,4 +1,6 @@
-﻿using Android.App;
+﻿using System.IO;
+using System.Threading.Tasks;
+using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Xamarin.Forms;
@@ -18,7 +20,20 @@ namespace Samples.Droid
 			// then call base.OnCreate and the Xamarin.Forms methods
 			base.OnCreate (bundle);
 			Forms.Init (this, bundle);
-			LoadApplication (new App ());
+			LoadApplication (new App (OnSaveSignature));
+		}
+
+		private async Task<bool> OnSaveSignature (Stream bitmap, string filename)
+		{
+			var path = Environment.GetExternalStoragePublicDirectory (Environment.DirectoryPictures).AbsolutePath;
+			var file = Path.Combine (path, "signature.png");
+
+			using (var dest = File.OpenWrite (file))
+			{
+				await bitmap.CopyToAsync (dest);
+			}
+
+			return true;
 		}
 	}
 }
