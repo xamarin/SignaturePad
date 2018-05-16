@@ -22,8 +22,13 @@ namespace Sample.iOS
 		{
 			base.ViewDidLoad ();
 
+			signatureView.Layer.BorderColor = UIColor.FromRGBA (184, 134, 11, 255).CGColor;
+			signatureView.Layer.BorderWidth = 1f;
+
 			signatureView.StrokeCompleted += (sender, e) => UpdateControls ();
 			signatureView.Cleared += (sender, e) => UpdateControls ();
+
+			UpdateControls ();
 		}
 
 		private void UpdateControls ()
