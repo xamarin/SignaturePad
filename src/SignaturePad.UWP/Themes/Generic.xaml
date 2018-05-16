@@ -10,7 +10,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="local:SignaturePad">
                     <Border
-                        BorderThickness="1"
+                        BorderThickness="{TemplateBinding BorderThickness}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         Background="{TemplateBinding Background}">
                         <Grid>

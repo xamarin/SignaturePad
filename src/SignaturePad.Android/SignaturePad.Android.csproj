@@ -6,6 +6,7 @@
     <AssemblyName>SignaturePad</AssemblyName>
     <AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
     <AndroidUseIntermediateDesignerFile>True</AndroidUseIntermediateDesignerFile>
+    <EnableDefaultCompileItems>False</EnableDefaultCompileItems>
     <DocumentationFile Condition=" '$(Configuration)' == 'Release' ">bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
     <AssemblyVersion>1.0.0</AssemblyVersion>
   </PropertyGroup>
@@ -35,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="*.cs" />
     <Compile Include="..\SignaturePad.Shared\**\*.cs" Link="shared\%(filename).%(Extension)" />
     <Compile Include="..\SignaturePad.InkPresenter.Shared\**\*.cs" Link="inking\%(filename).%(Extension)" />
     <AndroidResource Include="Resources\**\*.axml" />

@@ -22,7 +22,6 @@ using NativeColor = Windows.UI.Color;
 using NativeImage = Windows.UI.Xaml.Media.Imaging.WriteableBitmap;
 #endif
 
-
 namespace Xamarin.Controls
 {
 #if WINDOWS_UWP
@@ -42,14 +41,14 @@ namespace Xamarin.Controls
 		private const string DefaultCaptionText = "sign above the line";
 
 #if __IOS__
-		private static readonly NativeColor SignaturePadDarkColor = NativeColor.FromRGBA (184, 134, 11, 255);
-		private static readonly NativeColor SignaturePadLightColor = NativeColor.FromRGBA (250, 250, 210, 255);
+		private static readonly NativeColor SignaturePadDarkColor = NativeColor.Black;
+		private static readonly NativeColor SignaturePadLightColor = NativeColor.White;
 #elif __ANDROID__
-		private static readonly NativeColor SignaturePadDarkColor = NativeColor.Argb (255, 184, 134, 11);
-		private static readonly NativeColor SignaturePadLightColor = NativeColor.Argb (255, 250, 250, 210);
+		private static readonly NativeColor SignaturePadDarkColor = NativeColor.Black;
+		private static readonly NativeColor SignaturePadLightColor = NativeColor.White;
 #elif WINDOWS_UWP
-		private static readonly NativeColor SignaturePadDarkColor = NativeColor.FromArgb (255, 184, 134, 11);
-		private static readonly NativeColor SignaturePadLightColor = NativeColor.FromArgb (255, 250, 250, 210);
+		private static readonly NativeColor SignaturePadDarkColor = Windows.UI.Colors.Black;
+		private static readonly NativeColor SignaturePadLightColor = Windows.UI.Colors.White;
 #endif
 
 		public NativePoint[][] Strokes => SignaturePadCanvas.Strokes;
