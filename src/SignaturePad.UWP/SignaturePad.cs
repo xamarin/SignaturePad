@@ -149,7 +149,6 @@ namespace Xamarin.Controls
 			RegisterPropertyChangedCallback (PaddingProperty, OnPaddingChanged);
 
 			Padding = new Thickness (DefaultWideSpacing, DefaultWideSpacing, DefaultWideSpacing, DefaultNarrowSpacing);
-			Background = new SolidColorBrush (SignaturePadLightColor);
 		}
 
 		protected override void OnApplyTemplate ()

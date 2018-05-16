@@ -30,11 +30,11 @@ namespace Xamarin.Controls
 	partial class SignaturePadView
 #endif
 	{
-		private const double DefaultWideSpacing = 12.0;
-		private const double DefaultNarrowSpacing = 3.0;
-		private const double DefaultLineThickness = 1.0;
+		private const float DefaultWideSpacing = 12.0f;
+		private const float DefaultNarrowSpacing = 3.0f;
+		private const float DefaultLineThickness = 1.0f;
 
-		private const double DefaultFontSize = 15.0;
+		private const float DefaultFontSize = 15.0f;
 
 		private const string DefaultClearLabelText = "clear";
 		private const string DefaultPromptText = "▶";

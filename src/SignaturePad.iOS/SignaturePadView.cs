@@ -10,6 +10,8 @@ namespace Xamarin.Controls
 	[DesignTimeVisible (true)]
 	public partial class SignaturePadView : UIView
 	{
+		private UIEdgeInsets padding;
+
 		public SignaturePadView ()
 		{
 			Initialize ();
@@ -35,13 +37,6 @@ namespace Xamarin.Controls
 
 		private void Initialize (bool baseProperties = true)
 		{
-			// set the border and background
-			{
-				BackgroundColor = SignaturePadLightColor;
-				Layer.BorderWidth = 1f;
-				Layer.BorderColor = SignaturePadDarkColor.CGColor;
-			}
-
 			// add the background view
 			{
 				BackgroundImageView = new UIImageView ();
@@ -66,11 +61,11 @@ namespace Xamarin.Controls
 			{
 				Caption = new UILabel ()
 				{
-					Text = DefaultCaptionText,
-					Font = UIFont.BoldSystemFontOfSize ((nfloat)DefaultFontSize),
 					BackgroundColor = UIColor.Clear,
+					TextAlignment = UITextAlignment.Center,
+					Font = UIFont.SystemFontOfSize (DefaultFontSize),
+					Text = DefaultCaptionText,
 					TextColor = SignaturePadDarkColor,
-					TextAlignment = UITextAlignment.Center
 				};
 				AddSubview (Caption);
 			}
@@ -79,8 +74,10 @@ namespace Xamarin.Controls
 			{
 				SignatureLine = new UIView ()
 				{
-					BackgroundColor = SignaturePadDarkColor
+					BackgroundColor = SignaturePadDarkColor,
 				};
+				SignatureLineWidth = DefaultLineThickness;
+				SignatureLineSpacing = DefaultNarrowSpacing;
 				AddSubview (SignatureLine);
 			}
 
@@ -88,10 +85,10 @@ namespace Xamarin.Controls
 			{
 				SignaturePrompt = new UILabel ()
 				{
-					Text = DefaultPromptText,
-					Font = UIFont.BoldSystemFontOfSize ((nfloat)DefaultFontSize),
 					BackgroundColor = UIColor.Clear,
-					TextColor = SignaturePadDarkColor
+					Font = UIFont.BoldSystemFontOfSize (DefaultFontSize),
+					Text = DefaultPromptText,
+					TextColor = SignaturePadDarkColor,
 				};
 				AddSubview (SignaturePrompt);
 			}
@@ -99,9 +96,9 @@ namespace Xamarin.Controls
 			// add the clear label
 			{
 				ClearLabel = UIButton.FromType (UIButtonType.Custom);
-				ClearLabel.SetTitle (DefaultClearLabelText, UIControlState.Normal);
-				ClearLabel.Font = UIFont.BoldSystemFontOfSize ((nfloat)DefaultFontSize);
 				ClearLabel.BackgroundColor = UIColor.Clear;
+				ClearLabel.Font = UIFont.BoldSystemFontOfSize (DefaultFontSize);
+				ClearLabel.SetTitle (DefaultClearLabelText, UIControlState.Normal);
 				ClearLabel.SetTitleColor (SignaturePadDarkColor, UIControlState.Normal);
 				AddSubview (ClearLabel);
 
@@ -112,108 +109,142 @@ namespace Xamarin.Controls
 				};
 			}
 
+			Padding = new UIEdgeInsets (DefaultWideSpacing, DefaultWideSpacing, DefaultNarrowSpacing, DefaultWideSpacing);
+
 			// clear / initialize the view
-			Clear ();
+			UpdateUi ();
 		}
 
 		public SignaturePadCanvasView SignaturePadCanvas { get; private set; }
 
+		/// <summary>
+		/// Gets the horizontal line that goes in the lower part of the pad.
+		/// </summary>
+		public UIView SignatureLine { get; private set; }
+
+		/// <summary>
+		/// The caption displayed under the signature line.
+		/// </summary>
+		public UILabel Caption { get; private set; }
+
+		/// <summary>
+		/// The prompt displayed at the beginning of the signature line.
+		/// </summary>
+		public UILabel SignaturePrompt { get; private set; }
+
+		/// <summary>
+		/// Gets the label that clears the pad when clicked.
+		/// </summary>
+		public UIButton ClearLabel { get; private set; }
+
+		/// <summary>
+		///  Gets the image view that may be used as a watermark or as a texture
+		///  for the signature pad.
+		/// </summary>
+		public UIImageView BackgroundImageView { get; private set; }
+
 		[Export ("StrokeColor"), Browsable (true)]
 		public UIColor StrokeColor
 		{
-			get { return SignaturePadCanvas.StrokeColor; }
-			set { SignaturePadCanvas.StrokeColor = value; }
+			get => SignaturePadCanvas.StrokeColor;
+			set => SignaturePadCanvas.StrokeColor = value;
 		}
 
 		[Export ("StrokeWidth"), Browsable (true)]
 		public float StrokeWidth
 		{
-			get { return SignaturePadCanvas.StrokeWidth; }
-			set { SignaturePadCanvas.StrokeWidth = value; }
+			get => SignaturePadCanvas.StrokeWidth;
+			set => SignaturePadCanvas.StrokeWidth = value;
 		}
 
 		/// <summary>
-		/// The prompt displayed at the beginning of the signature line.
+		/// Gets or sets the color of the signature line.
 		/// </summary>
-		/// <remarks>
-		/// Text value defaults to 'X'.
-		/// </remarks>
-		/// <value>The signature prompt.</value>
-		public UILabel SignaturePrompt { get; private set; }
-
-		/// <summary>
-		/// The caption displayed under the signature line.
-		/// </summary>
-		/// <remarks>
-		/// Text value defaults to 'Sign here.'
-		/// </remarks>
-		/// <value>The caption.</value>
-		public UILabel Caption { get; private set; }
-
-		/// <summary>
-		/// The color of the signature line.
-		/// </summary>
-		/// <value>The color of the signature line.</value>
 		[Export ("SignatureLineColor"), Browsable (true)]
 		public UIColor SignatureLineColor
 		{
-			get { return SignatureLine.BackgroundColor; }
-			set { SignatureLine.BackgroundColor = value; }
+			get => SignatureLine.BackgroundColor;
+			set => SignatureLine.BackgroundColor = value;
 		}
 
 		/// <summary>
-		///  An image view that may be used as a watermark or as a texture
-		///  for the signature pad.
+		/// Gets or sets the width of the signature line.
 		/// </summary>
-		/// <value>The background image view.</value>
-		public UIImageView BackgroundImageView { get; private set; }
-
-		/// <summary>
-		///  An image view that may be used as a watermark or as a texture
-		///  for the signature pad.
-		/// </summary>
-		/// <value>The background image.</value>
-		[Export ("BackgroundImage"), Browsable (true)]
-		public UIImage BackgroundImage
+		[Export ("SignatureLineWidth"), Browsable (true)]
+		public nfloat SignatureLineWidth
 		{
-			get { return BackgroundImageView.Image; }
-			set { BackgroundImageView.Image = value; }
+			get => SignatureLine.Bounds.Height;
+			set
+			{
+				var bounds = SignatureLine.Bounds;
+				bounds.Height = value;
+				SignatureLine.Bounds = bounds;
+				SetNeedsLayout ();
+			}
 		}
 
 		/// <summary>
-		///  An image view that may be used as a watermark or as a texture
-		///  for the signature pad.
+		/// Gets or sets the spacing between the signature line and the caption and prompt.
 		/// </summary>
-		/// <value>The background image.</value>
-		[Export ("BackgroundImageContentMode"), Browsable (true)]
-		public UIViewContentMode BackgroundImageContentMode
+		[Export ("SignatureLineSpacing"), Browsable (true)]
+		public nfloat SignatureLineSpacing
 		{
-			get { return BackgroundImageView.ContentMode; }
-			set { BackgroundImageView.ContentMode = value; }
+			get => SignatureLine.LayoutMargins.Bottom;
+			set
+			{
+				var margins = SignatureLine.LayoutMargins;
+				margins.Top = value;
+				margins.Bottom = value;
+				SignatureLine.LayoutMargins = margins;
+				SetNeedsLayout ();
+			}
 		}
 
 		/// <summary>
-		///  The transparency of the watermark.
+		/// Gets or sets the text for the caption displayed under the signature line.
 		/// </summary>
-		/// <value>The background image.</value>
-		[Export ("BackgroundImageAlpha"), Browsable (true)]
-		public nfloat BackgroundImageAlpha
+		[Export ("CaptionText"), Browsable (true)]
+		public string CaptionText
 		{
-			get { return BackgroundImageView.Alpha; }
-			set { BackgroundImageView.Alpha = value; }
+			get => Caption.Text;
+			set
+			{
+				Caption.Text = value;
+				SetNeedsLayout ();
+			}
 		}
 
 		/// <summary>
-		/// The text for the prompt displayed at the beginning of the signature line.
+		/// Gets or sets the font size text for the caption displayed under the signature line.
 		/// </summary>
-		/// <remarks>
-		/// Text value defaults to 'X'.
-		/// </remarks>
-		/// <value>The signature prompt.</value>
+		[Export ("CaptionFontSize"), Browsable (true)]
+		public nfloat CaptionFontSize
+		{
+			get => Caption.Font.PointSize;
+			set
+			{
+				Caption.Font = Caption.Font.WithSize (value);
+				SetNeedsLayout ();
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the text color for the caption displayed under the signature line.
+		/// </summary>
+		[Export ("CaptionTextColor"), Browsable (true)]
+		public UIColor CaptionTextColor
+		{
+			get => Caption.TextColor;
+			set => Caption.TextColor = value;
+		}
+
+		/// <summary>
+		/// Gets or sets the text for the prompt displayed at the beginning of the signature line.
+		/// </summary>
 		[Export ("SignaturePromptText"), Browsable (true)]
 		public string SignaturePromptText
 		{
-			get { return SignaturePrompt.Text; }
+			get => SignaturePrompt.Text;
 			set
 			{
 				SignaturePrompt.Text = value;
@@ -222,27 +253,36 @@ namespace Xamarin.Controls
 		}
 
 		/// <summary>
-		/// The text for the caption displayed under the signature line.
+		/// Gets or sets the font size the prompt displayed at the beginning of the signature line.
 		/// </summary>
-		/// <remarks>
-		/// Text value defaults to 'Sign here.'
-		/// </remarks>
-		/// <value>The caption.</value>
-		[Export ("CaptionText"), Browsable (true)]
-		public string CaptionText
+		[Export ("SignaturePromptFontSize"), Browsable (true)]
+		public nfloat SignaturePromptFontSize
 		{
-			get { return Caption.Text; }
-			set { Caption.Text = value; }
+			get => SignaturePrompt.Font.PointSize;
+			set
+			{
+				SignaturePrompt.Font = SignaturePrompt.Font.WithSize (value);
+				SetNeedsLayout ();
+			}
 		}
 
 		/// <summary>
-		/// Gets the text for the label that clears the pad when clicked.
+		/// Gets or sets the text color for the prompt displayed at the beginning of the signature line.
 		/// </summary>
-		/// <value>The clear label.</value>
+		[Export ("SignaturePromptTextColor"), Browsable (true)]
+		public UIColor SignaturePromptTextColor
+		{
+			get => SignaturePrompt.TextColor;
+			set => SignaturePrompt.TextColor = value;
+		}
+
+		/// <summary>
+		/// Gets or sets the text for the label that clears the pad when clicked.
+		/// </summary>
 		[Export ("ClearLabelText"), Browsable (true)]
 		public string ClearLabelText
 		{
-			get { return ClearLabel.Title (UIControlState.Normal); }
+			get => ClearLabel.Title (UIControlState.Normal);
 			set
 			{
 				ClearLabel.SetTitle (value, UIControlState.Normal);
@@ -251,16 +291,60 @@ namespace Xamarin.Controls
 		}
 
 		/// <summary>
-		/// Gets the label that clears the pad when clicked.
+		/// Gets or sets the font size the label that clears the pad when clicked.
 		/// </summary>
-		/// <value>The clear label.</value>
-		public UIButton ClearLabel { get; private set; }
+		[Export ("ClearLabelFontSize"), Browsable (true)]
+		public nfloat ClearLabelFontSize
+		{
+			get => ClearLabel.Font.PointSize;
+			set
+			{
+				ClearLabel.Font = ClearLabel.Font.WithSize (value);
+				SetNeedsLayout ();
+			}
+		}
 
 		/// <summary>
-		/// Gets the horizontal line that goes in the lower part of the pad.
+		/// Gets or sets the text color for the label that clears the pad when clicked.
 		/// </summary>
-		/// <value>The signature line.</value>
-		public UIView SignatureLine { get; private set; }
+		[Export ("ClearLabelTextColor"), Browsable (true)]
+		public UIColor ClearLabelTextColor
+		{
+			get => ClearLabel.TitleColor (UIControlState.Normal);
+			set => ClearLabel.SetTitleColor (value, UIControlState.Normal);
+		}
+
+		[Export ("BackgroundImage"), Browsable (true)]
+		public UIImage BackgroundImage
+		{
+			get => BackgroundImageView.Image;
+			set => BackgroundImageView.Image = value;
+		}
+
+		[Export ("BackgroundImageContentMode"), Browsable (true)]
+		public UIViewContentMode BackgroundImageContentMode
+		{
+			get => BackgroundImageView.ContentMode;
+			set => BackgroundImageView.ContentMode = value;
+		}
+
+		[Export ("BackgroundImageAlpha"), Browsable (true)]
+		public nfloat BackgroundImageAlpha
+		{
+			get => BackgroundImageView.Alpha;
+			set => BackgroundImageView.Alpha = value;
+		}
+
+		[Export ("Padding"), Browsable (true)]
+		public UIEdgeInsets Padding
+		{
+			get => padding;
+			set
+			{
+				padding = value;
+				SetNeedsLayout ();
+			}
+		}
 
 		private void UpdateUi ()
 		{
@@ -269,12 +353,9 @@ namespace Xamarin.Controls
 
 		public override void LayoutSubviews ()
 		{
-			const int ThinPad = 3;
-			const int ThickPad = 10;
-			const int LineHeight = 1;
-
 			var w = Frame.Width;
 			var h = Frame.Height;
+			var currentY = h;
 
 			SignaturePrompt.SizeToFit ();
 			ClearLabel.SizeToFit ();
@@ -286,17 +367,16 @@ namespace Xamarin.Controls
 			SignaturePadCanvas.Frame = rect;
 			BackgroundImageView.Frame = rect;
 
-			var top = h;
-			top = top - ThinPad - captionHeight;
-			Caption.Frame = new CGRect (ThickPad, top, w - ThickPad - ThickPad, captionHeight);
+			currentY = currentY - Padding.Bottom - captionHeight;
+			Caption.Frame = new CGRect (Padding.Left, currentY, w - Padding.Left - Padding.Right, captionHeight);
 
-			top = top - ThinPad - SignatureLine.Frame.Height;
-			SignatureLine.Frame = new CGRect (ThickPad, top, w - ThickPad - ThickPad, LineHeight);
+			currentY = currentY - SignatureLine.LayoutMargins.Bottom - SignatureLine.Frame.Height;
+			SignatureLine.Frame = new CGRect (Padding.Left, currentY, w - Padding.Left - Padding.Right, SignatureLine.Frame.Height);
 
-			top = top - ThinPad - SignaturePrompt.Frame.Height;
-			SignaturePrompt.Frame = new CGRect (ThickPad, top, SignaturePrompt.Frame.Width, SignaturePrompt.Frame.Height);
+			currentY = currentY - SignatureLine.LayoutMargins.Top - SignaturePrompt.Frame.Height;
+			SignaturePrompt.Frame = new CGRect (Padding.Left, currentY, SignaturePrompt.Frame.Width, SignaturePrompt.Frame.Height);
 
-			ClearLabel.Frame = new CGRect (w - ThickPad - ClearLabel.Frame.Width, ThickPad, ClearLabel.Frame.Width, clearButtonHeight);
+			ClearLabel.Frame = new CGRect (w - Padding.Right - ClearLabel.Frame.Width, Padding.Top, ClearLabel.Frame.Width, clearButtonHeight);
 		}
 	}
 }

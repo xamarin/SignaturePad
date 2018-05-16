@@ -57,21 +57,21 @@ namespace Xamarin.Controls
 					if (a.HasValue (Resource.Styleable.SignaturePadView_captionTextColor))
 						CaptionTextColor = a.GetColor (Resource.Styleable.SignaturePadView_captionTextColor, SignaturePadDarkColor);
 					if (a.HasValue (Resource.Styleable.SignaturePadView_captionTextSize))
-						CaptionTextSize = a.GetDimension (Resource.Styleable.SignaturePadView_captionTextSize, (float)DefaultFontSize);
+						CaptionTextSize = a.GetDimension (Resource.Styleable.SignaturePadView_captionTextSize, DefaultFontSize);
 
 					if (a.HasValue (Resource.Styleable.SignaturePadView_clearLabelText))
 						ClearLabelText = a.GetString (Resource.Styleable.SignaturePadView_clearLabelText);
 					if (a.HasValue (Resource.Styleable.SignaturePadView_clearLabelTextColor))
 						ClearLabelTextColor = a.GetColor (Resource.Styleable.SignaturePadView_clearLabelTextColor, SignaturePadDarkColor);
 					if (a.HasValue (Resource.Styleable.SignaturePadView_clearLabelTextSize))
-						ClearLabelTextSize = a.GetDimension (Resource.Styleable.SignaturePadView_clearLabelTextSize, (float)DefaultFontSize);
+						ClearLabelTextSize = a.GetDimension (Resource.Styleable.SignaturePadView_clearLabelTextSize, DefaultFontSize);
 
 					if (a.HasValue (Resource.Styleable.SignaturePadView_signaturePromptText))
 						SignaturePromptText = a.GetString (Resource.Styleable.SignaturePadView_signaturePromptText);
 					if (a.HasValue (Resource.Styleable.SignaturePadView_signaturePromptTextColor))
 						SignaturePromptTextColor = a.GetColor (Resource.Styleable.SignaturePadView_signaturePromptTextColor, SignaturePadDarkColor);
 					if (a.HasValue (Resource.Styleable.SignaturePadView_signaturePromptTextSize))
-						SignaturePromptTextSize = a.GetDimension (Resource.Styleable.SignaturePadView_signaturePromptTextSize, (float)DefaultFontSize);
+						SignaturePromptTextSize = a.GetDimension (Resource.Styleable.SignaturePadView_signaturePromptTextSize, DefaultFontSize);
 
 					if (a.HasValue (Resource.Styleable.SignaturePadView_signatureLineColor))
 						SignatureLineColor = a.GetColor (Resource.Styleable.SignaturePadView_signatureLineColor, SignaturePadDarkColor);
