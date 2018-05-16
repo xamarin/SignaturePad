@@ -13,13 +13,13 @@ namespace SignaturePad.Forms
 			nameof (StrokeColor),
 			typeof (Color),
 			typeof (SignaturePadView),
-			Color.Default);
+			ImageConstructionSettings.DefaultStrokeColor);
 
 		public static readonly BindableProperty StrokeWidthProperty = BindableProperty.Create (
 			nameof (StrokeWidth),
 			typeof (float),
 			typeof (SignaturePadView),
-			(float)0);
+			ImageConstructionSettings.DefaultStrokeWidth);
 
 		public bool IsBlank
 		{

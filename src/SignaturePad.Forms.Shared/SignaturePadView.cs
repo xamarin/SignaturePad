@@ -9,192 +9,270 @@ namespace SignaturePad.Forms
 {
 	public partial class SignaturePadView : Grid
 	{
-		public static readonly BindableProperty CaptionTextProperty = BindableProperty.Create (
-			nameof (CaptionText),
-			typeof (string),
-			typeof (SignaturePadView),
-			(string)null,
-			propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).CaptionLabel.Text = (string)newValue);
+		private const double DefaultWideSpacing = 12.0;
+		private const double DefaultNarrowSpacing = 3.0;
+		private const double DefaultLineWidth = 1.0;
 
-		public static readonly BindableProperty CaptionTextColorProperty = BindableProperty.Create (
-			nameof (CaptionTextColor),
-			typeof (Color),
-			typeof (SignaturePadView),
-			Color.Default,
-			propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).CaptionLabel.TextColor = (Color)newValue);
+		private const double DefaultFontSize = 15.0;
 
-		public static readonly BindableProperty ClearTextProperty = BindableProperty.Create (
-			nameof (ClearText),
-			typeof (string),
-			typeof (SignaturePadView),
-			(string)null,
-			propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).ClearLabel.Text = (string)newValue);
+		private const string DefaultClearLabelText = "clear";
+		private const string DefaultPromptText = "▶";
+		private const string DefaultCaptionText = "sign above the line";
 
-		public static readonly BindableProperty ClearTextColorProperty = BindableProperty.Create (
-			nameof (ClearTextColor),
-			typeof (Color),
-			typeof (SignaturePadView),
-			Color.Default,
-			propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).ClearLabel.TextColor = (Color)newValue);
+		private static readonly Color SignaturePadDarkColor = Color.Black;
+		private static readonly Color SignaturePadLightColor = Color.White;
 
-		public static readonly BindableProperty PromptTextProperty = BindableProperty.Create (
-			nameof (PromptText),
-			typeof (string),
-			typeof (SignaturePadView),
-			(string)null,
-			propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).SignaturePrompt.Text = (string)newValue);
+		public static readonly BindableProperty StrokeColorProperty;
+		public static readonly BindableProperty StrokeWidthProperty;
+		public static readonly BindableProperty SignatureLineColorProperty;
+		public static readonly BindableProperty SignatureLineWidthProperty;
+		public static readonly BindableProperty SignatureLineSpacingProperty;
+		public static readonly BindableProperty CaptionTextProperty;
+		public static readonly BindableProperty CaptionFontSizeProperty;
+		public static readonly BindableProperty CaptionTextColorProperty;
+		public static readonly BindableProperty PromptTextProperty;
+		public static readonly BindableProperty PromptFontSizeProperty;
+		public static readonly BindableProperty PromptTextColorProperty;
+		public static readonly BindableProperty ClearTextProperty;
+		public static readonly BindableProperty ClearFontSizeProperty;
+		public static readonly BindableProperty ClearTextColorProperty;
+		public static readonly BindableProperty BackgroundImageProperty;
+		public static readonly BindableProperty BackgroundImageAspectProperty;
+		public static readonly BindableProperty BackgroundImageOpacityProperty;
 
-		public static readonly BindableProperty PromptTextColorProperty = BindableProperty.Create (
-			nameof (PromptTextColor),
-			typeof (Color),
-			typeof (SignaturePadView),
-			Color.Default,
-			propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).SignaturePrompt.TextColor = (Color)newValue);
+		private readonly TapGestureRecognizer clearLabelTap;
+		private readonly Grid chrome;
 
-		public static readonly BindableProperty SignatureLineColorProperty = BindableProperty.Create (
-			nameof (SignatureLineColor),
-			typeof (Color),
-			typeof (SignaturePadView),
-			Color.Default,
-			propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).SignatureLine.Color = (Color)newValue);
+		static SignaturePadView ()
+		{
+			StrokeColorProperty = BindableProperty.Create (
+				nameof (StrokeColor),
+				typeof (Color),
+				typeof (SignaturePadView),
+				ImageConstructionSettings.DefaultStrokeColor,
+				propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).SignaturePadCanvas.StrokeColor = (Color)newValue);
 
-		public static readonly BindableProperty StrokeColorProperty = BindableProperty.Create (
-			nameof (StrokeColor),
-			typeof (Color),
-			typeof (SignaturePadView),
-			Color.Default,
-			propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).SignaturePadCanvas.StrokeColor = (Color)newValue);
+			StrokeWidthProperty = BindableProperty.Create (
+				nameof (StrokeWidth),
+				typeof (float),
+				typeof (SignaturePadView),
+				ImageConstructionSettings.DefaultStrokeWidth,
+				propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).SignaturePadCanvas.StrokeWidth = (float)newValue);
 
-		public static readonly BindableProperty StrokeWidthProperty = BindableProperty.Create (
-			nameof (StrokeWidth),
-			typeof (float),
-			typeof (SignaturePadView),
-			(float)0,
-			propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).SignaturePadCanvas.StrokeWidth = (float)newValue);
+			SignatureLineColorProperty = BindableProperty.Create (
+				nameof (SignatureLineColor),
+				typeof (Color),
+				typeof (SignaturePadView),
+				SignaturePadDarkColor,
+				propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).SignatureLine.Color = (Color)newValue);
 
-		public static readonly BindableProperty BackgroundImageProperty = BindableProperty.Create (
-			nameof (BackgroundImage),
-			typeof (ImageSource),
-			typeof (SignaturePadView),
-			(ImageSource)null,
-			propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).BackgroundImageView.Source = (ImageSource)newValue);
+			SignatureLineWidthProperty = BindableProperty.Create (
+				nameof (SignatureLineWidth),
+				typeof (double),
+				typeof (SignaturePadView),
+				DefaultLineWidth,
+				propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).SignatureLine.HeightRequest = (double)newValue);
 
-		public static readonly BindableProperty BackgroundImageAspectProperty = BindableProperty.Create (
-			nameof (BackgroundImageAspect),
-			typeof (Aspect),
-			typeof (SignaturePadView),
-			Aspect.AspectFit,
-			propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).BackgroundImageView.Aspect = (Aspect)newValue);
+			SignatureLineSpacingProperty = BindableProperty.Create (
+				nameof (SignatureLineSpacing),
+				typeof (double),
+				typeof (SignaturePadView),
+				DefaultNarrowSpacing,
+				propertyChanged: OnPaddingChanged);
 
-		public static readonly BindableProperty BackgroundImageOpacityProperty = BindableProperty.Create (
-			nameof (BackgroundImageOpacity),
-			typeof (double),
-			typeof (SignaturePadView),
-			(double)0,
-			propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).BackgroundImageView.Opacity = (double)newValue);
+			CaptionTextProperty = BindableProperty.Create (
+				nameof (CaptionText),
+				typeof (string),
+				typeof (SignaturePadView),
+				DefaultCaptionText,
+				propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).CaptionLabel.Text = (string)newValue);
 
-		private TapGestureRecognizer clearLabelTap;
+			CaptionFontSizeProperty = BindableProperty.Create (
+				nameof (CaptionFontSize),
+				typeof (double),
+				typeof (SignaturePadView),
+				DefaultFontSize,
+				propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).CaptionLabel.FontSize = (double)newValue);
+
+			CaptionTextColorProperty = BindableProperty.Create (
+				nameof (CaptionTextColor),
+				typeof (Color),
+				typeof (SignaturePadView),
+				SignaturePadDarkColor,
+				propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).CaptionLabel.TextColor = (Color)newValue);
+
+			PromptTextProperty = BindableProperty.Create (
+				nameof (PromptText),
+				typeof (string),
+				typeof (SignaturePadView),
+				DefaultPromptText,
+				propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).SignaturePrompt.Text = (string)newValue);
+
+			PromptFontSizeProperty = BindableProperty.Create (
+				nameof (PromptFontSize),
+				typeof (double),
+				typeof (SignaturePadView),
+				DefaultFontSize,
+				propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).SignaturePrompt.FontSize = (double)newValue);
+
+			PromptTextColorProperty = BindableProperty.Create (
+				nameof (PromptTextColor),
+				typeof (Color),
+				typeof (SignaturePadView),
+				SignaturePadDarkColor,
+				propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).SignaturePrompt.TextColor = (Color)newValue);
+
+			ClearTextProperty = BindableProperty.Create (
+				nameof (ClearText),
+				typeof (string),
+				typeof (SignaturePadView),
+				DefaultClearLabelText,
+				propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).ClearLabel.Text = (string)newValue);
+
+			ClearFontSizeProperty = BindableProperty.Create (
+				nameof (ClearFontSize),
+				typeof (double),
+				typeof (SignaturePadView),
+				DefaultFontSize,
+				propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).ClearLabel.FontSize = (double)newValue);
+
+			ClearTextColorProperty = BindableProperty.Create (
+				nameof (ClearTextColor),
+				typeof (Color),
+				typeof (SignaturePadView),
+				SignaturePadDarkColor,
+				propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).ClearLabel.TextColor = (Color)newValue);
+
+			BackgroundImageProperty = BindableProperty.Create (
+				nameof (BackgroundImage),
+				typeof (ImageSource),
+				typeof (SignaturePadView),
+				(ImageSource)null,
+				propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).BackgroundImageView.Source = (ImageSource)newValue);
+
+			BackgroundImageAspectProperty = BindableProperty.Create (
+				nameof (BackgroundImageAspect),
+				typeof (Aspect),
+				typeof (SignaturePadView),
+				Aspect.AspectFit,
+				propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).BackgroundImageView.Aspect = (Aspect)newValue);
+
+			BackgroundImageOpacityProperty = BindableProperty.Create (
+				nameof (BackgroundImageOpacity),
+				typeof (double),
+				typeof (SignaturePadView),
+				(double)1.0,
+				propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).BackgroundImageView.Opacity = (double)newValue);
+		}
 
 		public SignaturePadView ()
 		{
-			Initialize ();
-		}
-
-		private void Initialize ()
-		{
-			const int ThinPad = 3;
-			const int ThickPad = 12;
-			const int LineHeight = 2;
-
-			RowSpacing = 0;
-			ColumnSpacing = 0;
-
 			// create the chrome layout
-			var chromeStack = new StackLayout ();
-			chromeStack.Spacing = 0;
-			chromeStack.Padding = 0;
-			chromeStack.Margin = 0;
-			Children.Add (chromeStack);
+			chrome = new Grid
+			{
+				ColumnSpacing = 0,
+				RowSpacing = 0,
+				Padding = 0,
+				Margin = 0,
+				RowDefinitions =
+				{
+					new RowDefinition { Height = GridLength.Star },
+					new RowDefinition { Height = GridLength.Auto },
+				}
+			};
+			Children.Add (chrome);
 
 			// add the background view
+			BackgroundImageView = new Image
 			{
-				BackgroundImageView = new Image ();
-				BackgroundImageView.SetValue (View.VerticalOptionsProperty, LayoutOptions.FillAndExpand);
-				chromeStack.Children.Add (BackgroundImageView);
-			}
-
-			// add the prompt
-			{
-				SignaturePrompt = new Label
-				{
-					Text = "X",
-					FontSize = 20,
-					FontAttributes = FontAttributes.Bold,
-					Margin = new Thickness (ThickPad, 0, 0, 0)
-				};
-				chromeStack.Children.Add (SignaturePrompt);
-			}
-
-			// add the signature line
-			{
-				SignatureLine = new BoxView
-				{
-					BackgroundColor = Color.Gray,
-					HeightRequest = LineHeight,
-					Margin = new Thickness (ThickPad, 0, ThickPad, 0)
-				};
-				chromeStack.Children.Add (SignatureLine);
-			}
-
-			// add the caption
-			{
-				CaptionLabel = new Label
-				{
-					Text = "Sign here.",
-					FontSize = 11,
-					TextColor = Color.Gray,
-					HorizontalTextAlignment = TextAlignment.Center,
-					Margin = new Thickness (ThinPad)
-				};
-				chromeStack.Children.Add (CaptionLabel);
-			}
+				Source = BackgroundImage,
+				Aspect = BackgroundImageAspect,
+				Opacity = BackgroundImageOpacity,
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Fill,
+			};
+			BackgroundImageView.SetValue (RowSpanProperty, 2);
+			chrome.Children.Add (BackgroundImageView);
 
 			// add the main signature view
+			SignaturePadCanvas = new SignaturePadCanvasView
 			{
-				SignaturePadCanvas = new SignaturePadCanvasView ();
-				SignaturePadCanvas.SetValue (View.HorizontalOptionsProperty, LayoutOptions.Fill);
-				SignaturePadCanvas.SetValue (View.VerticalOptionsProperty, LayoutOptions.Fill);
-				SignaturePadCanvas.StrokeCompleted += (sender, e) =>
-				{
-					UpdateUi ();
-					StrokeCompleted?.Invoke (this, EventArgs.Empty);
-				};
-				SignaturePadCanvas.Cleared += (sender, e) => Cleared?.Invoke (this, EventArgs.Empty);
-				Children.Add (SignaturePadCanvas);
-			}
+				StrokeColor = StrokeColor,
+				StrokeWidth = StrokeWidth,
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.Fill
+			};
+			SignaturePadCanvas.SetValue (RowSpanProperty, 2);
+			chrome.Children.Add (SignaturePadCanvas);
+
+			// add the prompt
+			SignaturePrompt = new Label
+			{
+				Text = PromptText,
+				FontSize = PromptFontSize,
+				TextColor = PromptTextColor,
+				FontAttributes = FontAttributes.Bold,
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.End
+			};
+			chrome.Children.Add (SignaturePrompt);
 
 			// add the clear label
+			ClearLabel = new Label
 			{
-				ClearLabel = new Label
-				{
-					Text = "Clear",
-					FontSize = 11,
-					FontAttributes = FontAttributes.Bold,
-					IsVisible = false,
-					TextColor = Color.Gray,
-					Margin = new Thickness (0, ThickPad, ThickPad, 0)
-				};
-				ClearLabel.SetValue (View.HorizontalOptionsProperty, LayoutOptions.End);
-				ClearLabel.SetValue (View.VerticalOptionsProperty, LayoutOptions.Start);
-				Children.Add (ClearLabel);
+				Text = ClearText,
+				FontSize = ClearFontSize,
+				TextColor = ClearTextColor,
+				FontAttributes = FontAttributes.Bold,
+				IsVisible = false,
+				HorizontalOptions = LayoutOptions.End,
+				VerticalOptions = LayoutOptions.Start
+			};
+			chrome.Children.Add (ClearLabel);
 
-				// attach the "clear" command
-				clearLabelTap = new TapGestureRecognizer { Command = new Command (() => Clear ()) };
-				ClearLabel.GestureRecognizers.Add (clearLabelTap);
-			}
+			// add the caption
+			CaptionLabel = new Label
+			{
+				Text = CaptionText,
+				FontSize = CaptionFontSize,
+				TextColor = CaptionTextColor,
+				HorizontalTextAlignment = TextAlignment.Center,
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.End
+			};
+			CaptionLabel.SetValue (RowProperty, 1);
+			chrome.Children.Add (CaptionLabel);
 
-			// clear / initialize the view
-			Clear ();
+			// add the signature line
+			SignatureLine = new BoxView
+			{
+				Color = SignatureLineColor,
+				HeightRequest = SignatureLineWidth,
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.End
+			};
+			chrome.Children.Add (SignatureLine);
+
+			// set up the main control
+			RowSpacing = 0;
+			ColumnSpacing = 0;
+			Padding = new Thickness (DefaultWideSpacing, DefaultWideSpacing, DefaultWideSpacing, DefaultNarrowSpacing);
+			BackgroundColor = SignaturePadLightColor;
+
+			// set up events from the controls
+			SignaturePadCanvas.StrokeCompleted += delegate
+			{
+				OnSignatureStrokeCompleted ();
+			};
+			SignaturePadCanvas.Cleared += delegate
+			{
+				OnSignatureCleared ();
+			};
+			clearLabelTap = new TapGestureRecognizer { Command = new Command (() => OnClearTapped ()) };
+			ClearLabel.GestureRecognizers.Add (clearLabelTap);
+
+			OnPaddingChanged ();
+			UpdateUi ();
 		}
 
 		protected override void OnPropertyChanged ([CallerMemberName] string propertyName = null)
@@ -208,6 +286,10 @@ namespace SignaturePad.Forms
 					ClearLabel.GestureRecognizers.Add (clearLabelTap);
 				else
 					ClearLabel.GestureRecognizers.Remove (clearLabelTap);
+			}
+			else if (propertyName == PaddingProperty.PropertyName)
+			{
+				OnPaddingChanged ();
 			}
 		}
 
@@ -233,164 +315,188 @@ namespace SignaturePad.Forms
 
 		public bool IsBlank => SignaturePadCanvas.IsBlank;
 
+		/// <summary>
+		/// Gets the underlying control that handles the signatures.
+		/// </summary>
 		public SignaturePadCanvasView SignaturePadCanvas { get; private set; }
-
-		public Color StrokeColor
-		{
-			get { return (Color)GetValue (StrokeColorProperty); }
-			set { SetValue (StrokeColorProperty, value); }
-		}
-
-		public float StrokeWidth
-		{
-			get { return (float)GetValue (StrokeWidthProperty); }
-			set { SetValue (StrokeWidthProperty, value); }
-		}
-
-		/// <summary>
-		/// The prompt displayed at the beginning of the signature line.
-		/// </summary>
-		/// <remarks>
-		/// Text value defaults to 'X'.
-		/// </remarks>
-		/// <value>The signature prompt.</value>
-		public Label SignaturePrompt { get; private set; }
-
-		/// <summary>
-		/// The caption displayed under the signature line.
-		/// </summary>
-		/// <remarks>
-		/// Text value defaults to 'Sign here.'
-		/// </remarks>
-		/// <value>The caption.</value>
-		public Label CaptionLabel { get; private set; }
-
-		/// <summary>
-		/// The color of the caption text.
-		/// </summary>
-		/// <value>The color of the caption text.</value>
-		public Color CaptionTextColor
-		{
-			get { return (Color)GetValue (CaptionTextColorProperty); }
-			set { SetValue (CaptionTextColorProperty, value); }
-		}
-
-		/// <summary>
-		/// The color of the signature line.
-		/// </summary>
-		/// <value>The color of the signature line.</value>
-		public Color SignatureLineColor
-		{
-			get { return (Color)GetValue (SignatureLineColorProperty); }
-			set { SetValue (SignatureLineColorProperty, value); }
-		}
-
-		/// <summary>
-		///  An image view that may be used as a watermark or as a texture
-		///  for the signature pad.
-		/// </summary>
-		/// <value>The background image view.</value>
-		public Image BackgroundImageView { get; private set; }
-
-		/// <summary>
-		///  An image view that may be used as a watermark or as a texture
-		///  for the signature pad.
-		/// </summary>
-		/// <value>The background image.</value>
-		public ImageSource BackgroundImage
-		{
-			get { return (ImageSource)GetValue (BackgroundImageProperty); }
-			set { SetValue (BackgroundImageProperty, value); }
-		}
-
-		/// <summary>
-		///  An image view that may be used as a watermark or as a texture
-		///  for the signature pad.
-		/// </summary>
-		/// <value>The background image.</value>
-		public Aspect BackgroundImageAspect
-		{
-			get { return (Aspect)GetValue (BackgroundImageAspectProperty); }
-			set { SetValue (BackgroundImageAspectProperty, value); }
-		}
-
-		/// <summary>
-		///  The transparency of the watermark.
-		/// </summary>
-		/// <value>The background image.</value>
-		public double BackgroundImageOpacity
-		{
-			get { return (double)GetValue (BackgroundImageOpacityProperty); }
-			set { SetValue (BackgroundImageOpacityProperty, value); }
-		}
-
-		/// <summary>
-		/// The text for the prompt displayed at the beginning of the signature line.
-		/// </summary>
-		/// <remarks>
-		/// Text value defaults to 'X'.
-		/// </remarks>
-		/// <value>The signature prompt.</value>
-		public string PromptText
-		{
-			get { return (string)GetValue (PromptTextProperty); }
-			set { SetValue (PromptTextProperty, value); }
-		}
-
-		/// <summary>
-		/// The color of the prompt text.
-		/// </summary>
-		/// <value>The color of the prompt text.</value>
-		public Color PromptTextColor
-		{
-			get { return (Color)GetValue (PromptTextColorProperty); }
-			set { SetValue (PromptTextColorProperty, value); }
-		}
-
-		/// <summary>
-		/// The text for the caption displayed under the signature line.
-		/// </summary>
-		/// <remarks>
-		/// Text value defaults to 'Sign here.'
-		/// </remarks>
-		/// <value>The caption.</value>
-		public string CaptionText
-		{
-			get { return (string)GetValue (CaptionTextProperty); }
-			set { SetValue (CaptionTextProperty, value); }
-		}
-
-		/// <summary>
-		/// Gets the text for the label that clears the pad when clicked.
-		/// </summary>
-		/// <value>The clear label.</value>
-		public string ClearText
-		{
-			get { return (string)GetValue (ClearTextProperty); }
-			set { SetValue (ClearTextProperty, value); }
-		}
-
-		/// <summary>
-		/// The color of the clear text.
-		/// </summary>
-		/// <value>The color of the clear text.</value>
-		public Color ClearTextColor
-		{
-			get { return (Color)GetValue (ClearTextColorProperty); }
-			set { SetValue (ClearTextColorProperty, value); }
-		}
-
-		/// <summary>
-		/// Gets the label that clears the pad when clicked.
-		/// </summary>
-		/// <value>The clear label.</value>
-		public Label ClearLabel { get; private set; }
 
 		/// <summary>
 		/// Gets the horizontal line that goes in the lower part of the pad.
 		/// </summary>
-		/// <value>The signature line.</value>
 		public BoxView SignatureLine { get; private set; }
+
+		/// <summary>
+		/// The caption displayed under the signature line.
+		/// </summary>
+		public Label CaptionLabel { get; private set; }
+
+		/// <summary>
+		/// The prompt displayed at the beginning of the signature line.
+		/// </summary>
+		public Label SignaturePrompt { get; private set; }
+
+		/// <summary>
+		/// Gets the label that clears the pad when clicked.
+		/// </summary>
+		public Label ClearLabel { get; private set; }
+
+		/// <summary>
+		/// Gets the image view that handles the background image.
+		/// </summary>
+		public Image BackgroundImageView { get; private set; }
+
+		/// <summary>
+		/// Gets or sets the color of the signature strokes.
+		/// </summary>
+		public Color StrokeColor
+		{
+			get => (Color)GetValue (StrokeColorProperty);
+			set => SetValue (StrokeColorProperty, value);
+		}
+
+		/// <summary>
+		/// Gets or sets the width of the signature strokes.
+		/// </summary>
+		public float StrokeWidth
+		{
+			get => (float)GetValue (StrokeWidthProperty);
+			set => SetValue (StrokeWidthProperty, value);
+		}
+
+		/// <summary>
+		/// Gets or sets the color of the signature line.
+		/// </summary>
+		public Color SignatureLineColor
+		{
+			get => (Color)GetValue (SignatureLineColorProperty);
+			set => SetValue (SignatureLineColorProperty, value);
+		}
+
+		/// <summary>
+		/// Gets or sets the width of the signature line.
+		/// </summary>
+		public double SignatureLineWidth
+		{
+			get => (double)GetValue (SignatureLineWidthProperty);
+			set => SetValue (SignatureLineWidthProperty, value);
+		}
+
+		/// <summary>
+		/// Gets or sets the size of the spacing between the signature line and the caption.
+		/// </summary>
+		public double SignatureLineSpacing
+		{
+			get => (double)GetValue (SignatureLineSpacingProperty);
+			set => SetValue (SignatureLineSpacingProperty, value);
+		}
+
+		/// <summary>
+		/// Gets or sets the text for the caption displayed under the signature line.
+		/// </summary>
+		public string CaptionText
+		{
+			get => (string)GetValue (CaptionTextProperty);
+			set => SetValue (CaptionTextProperty, value);
+		}
+
+		/// <summary>
+		/// Gets or sets the font size of the caption.
+		/// </summary>
+		public double CaptionFontSize
+		{
+			get => (double)GetValue (CaptionFontSizeProperty);
+			set => SetValue (CaptionFontSizeProperty, value);
+		}
+
+		/// <summary>
+		/// Gets or sets the color of the caption text.
+		/// </summary>
+		public Color CaptionTextColor
+		{
+			get => (Color)GetValue (CaptionTextColorProperty);
+			set => SetValue (CaptionTextColorProperty, value);
+		}
+
+		/// <summary>
+		/// Gets or sets the text for the prompt displayed at the beginning of the signature line.
+		/// </summary>
+		public string PromptText
+		{
+			get => (string)GetValue (PromptTextProperty);
+			set => SetValue (PromptTextProperty, value);
+		}
+
+		/// <summary>
+		/// Gets or sets the font size of the prompt displayed at the beginning of the signature line.
+		/// </summary>
+		public double PromptFontSize
+		{
+			get => (double)GetValue (PromptFontSizeProperty);
+			set => SetValue (PromptFontSizeProperty, value);
+		}
+
+		/// <summary>
+		/// Gets or sets the text color of the prompt displayed at the beginning of the signature line.
+		/// </summary>
+		public Color PromptTextColor
+		{
+			get => (Color)GetValue (PromptTextColorProperty);
+			set => SetValue (PromptTextColorProperty, value);
+		}
+
+		/// <summary>
+		/// Gets or sets the text for the label that clears the pad when clicked.
+		/// </summary>
+		public string ClearText
+		{
+			get => (string)GetValue (ClearTextProperty);
+			set => SetValue (ClearTextProperty, value);
+		}
+
+		/// <summary>
+		/// Gets or sets the font size of the label that clears the pad when clicked.
+		/// </summary>
+		public double ClearFontSize
+		{
+			get => (double)GetValue (ClearFontSizeProperty);
+			set => SetValue (ClearFontSizeProperty, value);
+		}
+
+		/// <summary>
+		/// Gets or sets the color of the label that clears the pad when clicked.
+		/// </summary>
+		public Color ClearTextColor
+		{
+			get => (Color)GetValue (ClearTextColorProperty);
+			set => SetValue (ClearTextColorProperty, value);
+		}
+
+		/// <summary>
+		///  Gets or sets the watermark image.
+		/// </summary>
+		public ImageSource BackgroundImage
+		{
+			get => (ImageSource)GetValue (BackgroundImageProperty);
+			set => SetValue (BackgroundImageProperty, value);
+		}
+
+		/// <summary>
+		///  Gets or sets the aspect for the watermark image.
+		/// </summary>
+		public Aspect BackgroundImageAspect
+		{
+			get => (Aspect)GetValue (BackgroundImageAspectProperty);
+			set => SetValue (BackgroundImageAspectProperty, value);
+		}
+
+		/// <summary>
+		///  Gets or sets the transparency of the watermark.
+		/// </summary>
+		public double BackgroundImageOpacity
+		{
+			get => (double)GetValue (BackgroundImageOpacityProperty);
+			set => SetValue (BackgroundImageOpacityProperty, value);
+		}
 
 		public event EventHandler StrokeCompleted;
 
@@ -483,9 +589,43 @@ namespace SignaturePad.Forms
 			return SignaturePadCanvas.GetImageStreamAsync (format, settings);
 		}
 
+		private void OnClearTapped ()
+		{
+			Clear ();
+		}
+
+		private void OnSignatureCleared ()
+		{
+			UpdateUi ();
+			Cleared?.Invoke (this, EventArgs.Empty);
+		}
+
+		private void OnSignatureStrokeCompleted ()
+		{
+			UpdateUi ();
+			StrokeCompleted?.Invoke (this, EventArgs.Empty);
+		}
+
 		private void UpdateUi ()
 		{
 			ClearLabel.IsVisible = !IsBlank;
+		}
+
+		private static void OnPaddingChanged (BindableObject bindable, object oldValue, object newValue)
+		{
+			((SignaturePadView)bindable).OnPaddingChanged ();
+		}
+
+		private void OnPaddingChanged ()
+		{
+			var padding = Padding;
+			var spacing = SignatureLineSpacing;
+
+			SignatureLine.Margin = new Thickness (padding.Left, 0, padding.Right, 0);
+			CaptionLabel.Margin = new Thickness (0, spacing, 0, padding.Bottom);
+			ClearLabel.Margin = new Thickness (0, padding.Top, padding.Right, 0);
+			SignaturePrompt.Margin = new Thickness (padding.Left, 0, 0, spacing);
+			chrome.Margin = new Thickness (-padding.Left, -padding.Top, -padding.Right, -padding.Bottom);
 		}
 	}
 }

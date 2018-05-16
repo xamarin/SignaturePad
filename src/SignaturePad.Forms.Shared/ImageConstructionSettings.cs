@@ -105,6 +105,9 @@ namespace SignaturePad.Forms
 
 	public struct ImageConstructionSettings
 	{
+		public static readonly float DefaultStrokeWidth = 2f;
+		public static readonly Color DefaultStrokeColor = Color.Black;
+
 		public bool? ShouldCrop { get; set; }
 
 		public SizeOrScale? DesiredSizeOrScale { get; set; }
