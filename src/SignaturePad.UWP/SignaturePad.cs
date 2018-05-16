@@ -40,23 +40,106 @@ namespace Xamarin.Controls
 
 		static SignaturePad ()
 		{
-			StrokeColorProperty = DependencyProperty.Register (nameof (StrokeColor), typeof (Color), typeof (SignaturePad), new PropertyMetadata (ImageConstructionSettings.DefaultStrokeColor));
-			StrokeWidthProperty = DependencyProperty.Register (nameof (StrokeWidth), typeof (double), typeof (SignaturePad), new PropertyMetadata ((double)ImageConstructionSettings.DefaultStrokeWidth));
-			SignatureLineBrushProperty = DependencyProperty.Register (nameof (SignatureLineBrush), typeof (Brush), typeof (SignaturePad), new PropertyMetadata (new SolidColorBrush (SignaturePadDarkColor)));
-			SignatureLineThicknessProperty = DependencyProperty.Register (nameof (SignatureLineThickness), typeof (double), typeof (SignaturePad), new PropertyMetadata (DefaultLineThickness));
-			SignatureLineSpacingProperty = DependencyProperty.Register (nameof (SignatureLineSpacing), typeof (double), typeof (SignaturePad), new PropertyMetadata (DefaultNarrowSpacing));
-			CaptionTextProperty = DependencyProperty.Register (nameof (CaptionText), typeof (string), typeof (SignaturePad), new PropertyMetadata (DefaultCaptionText));
-			CaptionFontSizeProperty = DependencyProperty.Register (nameof (CaptionFontSize), typeof (double), typeof (SignaturePad), new PropertyMetadata (DefaultFontSize));
-			CaptionForegroundProperty = DependencyProperty.Register (nameof (CaptionForeground), typeof (Brush), typeof (SignaturePad), new PropertyMetadata (new SolidColorBrush (SignaturePadDarkColor)));
-			SignaturePromptTextProperty = DependencyProperty.Register (nameof (SignaturePromptText), typeof (string), typeof (SignaturePad), new PropertyMetadata (DefaultPromptText));
-			SignaturePromptFontSizeProperty = DependencyProperty.Register (nameof (SignaturePromptFontSize), typeof (double), typeof (SignaturePad), new PropertyMetadata (DefaultFontSize));
-			SignaturePromptForegroundProperty = DependencyProperty.Register (nameof (SignaturePromptForeground), typeof (Brush), typeof (SignaturePad), new PropertyMetadata (new SolidColorBrush (SignaturePadDarkColor)));
-			ClearLabelTextProperty = DependencyProperty.Register (nameof (ClearLabelText), typeof (string), typeof (SignaturePad), new PropertyMetadata (DefaultClearLabelText));
-			ClearLabelFontSizeProperty = DependencyProperty.Register (nameof (ClearLabelFontSize), typeof (double), typeof (SignaturePad), new PropertyMetadata (DefaultFontSize));
-			ClearLabelForegroundProperty = DependencyProperty.Register (nameof (ClearLabelForeground), typeof (Brush), typeof (SignaturePad), new PropertyMetadata (new SolidColorBrush (SignaturePadDarkColor)));
-			BackgroundImageProperty = DependencyProperty.Register (nameof (BackgroundImage), typeof (ImageSource), typeof (SignaturePad), new PropertyMetadata (null));
-			BackgroundImageStretchProperty = DependencyProperty.Register (nameof (BackgroundImageStretch), typeof (Stretch), typeof (SignaturePad), new PropertyMetadata (Stretch.None));
-			BackgroundImageOpacityProperty = DependencyProperty.Register (nameof (BackgroundImageOpacity), typeof (double), typeof (SignaturePad), new PropertyMetadata (1.0));
+			StrokeColorProperty = DependencyProperty.Register (
+				nameof (StrokeColor),
+				typeof (Color),
+				typeof (SignaturePad),
+				new PropertyMetadata (ImageConstructionSettings.DefaultStrokeColor));
+
+			StrokeWidthProperty = DependencyProperty.Register (
+				nameof (StrokeWidth),
+				typeof (double),
+				typeof (SignaturePad),
+				new PropertyMetadata ((double)ImageConstructionSettings.DefaultStrokeWidth));
+
+			SignatureLineBrushProperty = DependencyProperty.Register (
+				nameof (SignatureLineBrush),
+				typeof (Brush),
+				typeof (SignaturePad),
+				new PropertyMetadata (new SolidColorBrush (SignaturePadDarkColor)));
+
+			SignatureLineThicknessProperty = DependencyProperty.Register (
+				nameof (SignatureLineThickness),
+				typeof (double),
+				typeof (SignaturePad),
+				new PropertyMetadata (DefaultLineThickness));
+
+			SignatureLineSpacingProperty = DependencyProperty.Register (
+				nameof (SignatureLineSpacing),
+				typeof (double),
+				typeof (SignaturePad),
+				new PropertyMetadata (DefaultNarrowSpacing, OnPaddingChanged));
+
+			CaptionTextProperty = DependencyProperty.Register (
+				nameof (CaptionText),
+				typeof (string),
+				typeof (SignaturePad),
+				new PropertyMetadata (DefaultCaptionText));
+
+			CaptionFontSizeProperty = DependencyProperty.Register (
+				nameof (CaptionFontSize),
+				typeof (double),
+				typeof (SignaturePad),
+				new PropertyMetadata (DefaultFontSize));
+
+			CaptionForegroundProperty = DependencyProperty.Register (
+				nameof (CaptionForeground),
+				typeof (Brush),
+				typeof (SignaturePad),
+				new PropertyMetadata (new SolidColorBrush (SignaturePadDarkColor)));
+
+			SignaturePromptTextProperty = DependencyProperty.Register (
+				nameof (SignaturePromptText),
+				typeof (string),
+				typeof (SignaturePad),
+				new PropertyMetadata (DefaultPromptText));
+
+			SignaturePromptFontSizeProperty = DependencyProperty.Register (
+				nameof (SignaturePromptFontSize),
+				typeof (double),
+				typeof (SignaturePad),
+				new PropertyMetadata (DefaultFontSize));
+
+			SignaturePromptForegroundProperty = DependencyProperty.Register (
+				nameof (SignaturePromptForeground),
+				typeof (Brush),
+				typeof (SignaturePad),
+				new PropertyMetadata (new SolidColorBrush (SignaturePadDarkColor)));
+
+			ClearLabelTextProperty = DependencyProperty.Register (
+				nameof (ClearLabelText),
+				typeof (string),
+				typeof (SignaturePad),
+				new PropertyMetadata (DefaultClearLabelText));
+
+			ClearLabelFontSizeProperty = DependencyProperty.Register (
+				nameof (ClearLabelFontSize),
+				typeof (double),
+				typeof (SignaturePad),
+				new PropertyMetadata (DefaultFontSize));
+
+			ClearLabelForegroundProperty = DependencyProperty.Register (
+				nameof (ClearLabelForeground),
+				typeof (Brush),
+				typeof (SignaturePad),
+				new PropertyMetadata (new SolidColorBrush (SignaturePadDarkColor)));
+
+			BackgroundImageProperty = DependencyProperty.Register (
+				nameof (BackgroundImage),
+				typeof (ImageSource),
+				typeof (SignaturePad),
+				new PropertyMetadata (null));
+
+			BackgroundImageStretchProperty = DependencyProperty.Register (
+				nameof (BackgroundImageStretch),
+				typeof (Stretch),
+				typeof (SignaturePad), new PropertyMetadata (Stretch.None));
+
+			BackgroundImageOpacityProperty = DependencyProperty.Register (
+				nameof (BackgroundImageOpacity),
+				typeof (double),
+				typeof (SignaturePad),
+				new PropertyMetadata (1.0));
 		}
 
 		public SignaturePad ()
@@ -67,7 +150,6 @@ namespace Xamarin.Controls
 
 			Padding = new Thickness (DefaultWideSpacing, DefaultWideSpacing, DefaultWideSpacing, DefaultNarrowSpacing);
 			Background = new SolidColorBrush (SignaturePadLightColor);
-			BorderBrush = new SolidColorBrush (SignaturePadDarkColor);
 		}
 
 		protected override void OnApplyTemplate ()
@@ -197,9 +279,9 @@ namespace Xamarin.Controls
 			set { SetValue (ClearLabelFontSizeProperty, value); }
 		}
 
-		public Color ClearLabelForeground
+		public Brush ClearLabelForeground
 		{
-			get { return (Color)GetValue (ClearLabelForegroundProperty); }
+			get { return (Brush)GetValue (ClearLabelForegroundProperty); }
 			set { SetValue (ClearLabelForegroundProperty, value); }
 		}
 
@@ -247,6 +329,11 @@ namespace Xamarin.Controls
 			{
 				SignaturePrompt.Margin = new Thickness (padding.Left, 0, 0, spacing);
 			}
+		}
+
+		private static void OnPaddingChanged (DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			((SignaturePad)d).OnPaddingChanged (d, e.Property);
 		}
 	}
 }
