@@ -16,17 +16,22 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <controls:SignaturePad x:Name="signatureView" Grid.Row="0"
-                                   StrokeCompleted="SignatureChanged" Cleared="SignatureChanged" />
+        <controls:SignaturePad
+            x:Name="signatureView" StrokeCompleted="SignatureChanged" Cleared="SignatureChanged"
+            CaptionForeground="#B8860B" ClearLabelForeground="#B8860B" SignaturePromptForeground="#B8860B"
+            SignatureLineBrush="#B8860B" Background="#FAFAD2" BorderBrush="#B8860B" BorderThickness="1" />
 
-        <Button x:Name="btnSave" Content="Save Vector" Click="SaveVectorClicked"
-                HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="2" />
+        <Button
+            x:Name="btnSave" Content="Save Vector" Click="SaveVectorClicked"
+            HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="2" />
 
-        <Button x:Name="btnLoad" Content="Load Vector" Click="LoadVectorClicked"
-                HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Row="2" />
+        <Button
+            x:Name="btnLoad" Content="Load Vector" Click="LoadVectorClicked"
+            HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Row="2" />
 
-        <Button x:Name="btnSaveImage" Content="Save Image" Click="SaveImageClicked"
-                HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="2" />
+        <Button
+            x:Name="btnSaveImage" Content="Save Image" Click="SaveImageClicked"
+            HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="2" />
 
     </Grid>
 

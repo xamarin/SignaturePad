@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:padding="12dp">
@@ -8,7 +9,12 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginBottom="12dp"
-        android:layout_above="@+id/btnSave" />
+        android:layout_above="@+id/btnSave"
+        android:background="@drawable/background"
+        app:signatureLineColor="#B8860B"
+        app:captionTextColor="#B8860B"
+        app:signaturePromptTextColor="#B8860B"
+        app:clearLabelTextColor="#B8860B" />
     <Button
         android:id="@+id/btnSave"
         android:layout_width="wrap_content"
