@@ -1,10 +1,15 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Samples"
              xmlns:controls="clr-namespace:SignaturePad.Forms;assembly=SignaturePad.Forms"
              x:Class="Samples.MainPage"
              Title="Signature Pad">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:NotConverter x:Key="NotConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <Grid x:Name="LayoutRoot" Padding="12">
 
@@ -16,21 +21,33 @@
 
         <ContentView Padding="1" BackgroundColor="#B8860B">
             <controls:SignaturePadView
-                x:Name="signatureView" StrokeCompleted="SignatureChanged" Cleared="SignatureChanged"
+                x:Name="signaturePadView"
+                StrokeCompletedCommand="{Binding StrokeCompletedCommand}"
+                ClearedCommand="{Binding ClearedCommand}"
                 CaptionTextColor="#B8860B" ClearTextColor="#B8860B" PromptTextColor="#B8860B"
-                SignatureLineColor="#B8860B" BackgroundColor="#FAFAD2" />
+                SignatureLineColor="#B8860B" BackgroundColor="#FAFAD2">
+                <controls:SignaturePadView.Behaviors>
+                    <local:CaptureSignaturePointsBehavior Points="{Binding CurrentSignature}" />
+                </controls:SignaturePadView.Behaviors>
+            </controls:SignaturePadView>
         </ContentView>
 
         <Button
-            x:Name="btnSave" Text="Save Vector" Clicked="SaveVectorClicked"
+            Text="Save Vector"
+            Command="{Binding SaveVectorCommand}"
+            IsEnabled="{Binding IsBlank, Source={Reference signaturePadView}, Converter={StaticResource NotConverter}}"
             HorizontalOptions="Start" VerticalOptions="End" Grid.Row="2" />
 
         <Button
-            x:Name="btnLoad" Text="Load Vector" Clicked="LoadVectorClicked"
+            Text="Load Vector"
+            Command="{Binding LoadVectorCommand}"
+            IsEnabled="{Binding HasSavedSignature}"
             HorizontalOptions="Center" VerticalOptions="End" Grid.Row="2" />
 
         <Button
-            x:Name="btnSaveImage" Text="Save Image" Clicked="SaveImageClicked"
+            Text="Save Image"
+            Command="{Binding SaveImageCommand}"
+            IsEnabled="{Binding IsBlank, Source={Reference signaturePadView}, Converter={StaticResource NotConverter}}"
             HorizontalOptions="End" VerticalOptions="End" Grid.Row="2" />
 
     </Grid>
