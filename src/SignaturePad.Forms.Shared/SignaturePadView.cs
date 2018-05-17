@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace SignaturePad.Forms
@@ -39,6 +40,10 @@ namespace SignaturePad.Forms
 		public static readonly BindableProperty BackgroundImageProperty;
 		public static readonly BindableProperty BackgroundImageAspectProperty;
 		public static readonly BindableProperty BackgroundImageOpacityProperty;
+		public static readonly BindableProperty ClearedCommandProperty;
+		public static readonly BindableProperty StrokeCompletedCommandProperty;
+		internal static readonly BindablePropertyKey IsBlankPropertyKey;
+		public static readonly BindableProperty IsBlankProperty;
 
 		private readonly TapGestureRecognizer clearLabelTap;
 		private readonly Grid chrome;
@@ -147,7 +152,7 @@ namespace SignaturePad.Forms
 				nameof (BackgroundImage),
 				typeof (ImageSource),
 				typeof (SignaturePadView),
-				(ImageSource)null,
+				default (ImageSource),
 				propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).BackgroundImageView.Source = (ImageSource)newValue);
 
 			BackgroundImageAspectProperty = BindableProperty.Create (
@@ -161,8 +166,27 @@ namespace SignaturePad.Forms
 				nameof (BackgroundImageOpacity),
 				typeof (double),
 				typeof (SignaturePadView),
-				(double)1.0,
+				1.0,
 				propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).BackgroundImageView.Opacity = (double)newValue);
+
+			ClearedCommandProperty = BindableProperty.Create (
+				nameof (ClearedCommand),
+				typeof (ICommand),
+				typeof (SignaturePadView),
+				default (ICommand));
+
+			StrokeCompletedCommandProperty = BindableProperty.Create (
+				nameof (StrokeCompletedCommand),
+				typeof (ICommand),
+				typeof (SignaturePadView),
+				default (ICommand));
+
+			IsBlankPropertyKey = BindableProperty.CreateReadOnly (
+				nameof (IsBlank),
+				typeof (bool),
+				typeof (SignaturePadView),
+				true);
+			IsBlankProperty = IsBlankPropertyKey.BindableProperty;
 		}
 
 		public SignaturePadView ()
@@ -268,7 +292,10 @@ namespace SignaturePad.Forms
 			{
 				OnSignatureCleared ();
 			};
-			clearLabelTap = new TapGestureRecognizer { Command = new Command (() => OnClearTapped ()) };
+			clearLabelTap = new TapGestureRecognizer
+			{
+				Command = new Command (() => OnClearTapped ())
+			};
 			ClearLabel.GestureRecognizers.Add (clearLabelTap);
 
 			OnPaddingChanged ();
@@ -313,7 +340,7 @@ namespace SignaturePad.Forms
 			}
 		}
 
-		public bool IsBlank => SignaturePadCanvas.IsBlank;
+		public bool IsBlank => (bool)GetValue (IsBlankProperty);
 
 		/// <summary>
 		/// Gets the underlying control that handles the signatures.
@@ -498,6 +525,18 @@ namespace SignaturePad.Forms
 			set => SetValue (BackgroundImageOpacityProperty, value);
 		}
 
+		public ICommand ClearedCommand
+		{
+			get => (ICommand)GetValue (ClearedCommandProperty);
+			set => SetValue (ClearedCommandProperty, value);
+		}
+
+		public ICommand StrokeCompletedCommand
+		{
+			get => (ICommand)GetValue (StrokeCompletedCommandProperty);
+			set => SetValue (StrokeCompletedCommandProperty, value);
+		}
+
 		public event EventHandler StrokeCompleted;
 
 		public event EventHandler Cleared;
@@ -596,14 +635,35 @@ namespace SignaturePad.Forms
 
 		private void OnSignatureCleared ()
 		{
+			UpdateBindableProperties ();
+
 			UpdateUi ();
+
 			Cleared?.Invoke (this, EventArgs.Empty);
+
+			if (ClearedCommand != null && ClearedCommand.CanExecute (null))
+			{
+				ClearedCommand.Execute (null);
+			}
 		}
 
 		private void OnSignatureStrokeCompleted ()
 		{
+			UpdateBindableProperties ();
+
 			UpdateUi ();
+
 			StrokeCompleted?.Invoke (this, EventArgs.Empty);
+
+			if (StrokeCompletedCommand != null && StrokeCompletedCommand.CanExecute (null))
+			{
+				StrokeCompletedCommand.Execute (null);
+			}
+		}
+
+		private void UpdateBindableProperties ()
+		{
+			SetValue (IsBlankPropertyKey, SignaturePadCanvas.IsBlank);
 		}
 
 		private void UpdateUi ()
