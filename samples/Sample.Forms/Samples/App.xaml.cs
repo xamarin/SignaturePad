@@ -18,7 +18,7 @@ namespace Samples
 
 			saveSignatureDelegate = saveSignature;
 
-			MainPage = new NavigationPage (new BindingPage ());
+			MainPage = new NavigationPage (new MainPage ());
 		}
 
 		public static Task<bool> SaveSignature (Stream bitmap, string filename)

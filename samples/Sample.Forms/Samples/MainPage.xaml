@@ -1,0 +1,11 @@
+﻿<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Samples"
+             x:Class="Samples.MainPage"
+             Title="Signature Pad">
+
+    <local:EventsPage Title="Events" />
+
+    <local:BindingPage Title="Data Binding" />
+
+</TabbedPage>

@@ -3,7 +3,7 @@
              xmlns:local="clr-namespace:Samples"
              xmlns:controls="clr-namespace:SignaturePad.Forms;assembly=SignaturePad.Forms"
              x:Class="Samples.BindingPage"
-             Title="Signature Pad">
+             Title="Data Binding">
 
     <ContentPage.Resources>
         <ResourceDictionary>
