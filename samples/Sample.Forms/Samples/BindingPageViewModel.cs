@@ -10,12 +10,12 @@ using SignaturePad.Forms;
 
 namespace Samples
 {
-	public class MainViewModel : BindableObject
+	public class BindingViewModel : BindableObject
 	{
 		private IEnumerable<Point> currentSignature;
 		private Point[] savedSignature;
 
-		public MainViewModel (Func<SignatureImageFormat, ImageConstructionSettings, Task<Stream>> getImageDelegate)
+		public BindingViewModel (Func<SignatureImageFormat, ImageConstructionSettings, Task<Stream>> getImageDelegate)
 		{
 			GetImageStreamAsync = getImageDelegate;
 
