@@ -45,7 +45,7 @@ namespace Samples
 			}
 		}
 
-		public bool HasSavedSignature => savedSignature?.Length > 0;
+		public bool HasSavedSignature => SavedSignature?.Length > 0;
 
 		public ICommand SaveVectorCommand { get; }
 
