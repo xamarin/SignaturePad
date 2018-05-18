@@ -62,13 +62,13 @@ namespace Xamarin.Controls
 				nameof (SignatureLineThickness),
 				typeof (double),
 				typeof (SignaturePad),
-				new PropertyMetadata (DefaultLineThickness));
+				new PropertyMetadata ((double)DefaultLineThickness));
 
 			SignatureLineSpacingProperty = DependencyProperty.Register (
 				nameof (SignatureLineSpacing),
 				typeof (double),
 				typeof (SignaturePad),
-				new PropertyMetadata (DefaultNarrowSpacing, OnPaddingChanged));
+				new PropertyMetadata ((double)DefaultNarrowSpacing, OnPaddingChanged));
 
 			CaptionTextProperty = DependencyProperty.Register (
 				nameof (CaptionText),
@@ -80,7 +80,7 @@ namespace Xamarin.Controls
 				nameof (CaptionFontSize),
 				typeof (double),
 				typeof (SignaturePad),
-				new PropertyMetadata (DefaultFontSize));
+				new PropertyMetadata ((double)DefaultFontSize));
 
 			CaptionForegroundProperty = DependencyProperty.Register (
 				nameof (CaptionForeground),
@@ -98,7 +98,7 @@ namespace Xamarin.Controls
 				nameof (SignaturePromptFontSize),
 				typeof (double),
 				typeof (SignaturePad),
-				new PropertyMetadata (DefaultFontSize));
+				new PropertyMetadata ((double)DefaultFontSize));
 
 			SignaturePromptForegroundProperty = DependencyProperty.Register (
 				nameof (SignaturePromptForeground),
@@ -116,7 +116,7 @@ namespace Xamarin.Controls
 				nameof (ClearLabelFontSize),
 				typeof (double),
 				typeof (SignaturePad),
-				new PropertyMetadata (DefaultFontSize));
+				new PropertyMetadata ((double)DefaultFontSize));
 
 			ClearLabelForegroundProperty = DependencyProperty.Register (
 				nameof (ClearLabelForeground),
