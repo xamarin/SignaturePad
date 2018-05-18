@@ -46,7 +46,6 @@ namespace SignaturePad.Forms
 		public static readonly BindableProperty IsBlankProperty;
 
 		private readonly TapGestureRecognizer clearLabelTap;
-		private readonly Grid chrome;
 
 		static SignaturePadView ()
 		{
@@ -191,32 +190,17 @@ namespace SignaturePad.Forms
 
 		public SignaturePadView ()
 		{
-			// create the chrome layout
-			chrome = new Grid
-			{
-				ColumnSpacing = 0,
-				RowSpacing = 0,
-				Padding = 0,
-				Margin = 0,
-				RowDefinitions =
-				{
-					new RowDefinition { Height = GridLength.Star },
-					new RowDefinition { Height = GridLength.Auto },
-				}
-			};
-			Children.Add (chrome);
-
 			// add the background view
 			BackgroundImageView = new Image
 			{
 				Source = BackgroundImage,
 				Aspect = BackgroundImageAspect,
 				Opacity = BackgroundImageOpacity,
+				InputTransparent = true,
 				HorizontalOptions = LayoutOptions.Fill,
 				VerticalOptions = LayoutOptions.Fill,
 			};
-			BackgroundImageView.SetValue (RowSpanProperty, 2);
-			chrome.Children.Add (BackgroundImageView);
+			Children.Add (BackgroundImageView);
 
 			// add the main signature view
 			SignaturePadCanvas = new SignaturePadCanvasView
@@ -226,20 +210,7 @@ namespace SignaturePad.Forms
 				HorizontalOptions = LayoutOptions.Fill,
 				VerticalOptions = LayoutOptions.Fill
 			};
-			SignaturePadCanvas.SetValue (RowSpanProperty, 2);
-			chrome.Children.Add (SignaturePadCanvas);
-
-			// add the prompt
-			SignaturePrompt = new Label
-			{
-				Text = PromptText,
-				FontSize = PromptFontSize,
-				TextColor = PromptTextColor,
-				FontAttributes = FontAttributes.Bold,
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.End
-			};
-			chrome.Children.Add (SignaturePrompt);
+			Children.Add (SignaturePadCanvas);
 
 			// add the clear label
 			ClearLabel = new Label
@@ -252,7 +223,43 @@ namespace SignaturePad.Forms
 				HorizontalOptions = LayoutOptions.End,
 				VerticalOptions = LayoutOptions.Start
 			};
-			chrome.Children.Add (ClearLabel);
+			Children.Add (ClearLabel);
+
+			// add the footer bit
+			var footer = new StackLayout
+			{
+				Spacing = 0,
+				Padding = 0,
+				Margin = 0,
+				InputTransparent = true,
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.End,
+			};
+			Children.Add (footer);
+
+			// add the prompt
+			SignaturePrompt = new Label
+			{
+				Text = PromptText,
+				FontSize = PromptFontSize,
+				TextColor = PromptTextColor,
+				FontAttributes = FontAttributes.Bold,
+				InputTransparent = true,
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.End
+			};
+			footer.Children.Add (SignaturePrompt);
+
+			// add the signature line
+			SignatureLine = new BoxView
+			{
+				Color = SignatureLineColor,
+				HeightRequest = SignatureLineWidth,
+				InputTransparent = true,
+				HorizontalOptions = LayoutOptions.Fill,
+				VerticalOptions = LayoutOptions.End
+			};
+			footer.Children.Add (SignatureLine);
 
 			// add the caption
 			CaptionLabel = new Label
@@ -261,21 +268,11 @@ namespace SignaturePad.Forms
 				FontSize = CaptionFontSize,
 				TextColor = CaptionTextColor,
 				HorizontalTextAlignment = TextAlignment.Center,
+				InputTransparent = true,
 				HorizontalOptions = LayoutOptions.Fill,
 				VerticalOptions = LayoutOptions.End
 			};
-			CaptionLabel.SetValue (RowProperty, 1);
-			chrome.Children.Add (CaptionLabel);
-
-			// add the signature line
-			SignatureLine = new BoxView
-			{
-				Color = SignatureLineColor,
-				HeightRequest = SignatureLineWidth,
-				HorizontalOptions = LayoutOptions.Fill,
-				VerticalOptions = LayoutOptions.End
-			};
-			chrome.Children.Add (SignatureLine);
+			footer.Children.Add (CaptionLabel);
 
 			// set up the main control
 			RowSpacing = 0;
@@ -681,11 +678,11 @@ namespace SignaturePad.Forms
 			var padding = Padding;
 			var spacing = SignatureLineSpacing;
 
-			SignatureLine.Margin = new Thickness (padding.Left, 0, padding.Right, 0);
-			CaptionLabel.Margin = new Thickness (0, spacing, 0, padding.Bottom);
-			ClearLabel.Margin = new Thickness (0, padding.Top, padding.Right, 0);
-			SignaturePrompt.Margin = new Thickness (padding.Left, 0, 0, spacing);
-			chrome.Margin = new Thickness (-padding.Left, -padding.Top, -padding.Right, -padding.Bottom);
+			var ignorePadding = new Thickness (-padding.Left, -padding.Top, -padding.Right, -padding.Bottom);
+
+			SignatureLine.Margin = new Thickness (0, spacing, 0, spacing);
+			BackgroundImageView.Margin = ignorePadding;
+			SignaturePadCanvas.Margin = ignorePadding;
 		}
 	}
 }
