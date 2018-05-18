@@ -6,6 +6,10 @@
     <AssemblyName>Samples</AssemblyName>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\SignaturePad.Forms\SignaturePad.Forms.csproj" />
   </ItemGroup>

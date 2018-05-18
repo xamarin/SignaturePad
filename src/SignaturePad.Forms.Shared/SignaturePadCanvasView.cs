@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace SignaturePad.Forms
@@ -20,6 +21,25 @@ namespace SignaturePad.Forms
 			typeof (float),
 			typeof (SignaturePadView),
 			ImageConstructionSettings.DefaultStrokeWidth);
+
+		public static readonly BindableProperty ClearedCommandProperty = BindableProperty.Create (
+			nameof (ClearedCommand),
+			typeof (ICommand),
+			typeof (SignaturePadView),
+			default (ICommand));
+
+		public static readonly BindableProperty StrokeCompletedCommandProperty = BindableProperty.Create (
+			nameof (StrokeCompletedCommand),
+			typeof (ICommand),
+			typeof (SignaturePadView),
+			default (ICommand));
+
+		internal static readonly BindablePropertyKey IsBlankPropertyKey = BindableProperty.CreateReadOnly (
+			nameof (IsBlank),
+			typeof (bool),
+			typeof (SignaturePadView),
+			true);
+		public static readonly BindableProperty IsBlankProperty = IsBlankPropertyKey.BindableProperty;
 
 		public bool IsBlank
 		{
@@ -48,6 +68,18 @@ namespace SignaturePad.Forms
 		{
 			get { return GetSignatureStrokes (); }
 			set { SetSignatureStrokes (value); }
+		}
+
+		public ICommand ClearedCommand
+		{
+			get => (ICommand)GetValue (ClearedCommandProperty);
+			set => SetValue (ClearedCommandProperty, value);
+		}
+
+		public ICommand StrokeCompletedCommand
+		{
+			get => (ICommand)GetValue (StrokeCompletedCommandProperty);
+			set => SetValue (StrokeCompletedCommandProperty, value);
 		}
 
 		/// <summary>
@@ -215,12 +247,31 @@ namespace SignaturePad.Forms
 
 		internal void OnStrokeCompleted ()
 		{
+			UpdateBindableProperties ();
+
 			StrokeCompleted?.Invoke (this, EventArgs.Empty);
+
+			if (StrokeCompletedCommand != null && StrokeCompletedCommand.CanExecute (null))
+			{
+				StrokeCompletedCommand.Execute (null);
+			}
 		}
 
 		internal void OnCleared ()
 		{
+			UpdateBindableProperties ();
+
 			Cleared?.Invoke (this, EventArgs.Empty);
+
+			if (ClearedCommand != null && ClearedCommand.CanExecute (null))
+			{
+				ClearedCommand.Execute (null);
+			}
+		}
+
+		private void UpdateBindableProperties ()
+		{
+			SetValue (IsBlankPropertyKey, IsBlank);
 		}
 
 		public event EventHandler StrokeCompleted;

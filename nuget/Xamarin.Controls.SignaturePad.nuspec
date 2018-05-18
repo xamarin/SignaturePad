@@ -37,7 +37,8 @@
     <file src="output/uwp/SignaturePad.dll" target="lib/uap10.0/SignaturePad.dll" />
     <file src="output/uwp/SignaturePad.xml" target="lib/uap10.0/SignaturePad.xml" />
     <file src="output/uwp/SignaturePad.pri" target="lib/uap10.0/SignaturePad.pri" />
-    <file src="output/uwp/Themes/Generic.xbf" target="lib/uap10.0/Themes/Generic.xbf" />
+    <file src="output/uwp/Themes/Generic.xbf" target="lib/uap10.0/SignaturePad/Themes/Generic.xbf" />
+    <file src="output/uwp/SignaturePad.xr.xml" target="lib/uap10.0/SignaturePad/SignaturePad.xr.xml" />
   </files>
 
 </package>

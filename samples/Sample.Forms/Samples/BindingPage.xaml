@@ -1,0 +1,55 @@
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Samples"
+             xmlns:controls="clr-namespace:SignaturePad.Forms;assembly=SignaturePad.Forms"
+             x:Class="Samples.BindingPage"
+             Title="Data Binding">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:NotConverter x:Key="NotConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid x:Name="LayoutRoot" Padding="12">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="12" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ContentView Padding="1" BackgroundColor="#B8860B">
+            <controls:SignaturePadView
+                x:Name="signaturePadView"
+                StrokeCompletedCommand="{Binding StrokeCompletedCommand}"
+                ClearedCommand="{Binding ClearedCommand}"
+                CaptionTextColor="#B8860B" ClearTextColor="#B8860B" PromptTextColor="#B8860B"
+                SignatureLineColor="#B8860B" BackgroundColor="#FAFAD2">
+                <controls:SignaturePadView.Behaviors>
+                    <local:CaptureSignaturePointsBehavior Points="{Binding CurrentSignature}" />
+                </controls:SignaturePadView.Behaviors>
+            </controls:SignaturePadView>
+        </ContentView>
+
+        <Button
+            Text="Save Vector"
+            Command="{Binding SaveVectorCommand}"
+            IsEnabled="{Binding IsBlank, Source={Reference signaturePadView}, Converter={StaticResource NotConverter}}"
+            HorizontalOptions="Start" VerticalOptions="End" Grid.Row="2" />
+
+        <Button
+            Text="Load Vector"
+            Command="{Binding LoadVectorCommand}"
+            IsEnabled="{Binding HasSavedSignature}"
+            HorizontalOptions="Center" VerticalOptions="End" Grid.Row="2" />
+
+        <Button
+            Text="Save Image"
+            Command="{Binding SaveImageCommand}"
+            IsEnabled="{Binding IsBlank, Source={Reference signaturePadView}, Converter={StaticResource NotConverter}}"
+            HorizontalOptions="End" VerticalOptions="End" Grid.Row="2" />
+
+    </Grid>
+
+</ContentPage>

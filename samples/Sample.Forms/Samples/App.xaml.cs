@@ -23,7 +23,7 @@ namespace Samples
 
 		public static Task<bool> SaveSignature (Stream bitmap, string filename)
 		{
-			return ((App)App.Current).saveSignatureDelegate (bitmap, filename);
+			return ((App)Application.Current).saveSignatureDelegate (bitmap, filename);
 		}
 	}
 }

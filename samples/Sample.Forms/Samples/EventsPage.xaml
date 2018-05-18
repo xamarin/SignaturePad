@@ -1,0 +1,37 @@
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Samples"
+             xmlns:controls="clr-namespace:SignaturePad.Forms;assembly=SignaturePad.Forms"
+             x:Class="Samples.EventsPage"
+             Title="Events">
+
+    <Grid x:Name="LayoutRoot" Padding="12">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="12" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ContentView Padding="1" BackgroundColor="#B8860B">
+            <controls:SignaturePadView
+                x:Name="signatureView" StrokeCompleted="SignatureChanged" Cleared="SignatureChanged"
+                CaptionTextColor="#B8860B" ClearTextColor="#B8860B" PromptTextColor="#B8860B"
+                SignatureLineColor="#B8860B" BackgroundColor="#FAFAD2" />
+        </ContentView>
+
+        <Button
+            x:Name="btnSave" Text="Save Vector" Clicked="SaveVectorClicked"
+            HorizontalOptions="Start" VerticalOptions="End" Grid.Row="2" />
+
+        <Button
+            x:Name="btnLoad" Text="Load Vector" Clicked="LoadVectorClicked"
+            HorizontalOptions="Center" VerticalOptions="End" Grid.Row="2" />
+
+        <Button
+            x:Name="btnSaveImage" Text="Save Image" Clicked="SaveImageClicked"
+            HorizontalOptions="End" VerticalOptions="End" Grid.Row="2" />
+
+    </Grid>
+
+</ContentPage>
