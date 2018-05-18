@@ -1,4 +1,6 @@
-﻿using Windows.UI;
+﻿using System;
+using System.ComponentModel;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -300,6 +302,30 @@ namespace Xamarin.Controls
 		{
 			get { return (double)GetValue (BackgroundImageOpacityProperty); }
 			set { SetValue (BackgroundImageOpacityProperty, value); }
+		}
+
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Use Background instead.")]
+		public Color BackgroundColor
+		{
+			get
+			{
+				var scb = Background as SolidColorBrush;
+				return scb == null ? Colors.Transparent : scb.Color;
+			}
+			set { Background = new SolidColorBrush (value); }
+		}
+
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Use SignatureLineBrush instead.")]
+		public Color SignatureLineColor
+		{
+			get
+			{
+				var scb = SignatureLineBrush as SolidColorBrush;
+				return scb == null ? Colors.Transparent : scb.Color;
+			}
+			set { SignatureLineBrush = new SolidColorBrush (value); }
 		}
 
 		private void UpdateUi ()
