@@ -8,14 +8,14 @@
     <authors>Microsoft</authors>
     <owners>Microsoft</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <licenseUrl>https://github.com/xamarin/SignaturePad/blob/master/LICENSE</licenseUrl>
-    <projectUrl>https://github.com/xamarin/SignaturePad</projectUrl>
-    <iconUrl>https://cdn.rawgit.com/xamarin/SignaturePad/v2.0/component/icons/signature-pad_256x256.png</iconUrl>
+    <licenseUrl>https://go.microsoft.com/fwlink/?linkid=874508</licenseUrl>
+    <projectUrl>https://go.microsoft.com/fwlink/?linkid=874507</projectUrl>
+    <iconUrl>https://go.microsoft.com/fwlink/?linkid=874510</iconUrl>
     <description>Makes capturing, saving, and displaying signatures extremely simple.</description>
-    <releaseNotes>https://github.com/xamarin/SignaturePad/releases</releaseNotes>
+    <releaseNotes>https://go.microsoft.com/fwlink/?linkid=874509</releaseNotes>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <tags>xamarin,signature,handwriting,windows,ios,android,uwp</tags>
-    <repository url="https://github.com/xamarin/SignaturePad" />
+    <repository url="https://go.microsoft.com/fwlink/?linkid=874507" />
 
     <dependencies>
       <group targetFramework="MonoAndroid" />
