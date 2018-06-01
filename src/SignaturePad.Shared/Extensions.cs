@@ -8,7 +8,14 @@ using Android.Views;
 #elif __IOS__
 using CoreGraphics;
 using UIKit;
-#elif WINDOWS_PHONE || NETFRAMEWORK
+#elif NETFRAMEWORK
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Ink;
+using System.Windows.Input;
+using System.Windows.Media;
+using InkPresenter = System.Windows.Ink.StrokeCollection;
+#elif WINDOWS_PHONE
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
@@ -85,7 +92,7 @@ namespace Xamarin.Controls
 			stroke.StylusPoints.Add (new StylusPoint (x, y));
 		}
 
-		public static void AddStrokes (this InkPresenter inkPresenter, IList<Point[]> strokes, Color color, float width)
+		public static void AddStrokes (this StrokeCollection inkPresenter, IList<Point[]> strokes, Color color, float width)
 		{
 			var strokeCollection = new StrokeCollection ();
 			foreach (var stroke in strokes.Where (s => s.Length > 0))
@@ -107,15 +114,15 @@ namespace Xamarin.Controls
 				};
 			}
 
-			inkPresenter = strokeCollection as InkPresenter;
+			inkPresenter = strokeCollection;
 		}
 
-		public static void Invalidate (this StrokeCollection control)
+		public static void Invalidate (this InkPresenter control)
 		{
 			control.Invalidate();
 		}
 
-		public static IList<Stroke> GetStrokes (this InkPresenter inkPresenter)
+		public static IList<Stroke> GetStrokes (this StrokeCollection inkPresenter)
 		{
 			return inkPresenter;
 		}

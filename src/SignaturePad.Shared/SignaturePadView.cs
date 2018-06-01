@@ -61,7 +61,7 @@ namespace Xamarin.Controls
 #endif
 
 #if NETFRAMEWORK
-		public System.Windows.Ink.StrokeCollection Strokes => SignaturePadCanvas.Strokes as InkPresenter;
+		public System.Windows.Ink.StrokeCollection Strokes => SignaturePadCanvas.Strokes;
 #else
 		public NativePoint[][] Strokes => SignaturePadCanvas.Strokes;
 #endif

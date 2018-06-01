@@ -83,9 +83,11 @@
     </Style>
 
     <Style TargetType="controls:SignaturePadCanvasView">
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="Template">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="Name" Value="InkCanvas" />
+        
+        <!--<Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:SignaturePadCanvasView">
                     <Border
@@ -96,7 +98,7 @@
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
-        </Setter>
+        </Setter>-->
     </Style>
 
 </ResourceDictionary>

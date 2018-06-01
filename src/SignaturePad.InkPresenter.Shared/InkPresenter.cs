@@ -17,6 +17,7 @@ using NativePoint = System.Windows.Input.StylusPoint;
 using NativeSize = System.Drawing.Size;
 using NativeColor = System.Windows.Media.Color;
 using NativeImage = System.Drawing.Bitmap;
+using InkPresenter = System.Windows.Ink.StrokeCollection;
 #elif __IOS__
 using NativeRect = CoreGraphics.CGRect;
 using NativeSize = CoreGraphics.CGSize;

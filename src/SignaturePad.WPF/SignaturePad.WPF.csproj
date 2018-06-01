@@ -39,7 +39,6 @@
   <ItemGroup>
     <Compile Include="..\SignaturePad.Shared\**\*.cs" Link="%(filename).shared%(Extension)" />
     <Compile Include="..\SignaturePad.InkPresenter.Shared\**\*.cs" Link="%(filename).shared%(Extension)" />
-    <Compile Include="InkPresenter.cs" />
     <Compile Include="SignaturePad.cs" />
     <Compile Include="SignaturePadCanvasView.cs" />
     <Page Include="Themes\Generic.xaml" Generator="MSBuild:Compile" />

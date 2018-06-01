@@ -15,20 +15,15 @@ namespace Xamarin.Controls
 	using System.Windows.Media.Imaging;
 	using System.Windows.Threading;
 
-	[TemplatePart (Name = PartInkCanvas, Type = typeof (InkCanvas))]
-	public partial class SignaturePadCanvasView : Control
+	public partial class SignaturePadCanvasView : InkCanvas
 	{
 		public static readonly DependencyProperty StrokeColorProperty;
 		public static readonly DependencyProperty StrokeWidthProperty;
-
-		private const string PartInkCanvas = "InkCanvas";
 
 		private InkPresenter inkPresenter;
 
 		static SignaturePadCanvasView ()
 		{
-			DefaultStyleKeyProperty.OverrideMetadata (typeof (SignaturePadCanvasView), new FrameworkPropertyMetadata (typeof (SignaturePadCanvasView)));
-
 			StrokeColorProperty = DependencyProperty.Register (
 				nameof (StrokeColor),
 				typeof (System.Windows.Media.Color),
@@ -45,26 +40,10 @@ namespace Xamarin.Controls
 		public SignaturePadCanvasView ()
 		{
 			DefaultStyleKey = typeof (SignaturePadCanvasView);
-			OnApplyTemplate();
-		}
-
-		/// <inheritdoc />
-		public override void OnApplyTemplate ()
-		{
-			base.OnApplyTemplate();
-			var canvas = new InkCanvas();
-			canvas.Width = 200;
-			canvas.Height = 200;
-			canvas.Background=new SolidColorBrush(Colors.Red);
-			canvas.Strokes = new InkPresenter();
-			inkPresenter = canvas.Strokes as InkPresenter;
-			inkPresenter.StrokesChanged += (sender, e) => OnStrokeCompleted ();
+			Strokes.StrokesChanged += (sender, e) => OnStrokeCompleted ();
 			OnStrokePropertiesChanged (this, new DependencyPropertyChangedEventArgs (StrokeColorProperty, "", ""));
 		}
-
-
-		private InkCanvas InkCanvas => GetTemplateChild (PartInkCanvas) as InkCanvas;
-
+		
 		public System.Windows.Media.Color StrokeColor
 		{
 			get { return (System.Windows.Media.Color)GetValue (StrokeColorProperty); }
@@ -104,7 +83,7 @@ namespace Xamarin.Controls
 		{
 			var signaturePad = d as SignaturePadCanvasView;
 
-			var inkPresenter = signaturePad?.inkPresenter;
+			var inkPresenter = signaturePad?.Strokes;
 			if (inkPresenter != null)
 			{
 				foreach (var stroke in inkPresenter)
