@@ -432,7 +432,6 @@ namespace Xamarin.Controls
 			imageSize = sizeOrScale.GetSize ((float)viewSize.Width, (float)viewSize.Height);
 			scale = sizeOrScale.GetScale ((float)imageSize.Width, (float)imageSize.Height);
 
-#if NETFRAMEWORK
 			if (settings.ShouldCrop == true)
 			{
 				signatureBounds = GetSignatureBounds (settings.Padding.Value);
@@ -446,6 +445,7 @@ namespace Xamarin.Controls
 					{
 						scaleX = scaleY = Math.Min ((float)scaleX, (float)scaleY);
 					}
+#if NETFRAMEWORK
 					scale = new NativeSize ((int)scaleX, (int)scaleY);
 				}
 				else if (sizeOrScale.Type == SizeOrScaleType.Scale)
@@ -459,20 +459,7 @@ namespace Xamarin.Controls
 				signatureBounds = new NativeRect (0, 0, (float)viewSize.Width, (float)viewSize.Height);
 			}
 #else
-			if (settings.ShouldCrop == true)
-			{
-				signatureBounds = GetSignatureBounds (settings.Padding.Value);
-
-				if (sizeOrScale.Type == SizeOrScaleType.Size)
-				{
-					// if a specific size was set, scale to that
-					var scaleX = imageSize.Width / (float)signatureBounds.Width;
-					var scaleY = imageSize.Height / (float)signatureBounds.Height;
-					if (sizeOrScale.KeepAspectRatio)
-					{
-						scaleX = scaleY = Math.Min ((float)scaleX, (float)scaleY);
-					}
-					scale = new NativeSize ((float)scaleX, (float)scaleY);
+			scale = new NativeSize ((float)scaleX, (float)scaleY);
 				}
 				else if (sizeOrScale.Type == SizeOrScaleType.Scale)
 				{
