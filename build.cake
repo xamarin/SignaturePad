@@ -35,18 +35,21 @@ Task("libs")
     });
 
     EnsureDirectoryExists("./output/android/");
+    EnsureDirectoryExists("./output/net471/");
     EnsureDirectoryExists("./output/ios/");
     EnsureDirectoryExists("./output/uwp/");
     EnsureDirectoryExists("./output/uwp/Themes");
     EnsureDirectoryExists("./output/netstandard/");
 
     CopyFiles($"./src/SignaturePad.Android/bin/{configuration}/SignaturePad.*", "./output/android/");
+    CopyFiles($"./src/SignaturePad.WPF/bin/{configuration}/SignaturePad.*", "./output/net471/");
     CopyFiles($"./src/SignaturePad.iOS/bin/{configuration}/SignaturePad.*", "./output/ios/");
     CopyFiles($"./src/SignaturePad.UWP/bin/{configuration}/SignaturePad.*", "./output/uwp/");
     CopyFiles($"./src/SignaturePad.UWP/bin/{configuration}/Themes/*", "./output/uwp/Themes");
 
     CopyFiles($"./src/SignaturePad.Forms.Droid/bin/{configuration}/SignaturePad.Forms.*", "./output/android/");
     CopyFiles($"./src/SignaturePad.Forms.iOS/bin/{configuration}/SignaturePad.Forms.*", "./output/ios/");
+    CopyFiles($"./src/SignaturePad.Forms.WPF/bin/{configuration}/SignaturePad.Forms.*", "./output/net471/");
     CopyFiles($"./src/SignaturePad.Forms.UWP/bin/{configuration}/SignaturePad.Forms.*", "./output/uwp/");
     CopyFiles($"./src/SignaturePad.Forms.UWP/bin/{configuration}/Themes/*", "./output/uwp/Themes");
     CopyFiles($"./src/SignaturePad.Forms/bin/{configuration}/SignaturePad.Forms.*", "./output/netstandard/");

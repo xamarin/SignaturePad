@@ -19,6 +19,7 @@
 
     <dependencies>
       <group targetFramework="MonoAndroid" />
+      <group targetFramework="net471" />
       <group targetFramework="Xamarin.iOS" />
       <group targetFramework="uap10.0">
         <dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="6.0.8" exclude="Build,Analyzers" />
@@ -30,6 +31,9 @@
   <files>
     <file src="output/android/SignaturePad.dll" target="lib/MonoAndroid/SignaturePad.dll" />
     <file src="output/android/SignaturePad.xml" target="lib/MonoAndroid/SignaturePad.xml" />
+
+    <file src="output/net471/SignaturePad.dll" target="lib/net471/SignaturePad.dll" />
+    <file src="output/net471/SignaturePad.xml" target="lib/net471/SignaturePad.xml" />
 
     <file src="output/ios/SignaturePad.dll" target="lib/Xamarin.iOS/SignaturePad.dll" />
     <file src="output/ios/SignaturePad.xml" target="lib/Xamarin.iOS/SignaturePad.xml" />

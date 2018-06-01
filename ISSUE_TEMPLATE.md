@@ -23,7 +23,7 @@
   - Android: <!-- the version of the Android SDK you are compiling against, e.g. 7.1 --> 
   - iOS:  <!-- the version of the iOS SDK you are compiling against, e.g. 11.1 -->
   - UWP:  <!-- the version of the UWP SDK you are compiling against, e.g. 16299 --> 
-  - Xamarin.Forms:  <!-- the version of Xamarin.Forms you are building for, e.g. 2.5.0.280555 -->
+  - Xamarin.Forms:  <!-- the version of Xamarin.Forms you are building for, e.g. 3.1.0.469394-pre1 -->
 - Target Devices:
   -   <!-- the devices that you noticed this on, e.g. iPhone X -->
 
