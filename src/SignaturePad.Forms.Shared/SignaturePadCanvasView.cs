@@ -7,6 +7,7 @@ using Xamarin.Forms;
 
 namespace SignaturePad.Forms
 {
+	[RenderWith (typeof (SignaturePadCanvasRenderer))] 
 	public class SignaturePadCanvasView : View
 	{
 		public static readonly BindableProperty StrokeColorProperty = BindableProperty.Create (

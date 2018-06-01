@@ -39,12 +39,7 @@ namespace Xamarin.Controls
 		public static readonly DependencyProperty BackgroundImageProperty;
 		public static readonly DependencyProperty BackgroundImageStretchProperty;
 		public static readonly DependencyProperty BackgroundImageOpacityProperty;
-
-		public static void Init ()
-		{
-			var time = DateTime.Now;
-		}
-
+		
 		static SignaturePad ()
 		{
 			DefaultStyleKeyProperty.OverrideMetadata (

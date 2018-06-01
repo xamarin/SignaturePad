@@ -13,29 +13,24 @@ namespace Samples.WPF
 	using Xamarin.Forms.Platform.WPF;
 
 	/// <summary>
-    ///     Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : FormsApplicationPage
-    {
-        public MainWindow()
-        {
-            InitializeComponent();
-            Forms.Init();
-	        Xamarin.Controls.SignaturePad.Init ();
-	        SignaturePadCanvasRenderer.Init ();
-            LoadApplication(new Samples.App(OnSaveSignature));
-        }
+	///     Interaction logic for MainWindow.xaml
+	/// </summary>
+	public partial class MainWindow : FormsApplicationPage
+	{
+		public MainWindow ()
+		{
+			InitializeComponent ();
+			Forms.Init ();
+			LoadApplication (new Samples.App (OnSaveSignature));
+		}
 
-	    private async Task<bool> OnSaveSignature (Stream bitmap, string filename)
-	    {
-		    var file = System.IO.File.Create (filename);
+		private async Task<bool> OnSaveSignature (Stream bitmap, string filename)
+		{
+			var file = File.Create (filename);
 
-		    using (var dest = file)
-		    {
-			    await bitmap.CopyToAsync (dest);
-		    }
+			await bitmap.CopyToAsync (file);
 
-		    return true;
-	    }
+			return true;
+		}
 	}
 }

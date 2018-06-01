@@ -44,11 +44,6 @@ namespace SignaturePad.Forms
 		{
 		}
 
-		public static void Init ()
-		{
-			var time = DateTime.Now;
-		}
-
 #if __ANDROID__
 		public SignaturePadCanvasRenderer (Android.Content.Context context)
 			: base (context)
