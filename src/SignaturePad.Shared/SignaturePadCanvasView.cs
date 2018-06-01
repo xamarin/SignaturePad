@@ -576,6 +576,7 @@ namespace Xamarin.Controls
 
 		private void OnStrokeCompleted ()
 		{
+			inkPresenter = Strokes;
 			OnStrokeCompleted (this, EventArgs.Empty);
 		}
 

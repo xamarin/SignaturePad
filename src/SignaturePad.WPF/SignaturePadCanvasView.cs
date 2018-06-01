@@ -20,8 +20,7 @@ namespace Xamarin.Controls
 		public static readonly DependencyProperty StrokeColorProperty;
 		public static readonly DependencyProperty StrokeWidthProperty;
 
-		private InkPresenter inkPresenter;
-
+		StrokeCollection inkPresenter;
 		static SignaturePadCanvasView ()
 		{
 			StrokeColorProperty = DependencyProperty.Register (
@@ -43,7 +42,7 @@ namespace Xamarin.Controls
 			Strokes.StrokesChanged += (sender, e) => OnStrokeCompleted ();
 			OnStrokePropertiesChanged (this, new DependencyPropertyChangedEventArgs (StrokeColorProperty, "", ""));
 		}
-		
+
 		public System.Windows.Media.Color StrokeColor
 		{
 			get { return (System.Windows.Media.Color)GetValue (StrokeColorProperty); }
@@ -58,9 +57,9 @@ namespace Xamarin.Controls
 
 		public void Clear ()
 		{
-			if (inkPresenter != null)
+			if (Strokes != null)
 			{
-				inkPresenter.Clear ();
+				Strokes.Clear ();
 
 				OnCleared ();
 			}
