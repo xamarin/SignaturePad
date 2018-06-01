@@ -60,7 +60,11 @@ namespace Xamarin.Controls
 		private static readonly NativeColor SignaturePadLightColor = System.Windows.Media.Colors.White;
 #endif
 
+#if NETFRAMEWORK
+		public System.Windows.Ink.StrokeCollection Strokes => SignaturePadCanvas.Strokes as InkPresenter;
+#else
 		public NativePoint[][] Strokes => SignaturePadCanvas.Strokes;
+#endif
 
 		public NativePoint[] Points => SignaturePadCanvas.Points;
 

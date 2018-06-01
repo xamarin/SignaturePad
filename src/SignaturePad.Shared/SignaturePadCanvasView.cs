@@ -40,6 +40,8 @@ using NativePoint = System.Windows.Input.StylusPoint;
 using NativeSize = System.Drawing.SizeF;
 using NativeColor = System.Windows.Media.Color;
 using NativeImage = System.Drawing.Bitmap;
+using System.Windows.Ink;
+using System.Windows.Input;
 #endif
 
 namespace Xamarin.Controls
@@ -69,8 +71,27 @@ namespace Xamarin.Controls
 			}
 		}
 
-		public NativePoint[][] Strokes
+#if NETFRAMEWORK
+		public StrokeCollection Strokes
 		{
+			get
+			{
+				if (IsBlank)
+				{
+					return new StrokeCollection (new List<Stroke> ());
+				}
+
+				// make a deep copy
+				var points = inkPresenter.GetStrokes ().Select (s => s.GetPoints ());
+				var strokes = points.Select (point => new Stroke (new StylusPointCollection (point))).ToList ();
+				var col = new StrokeCollection (strokes);
+				return col;
+			}
+		}
+
+#else
+		public NativePoint[][] Strokes
+	{
 			get
 			{
 				if (IsBlank)
@@ -82,6 +103,7 @@ namespace Xamarin.Controls
 				return inkPresenter.GetStrokes ().Select (s => s.GetPoints ().ToArray ()).ToArray ();
 			}
 		}
+#endif
 
 		public NativeRect GetSignatureBounds (float padding = 5f)
 		{

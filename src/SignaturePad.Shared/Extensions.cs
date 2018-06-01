@@ -125,7 +125,7 @@ namespace Xamarin.Controls
 			return stroke.StylusPoints.Select (p => new Point (p.X, p.Y));
 		}
 
-		public static Size GetSize (this Control element)
+		public static Size GetSize (this FrameworkElement element)
 		{
 			return new Size (element.Width, element.Height);
 		}

@@ -180,7 +180,11 @@ namespace SignaturePad.Forms
 			var ctrl = Control;
 			if (ctrl != null)
 			{
+#if NETFRAMEWORK
+				e.Strokes = ctrl.Strokes.Select (s => s.StylusPoints.Select (p => new Point (p.X, p.Y)));
+#else
 				e.Strokes = ctrl.Strokes.Select (s => s.Select (p => new Point (p.X, p.Y)));
+#endif
 			}
 		}
 

@@ -10,8 +10,10 @@ namespace Xamarin.Controls
 	using System.Drawing;
 	using System.Windows;
 	using System.Windows.Controls;
+	using System.Windows.Ink;
 	using System.Windows.Media;
 	using System.Windows.Media.Imaging;
+	using System.Windows.Threading;
 
 	[TemplatePart (Name = PartInkCanvas, Type = typeof (InkCanvas))]
 	public partial class SignaturePadCanvasView : Control
@@ -25,6 +27,8 @@ namespace Xamarin.Controls
 
 		static SignaturePadCanvasView ()
 		{
+			DefaultStyleKeyProperty.OverrideMetadata (typeof (SignaturePadCanvasView), new FrameworkPropertyMetadata (typeof (SignaturePadCanvasView)));
+
 			StrokeColorProperty = DependencyProperty.Register (
 				nameof (StrokeColor),
 				typeof (System.Windows.Media.Color),
@@ -41,16 +45,19 @@ namespace Xamarin.Controls
 		public SignaturePadCanvasView ()
 		{
 			DefaultStyleKey = typeof (SignaturePadCanvasView);
-			inkPresenter = new InkPresenter ();
-			inkPresenter.StrokesChanged += (sender, e) => OnStrokeCompleted ();
-			OnStrokePropertiesChanged (this, new DependencyPropertyChangedEventArgs (StrokeColorProperty, "", ""));
+			OnApplyTemplate();
 		}
 
 		/// <inheritdoc />
 		public override void OnApplyTemplate ()
 		{
 			base.OnApplyTemplate();
-			inkPresenter = InkCanvas?.Strokes as InkPresenter;
+			var canvas = new InkCanvas();
+			canvas.Width = 200;
+			canvas.Height = 200;
+			canvas.Background=new SolidColorBrush(Colors.Red);
+			canvas.Strokes = new InkPresenter();
+			inkPresenter = canvas.Strokes as InkPresenter;
 			inkPresenter.StrokesChanged += (sender, e) => OnStrokeCompleted ();
 			OnStrokePropertiesChanged (this, new DependencyPropertyChangedEventArgs (StrokeColorProperty, "", ""));
 		}

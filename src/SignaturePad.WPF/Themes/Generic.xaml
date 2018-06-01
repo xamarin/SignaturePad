@@ -29,7 +29,7 @@
                                 Grid.RowSpan="2" />
 
                             <controls:SignaturePadCanvasView
-                                Name="SignaturePadCanvas"
+                                x:Name="SignaturePadCanvas"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
                                 StrokeColor="{TemplateBinding StrokeColor}"
