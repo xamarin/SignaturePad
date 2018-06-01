@@ -80,7 +80,6 @@ namespace SignaturePad.Forms
 				e.OldElement.StrokesRequested -= OnStrokesRequested;
 				e.OldElement.StrokesSpecified -= OnStrokesSpecified;
 				e.OldElement.ClearRequested -= OnClearRequested;
-				e.OldElement.StrokeCompleted -= OnStrokeCompleted;
 			}
 
 			if (e.NewElement != null)
@@ -93,7 +92,6 @@ namespace SignaturePad.Forms
 				e.NewElement.StrokesRequested += OnStrokesRequested;
 				e.NewElement.StrokesSpecified += OnStrokesSpecified;
 				e.NewElement.ClearRequested += OnClearRequested;
-				e.NewElement.StrokeCompleted += OnStrokeCompleted;
 
 				UpdateAll ();
 			}
