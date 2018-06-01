@@ -9,10 +9,11 @@ using NativePoint = System.Drawing.PointF;
 using NativeColor = Android.Graphics.Color;
 using NativeImage = Android.Graphics.Bitmap;
 using NativePath = Android.Graphics.Path;
-#elif NET471
-using NativePath = System.Drawing.Drawing2D.GraphicsPath;
+#elif NETFRAMEWORK
+using System.Windows.Input;
+using NativePath = System.Windows.Ink.Stroke;
 using NativeRect = System.Drawing.RectangleF;
-using NativePoint = System.Drawing.Point;
+using NativePoint = System.Windows.Input.StylusPoint;
 using NativeSize = System.Drawing.Size;
 using NativeColor = System.Windows.Media.Color;
 using NativeImage = System.Drawing.Bitmap;
@@ -72,7 +73,7 @@ namespace Xamarin.Controls
 				var sizeChanged = false;
 				if (bitmapBuffer != null)
 				{
-#if NET471
+#if NETFRAMEWORK
 					var s = bitmapBuffer.Size;
 					sizeChanged = s.Width != this.StrokeWidth || s.Height != this.StrokeWidth;
 #else
@@ -96,11 +97,7 @@ namespace Xamarin.Controls
 				var w = Math.Abs (dirtyRectRight - dirtyRectLeft);
 				var h = Math.Abs (dirtyRectBottom - dirtyRectTop);
 				var half = StrokeWidth / 2f;
-#if NET471
-				return new NativeRect ((int)(x - half), (int)(y - half), (int)(w + StrokeWidth), (int)(h + StrokeWidth));
-#else
 				return new NativeRect (x - half, y - half, w + StrokeWidth, h + StrokeWidth);
-#endif
 			}
 		}
 
@@ -119,18 +116,14 @@ namespace Xamarin.Controls
 		{
 			paths.Clear ();
 			currentPath = null;
-#if !NET471
 			this.Invalidate ();
-#endif
 		}
 
 		public void AddStroke (NativePoint[] strokePoints, NativeColor color, float width)
 		{
 			if (AddStrokeInternal (strokePoints, color, width))
 			{
-#if !NET471
 				this.Invalidate ();
-#endif
 			}
 		}
 
@@ -148,9 +141,7 @@ namespace Xamarin.Controls
 
 			if (changed)
 			{
-#if !NET471
 				this.Invalidate ();
-#endif
 			}
 		}
 
@@ -163,19 +154,12 @@ namespace Xamarin.Controls
 				return false;
 			}
 
-			var newpath = new NativePath ();
-#if NET471
-			
-			var prev = new NativePoint (strokePoints[0].X, strokePoints[0].Y);
-			foreach (var point in strokePoints.Skip (1))
-			{
-				var destPoint = new NativePoint (point.X, point.Y);
-				newpath.AddLine(prev, destPoint);
-				prev = destPoint;
-			}
-
-			paths.Add (new InkStroke (newpath, strokePoints, color, width));
+#if NETFRAMEWORK
+			var newpath = new NativePath(new StylusPointCollection (strokePoints));
 #else
+			var newpath = new NativePath();
+#endif
+
 			newpath.MoveTo (strokePoints[0].X, strokePoints[0].Y);
 			foreach (var point in strokePoints.Skip (1))
 			{
@@ -183,7 +167,7 @@ namespace Xamarin.Controls
 			}
 
 			paths.Add (new InkStroke (newpath, strokePoints, color, width));
-#endif
+
 			return true;
 		}
 

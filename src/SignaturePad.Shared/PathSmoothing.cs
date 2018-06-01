@@ -17,9 +17,9 @@ using Windows.UI.Input.Inking;
 using NativePoint = Windows.Foundation.Point;
 using NativePath = System.Collections.Generic.List<Windows.Foundation.Point>;
 using InkStroke = Windows.UI.Input.Inking.InkStroke;
-#elif NET471
-using NativePath= System.Drawing.Drawing2D.GraphicsPath;
-using NativePoint = System.Drawing.Point;
+#elif NETFRAMEWORK
+using NativePath= System.Windows.Ink.Stroke;
+using NativePoint = System.Windows.Input.StylusPoint;
 using NativeSize = System.Drawing.Size;
 using NativeColor = System.Drawing.Color;
 using NativeImage = System.Drawing.Bitmap;
@@ -30,6 +30,8 @@ using NativePath = Windows.UI.Xaml.Media.PathGeometry;
 
 namespace Xamarin.Controls
 {
+	using System.Windows.Input;
+
 	internal static class PathSmoothing
 	{
 		/// <summary>
@@ -53,7 +55,7 @@ namespace Xamarin.Controls
 			}
 
 			// create the new path with the old attributes
-#if __ANDROID__ || __IOS__ || WINDOWS_PHONE_APP || NET471
+#if __ANDROID__ || __IOS__ || WINDOWS_PHONE_APP || NETFRAMEWORK
 			return new InkStroke (smoothedPath, smoothedPoints.ToList (), currentPath.Color, currentPath.Width);
 #elif WINDOWS_PHONE
 			var da = currentPath.DrawingAttributes;
@@ -88,17 +90,19 @@ namespace Xamarin.Controls
 			}
 
 			// create a new bezier path to hold the smoothed path.
-			smoothedPath = new NativePath ();
 			smoothedPoints = new List<NativePoint> ();
+#if NETFRAMEWORK
+			smoothedPath = new NativePath (new StylusPointCollection(smoothedPoints));
+#else
+			smoothedPath = new NativePath ();
+#endif
 
 			// duplicate the first and last points as control points.
 			currentPoints.Insert (0, currentPoints[0]);
 			currentPoints.Add (currentPoints[currentPoints.Count - 1]);
 
 			// add the first point
-#if !NET471
 			smoothedPath.MoveTo (currentPoints[0].X, currentPoints[0].Y);
-#endif
 			smoothedPoints.Add (currentPoints[0]);
 
 			for (var index = 1; index < currentPoints.Count - 2; index++)
@@ -116,7 +120,6 @@ namespace Xamarin.Controls
 					var ttt = tt * t;
 
 					// intermediate point
-#if !NET471
 					var mid = new NativePoint
 					{
 						X = 0.5f * (2f * p1.X + (p2.X - p0.X) * t +
@@ -127,34 +130,19 @@ namespace Xamarin.Controls
 							(2 * p0.Y - 5 * p1.Y + 4 * p2.Y - p3.Y) * tt +
 							(3 * p1.Y - p0.Y - 3 * p2.Y + p3.Y) * ttt)
 					};
-					smoothedPath.LineTo (mid.X, mid.Y);
-#else
-					var mid = new NativePoint
-					{
-						X = (int)(0.5f * (2f * p1.X + (p2.X - p0.X) * t +
-						            (2f * p0.X - 5f * p1.X + 4f * p2.X - p3.X) * tt +
-						            (3f * p1.X - p0.X - 3f * p2.X + p3.X) * ttt)),
 
-						Y = (int)(0.5f * (2 * p1.Y + (p2.Y - p0.Y) * t +
-						            (2 * p0.Y - 5 * p1.Y + 4 * p2.Y - p3.Y) * tt +
-						            (3 * p1.Y - p0.Y - 3 * p2.Y + p3.Y) * ttt))
-					};
-#endif
+					smoothedPath.LineTo (mid.X, mid.Y);
 					smoothedPoints.Add (mid);
 				}
 
 				// add p2
-#if !NET471
 				smoothedPath.LineTo (p2.X, p2.Y);
-#endif
 				smoothedPoints.Add (p2);
 			}
 
 			// add the last point
 			var last = currentPoints[currentPoints.Count - 1];
-#if !NET471
 			smoothedPath.LineTo (last.X, last.Y);
-#endif
 			smoothedPoints.Add (last);
 		}
 

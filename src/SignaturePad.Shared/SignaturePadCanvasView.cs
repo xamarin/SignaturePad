@@ -34,10 +34,10 @@ using NativeSize = Windows.Foundation.Size;
 using NativePoint = Windows.Foundation.Point;
 using NativeColor = Windows.UI.Color;
 using NativeImage = Windows.UI.Xaml.Media.Imaging.WriteableBitmap;
-#elif NET471
+#elif NETFRAMEWORK
 using NativeRect = System.Drawing.RectangleF;
-using NativePoint = System.Drawing.Point;
-using NativeSize = System.Drawing.Size;
+using NativePoint = System.Windows.Input.StylusPoint;
+using NativeSize = System.Drawing.SizeF;
 using NativeColor = System.Windows.Media.Color;
 using NativeImage = System.Drawing.Bitmap;
 #endif
@@ -90,11 +90,7 @@ namespace Xamarin.Controls
 				return NativeRect.Empty;
 			}
 
-#if NET471
-			var size = this.RenderSize;
-#else
 			var size = this.GetSize ();
-#endif
 			double xMin = size.Width, xMax = 0, yMin = size.Height, yMax = 0;
 			foreach (var point in inkPresenter.GetStrokes ().SelectMany (stroke => stroke.GetPoints ()))
 			{
@@ -408,16 +404,13 @@ namespace Xamarin.Controls
 			}
 
 			var sizeOrScale = settings.DesiredSizeOrScale.Value;
-#if NET471
-			var viewSize = this.RenderSize;
-#else
+
 			var viewSize = this.GetSize ();
-#endif
 
 			imageSize = sizeOrScale.GetSize ((float)viewSize.Width, (float)viewSize.Height);
 			scale = sizeOrScale.GetScale ((float)imageSize.Width, (float)imageSize.Height);
 
-#if NET471
+#if NETFRAMEWORK
 			if (settings.ShouldCrop == true)
 			{
 				signatureBounds = GetSignatureBounds (settings.Padding.Value);

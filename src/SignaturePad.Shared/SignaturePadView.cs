@@ -20,9 +20,9 @@ using NativePoint = Windows.Foundation.Point;
 using NativeSize = Windows.Foundation.Size;
 using NativeColor = Windows.UI.Color;
 using NativeImage = Windows.UI.Xaml.Media.Imaging.WriteableBitmap;
-#elif NET471
+#elif NETFRAMEWORK
 using NativeRect = System.Drawing.Rectangle;
-using NativePoint = System.Drawing.Point;
+using NativePoint = System.Windows.Input.StylusPoint;
 using NativeSize = System.Drawing.Size;
 using NativeColor = System.Windows.Media.Color;
 using NativeImage = System.Drawing.Bitmap;
@@ -30,7 +30,7 @@ using NativeImage = System.Drawing.Bitmap;
 
 namespace Xamarin.Controls
 {
-#if WINDOWS_UWP || NET471
+#if WINDOWS_UWP || NETFRAMEWORK
 	partial class SignaturePad
 #else
 	partial class SignaturePadView
@@ -55,9 +55,9 @@ namespace Xamarin.Controls
 #elif WINDOWS_UWP
 		private static readonly NativeColor SignaturePadDarkColor = Windows.UI.Colors.Black;
 		private static readonly NativeColor SignaturePadLightColor = Windows.UI.Colors.White;
-#elif NET471
-		private static readonly NativeColor SignaturePadDarkColor = new NativeColor () { A = System.Drawing.Color.Black.A, B = System.Drawing.Color.Black.B, G = System.Drawing.Color.Black.G, R = System.Drawing.Color.Black.R };
-		private static readonly NativeColor SignaturePadLightColor = new NativeColor () { A = System.Drawing.Color.White.A, B = System.Drawing.Color.White.B, G = System.Drawing.Color.White.G, R = System.Drawing.Color.White.R };
+#elif NETFRAMEWORK
+		private static readonly NativeColor SignaturePadDarkColor = System.Windows.Media.Colors.Black;
+		private static readonly NativeColor SignaturePadLightColor = System.Windows.Media.Colors.White;
 #endif
 
 		public NativePoint[][] Strokes => SignaturePadCanvas.Strokes;

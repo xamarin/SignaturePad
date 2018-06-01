@@ -4,10 +4,10 @@
 using NativePoint = System.Drawing.PointF;
 using NativeColor = Android.Graphics.Color;
 using NativePath = Android.Graphics.Path;
-#elif NET471
-using NativePoint = System.Drawing.Point;
+#elif NETFRAMEWORK
+using NativePoint = System.Windows.Input.StylusPoint;
 using NativeColor = System.Windows.Media.Color;
-using NativePath = System.Drawing.Drawing2D.GraphicsPath;
+using NativePath = System.Windows.Ink.Stroke;
 #elif __IOS__
 using NativePoint = CoreGraphics.CGPoint;
 using NativeColor = UIKit.UIColor;

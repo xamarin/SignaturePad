@@ -8,12 +8,13 @@ using Android.Views;
 #elif __IOS__
 using CoreGraphics;
 using UIKit;
-#elif WINDOWS_PHONE
+#elif WINDOWS_PHONE || NETFRAMEWORK
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Drawing.Drawing2D;
 #elif WINDOWS_UWP || WINDOWS_APP
 using Windows.Foundation;
 using System.Numerics;
@@ -72,6 +73,62 @@ namespace Xamarin.Controls
 			return view.Bounds.Size;
 		}
 
+#elif NETFRAMEWORK
+
+		public static void MoveTo (this Stroke stroke, double x, double y)
+		{
+			stroke.StylusPoints.Add (new StylusPoint (x, y));
+		}
+
+		public static void LineTo (this Stroke stroke, double x, double y)
+		{
+			stroke.StylusPoints.Add (new StylusPoint (x, y));
+		}
+
+		public static void AddStrokes (this InkPresenter inkPresenter, IList<Point[]> strokes, Color color, float width)
+		{
+			var strokeCollection = new StrokeCollection ();
+			foreach (var stroke in strokes.Where (s => s.Length > 0))
+			{
+				var pointCollection = new StylusPointCollection ();
+				foreach (var point in stroke)
+				{
+					pointCollection.Add (new StylusPoint (point.X, point.Y));
+				}
+
+				var newStroke = new Stroke (pointCollection);
+				strokeCollection.Add (newStroke);
+
+				newStroke.DrawingAttributes = new DrawingAttributes
+				{
+					Color = color,
+					Width = width,
+					Height = width
+				};
+			}
+
+			inkPresenter = strokeCollection as InkPresenter;
+		}
+
+		public static void Invalidate (this StrokeCollection control)
+		{
+			control.Invalidate();
+		}
+
+		public static IList<Stroke> GetStrokes (this InkPresenter inkPresenter)
+		{
+			return inkPresenter;
+		}
+
+		public static IEnumerable<Point> GetPoints (this Stroke stroke)
+		{
+			return stroke.StylusPoints.Select (p => new Point (p.X, p.Y));
+		}
+
+		public static Size GetSize (this Control element)
+		{
+			return new Size (element.Width, element.Height);
+		}
 #elif WINDOWS_PHONE
 
 		public static void MoveTo (this Stroke stroke, double x, double y)

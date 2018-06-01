@@ -32,8 +32,8 @@
     <file src="output/android/SignaturePad.dll" target="lib/MonoAndroid/SignaturePad.dll" />
     <file src="output/android/SignaturePad.xml" target="lib/MonoAndroid/SignaturePad.xml" />
 
-    <file src="output/net471/SignaturePad.dll" target="lib/net471/SignaturePad.dll" />
-    <file src="output/net471/SignaturePad.xml" target="lib/net471/SignaturePad.xml" />
+    <file src="output/netframework/SignaturePad.dll" target="lib/netframework/SignaturePad.dll" />
+    <file src="output/netframework/SignaturePad.xml" target="lib/netframework/SignaturePad.xml" />
 
     <file src="output/ios/SignaturePad.dll" target="lib/Xamarin.iOS/SignaturePad.dll" />
     <file src="output/ios/SignaturePad.xml" target="lib/Xamarin.iOS/SignaturePad.xml" />

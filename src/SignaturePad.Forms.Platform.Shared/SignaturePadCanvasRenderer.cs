@@ -25,10 +25,10 @@ using NativePoint = CoreGraphics.CGPoint;
 using Xamarin.Forms.Platform.Android;
 using NativeSignaturePadCanvasView = Xamarin.Controls.SignaturePadCanvasView;
 using NativePoint = System.Drawing.PointF;
-#elif NET471
+#elif NETFRAMEWORK
 using Xamarin.Forms.Platform.WPF;
 using NativeSignaturePadCanvasView = Xamarin.Controls.SignaturePadCanvasView;
-using NativePoint = System.Drawing.Point;
+using NativePoint = System.Windows.Input.StylusPoint;
 #endif
 
 [assembly: ExportRenderer (typeof (SignaturePadCanvasView), typeof (SignaturePadCanvasRenderer))]
@@ -42,6 +42,11 @@ namespace SignaturePad.Forms
 #endif
 		public SignaturePadCanvasRenderer ()
 		{
+		}
+
+		public static void Init ()
+		{
+			var time = DateTime.Now;
 		}
 
 #if __ANDROID__
@@ -166,11 +171,7 @@ namespace SignaturePad.Forms
 			var ctrl = Control;
 			if (ctrl != null)
 			{
-#if NET471
-				ctrl.LoadPoints (e.Points.Select (p => new NativePoint ((int)p.X, (int)p.Y)).ToArray ());
-#else
 				ctrl.LoadPoints (e.Points.Select (p => new NativePoint ((float)p.X, (float)p.Y)).ToArray ());
-#endif
 			}
 		}
 
@@ -188,11 +189,7 @@ namespace SignaturePad.Forms
 			var ctrl = Control;
 			if (ctrl != null)
 			{
-#if NET471
-				ctrl.LoadStrokes (e.Strokes.Select (s => s.Select (p => new NativePoint ((int)p.X, (int)p.Y)).ToArray ()).ToArray ());
-#else
 				ctrl.LoadStrokes (e.Strokes.Select (s => s.Select (p => new NativePoint ((float)p.X, (float)p.Y)).ToArray ()).ToArray ());
-#endif
 			}
 		}
 

@@ -41,21 +41,20 @@ namespace Xamarin.Controls
 		public SignaturePadCanvasView ()
 		{
 			DefaultStyleKey = typeof (SignaturePadCanvasView);
-
-			IsEnabledChanged += delegate
-			{
-				var ip = inkPresenter;
-			};
+			inkPresenter = new InkPresenter ();
+			inkPresenter.StrokesChanged += (sender, e) => OnStrokeCompleted ();
+			OnStrokePropertiesChanged (this, new DependencyPropertyChangedEventArgs (StrokeColorProperty, "", ""));
 		}
 
 		/// <inheritdoc />
-		protected override void OnTemplateChanged (ControlTemplate oldTemplate, ControlTemplate newTemplate)
+		public override void OnApplyTemplate ()
 		{
-			base.OnTemplateChanged (oldTemplate, newTemplate);
+			base.OnApplyTemplate();
 			inkPresenter = InkCanvas?.Strokes as InkPresenter;
 			inkPresenter.StrokesChanged += (sender, e) => OnStrokeCompleted ();
-			OnStrokePropertiesChanged (this, new DependencyPropertyChangedEventArgs (null, "", ""));
+			OnStrokePropertiesChanged (this, new DependencyPropertyChangedEventArgs (StrokeColorProperty, "", ""));
 		}
+
 
 		private InkCanvas InkCanvas => GetTemplateChild (PartInkCanvas) as InkCanvas;
 
@@ -81,7 +80,7 @@ namespace Xamarin.Controls
 			}
 		}
 
-		private Task<Stream> GetImageStreamInternal (SignatureImageFormat format, System.Drawing.Size scale, RectangleF signatureBounds, System.Drawing.Size imageSize, float strokeWidth, System.Windows.Media.Color strokeColor, System.Windows.Media.Color backgroundColor)
+		private Task<Stream> GetImageStreamInternal (SignatureImageFormat format, System.Drawing.SizeF scale, RectangleF signatureBounds, System.Drawing.SizeF imageSize, float strokeWidth, System.Windows.Media.Color strokeColor, System.Windows.Media.Color backgroundColor)
 		{
 
 				return null;
@@ -98,7 +97,7 @@ namespace Xamarin.Controls
 		{
 			var signaturePad = d as SignaturePadCanvasView;
 
-			var inkPresenter = signaturePad.inkPresenter;
+			var inkPresenter = signaturePad?.inkPresenter;
 			if (inkPresenter != null)
 			{
 				foreach (var stroke in inkPresenter)

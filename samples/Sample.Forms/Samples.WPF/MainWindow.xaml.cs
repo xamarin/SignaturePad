@@ -8,6 +8,7 @@ namespace Samples.WPF
 	using System;
 	using System.IO;
 	using System.Threading.Tasks;
+	using SignaturePad.Forms;
 	using Xamarin.Forms;
 	using Xamarin.Forms.Platform.WPF;
 
@@ -20,6 +21,7 @@ namespace Samples.WPF
         {
             InitializeComponent();
             Forms.Init();
+	        SignaturePadCanvasRenderer.Init ();
             LoadApplication(new Samples.App(OnSaveSignature));
         }
 
