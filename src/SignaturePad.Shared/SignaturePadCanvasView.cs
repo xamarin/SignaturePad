@@ -34,6 +34,12 @@ using NativeSize = Windows.Foundation.Size;
 using NativePoint = Windows.Foundation.Point;
 using NativeColor = Windows.UI.Color;
 using NativeImage = Windows.UI.Xaml.Media.Imaging.WriteableBitmap;
+#elif NET471
+using NativeRect = System.Drawing.Rectangle;
+using NativePoint = System.Drawing.Point;
+using NativeSize = System.Drawing.Size;
+using NativeColor = System.Drawing.Color;
+using NativeImage = System.Drawing.Bitmap;
 #endif
 
 namespace Xamarin.Controls

@@ -20,6 +20,10 @@ using NativeNullableColor = System.Nullable<Windows.UI.Color>;
 using NativeSize = Windows.Foundation.Size;
 using NativeColor = Windows.UI.Color;
 using NativeNullableColor = System.Nullable<Windows.UI.Color>;
+#elif NET471
+using NativeSize = System.Drawing.Size;
+using NativeColor = System.Drawing.Color;
+using NativeNullableColor = System.Nullable<System.Drawing.Color>;
 #endif
 
 namespace Xamarin.Controls
@@ -92,6 +96,16 @@ namespace Xamarin.Controls
 
 		public NativeSize GetScale (float width, float height)
 		{
+#if NET471
+			if (Type == SizeOrScaleType.Scale)
+			{
+				return new NativeSize ((int)X, (int)Y);
+			}
+			else
+			{
+				return new NativeSize ((int)(X / width), (int)(Y / height));
+			}
+#else
 			if (Type == SizeOrScaleType.Scale)
 			{
 				return new NativeSize (X, Y);
@@ -100,10 +114,21 @@ namespace Xamarin.Controls
 			{
 				return new NativeSize (X / width, Y / height);
 			}
+#endif
 		}
 
 		public NativeSize GetSize (float width, float height)
 		{
+#if NET471
+			if (Type == SizeOrScaleType.Scale)
+			{
+				return new NativeSize ((int)(width * X), (int)(height * Y));
+			}
+			else
+			{
+				return new NativeSize ((int)X, (int)Y);
+			}
+#else
 			if (Type == SizeOrScaleType.Scale)
 			{
 				return new NativeSize (width * X, height * Y);
@@ -112,6 +137,7 @@ namespace Xamarin.Controls
 			{
 				return new NativeSize (X, Y);
 			}
+#endif
 		}
 
 		public static implicit operator SizeOrScale (float scale)
@@ -130,7 +156,7 @@ namespace Xamarin.Controls
 #if __IOS__ || __ANDROID__
 		internal static readonly NativeColor Black = NativeColor.Black;
 		internal static readonly NativeColor Transparent = new NativeColor (0, 0, 0, 0);
-#elif WINDOWS_PHONE || WINDOWS_UWP || WINDOWS_PHONE_APP || WINDOWS_APP
+#elif WINDOWS_PHONE || WINDOWS_UWP || WINDOWS_PHONE_APP || WINDOWS_APP || NET471
 		internal static readonly NativeColor Black = NativeColor.FromArgb (255, 0, 0, 0);
 		internal static readonly NativeColor Transparent = NativeColor.FromArgb (0, 0, 0, 0);
 #endif
