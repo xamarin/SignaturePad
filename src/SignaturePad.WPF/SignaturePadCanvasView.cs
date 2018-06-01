@@ -20,7 +20,7 @@ namespace Xamarin.Controls
 		public static readonly DependencyProperty StrokeColorProperty;
 		public static readonly DependencyProperty StrokeWidthProperty;
 
-		StrokeCollection inkPresenter;
+		InkCanvas inkPresenter => this;
 		static SignaturePadCanvasView ()
 		{
 			StrokeColorProperty = DependencyProperty.Register (
@@ -39,7 +39,7 @@ namespace Xamarin.Controls
 		public SignaturePadCanvasView ()
 		{
 			DefaultStyleKey = typeof (SignaturePadCanvasView);
-			Strokes.StrokesChanged += (sender, e) => OnStrokeCompleted ();
+			inkPresenter.Strokes.StrokesChanged += (sender, e) => OnStrokeCompleted ();
 			OnStrokePropertiesChanged (this, new DependencyPropertyChangedEventArgs (StrokeColorProperty, "", ""));
 		}
 
@@ -68,8 +68,8 @@ namespace Xamarin.Controls
 		private Task<Stream> GetImageStreamInternal (SignatureImageFormat format, System.Drawing.SizeF scale, RectangleF signatureBounds, System.Drawing.SizeF imageSize, float strokeWidth, System.Windows.Media.Color strokeColor, System.Windows.Media.Color backgroundColor)
 		{
 
-				return null;
-			
+			return null;
+
 		}
 
 		private Bitmap GetImageInternal (System.Drawing.SizeF scale, System.Drawing.RectangleF signatureBounds,

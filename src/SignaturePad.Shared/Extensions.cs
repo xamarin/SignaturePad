@@ -92,7 +92,7 @@ namespace Xamarin.Controls
 			stroke.StylusPoints.Add (new StylusPoint (x, y));
 		}
 
-		public static void AddStrokes (this StrokeCollection inkPresenter, IList<StylusPoint[]> strokes, Color color, float width)
+		public static void AddStrokes (this InkCanvas inkPresenter, IList<StylusPoint[]> strokes, Color color, float width)
 		{
 			var strokeCollection = new StrokeCollection ();
 			foreach (var stroke in strokes.Where (s => s.Length > 0))
@@ -114,17 +114,17 @@ namespace Xamarin.Controls
 				};
 			}
 
-			inkPresenter = strokeCollection;
+			inkPresenter.Strokes = strokeCollection;
 		}
 
 		public static void Invalidate (this InkPresenter control)
 		{
-			control.Invalidate();
+			
 		}
 
-		public static IList<Stroke> GetStrokes (this StrokeCollection inkPresenter)
+		public static IList<Stroke> GetStrokes (this InkCanvas canvas)
 		{
-			return inkPresenter;
+			return canvas.Strokes;
 		}
 
 		public static IEnumerable<StylusPoint> GetPoints (this Stroke stroke)

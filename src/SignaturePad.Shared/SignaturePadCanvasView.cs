@@ -563,9 +563,6 @@ namespace Xamarin.Controls
 
 		private void OnStrokeCompleted ()
 		{
-#if NETFRAMEWORK
-			inkPresenter = Strokes;
-#endif
 			OnStrokeCompleted (this, EventArgs.Empty);
 		}
 
