@@ -19,7 +19,7 @@
 
     <dependencies>
       <group targetFramework="MonoAndroid" />
-      <group targetFramework="net471" />
+      <group targetFramework="net461" />
       <group targetFramework="Xamarin.iOS" />
       <group targetFramework="uap10.0">
         <dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="6.0.8" exclude="Build,Analyzers" />
