@@ -21,14 +21,14 @@ namespace Samples.WPF
         {
             InitializeComponent();
             Forms.Init();
+	        Xamarin.Controls.SignaturePad.Init ();
 	        SignaturePadCanvasRenderer.Init ();
             LoadApplication(new Samples.App(OnSaveSignature));
         }
 
 	    private async Task<bool> OnSaveSignature (Stream bitmap, string filename)
 	    {
-		    var storageFolder = Environment.SpecialFolder.CommonPictures.ToString();
-		    var file = System.IO.File.Create (Path.Combine(storageFolder, filename));
+		    var file = System.IO.File.Create (filename);
 
 		    using (var dest = file)
 		    {

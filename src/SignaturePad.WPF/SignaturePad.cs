@@ -40,8 +40,18 @@ namespace Xamarin.Controls
 		public static readonly DependencyProperty BackgroundImageStretchProperty;
 		public static readonly DependencyProperty BackgroundImageOpacityProperty;
 
+		public static void Init ()
+		{
+			var time = DateTime.Now;
+		}
+
 		static SignaturePad ()
 		{
+			DefaultStyleKeyProperty.OverrideMetadata (
+				typeof (SignaturePad),
+				new FrameworkPropertyMetadata (typeof (SignaturePad)));
+
+
 			StrokeColorProperty = DependencyProperty.Register (
 				nameof (StrokeColor),
 				typeof (Color),
@@ -151,12 +161,13 @@ namespace Xamarin.Controls
 			//RegisterPropertyChangedCallback (PaddingProperty, OnPaddingChanged);
 
 			Padding = new Thickness (DefaultWideSpacing, DefaultWideSpacing, DefaultWideSpacing, DefaultNarrowSpacing);
+			OnApplyTemplate();
 		}
 
 		/// <inheritdoc />
-		protected override void OnTemplateChanged (ControlTemplate oldTemplate, ControlTemplate newTemplate)
+		public override void OnApplyTemplate()
 		{
-			base.OnTemplateChanged (oldTemplate, newTemplate);
+			base.OnApplyTemplate();
 		
 			SignaturePadCanvas.StrokeCompleted += delegate
 			{

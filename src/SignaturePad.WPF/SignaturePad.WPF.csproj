@@ -41,7 +41,9 @@
     <Compile Include="..\SignaturePad.InkPresenter.Shared\**\*.cs" Link="%(filename).shared%(Extension)" />
     <Compile Include="SignaturePad.cs" />
     <Compile Include="SignaturePadCanvasView.cs" />
-    <Page Include="Themes\Generic.xaml" Generator="MSBuild:Compile" />
+    <Page Include="Themes\Generic.xaml" Generator="MSBuild:Compile">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Page>
   </ItemGroup>
 
   <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />

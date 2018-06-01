@@ -28,13 +28,19 @@
                                 VerticalAlignment="Stretch"
                                 Grid.RowSpan="2" />
 
-                            <controls:SignaturePadCanvasView
-                                x:Name="SignaturePadCanvas"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch"
-                                StrokeColor="{TemplateBinding StrokeColor}"
-                                StrokeWidth="{TemplateBinding StrokeWidth}"
-                                Grid.RowSpan="2" />
+                            <Border
+                                Grid.RowSpan="2"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                                <controls:SignaturePadCanvasView
+                                    x:Name="SignaturePadCanvas"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    StrokeColor="{TemplateBinding StrokeColor}"
+                                    StrokeWidth="{TemplateBinding StrokeWidth}"/>
+                            </Border>
+                            
 
                             <TextBlock
                                 Name="SignaturePrompt"
@@ -86,19 +92,6 @@
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="VerticalAlignment" Value="Stretch" />
         <Setter Property="Name" Value="InkCanvas" />
-        
-        <!--<Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="controls:SignaturePadCanvasView">
-                    <Border
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}">
-                        <InkCanvas Name="InkCanvas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>-->
     </Style>
 
 </ResourceDictionary>
