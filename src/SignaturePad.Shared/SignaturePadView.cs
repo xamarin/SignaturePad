@@ -24,7 +24,7 @@ using NativeImage = Windows.UI.Xaml.Media.Imaging.WriteableBitmap;
 using NativeRect = System.Drawing.Rectangle;
 using NativePoint = System.Drawing.Point;
 using NativeSize = System.Drawing.Size;
-using NativeColor = System.Drawing.Color;
+using NativeColor = System.Windows.Media.Color;
 using NativeImage = System.Drawing.Bitmap;
 #endif
 
@@ -56,8 +56,8 @@ namespace Xamarin.Controls
 		private static readonly NativeColor SignaturePadDarkColor = Windows.UI.Colors.Black;
 		private static readonly NativeColor SignaturePadLightColor = Windows.UI.Colors.White;
 #elif NET471
-		private static readonly NativeColor SignaturePadDarkColor = System.Drawing.Color.Black;
-		private static readonly NativeColor SignaturePadLightColor = System.Drawing.Color.White;
+		private static readonly NativeColor SignaturePadDarkColor = new NativeColor () { A = System.Drawing.Color.Black.A, B = System.Drawing.Color.Black.B, G = System.Drawing.Color.Black.G, R = System.Drawing.Color.Black.R };
+		private static readonly NativeColor SignaturePadLightColor = new NativeColor () { A = System.Drawing.Color.White.A, B = System.Drawing.Color.White.B, G = System.Drawing.Color.White.G, R = System.Drawing.Color.White.R };
 #endif
 
 		public NativePoint[][] Strokes => SignaturePadCanvas.Strokes;

@@ -5,7 +5,6 @@
     <RootNamespace>Xamarin.Controls</RootNamespace>
     <AssemblyName>SignaturePad</AssemblyName>
     <AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
-    <EnableDefaultCompileItems>False</EnableDefaultCompileItems>
     <DocumentationFile Condition=" '$(Configuration)' == 'Release' ">bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
     <AssemblyVersion>1.0.0</AssemblyVersion>
   </PropertyGroup>

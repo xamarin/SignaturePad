@@ -11,10 +11,10 @@ using NativeImage = Android.Graphics.Bitmap;
 using NativePath = Android.Graphics.Path;
 #elif NET471
 using NativePath = System.Drawing.Drawing2D.GraphicsPath;
-using NativeRect = System.Drawing.Rectangle;
+using NativeRect = System.Drawing.RectangleF;
 using NativePoint = System.Drawing.Point;
 using NativeSize = System.Drawing.Size;
-using NativeColor = System.Drawing.Color;
+using NativeColor = System.Windows.Media.Color;
 using NativeImage = System.Drawing.Bitmap;
 #elif __IOS__
 using NativeRect = CoreGraphics.CGRect;
@@ -38,7 +38,7 @@ namespace Xamarin.Controls
 	{
 		private const float MinimumPointDistance = 2.0f;
 
-		public static float ScreenDensity;
+		public static float ScreenDensity = 0;
 
 		private readonly List<InkStroke> paths = new List<InkStroke> ();
 		private InkStroke currentPath;
@@ -49,7 +49,7 @@ namespace Xamarin.Controls
 		private float dirtyRectRight;
 		private float dirtyRectBottom;
 
-		private NativeImage bitmapBuffer;
+		private NativeImage bitmapBuffer = null;
 
 		// public properties
 
@@ -165,10 +165,13 @@ namespace Xamarin.Controls
 
 			var newpath = new NativePath ();
 #if NET471
-			newpath.MoveTo (new NativePoint(strokePoints[0].X, strokePoints[0].Y));
+			
+			var prev = new NativePoint (strokePoints[0].X, strokePoints[0].Y);
 			foreach (var point in strokePoints.Skip (1))
 			{
-				newpath.LineTo (point.X, point.Y);
+				var destPoint = new NativePoint (point.X, point.Y);
+				newpath.AddLine(prev, destPoint);
+				prev = destPoint;
 			}
 
 			paths.Add (new InkStroke (newpath, strokePoints, color, width));

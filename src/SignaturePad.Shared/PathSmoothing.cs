@@ -96,7 +96,9 @@ namespace Xamarin.Controls
 			currentPoints.Add (currentPoints[currentPoints.Count - 1]);
 
 			// add the first point
+#if !NET471
 			smoothedPath.MoveTo (currentPoints[0].X, currentPoints[0].Y);
+#endif
 			smoothedPoints.Add (currentPoints[0]);
 
 			for (var index = 1; index < currentPoints.Count - 2; index++)
@@ -114,6 +116,7 @@ namespace Xamarin.Controls
 					var ttt = tt * t;
 
 					// intermediate point
+#if !NET471
 					var mid = new NativePoint
 					{
 						X = 0.5f * (2f * p1.X + (p2.X - p0.X) * t +
@@ -125,17 +128,33 @@ namespace Xamarin.Controls
 							(3 * p1.Y - p0.Y - 3 * p2.Y + p3.Y) * ttt)
 					};
 					smoothedPath.LineTo (mid.X, mid.Y);
+#else
+					var mid = new NativePoint
+					{
+						X = (int)(0.5f * (2f * p1.X + (p2.X - p0.X) * t +
+						            (2f * p0.X - 5f * p1.X + 4f * p2.X - p3.X) * tt +
+						            (3f * p1.X - p0.X - 3f * p2.X + p3.X) * ttt)),
+
+						Y = (int)(0.5f * (2 * p1.Y + (p2.Y - p0.Y) * t +
+						            (2 * p0.Y - 5 * p1.Y + 4 * p2.Y - p3.Y) * tt +
+						            (3 * p1.Y - p0.Y - 3 * p2.Y + p3.Y) * ttt))
+					};
+#endif
 					smoothedPoints.Add (mid);
 				}
 
 				// add p2
+#if !NET471
 				smoothedPath.LineTo (p2.X, p2.Y);
+#endif
 				smoothedPoints.Add (p2);
 			}
 
 			// add the last point
 			var last = currentPoints[currentPoints.Count - 1];
+#if !NET471
 			smoothedPath.LineTo (last.X, last.Y);
+#endif
 			smoothedPoints.Add (last);
 		}
 

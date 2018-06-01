@@ -81,7 +81,7 @@ namespace Xamarin.Controls
 			}
 		}
 
-		private async Task<Stream> GetImageStreamInternal (SignatureImageFormat format, System.Drawing.Size scale, Rect signatureBounds, System.Drawing.Size imageSize, float strokeWidth, System.Drawing.Color strokeColor, System.Drawing.Color backgroundColor)
+		private Task<Stream> GetImageStreamInternal (SignatureImageFormat format, System.Drawing.Size scale, RectangleF signatureBounds, System.Drawing.Size imageSize, float strokeWidth, System.Windows.Media.Color strokeColor, System.Windows.Media.Color backgroundColor)
 		{
 
 				return null;
@@ -89,7 +89,7 @@ namespace Xamarin.Controls
 		}
 
 		private Bitmap GetImageInternal (System.Drawing.SizeF scale, System.Drawing.RectangleF signatureBounds,
-			System.Drawing.SizeF imageSize, float strokeWidth, System.Windows.Media.Color strokeColor, System.Drawing.Color backgroundColor)
+			System.Drawing.SizeF imageSize, float strokeWidth, System.Windows.Media.Color strokeColor, System.Windows.Media.Color backgroundColor)
 		{
 			return new Bitmap ("");
 		}

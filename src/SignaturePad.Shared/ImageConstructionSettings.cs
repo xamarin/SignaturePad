@@ -22,8 +22,8 @@ using NativeColor = Windows.UI.Color;
 using NativeNullableColor = System.Nullable<Windows.UI.Color>;
 #elif NET471
 using NativeSize = System.Drawing.Size;
-using NativeColor = System.Drawing.Color;
-using NativeNullableColor = System.Nullable<System.Drawing.Color>;
+using NativeColor = System.Windows.Media.Color;
+using NativeNullableColor = System.Nullable<System.Windows.Media.Color>;
 #endif
 
 namespace Xamarin.Controls

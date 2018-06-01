@@ -148,13 +148,16 @@ namespace Xamarin.Controls
 		{
 			DefaultStyleKey = typeof (SignaturePad);
 
-			RegisterPropertyChangedCallback (PaddingProperty, OnPaddingChanged);
+			//RegisterPropertyChangedCallback (PaddingProperty, OnPaddingChanged);
 
 			Padding = new Thickness (DefaultWideSpacing, DefaultWideSpacing, DefaultWideSpacing, DefaultNarrowSpacing);
 		}
 
-		protected override void OnApplyTemplate ()
+		/// <inheritdoc />
+		protected override void OnTemplateChanged (ControlTemplate oldTemplate, ControlTemplate newTemplate)
 		{
+			base.OnTemplateChanged (oldTemplate, newTemplate);
+		
 			SignaturePadCanvas.StrokeCompleted += delegate
 			{
 				OnSignatureStrokeCompleted ();
@@ -163,7 +166,7 @@ namespace Xamarin.Controls
 			{
 				OnSignatureCleared ();
 			};
-			ClearLabel.Tapped += delegate
+			ClearLabel.MouseDown += delegate
 			{
 				OnClearTapped ();
 			};

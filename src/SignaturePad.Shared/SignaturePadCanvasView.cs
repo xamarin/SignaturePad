@@ -35,10 +35,10 @@ using NativePoint = Windows.Foundation.Point;
 using NativeColor = Windows.UI.Color;
 using NativeImage = Windows.UI.Xaml.Media.Imaging.WriteableBitmap;
 #elif NET471
-using NativeRect = System.Drawing.Rectangle;
+using NativeRect = System.Drawing.RectangleF;
 using NativePoint = System.Drawing.Point;
 using NativeSize = System.Drawing.Size;
-using NativeColor = System.Drawing.Color;
+using NativeColor = System.Windows.Media.Color;
 using NativeImage = System.Drawing.Bitmap;
 #endif
 
@@ -50,7 +50,7 @@ namespace Xamarin.Controls
 
 		public event EventHandler Cleared;
 
-		public bool IsBlank => inkPresenter == null ? true : inkPresenter.GetStrokes ().Count == 0;
+		public bool IsBlank => inkPresenter == null || inkPresenter.GetStrokes ().Count == 0;
 
 		public NativePoint[] Points
 		{
@@ -90,7 +90,11 @@ namespace Xamarin.Controls
 				return NativeRect.Empty;
 			}
 
+#if NET471
+			var size = this.RenderSize;
+#else
 			var size = this.GetSize ();
+#endif
 			double xMin = size.Width, xMax = 0, yMin = size.Height, yMax = 0;
 			foreach (var point in inkPresenter.GetStrokes ().SelectMany (stroke => stroke.GetPoints ()))
 			{
@@ -404,11 +408,42 @@ namespace Xamarin.Controls
 			}
 
 			var sizeOrScale = settings.DesiredSizeOrScale.Value;
+#if NET471
+			var viewSize = this.RenderSize;
+#else
 			var viewSize = this.GetSize ();
+#endif
 
 			imageSize = sizeOrScale.GetSize ((float)viewSize.Width, (float)viewSize.Height);
 			scale = sizeOrScale.GetScale ((float)imageSize.Width, (float)imageSize.Height);
 
+#if NET471
+			if (settings.ShouldCrop == true)
+			{
+				signatureBounds = GetSignatureBounds (settings.Padding.Value);
+
+				if (sizeOrScale.Type == SizeOrScaleType.Size)
+				{
+					// if a specific size was set, scale to that
+					var scaleX = imageSize.Width / (float)signatureBounds.Width;
+					var scaleY = imageSize.Height / (float)signatureBounds.Height;
+					if (sizeOrScale.KeepAspectRatio)
+					{
+						scaleX = scaleY = Math.Min ((float)scaleX, (float)scaleY);
+					}
+					scale = new NativeSize ((int)scaleX, (int)scaleY);
+				}
+				else if (sizeOrScale.Type == SizeOrScaleType.Scale)
+				{
+					imageSize.Width = (int)(signatureBounds.Width * scale.Width);
+					imageSize.Height = (int)(signatureBounds.Height * scale.Height);
+				}
+			}
+			else
+			{
+				signatureBounds = new NativeRect (0, 0, (float)viewSize.Width, (float)viewSize.Height);
+			}
+#else
 			if (settings.ShouldCrop == true)
 			{
 				signatureBounds = GetSignatureBounds (settings.Padding.Value);
@@ -434,6 +469,7 @@ namespace Xamarin.Controls
 			{
 				signatureBounds = new NativeRect (0, 0, viewSize.Width, viewSize.Height);
 			}
+#endif
 
 			strokeWidth = settings.StrokeWidth.Value;
 			strokeColor = (NativeColor)settings.StrokeColor;
