@@ -28,7 +28,7 @@ using NativePoint = System.Drawing.PointF;
 #elif NET471
 using Xamarin.Forms.Platform.WPF;
 using NativeSignaturePadCanvasView = Xamarin.Controls.SignaturePadCanvasView;
-using NativePoint = System.Drawing.PointF;
+using NativePoint = System.Drawing.Point;
 #endif
 
 [assembly: ExportRenderer (typeof (SignaturePadCanvasView), typeof (SignaturePadCanvasRenderer))]
@@ -166,7 +166,11 @@ namespace SignaturePad.Forms
 			var ctrl = Control;
 			if (ctrl != null)
 			{
+#if NET471
+				ctrl.LoadPoints (e.Points.Select (p => new NativePoint ((int)p.X, (int)p.Y)).ToArray ());
+#else
 				ctrl.LoadPoints (e.Points.Select (p => new NativePoint ((float)p.X, (float)p.Y)).ToArray ());
+#endif
 			}
 		}
 
@@ -184,7 +188,11 @@ namespace SignaturePad.Forms
 			var ctrl = Control;
 			if (ctrl != null)
 			{
+#if NET471
+				ctrl.LoadStrokes (e.Strokes.Select (s => s.Select (p => new NativePoint ((int)p.X, (int)p.Y)).ToArray ()).ToArray ());
+#else
 				ctrl.LoadStrokes (e.Strokes.Select (s => s.Select (p => new NativePoint ((float)p.X, (float)p.Y)).ToArray ()).ToArray ());
+#endif
 			}
 		}
 

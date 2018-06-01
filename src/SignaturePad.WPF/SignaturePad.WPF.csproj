@@ -4,6 +4,9 @@
     <TargetFramework>net471</TargetFramework>
     <RootNamespace>Xamarin.Controls</RootNamespace>
     <AssemblyName>SignaturePad</AssemblyName>
+
+    <EnableDefaultCompileItems>False</EnableDefaultCompileItems>
+
     <AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
     <DocumentationFile Condition=" '$(Configuration)' == 'Release' ">bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
     <AssemblyVersion>1.0.0</AssemblyVersion>
@@ -30,7 +33,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.4.0" PrivateAssets="All" />
+    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.5.4" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
