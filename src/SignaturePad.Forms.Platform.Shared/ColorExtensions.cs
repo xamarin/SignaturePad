@@ -1,4 +1,4 @@
-using Color = Xamarin.Forms.Color;
+﻿using Color = Xamarin.Forms.Color;
 #if WINDOWS_PHONE
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -15,13 +15,17 @@ using NativeColor = UIKit.UIColor;
 using Android.Widget;
 using Xamarin.Forms.Platform.Android;
 using NativeColor = Android.Graphics.Color;
+#elif NET471
+using NativeColor = System.Windows.Media.Color;
+using TextBlock = System.Windows.Controls.TextBlock;
+using SolidColorBrush = System.Windows.Media.SolidColorBrush;
 #endif
 
 namespace SignaturePad.Forms
 {
 	public static class ColorExtensions
 	{
-#if WINDOWS_PHONE || WINDOWS_UWP || WINDOWS_PHONE_APP || WINDOWS_APP
+#if WINDOWS_PHONE || WINDOWS_UWP || WINDOWS_PHONE_APP || WINDOWS_APP || NET471
 		public static NativeColor ToWindows (this Color color)
 		{
 			return NativeColor.FromArgb (
@@ -34,7 +38,7 @@ namespace SignaturePad.Forms
 
 		public static NativeColor ToNative (this Color color)
 		{
-#if WINDOWS_PHONE || WINDOWS_UWP || WINDOWS_PHONE_APP || WINDOWS_APP
+#if WINDOWS_PHONE || WINDOWS_UWP || WINDOWS_PHONE_APP || WINDOWS_APP || NET471
 			return color.ToWindows ();
 #elif __IOS__
 			return color.ToUIColor ();
@@ -43,7 +47,7 @@ namespace SignaturePad.Forms
 #endif
 		}
 
-#if WINDOWS_PHONE || WINDOWS_UWP || WINDOWS_PHONE_APP || WINDOWS_APP
+#if WINDOWS_PHONE || WINDOWS_UWP || WINDOWS_PHONE_APP || WINDOWS_APP || NET471
 		public static void SetTextColor (this TextBlock textBlock, Color color)
 		{
 			textBlock.Foreground = new SolidColorBrush (color.ToNative ());

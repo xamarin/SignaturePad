@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Linq;
 using Xamarin.Forms;
@@ -23,6 +23,10 @@ using NativeSignaturePadCanvasView = Xamarin.Controls.SignaturePadCanvasView;
 using NativePoint = CoreGraphics.CGPoint;
 #elif __ANDROID__
 using Xamarin.Forms.Platform.Android;
+using NativeSignaturePadCanvasView = Xamarin.Controls.SignaturePadCanvasView;
+using NativePoint = System.Drawing.PointF;
+#elif NET471
+using Xamarin.Forms.Platform.WPF;
 using NativeSignaturePadCanvasView = Xamarin.Controls.SignaturePadCanvasView;
 using NativePoint = System.Drawing.PointF;
 #endif

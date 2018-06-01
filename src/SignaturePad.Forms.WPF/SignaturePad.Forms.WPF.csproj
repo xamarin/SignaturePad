@@ -1,11 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>xamarin.ios1.0</TargetFramework>
+    <TargetFramework>net471</TargetFramework>
     <RootNamespace>SignaturePad.Forms</RootNamespace>
     <AssemblyName>SignaturePad.Forms</AssemblyName>
     <AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
-    <MSBuildWarningsAsMessages>$(MSBuildWarningsAsMessages);VSX1000</MSBuildWarningsAsMessages>
     <DocumentationFile Condition=" '$(Configuration)' == 'Release' ">bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
     <AssemblyVersion>1.0.0</AssemblyVersion>
   </PropertyGroup>
@@ -33,7 +32,7 @@
   <ItemGroup>
     <PackageReference Include="MSBuild.Sdk.Extras" Version="1.4.0" PrivateAssets="All" />
     <PackageReference Include="Xamarin.Forms" Version="3.1.0.469394-pre1" />
-    <ProjectReference Include="..\SignaturePad.iOS\SignaturePad.iOS.csproj" />
+    <ProjectReference Include="..\SignaturePad.WPF\SignaturePad.WPF.csproj" />
   </ItemGroup>
 
   <ItemGroup>
