@@ -143,10 +143,29 @@ namespace Xamarin.Controls
 			}
 
 			var newpath = new NativePath ();
-			newpath.MoveTo (strokePoints[0].X, strokePoints[0].Y);
-			foreach (var point in strokePoints.Skip (1))
+			var pointCounter = 0;
+			var pts = new NativePoint[5];
+			pts[0] = new NativePoint(strokePoints[0].X, strokePoints[0].Y);
+			newpath.MoveTo(pts[0]);
+
+			for (int i = 1; i < strokePoints.Count; i++)
 			{
-				newpath.LineTo (point.X, point.Y);
+				pointCounter++;
+				pts[pointCounter] = strokePoints[i];
+				if (pointCounter == 4)
+				{
+					// move the endpoint to the middle of the line joining the second control point of the first Bezier segment and the first control point of the second Bezier segment 
+					pts[3] = new NativePoint((pts[2].X + pts[4].X) / 2.0, (pts[2].Y + pts[4].Y) / 2.0);
+
+					// add a cubic Bezier from point 0 to point 3, with control points point 1 and point 2
+					newpath.MoveTo(pts[0]);
+					newpath.AddCurveToPoint(pts[3], pts[1], pts[2]);
+
+					// replace points and get ready to handle the next segment
+					pts[0] = pts[3];
+					pts[1] = pts[4];
+					pointCounter = 1;
+				}
 			}
 
 			paths.Add (new InkStroke (newpath, strokePoints, color, width));
