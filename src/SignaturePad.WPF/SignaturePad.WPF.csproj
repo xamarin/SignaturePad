@@ -43,6 +43,7 @@
     <Compile Include="SignaturePadCanvasView.cs" />
     <Page Include="Themes\Generic.xaml" Generator="MSBuild:Compile">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
 

@@ -36,7 +36,6 @@ Task("libs")
 
     EnsureDirectoryExists("./output/android/");
     EnsureDirectoryExists("./output/netframework/");
-    EnsureDirectoryExists("./output/netframework/Themes");
     EnsureDirectoryExists("./output/macos/");
     EnsureDirectoryExists("./output/ios/");
     EnsureDirectoryExists("./output/uwp/");
@@ -45,7 +44,6 @@ Task("libs")
 
     CopyFiles($"./src/SignaturePad.Android/bin/{configuration}/SignaturePad.*", "./output/android/");
     CopyFiles($"./src/SignaturePad.WPF/bin/{configuration}/SignaturePad.*", "./output/netframework/");
-    CopyFiles($"./src/SignaturePad.WPF/bin/{configuration}/Themes/*", "./output/netframework/Themes");
     CopyFiles($"./src/SignaturePad.MacOS/bin/{configuration}/SignaturePad.*", "./output/macos/");
     CopyFiles($"./src/SignaturePad.iOS/bin/{configuration}/SignaturePad.*", "./output/ios/");
     CopyFiles($"./src/SignaturePad.UWP/bin/{configuration}/SignaturePad.*", "./output/uwp/");
@@ -55,7 +53,6 @@ Task("libs")
     CopyFiles($"./src/SignaturePad.Forms.iOS/bin/{configuration}/SignaturePad.Forms.*", "./output/ios/");
     CopyFiles($"./src/SignaturePad.Forms.MacOS/bin/{configuration}/SignaturePad.Forms.*", "./output/macos/");
     CopyFiles($"./src/SignaturePad.Forms.WPF/bin/{configuration}/SignaturePad.Forms.*", "./output/netframework/");
-    CopyFiles($"./src/SignaturePad.Forms.WPF/bin/{configuration}/Themes/*", "./output/netframework/Themes");
     CopyFiles($"./src/SignaturePad.Forms.UWP/bin/{configuration}/SignaturePad.Forms.*", "./output/uwp/");
     CopyFiles($"./src/SignaturePad.Forms.UWP/bin/{configuration}/Themes/*", "./output/uwp/Themes");
     CopyFiles($"./src/SignaturePad.Forms/bin/{configuration}/SignaturePad.Forms.*", "./output/netstandard/");
