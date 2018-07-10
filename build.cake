@@ -2,7 +2,7 @@
 // ARGUMENTS
 ///////////////////////////////////////////////////////////////////////////////
 
-var CURRENT_PACKAGE_VERSION = "3.0.0";
+var CURRENT_PACKAGE_VERSION = "3.1.0";
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
