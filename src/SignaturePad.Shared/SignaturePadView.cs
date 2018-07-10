@@ -14,6 +14,12 @@ using NativePoint = CoreGraphics.CGPoint;
 using NativeSize = CoreGraphics.CGSize;
 using NativeColor = UIKit.UIColor;
 using NativeImage = UIKit.UIImage;
+#elif __MACOS__
+using NativeRect = CoreGraphics.CGRect;
+using NativePoint = CoreGraphics.CGPoint;
+using NativeSize = CoreGraphics.CGSize;
+using NativeColor = AppKit.NSColor;
+using NativeImage = AppKit.NSImage;
 #elif WINDOWS_UWP
 using NativeRect = Windows.Foundation.Rect;
 using NativePoint = Windows.Foundation.Point;
@@ -46,10 +52,7 @@ namespace Xamarin.Controls
 		private const string DefaultPromptText = "▶";
 		private const string DefaultCaptionText = "sign above the line";
 
-#if __IOS__
-		private static readonly NativeColor SignaturePadDarkColor = NativeColor.Black;
-		private static readonly NativeColor SignaturePadLightColor = NativeColor.White;
-#elif __ANDROID__
+#if __IOS__ || __MACOS__ || __ANDROID__
 		private static readonly NativeColor SignaturePadDarkColor = NativeColor.Black;
 		private static readonly NativeColor SignaturePadLightColor = NativeColor.White;
 #elif WINDOWS_UWP

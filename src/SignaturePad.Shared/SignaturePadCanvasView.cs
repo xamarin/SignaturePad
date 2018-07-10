@@ -16,6 +16,12 @@ using NativePoint = CoreGraphics.CGPoint;
 using NativeSize = CoreGraphics.CGSize;
 using NativeColor = UIKit.UIColor;
 using NativeImage = UIKit.UIImage;
+#elif __MACOS__
+using NativeRect = CoreGraphics.CGRect;
+using NativePoint = CoreGraphics.CGPoint;
+using NativeSize = CoreGraphics.CGSize;
+using NativeColor = AppKit.NSColor;
+using NativeImage = AppKit.NSImage;
 #elif WINDOWS_PHONE
 using NativeRect = System.Windows.Rect;
 using NativePoint = System.Windows.Point;
