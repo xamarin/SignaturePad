@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>monoandroid7.1</TargetFramework>
+    <TargetFramework>monoandroid8.1</TargetFramework>
     <RootNamespace>SignaturePad.Forms</RootNamespace>
     <AssemblyName>SignaturePad.Forms</AssemblyName>
     <AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
