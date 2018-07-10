@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using CoreGraphics;
-using Foundation;
 using AppKit;
 
 namespace Xamarin.Controls
@@ -27,31 +26,30 @@ namespace Xamarin.Controls
 
 		private void Initialize ()
 		{
-			//IsOpaque = false;
+			//Opaque = false;
 		}
 
 		// If you put SignaturePad inside a ScrollView, this line of code prevent that the gesture inside 
 		// an InkPresenter are dispatched to the ScrollView below
 		//public override bool GestureRecognizerShouldBegin (NSGestureRecognizer gestureRecognizer) => false;
 
-		public override void TouchesBeganWithEvent (NSEvent evt)
+		public override void MouseDown (NSEvent evt)
 		{
 			// create a new path and set the options
-			currentPath = new InkStroke (new NSBezierPath(), new List<CGPoint> (), StrokeColor, StrokeWidth);
+			currentPath = new InkStroke (new CGPath(), new List<CGPoint> (), StrokeColor, StrokeWidth);
 
 			// obtain the location of the touch
-			var touch = evt.AllTouches.AnyObject as NSTouch;
-			var touchLocation = touch.GetLocation (this);
+			var touchLocation = evt.LocationInWindow;
 
 			// move the path to that position
-			currentPath.Path.MoveTo (touchLocation);
+			currentPath.Path.MoveTo (touchLocation.X, touchLocation.Y);
 			currentPath.GetPoints ().Add (touchLocation);
 
 			// update the dirty rectangle
 			ResetBounds (touchLocation);
 		}
 
-		public override void TouchesMovedWithEvent (NSEvent evt)
+		public override void MouseDragged (NSEvent evt)
 		{
 			// something may have happened (clear) so start the stroke again
 			if (currentPath == null)
@@ -60,13 +58,12 @@ namespace Xamarin.Controls
 			}
 
 			// obtain the location of the touch
-			var touch = evt.AllTouches.AnyObject as NSTouch;
-			var touchLocation = touch.GetLocation (this);
 
+			var touchLocation = evt.LocationInWindow;
 			if (HasMovedFarEnough (currentPath, touchLocation.X, touchLocation.Y))
 			{
 				// add it to the current path
-				currentPath.Path.LineTo (touchLocation);
+				currentPath.Path.LineTo (touchLocation.X, touchLocation.Y);
 				currentPath.GetPoints ().Add (touchLocation);
 
 				// update the dirty rectangle
@@ -75,16 +72,10 @@ namespace Xamarin.Controls
 			}
 		}
 
-		public override void TouchesCancelledWithEvent (NSEvent evt)
-		{
-			TouchesEndedWithEvent(evt);
-		}
-
-		public override void TouchesEndedWithEvent (NSEvent evt)
+		public override void MouseUp (NSEvent evt)
 		{
 			// obtain the location of the touch
-			var touch = evt.AllTouches.AnyObject as NSTouch;
-			var touchLocation = touch.GetLocation(this);
+			var touchLocation = evt.LocationInWindow;
 
 			// something may have happened (clear) during the stroke
 			if (currentPath != null)
@@ -92,7 +83,7 @@ namespace Xamarin.Controls
 				if (HasMovedFarEnough (currentPath, touchLocation.X, touchLocation.Y))
 				{
 					// add it to the current path
-					currentPath.Path.LineTo (touchLocation);
+					currentPath.Path.LineTo (touchLocation.X, touchLocation.Y);
 					currentPath.GetPoints ().Add (touchLocation);
 				}
 
@@ -102,7 +93,7 @@ namespace Xamarin.Controls
 			}
 
 			// clear the current path
-			currentPath = null;
+			//currentPath = null;
 
 			// update the dirty rectangle
 			UpdateBounds (touchLocation);
@@ -137,20 +128,20 @@ namespace Xamarin.Controls
 			// if there are no lines, the the bitmap will be null
 			if (bitmapBuffer != null)
 			{
-				bitmapBuffer.Draw (CGPoint.Empty, rect, NSCompositingOperation.Copy, 0);
+				bitmapBuffer.Draw (CGPoint.Empty, rect, NSCompositingOperation.Screen, 0);
 			}
 
 			// draw the current path over the old paths
 			if (currentPath != null)
 			{
-				//var context = this.InputContext;..GetCurrentContext ();
-				//context.SetLineCap (CGLineCap.Round);
-				//context.SetLineJoin (CGLineJoin.Round);
-				//context.SetStrokeColor (currentPath.Color.CGColor);
-				//context.SetLineWidth (currentPath.Width);
+				var context = NSGraphicsContext.CurrentContext.CGContext;
+				context.SetLineCap (CGLineCap.Round);
+				context.SetLineJoin (CGLineJoin.Round);
+				context.SetStrokeColor (currentPath.Color.CGColor);
+				context.SetLineWidth (currentPath.Width);
 
-				//context.AddPath (currentPath.Path);
-				//context.StrokePath ();
+				context.AddPath (currentPath.Path);
+				context.StrokePath ();
 			}
 		}
 

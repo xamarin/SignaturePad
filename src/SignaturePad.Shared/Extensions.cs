@@ -95,14 +95,14 @@ namespace Xamarin.Controls
 			view.NeedsDisplay = true;
 		}
 
-		public static void MoveTo (this NSBezierPath path, nfloat x, nfloat y)
+		public static void MoveTo (this CGPath path, nfloat x, nfloat y)
 		{
-			path.MoveTo (new CGPoint (x, y));
+			path.MoveToPoint (new CGPoint (x, y));
 		}
 
-		public static void LineTo (this NSBezierPath path, nfloat x, nfloat y)
+		public static void LineTo (this CGPath path, nfloat x, nfloat y)
 		{
-			path.LineTo(new CGPoint (x, y));
+			path.AddLineToPoint(new CGPoint (x, y));
 		}
 
 		public static CGSize GetSize (this NSView view)

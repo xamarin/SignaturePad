@@ -9,7 +9,7 @@ using NativePoint = CoreGraphics.CGPoint;
 using NativePath = UIKit.UIBezierPath;
 #elif __MACOS__
 using NativePoint = CoreGraphics.CGPoint;
-using NativePath = AppKit.NSBezierPath;
+using NativePath = CoreGraphics.CGPath;
 #elif WINDOWS_PHONE
 using System.Windows.Ink;
 using NativePoint = System.Windows.Point;

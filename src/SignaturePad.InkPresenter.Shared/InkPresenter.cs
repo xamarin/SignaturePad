@@ -29,7 +29,7 @@ using NativeSize = CoreGraphics.CGSize;
 using NativePoint = CoreGraphics.CGPoint;
 using NativeColor = AppKit.NSColor;
 using NativeImage = AppKit.NSImage;
-using NativePath = AppKit.NSBezierPath;
+using NativePath = CoreGraphics.CGPath;
 #elif WINDOWS_PHONE_APP
 using NativeRect = Windows.Foundation.Rect;
 using NativeSize = Windows.Foundation.Size;
