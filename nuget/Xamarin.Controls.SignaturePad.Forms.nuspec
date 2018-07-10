@@ -26,7 +26,11 @@
         <dependency id="Xamarin.Controls.SignaturePad" version="$version$" exclude="Build,Analyzers" />
         <dependency id="Xamarin.Forms" version="3.1.0.583944" exclude="Build,Analyzers" />
       </group>
-      <group targetFramework="net461">
+	    <group targetFramework="Xamarin.Mac">
+        <dependency id="Xamarin.Controls.SignaturePad" version="$version$" exclude="Build,Analyzers" />
+        <dependency id="Xamarin.Forms" version="3.1.0.583944" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net">
         <dependency id="Xamarin.Controls.SignaturePad" version="$version$" exclude="Build,Analyzers" />
         <dependency id="Xamarin.Forms" version="3.1.0.583944" exclude="Build,Analyzers" />
         <dependency id="Xamarin.Forms.Platform.WPF" version="3.1.0.583944" exclude="Build,Analyzers" />
@@ -45,8 +49,11 @@
     <file src="output/android/SignaturePad.Forms.dll" target="lib/MonoAndroid/SignaturePad.Forms.dll" />
     <file src="output/android/SignaturePad.Forms.xml" target="lib/MonoAndroid/SignaturePad.Forms.xml" />
     
-    <file src="output/netframework/SignaturePad.Forms.dll" target="lib/netframework/SignaturePad.Forms.dll" />
-    <file src="output/netframework/SignaturePad.Forms.xml" target="lib/netframework/SignaturePad.Forms.xml" />
+    <file src="output/net/SignaturePad.Forms.dll" target="lib/net/SignaturePad.Forms.dll" />
+    <file src="output/net/SignaturePad.Forms.xml" target="lib/net/SignaturePad.Forms.xml" />
+	
+	  <file src="output/mac/SignaturePad.Forms.dll" target="lib/Xamarin.Mac/SignaturePad.Forms.dll" />
+    <file src="output/mac/SignaturePad.Forms.xml" target="lib/Xamarin.Mac/SignaturePad.Forms.xml" />
 
     <file src="output/ios/SignaturePad.Forms.dll" target="lib/Xamarin.iOS/SignaturePad.Forms.dll" />
     <file src="output/ios/SignaturePad.Forms.xml" target="lib/Xamarin.iOS/SignaturePad.Forms.xml" />

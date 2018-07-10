@@ -35,24 +35,24 @@ Task("libs")
     });
 
     EnsureDirectoryExists("./output/android/");
-    EnsureDirectoryExists("./output/netframework/");
-    EnsureDirectoryExists("./output/macos/");
+    EnsureDirectoryExists("./output/net/");
+    EnsureDirectoryExists("./output/mac/");
     EnsureDirectoryExists("./output/ios/");
     EnsureDirectoryExists("./output/uwp/");
     EnsureDirectoryExists("./output/uwp/Themes");
     EnsureDirectoryExists("./output/netstandard/");
 
     CopyFiles($"./src/SignaturePad.Android/bin/{configuration}/SignaturePad.*", "./output/android/");
-    CopyFiles($"./src/SignaturePad.WPF/bin/{configuration}/SignaturePad.*", "./output/netframework/");
-    CopyFiles($"./src/SignaturePad.MacOS/bin/{configuration}/SignaturePad.*", "./output/macos/");
     CopyFiles($"./src/SignaturePad.iOS/bin/{configuration}/SignaturePad.*", "./output/ios/");
+    CopyFiles($"./src/SignaturePad.MacOS/bin/{configuration}/SignaturePad.*", "./output/mac/");
+    CopyFiles($"./src/SignaturePad.WPF/bin/{configuration}/SignaturePad.*", "./output/net/");
     CopyFiles($"./src/SignaturePad.UWP/bin/{configuration}/SignaturePad.*", "./output/uwp/");
     CopyFiles($"./src/SignaturePad.UWP/bin/{configuration}/Themes/*", "./output/uwp/Themes");
 
     CopyFiles($"./src/SignaturePad.Forms.Droid/bin/{configuration}/SignaturePad.Forms.*", "./output/android/");
     CopyFiles($"./src/SignaturePad.Forms.iOS/bin/{configuration}/SignaturePad.Forms.*", "./output/ios/");
-    CopyFiles($"./src/SignaturePad.Forms.MacOS/bin/{configuration}/SignaturePad.Forms.*", "./output/macos/");
-    CopyFiles($"./src/SignaturePad.Forms.WPF/bin/{configuration}/SignaturePad.Forms.*", "./output/netframework/");
+    CopyFiles($"./src/SignaturePad.Forms.MacOS/bin/{configuration}/SignaturePad.Forms.*", "./output/mac/");
+    CopyFiles($"./src/SignaturePad.Forms.WPF/bin/{configuration}/SignaturePad.Forms.*", "./output/net/");
     CopyFiles($"./src/SignaturePad.Forms.UWP/bin/{configuration}/SignaturePad.Forms.*", "./output/uwp/");
     CopyFiles($"./src/SignaturePad.Forms.UWP/bin/{configuration}/Themes/*", "./output/uwp/Themes");
     CopyFiles($"./src/SignaturePad.Forms/bin/{configuration}/SignaturePad.Forms.*", "./output/netstandard/");
