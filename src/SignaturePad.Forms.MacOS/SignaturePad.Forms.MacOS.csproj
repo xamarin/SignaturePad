@@ -33,7 +33,7 @@
   <ItemGroup>
     <PackageReference Include="MSBuild.Sdk.Extras" Version="1.5.4" PrivateAssets="All" />
     <Reference Include="netstandard" />
-    <PackageReference Include="Xamarin.Forms" Version="3.0.0.482510" />
+    <PackageReference Include="Xamarin.Forms" Version="3.1.0.583944" />
     <ProjectReference Include="..\SignaturePad.MacOS\SignaturePad.MacOS.csproj" />
   </ItemGroup>
 
