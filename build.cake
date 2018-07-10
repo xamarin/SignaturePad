@@ -100,9 +100,7 @@ Task("samples")
     if (IsRunningOnWindows()) {
         MSBuild("./samples/Sample.Android/Sample.Android.sln", settings);
         MSBuild("./samples/Sample.iOS/Sample.iOS.sln", settings);
-        MSBuild("./samples/Sample.MacOS/Sample.MacOS.sln", settings);
         MSBuild("./samples/Sample.UWP/Sample.UWP.sln", settings);
-        MSBuild("./samples/Sample.WPF/Sample.WPF.sln", settings);
         MSBuild("./samples/Sample.Forms/Sample.Forms.sln", settings);
     } else {
         MSBuild("./samples/Sample.Android/Sample.Android.sln", settings);
