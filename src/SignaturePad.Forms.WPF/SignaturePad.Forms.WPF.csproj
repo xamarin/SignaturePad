@@ -30,10 +30,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.5.4" PrivateAssets="All" />
+    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.6.41" PrivateAssets="All" />
     <PackageReference Include="Xamarin.Forms" Version="3.2.0.637442-pre1" />
     <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="3.2.0.637442-pre1" />
     <ProjectReference Include="..\SignaturePad.WPF\SignaturePad.WPF.csproj" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
   </ItemGroup>
 
   <ItemGroup>
