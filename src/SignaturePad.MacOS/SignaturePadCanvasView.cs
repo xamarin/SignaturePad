@@ -99,13 +99,12 @@ namespace Xamarin.Controls
 			var image = GetImageInternal (scale, signatureBounds, imageSize, strokeWidth, strokeColor, backgroundColor);
 			if (image != null)
 			{
-				if (format == SignatureImageFormat.Jpeg)
+				switch (format)
 				{
-					return Task.Run (() => image.AsTiff ().AsStream ());
-				}
-				else if (format == SignatureImageFormat.Png)
-				{
-					return Task.Run (() => image.AsTiff ().AsStream ());
+					case SignatureImageFormat.Jpeg:
+						return Task.Run (() => image.AsTiff ().AsStream ());
+					case SignatureImageFormat.Png:
+						return Task.Run (() => image.AsTiff ().AsStream ());
 				}
 			}
 			return Task.FromResult<Stream> (null);

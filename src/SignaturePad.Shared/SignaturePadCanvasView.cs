@@ -78,7 +78,7 @@ namespace Xamarin.Controls
 		}
 
 #if NETFRAMEWORK
-		public StrokeCollection Strokes
+		public new StrokeCollection Strokes
 		{
 			get
 			{

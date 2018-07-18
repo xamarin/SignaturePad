@@ -199,10 +199,7 @@ namespace SignaturePad.Forms
 		private void OnClearRequested (object sender, EventArgs e)
 		{
 			var ctrl = Control;
-			if (ctrl != null)
-			{
-				ctrl.Clear ();
-			}
+			ctrl?.Clear ();
 		}
 
 		/// <summary>

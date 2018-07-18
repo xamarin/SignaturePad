@@ -59,8 +59,7 @@ namespace Xamarin.Controls
 		{
 			if (Strokes != null)
 			{
-				Strokes.Clear ();
-
+				inkPresenter.Strokes.Clear();
 				OnCleared ();
 			}
 		}
