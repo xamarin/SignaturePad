@@ -27,8 +27,8 @@ namespace Samples.WPF
 		private async Task<bool> OnSaveSignature (Stream bitmap, string filename)
 		{
 			var file = File.Create (filename);
-
-			await bitmap.CopyToAsync (file);
+			if (bitmap != null)
+				await bitmap.CopyToAsync (file);
 
 			return true;
 		}

@@ -26,7 +26,7 @@ namespace Samples.MacOS
         public override void DidFinishLaunching(NSNotification notification)
         {
             Forms.Init();
-            LoadApplication(new App(OnSaveSignature));
+            LoadApplication(new App (OnSaveSignature));
             base.DidFinishLaunching(notification);
         }
 		private async Task<bool> OnSaveSignature (Stream bitmap, string filename)

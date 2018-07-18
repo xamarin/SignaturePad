@@ -67,7 +67,7 @@ namespace Xamarin.Controls
 		private Task<Stream> GetImageStreamInternal (SignatureImageFormat format, System.Drawing.SizeF scale, RectangleF signatureBounds, System.Drawing.SizeF imageSize, float strokeWidth, System.Windows.Media.Color strokeColor, System.Windows.Media.Color backgroundColor)
 		{
 
-			return null;
+			return Task.FromResult<Stream>(null);
 
 		}
 
