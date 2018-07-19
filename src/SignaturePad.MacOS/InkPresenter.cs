@@ -35,6 +35,11 @@ namespace Xamarin.Controls
 
 		public override void MouseDown (NSEvent evt)
 		{
+			if (IsSingleLine)
+			{
+				Clear();
+			}
+
 			// create a new path and set the options
 			currentPath = new InkStroke (new CGPath(), new List<CGPoint> (), StrokeColor, StrokeWidth);
 

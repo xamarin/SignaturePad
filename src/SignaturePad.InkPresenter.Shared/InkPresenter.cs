@@ -64,6 +64,7 @@ namespace Xamarin.Controls
 
 		public float StrokeWidth { get; set; } = 1f;
 
+		public bool IsSingleLine { get; set; }
 		// private properties
 
 #if __IOS__ || __MACOS__

@@ -56,6 +56,11 @@ namespace Xamarin.Controls
 
 		private void TouchesBegan (MotionEvent e)
 		{
+			if (IsSingleLine)
+			{
+				Clear();
+			}
+
 			// don't allow the event to propagate because we're handling it here
 			Parent?.RequestDisallowInterceptTouchEvent (true);
 

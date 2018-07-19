@@ -35,6 +35,11 @@ namespace Xamarin.Controls
 
 		public override void TouchesBegan (NSSet touches, UIEvent evt)
 		{
+			if (IsSingleLine)
+			{
+				Clear ();
+			}
+
 			// create a new path and set the options
 			currentPath = new InkStroke (UIBezierPath.Create (), new List<CGPoint> (), StrokeColor, StrokeWidth);
 
