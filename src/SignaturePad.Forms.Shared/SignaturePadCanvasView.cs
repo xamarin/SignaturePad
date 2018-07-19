@@ -16,6 +16,12 @@ namespace SignaturePad.Forms
 			typeof (SignaturePadView),
 			ImageConstructionSettings.DefaultStrokeColor);
 
+		public static readonly BindableProperty IsSingleLineProperty = BindableProperty.Create(
+			nameof(IsSingleLine),
+			typeof(bool),
+			typeof(SignaturePadView),
+			false);
+
 		public static readonly BindableProperty StrokeWidthProperty = BindableProperty.Create (
 			nameof (StrokeWidth),
 			typeof (float),
@@ -56,6 +62,12 @@ namespace SignaturePad.Forms
 		{
 			get { return (Color)GetValue (StrokeColorProperty); }
 			set { SetValue (StrokeColorProperty, value); }
+		}
+
+		public bool IsSingleLine
+		{
+			get { return (bool)GetValue(IsSingleLineProperty); }
+			set { SetValue(IsSingleLineProperty, value); }
 		}
 
 		public IEnumerable<Point> Points

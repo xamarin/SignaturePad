@@ -60,6 +60,12 @@ namespace Xamarin.Controls
 
 		public bool IsBlank => inkPresenter == null || inkPresenter.GetStrokes ().Count == 0;
 
+		public bool IsSingleLine
+		{
+			get => inkPresenter.IsSingleLine;
+			set => inkPresenter.IsSingleLine = value;
+		}
+
 		public NativePoint[] Points
 		{
 			get

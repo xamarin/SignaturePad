@@ -68,6 +68,7 @@ namespace SignaturePad.Forms
 				var native = new NativeSignaturePadCanvasView ();
 #endif
 
+				native.IsSingleLine = Element.IsSingleLine;
 				native.StrokeCompleted += OnStrokeCompleted;
 				native.Cleared += OnCleared;
 

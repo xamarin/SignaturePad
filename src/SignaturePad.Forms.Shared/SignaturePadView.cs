@@ -44,11 +44,19 @@ namespace SignaturePad.Forms
 		public static readonly BindableProperty StrokeCompletedCommandProperty;
 		internal static readonly BindablePropertyKey IsBlankPropertyKey;
 		public static readonly BindableProperty IsBlankProperty;
+		public static readonly BindableProperty IsSingleLineProperty;
 
 		private readonly TapGestureRecognizer clearLabelTap;
 
 		static SignaturePadView ()
 		{
+			IsSingleLineProperty = BindableProperty.Create(
+				nameof(IsSingleLine),
+				typeof(bool),
+				typeof(SignaturePadView),
+				false,
+				propertyChanged: (bindable, oldValue, newValue) => ((SignaturePadView)bindable).SignaturePadCanvas.IsSingleLine = (bool)newValue);
+
 			StrokeColorProperty = BindableProperty.Create (
 				nameof (StrokeColor),
 				typeof (Color),
@@ -376,6 +384,12 @@ namespace SignaturePad.Forms
 		{
 			get => (Color)GetValue (StrokeColorProperty);
 			set => SetValue (StrokeColorProperty, value);
+		}
+
+		public bool IsSingleLine
+		{
+			get => (bool)GetValue(IsSingleLineProperty);
+			set => SetValue(IsSingleLineProperty, value);
 		}
 
 		/// <summary>
