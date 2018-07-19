@@ -91,7 +91,7 @@ namespace Xamarin.Controls
 
 		private NSImage GetImageInternal (CGSize scale, CGRect signatureBounds, CGSize imageSize, float strokeWidth, NSColor strokeColor, NSColor backgroundColor)
 		{
-			return null;
+			return new NSImage(imageSize);
 		}
 
 		private Task<Stream> GetImageStreamInternal (SignatureImageFormat format, CGSize scale, CGRect signatureBounds, CGSize imageSize, float strokeWidth, NSColor strokeColor, NSColor backgroundColor)
@@ -102,9 +102,9 @@ namespace Xamarin.Controls
 				switch (format)
 				{
 					case SignatureImageFormat.Jpeg:
-						return Task.Run (() => image.AsTiff ().AsStream ());
+						return Task.Run (() => image.AsTiff ()?.AsStream ());
 					case SignatureImageFormat.Png:
-						return Task.Run (() => image.AsTiff ().AsStream ());
+						return Task.Run (() => image.AsTiff ()?.AsStream ());
 				}
 			}
 			return Task.FromResult<Stream> (null);

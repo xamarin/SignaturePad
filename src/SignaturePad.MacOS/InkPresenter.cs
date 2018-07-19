@@ -93,18 +93,16 @@ namespace Xamarin.Controls
 			}
 
 			// clear the current path
-			//currentPath = null;
+			currentPath = null;
 
 			// update the dirty rectangle
 			UpdateBounds (touchLocation);
-			NeedsDisplay = true;
 
 			// we are done with drawing
 			OnStrokeCompleted ();
 		}
 
 		
-
 		public override void DrawRect (CGRect rect)
 		{
 			base.DrawRect (rect);
@@ -123,12 +121,6 @@ namespace Xamarin.Controls
 			if (bitmapBuffer == null)
 			{
 				bitmapBuffer = CreateBufferImage ();
-			}
-
-			// if there are no lines, the the bitmap will be null
-			if (bitmapBuffer != null)
-			{
-				bitmapBuffer.Draw (CGPoint.Empty, rect, NSCompositingOperation.Screen, 0);
 			}
 
 			// draw the current path over the old paths
@@ -152,9 +144,29 @@ namespace Xamarin.Controls
 				return null;
 			}
 
+			var context = NSGraphicsContext.CurrentContext.CGContext;
+
+			context.SetLineCap(CGLineCap.Round);
+			context.SetLineJoin(CGLineJoin.Round);
+
+			foreach (var path in paths)
+			{
+				context.SetStrokeColor(path.Color.CGColor);
+				context.SetLineWidth(path.Width);
+
+				context.AddPath(path.Path);
+				context.StrokePath();
+
+				path.IsDirty = false;
+			}
+
 			var size = Bounds.Size;
-			
-			return null;
+			var image = new NSImage(size);
+			image.LockFocus();
+			image.Draw(new CGRect(CGPoint.Empty, size), CGRect.Empty, NSCompositingOperation.SourceOver, 1.0f);
+			image.UnlockFocus();
+
+			return image;
 		}
 
 		public override void Layout ()

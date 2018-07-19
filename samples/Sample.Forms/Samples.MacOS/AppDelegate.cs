@@ -33,7 +33,7 @@ namespace Samples.MacOS
 		{
 			var tcs = new TaskCompletionSource<bool> ();
 
-			NSImage image = NSImage.FromStream(bitmap);
+			NSImage image = bitmap == null ? null : NSImage.FromStream(bitmap);
 
 			var status = await PHPhotoLibrary.RequestAuthorizationAsync ();
 			if (status == PHAuthorizationStatus.Authorized)
@@ -44,6 +44,7 @@ namespace Samples.MacOS
 
 				//	tcs.TrySetResult (error == null);
 				//});
+				tcs.TrySetResult (true);
 			}
 			else
 			{
