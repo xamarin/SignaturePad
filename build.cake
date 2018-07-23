@@ -102,7 +102,6 @@ Task("samples")
     } else {
         MSBuild("./samples/Sample.Android/Sample.Android.sln", settings);
         MSBuild("./samples/Sample.iOS/Sample.iOS.sln", settings);
-        MSBuild("./samples/Sample.iOS/Sample.MacOS.sln", settings);
         MSBuild("./samples/Sample.Forms/Sample.Forms.Mac.sln", settings);
     }
 
