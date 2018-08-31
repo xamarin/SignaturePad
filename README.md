@@ -72,7 +72,7 @@ var signatureView = new SignaturePadView (this) {
 <controls:SignaturePadView
 	x:Name="signatureView"
 	StrokeWidth="3"
-	StrokeColor="BlackWhite"
+	StrokeColor="White"
 	BackgroundColor="Black" />
 ```
 
