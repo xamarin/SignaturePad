@@ -12,6 +12,10 @@ using NativePath = System.Windows.Ink.Stroke;
 using NativePoint = CoreGraphics.CGPoint;
 using NativeColor = UIKit.UIColor;
 using NativePath = UIKit.UIBezierPath;
+#elif __MACOS__
+using NativePoint = CoreGraphics.CGPoint;
+using NativeColor = AppKit.NSColor;
+using NativePath = CoreGraphics.CGPath;
 #elif WINDOWS_PHONE_APP
 using NativePoint = Windows.Foundation.Point;
 using NativeColor = Windows.UI.Color;

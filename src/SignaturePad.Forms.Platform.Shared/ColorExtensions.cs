@@ -11,6 +11,10 @@ using NativeColor = Windows.UI.Color;
 using UIKit;
 using Xamarin.Forms.Platform.iOS;
 using NativeColor = UIKit.UIColor;
+#elif __MACOS__
+using AppKit;
+using Xamarin.Forms.Platform.MacOS;
+using NativeColor = AppKit.NSColor;
 #elif __ANDROID__
 using Android.Widget;
 using Xamarin.Forms.Platform.Android;
@@ -42,6 +46,8 @@ namespace SignaturePad.Forms
 			return color.ToWindows ();
 #elif __IOS__
 			return color.ToUIColor ();
+#elif __MACOS__
+			return color.ToNSColor ();
 #elif __ANDROID__
 			return color.ToAndroid ();
 #endif
@@ -60,6 +66,15 @@ namespace SignaturePad.Forms
 		public static void SetTextColor (this UIButton button, Color color)
 		{
 			button.SetTitleColor (color.ToNative (), UIControlState.Normal);
+		}
+#elif __MACOS__
+		public static void SetTextColor (this NSTextField label, Color color)
+		{
+			label.TextColor = color.ToNative ();
+		}
+		public static void SetTextColor (this NSButton button, Color color)
+		{
+			button.BezelColor= color.ToNative ();
 		}
 #elif __ANDROID__
 		public static void SetTextColor (this TextView label, Color color)

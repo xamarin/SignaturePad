@@ -1,4 +1,4 @@
-﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Samples"
              xmlns:controls="clr-namespace:SignaturePad.Forms;assembly=SignaturePad.Forms"
@@ -17,7 +17,8 @@
             <controls:SignaturePadView
                 x:Name="signatureView" StrokeCompleted="SignatureChanged" Cleared="SignatureChanged"
                 CaptionTextColor="#B8860B" ClearTextColor="#B8860B" PromptTextColor="#B8860B"
-                SignatureLineColor="#B8860B" BackgroundColor="#FAFAD2" />
+                SignatureLineColor="#B8860B" BackgroundColor="#FAFAD2"
+                IsSingleLine="true"/>
         </ContentView>
 
         <Button

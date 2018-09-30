@@ -8,6 +8,9 @@ using Android.Views;
 #elif __IOS__
 using CoreGraphics;
 using UIKit;
+#elif __MACOS__
+using CoreGraphics;
+using AppKit;
 #elif NETFRAMEWORK
 using System.Windows;
 using System.Windows.Controls;
@@ -76,6 +79,33 @@ namespace Xamarin.Controls
 		}
 
 		public static CGSize GetSize (this UIView view)
+		{
+			return view.Bounds.Size;
+		}
+
+#elif __MACOS__
+
+		public static CGSize GetSize (this NSImage image)
+		{
+			return image.Size;
+		}
+
+		public static void Invalidate (this NSView view)
+		{
+			view.NeedsDisplay = true;
+		}
+
+		public static void MoveTo (this CGPath path, nfloat x, nfloat y)
+		{
+			path.MoveToPoint (new CGPoint (x, y));
+		}
+
+		public static void LineTo (this CGPath path, nfloat x, nfloat y)
+		{
+			path.AddLineToPoint(new CGPoint (x, y));
+		}
+
+		public static CGSize GetSize (this NSView view)
 		{
 			return view.Bounds.Size;
 		}

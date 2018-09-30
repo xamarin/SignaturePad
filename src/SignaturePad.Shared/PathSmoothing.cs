@@ -7,6 +7,9 @@ using NativePath = Android.Graphics.Path;
 #elif __IOS__
 using NativePoint = CoreGraphics.CGPoint;
 using NativePath = UIKit.UIBezierPath;
+#elif __MACOS__
+using NativePoint = CoreGraphics.CGPoint;
+using NativePath = CoreGraphics.CGPath;
 #elif WINDOWS_PHONE
 using System.Windows.Ink;
 using NativePoint = System.Windows.Point;
@@ -55,7 +58,7 @@ namespace Xamarin.Controls
 			}
 
 			// create the new path with the old attributes
-#if __ANDROID__ || __IOS__ || WINDOWS_PHONE_APP || NETFRAMEWORK
+#if __ANDROID__ || __IOS__ || WINDOWS_PHONE_APP || NETFRAMEWORK || __MACOS__
 			return new InkStroke (smoothedPath, smoothedPoints.ToList (), currentPath.Color, currentPath.Width);
 #elif WINDOWS_PHONE
 			var da = currentPath.DrawingAttributes;

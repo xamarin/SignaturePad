@@ -16,6 +16,12 @@ using NativePoint = CoreGraphics.CGPoint;
 using NativeSize = CoreGraphics.CGSize;
 using NativeColor = UIKit.UIColor;
 using NativeImage = UIKit.UIImage;
+#elif __MACOS__
+using NativeRect = CoreGraphics.CGRect;
+using NativePoint = CoreGraphics.CGPoint;
+using NativeSize = CoreGraphics.CGSize;
+using NativeColor = AppKit.NSColor;
+using NativeImage = AppKit.NSImage;
 #elif WINDOWS_PHONE
 using NativeRect = System.Windows.Rect;
 using NativePoint = System.Windows.Point;
@@ -54,6 +60,42 @@ namespace Xamarin.Controls
 
 		public bool IsBlank => inkPresenter == null || inkPresenter.GetStrokes ().Count == 0;
 
+#if NETFRAMEWORK
+		private bool isSingleLine;
+
+		public bool IsSingleLine
+		{
+			get => isSingleLine;
+			set
+			{
+				if (value && isSingleLine != true)
+				{
+					inkPresenter.PreviewMouseDown += InkPresenter_MouseDown;
+				}
+				else
+				{
+					inkPresenter.PreviewMouseDown -= InkPresenter_MouseDown;
+				}
+
+				isSingleLine = value;
+			}
+		}
+
+		private void InkPresenter_MouseDown (object sender, MouseButtonEventArgs e)
+		{
+			Clear();
+		}
+#elif WINDOWS_UWP
+		public bool IsSingleLine { get; set; }
+#else
+		public bool IsSingleLine
+		{
+			get => inkPresenter.IsSingleLine;
+			set => inkPresenter.IsSingleLine = value;
+		}
+#endif
+
+
 		public NativePoint[] Points
 		{
 			get
@@ -72,7 +114,7 @@ namespace Xamarin.Controls
 		}
 
 #if NETFRAMEWORK
-		public StrokeCollection Strokes
+		public new StrokeCollection Strokes
 		{
 			get
 			{
@@ -91,7 +133,7 @@ namespace Xamarin.Controls
 
 #else
 		public NativePoint[][] Strokes
-	{
+		{
 			get
 			{
 				if (IsBlank)
@@ -459,7 +501,7 @@ namespace Xamarin.Controls
 				signatureBounds = new NativeRect (0, 0, (float)viewSize.Width, (float)viewSize.Height);
 			}
 #else
-			scale = new NativeSize ((float)scaleX, (float)scaleY);
+					scale = new NativeSize ((float)scaleX, (float)scaleY);
 				}
 				else if (sizeOrScale.Type == SizeOrScaleType.Scale)
 				{

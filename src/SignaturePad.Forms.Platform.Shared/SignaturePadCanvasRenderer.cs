@@ -21,6 +21,10 @@ using NativePoint = Windows.Foundation.Point;
 using Xamarin.Forms.Platform.iOS;
 using NativeSignaturePadCanvasView = Xamarin.Controls.SignaturePadCanvasView;
 using NativePoint = CoreGraphics.CGPoint;
+#elif __MACOS__
+using Xamarin.Forms.Platform.MacOS;
+using NativeSignaturePadCanvasView = Xamarin.Controls.SignaturePadCanvasView;
+using NativePoint = CoreGraphics.CGPoint;
 #elif __ANDROID__
 using Xamarin.Forms.Platform.Android;
 using NativeSignaturePadCanvasView = Xamarin.Controls.SignaturePadCanvasView;
@@ -64,6 +68,7 @@ namespace SignaturePad.Forms
 				var native = new NativeSignaturePadCanvasView ();
 #endif
 
+				native.IsSingleLine = Element.IsSingleLine;
 				native.StrokeCompleted += OnStrokeCompleted;
 				native.Cleared += OnCleared;
 
@@ -195,10 +200,7 @@ namespace SignaturePad.Forms
 		private void OnClearRequested (object sender, EventArgs e)
 		{
 			var ctrl = Control;
-			if (ctrl != null)
-			{
-				ctrl.Clear ();
-			}
+			ctrl?.Clear ();
 		}
 
 		/// <summary>

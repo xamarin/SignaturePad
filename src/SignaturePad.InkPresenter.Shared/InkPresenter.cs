@@ -23,6 +23,13 @@ using NativePoint = CoreGraphics.CGPoint;
 using NativeColor = UIKit.UIColor;
 using NativeImage = UIKit.UIImage;
 using NativePath = UIKit.UIBezierPath;
+#elif __MACOS__
+using NativeRect = CoreGraphics.CGRect;
+using NativeSize = CoreGraphics.CGSize;
+using NativePoint = CoreGraphics.CGPoint;
+using NativeColor = AppKit.NSColor;
+using NativeImage = AppKit.NSImage;
+using NativePath = CoreGraphics.CGPath;
 #elif WINDOWS_PHONE_APP
 using NativeRect = Windows.Foundation.Rect;
 using NativeSize = Windows.Foundation.Size;
@@ -57,9 +64,10 @@ namespace Xamarin.Controls
 
 		public float StrokeWidth { get; set; } = 1f;
 
+		public bool IsSingleLine { get; set; }
 		// private properties
 
-#if __IOS__ 
+#if __IOS__ || __MACOS__
 		private float Width => (float)Bounds.Width;
 
 		private float Height => (float)Bounds.Height;
