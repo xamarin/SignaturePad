@@ -76,6 +76,18 @@ var signatureView = new SignaturePadView (this) {
 	BackgroundColor="Black" />
 ```
 
+#### Need more control? Use the underlying SignaturePadCanvasView
+
+```xml
+<!-- xmlns:controls="clr-namespace:SignaturePad.Forms;assembly=SignaturePad.Forms" -->
+
+<controls:SignaturePadCanvasView
+                x:Name="signatureView"
+                StrokeCompleted="SignatureChanged"
+                BackgroundColor="White"
+                StrokeColor="Black"
+                StrokeWidth="3" />
+```
 ### Obtaining a Signature Image
 
 The signature that was drawn on the canvas can be obtained as a image using the `GetImage(...)`

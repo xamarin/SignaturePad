@@ -8,4 +8,5 @@
 
     <local:BindingPage Title="Data Binding" />
 
+    <local:CanvasView Title="CanvasView" />
 </TabbedPage>
