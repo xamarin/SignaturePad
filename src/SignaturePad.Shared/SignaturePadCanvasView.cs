@@ -44,8 +44,14 @@ namespace Xamarin.Controls
 
 		public event EventHandler Cleared;
 
+		/// <summary>
+		/// Check if there is any stoke.
+		/// </summary>
 		public bool IsBlank => inkPresenter == null ? true : inkPresenter.GetStrokes ().Count == 0;
 
+		/// <summary>
+		/// Get currents points. A new line of points start with coordinate (0,0)
+		/// </summary>
 		public NativePoint[] Points
 		{
 			get
@@ -63,6 +69,9 @@ namespace Xamarin.Controls
 			}
 		}
 
+		/// <summary>
+		/// Get currents strokes represented by an array of array of points.
+		/// </summary>
 		public NativePoint[][] Strokes
 		{
 			get
@@ -77,6 +86,12 @@ namespace Xamarin.Controls
 			}
 		}
 
+		/// <summary>
+		/// Get a rect containing the signature.
+		/// Some padding can be add to a max from bounds of canvas.
+		/// </summary>
+		/// <param name="padding">Padding added to the signature.</param>
+		/// <returns>The rect containing the signature with some padding.</returns>
 		public NativeRect GetSignatureBounds (float padding = 5f)
 		{
 			if (IsBlank)
@@ -436,6 +451,11 @@ namespace Xamarin.Controls
 			return true;
 		}
 
+		/// <summary>
+		/// Allow the user to import strokes represented by an array of an array of points.
+		/// Strokes are used to draw a signature in the view after clearing it.
+		/// </summary>
+		/// <param name="loadedStrokes">Array of array of points. Each array of points represent a line.</param>
 		public void LoadStrokes (NativePoint[][] loadedStrokes)
 		{
 			// clear any existing paths or points.
