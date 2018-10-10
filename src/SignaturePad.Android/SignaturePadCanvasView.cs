@@ -81,7 +81,7 @@ namespace Xamarin.Controls
 		}
 
 		/// <summary>
-		/// Clear the canvas and fire <see cref="Cleared"/> event
+		/// Clear the canvas and invoke <see cref="Cleared"/> event
 		/// </summary>
 		public void Clear ()
 		{
