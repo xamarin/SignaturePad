@@ -94,13 +94,19 @@ namespace Xamarin.Controls
 		}
 
 		public SignaturePadCanvasView SignaturePadCanvas { get; private set; }
-
+		
 		public View SignatureLine { get; private set; }
 
+		/// <summary>
+		/// TextView which write text below the separator line
+		/// </summary>
 		public TextView Caption { get; private set; }
 
+		/// <summary>
+		/// TextView which write text aboce the separator line
+		/// </summary>
 		public TextView SignaturePrompt { get; private set; }
-
+		
 		public TextView ClearLabel { get; private set; }
 
 		[Obsolete ("Set the background instead.")]

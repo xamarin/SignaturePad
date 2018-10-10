@@ -51,8 +51,15 @@ namespace Xamarin.Controls
 		private static readonly NativeColor SignaturePadLightColor = Windows.UI.Colors.White;
 #endif
 
+
+		/// <summary>
+		/// Get currents strokes from the canvas. Strokes are represented by an array of array of points.
+		/// </summary>
 		public NativePoint[][] Strokes => SignaturePadCanvas.Strokes;
 
+		/// <summary>
+		/// Get currents points from the canvas. A new line of points start with coordinate (0,0)
+		/// </summary>
 		public NativePoint[] Points => SignaturePadCanvas.Points;
 
 		public bool IsBlank => SignaturePadCanvas?.IsBlank ?? true;
@@ -61,6 +68,9 @@ namespace Xamarin.Controls
 
 		public event EventHandler Cleared;
 
+		/// <summary>
+		/// Clear the canvas and invoke <see cref="Cleared"/> event
+		/// </summary>
 		public void Clear ()
 		{
 			SignaturePadCanvas.Clear ();
@@ -68,6 +78,10 @@ namespace Xamarin.Controls
 			UpdateUi ();
 		}
 
+		/// <summary>
+		/// Allow the user to import an array of points to be used to draw a signature in the view, with new
+		/// lines indicated by a { 0, 0 } point in the array.
+		/// <param name="loadedPoints"></param>
 		public void LoadPoints (NativePoint[] points)
 		{
 			SignaturePadCanvas.LoadPoints (points);
@@ -75,6 +89,11 @@ namespace Xamarin.Controls
 			UpdateUi ();
 		}
 
+		/// <summary>
+		/// Allow the user to import strokes represented by an array of an array of points.
+		/// Strokes are used to draw a signature in the view after clearing it.
+		/// </summary>
+		/// <param name="loadedStrokes">Array of array of points. Each array of points represent a line.</param>
 		public void LoadStrokes (NativePoint[][] strokes)
 		{
 			SignaturePadCanvas.LoadStrokes (strokes);
