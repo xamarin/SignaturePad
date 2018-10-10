@@ -75,10 +75,14 @@ namespace Xamarin.Controls
 				{
 					stroke.Width = value;
 				}
+
 				inkPresenter.Invalidate ();
 			}
 		}
 
+		/// <summary>
+		/// Clear the canvas and fire <see cref="Cleared"/> event
+		/// </summary>
 		public void Clear ()
 		{
 			inkPresenter.Clear ();
