@@ -33,7 +33,7 @@
       <group targetFramework="net">
         <dependency id="Xamarin.Controls.SignaturePad" version="$version$" exclude="Build,Analyzers" />
         <dependency id="Xamarin.Forms" version="3.1.0.637273" exclude="Build,Analyzers" />
-        <dependency id="Xamarin.Forms.Platform.WPF" version="3.1.0.637273" exclude="Build,Analyzers" />
+        <!-- <dependency id="Xamarin.Forms.Platform.WPF" version="3.1.0.637273" exclude="Build,Analyzers" /> -->
       </group>
       <group targetFramework="uap10.0">
         <dependency id="Xamarin.Controls.SignaturePad" version="$version$" exclude="Build,Analyzers" />
