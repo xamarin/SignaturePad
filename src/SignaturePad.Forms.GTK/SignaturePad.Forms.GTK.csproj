@@ -1,12 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
-    <RootNamespace>Xamarin.Controls</RootNamespace>
-    <AssemblyName>SignaturePad</AssemblyName>
-
-    <EnableDefaultCompileItems>False</EnableDefaultCompileItems>
-
+    <TargetFramework>net471</TargetFramework>
+    <RootNamespace>SignaturePad.Forms</RootNamespace>
+    <AssemblyName>SignaturePad.Forms</AssemblyName>
     <AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
     <DocumentationFile Condition=" '$(Configuration)' == 'Release' ">bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
     <AssemblyVersion>1.0.0</AssemblyVersion>
@@ -14,8 +11,8 @@
 
   <PropertyGroup>
     <Version>1.0.0</Version>
-    <PackageId>Xamarin.Controls.SignaturePad</PackageId>
-    <Title>SignaturePad for Xamarin and Windows</Title>
+    <PackageId>Xamarin.Controls.SignaturePad.Forms</PackageId>
+    <Title>SignaturePad for Xamarin.Forms</Title>
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
     <Authors>Microsoft</Authors>
     <Owners>Microsoft</Owners>
@@ -34,37 +31,19 @@
 
   <ItemGroup>
     <PackageReference Include="MSBuild.Sdk.Extras" Version="1.6.41" PrivateAssets="All" />
+    <PackageReference Include="Xamarin.Forms" Version="3.1.0.637273" />
+    <PackageReference Include="Xamarin.Forms.Platform.GTK" Version="3.1.0.637273" />
+    <ProjectReference Include="..\SignaturePad.GTK\SignaturePad.GTK.csproj" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\SignaturePad.Shared\**\*.cs" Link="%(filename).shared%(Extension)" />
-    <Compile Include="..\SignaturePad.InkPresenter.Shared\**\*.cs" Link="%(filename).shared%(Extension)" />
-    <Compile Include="SignaturePad.cs" />
-    <Compile Include="SignaturePadCanvasView.cs" />
+    <Compile Include="..\SignaturePad.Forms.Shared\**\*.cs" Link="%(filename).shared%(Extension)" />
+    <Compile Include="..\SignaturePad.Forms.Platform.Shared\**\*.cs" Link="%(filename).platform%(Extension)" />
   </ItemGroup>
 
-<!-- https://github.com/dotnet/sdk/issues/810 - the temporary project has the wrong file extension -->
-  <PropertyGroup>
-    <LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
-    <StartWorkingDirectory Condition="'$(OutputType)' == 'WinExe'">bin/$(Configuration)/$(TargetFramework)</StartWorkingDirectory>
-  </PropertyGroup>
-  
-  <!-- Page items aren't included by the SDK -->
-  <ItemGroup>
-    <Page Include="**\*.xaml" Exclude="@(ApplicationDefinition)" SubType="Designer" Generator="MSBuild:Compile" />
-    <Compile Update="**\*.xaml.cs" SubType="Code" DependentUpon="%(Filename)" />
-    <UpToDateCheckInput Include="**\*.xaml" />
-  </ItemGroup>
-
-  <!-- https://github.com/dotnet/project-system/issues/2488 - .g.cs files don't get built -->
-  <Target Name="WorkaroundForXAMLIntellisenseBuildIssue" AfterTargets="_CheckCompileDesignTimePrerequisite">
-    <PropertyGroup>
-      <BuildingProject>false</BuildingProject>
-    </PropertyGroup>
-  </Target>
   <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
 
 </Project>
