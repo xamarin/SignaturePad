@@ -29,7 +29,11 @@ using NativePoint = CoreGraphics.CGPoint;
 using Xamarin.Forms.Platform.Android;
 using NativeSignaturePadCanvasView = Xamarin.Controls.SignaturePadCanvasView;
 using NativePoint = System.Drawing.PointF;
-#elif NETFRAMEWORK
+#elif GTK
+using Xamarin.Forms.Platform.GTK;
+using NativeSignaturePadCanvasView = Xamarin.Controls.SignaturePadCanvasView;
+using NativePoint = Gdk.Point;
+#elif WPF
 using Xamarin.Forms.Platform.WPF;
 using NativeSignaturePadCanvasView = Xamarin.Controls.SignaturePadCanvasView;
 using NativePoint = System.Windows.Input.StylusPoint;
@@ -169,10 +173,11 @@ namespace SignaturePad.Forms
 		private void OnPointsSpecified (object sender, SignaturePadCanvasView.PointsEventArgs e)
 		{
 			var ctrl = Control;
-			if (ctrl != null)
-			{
-				ctrl.LoadPoints (e.Points.Select (p => new NativePoint ((float)p.X, (float)p.Y)).ToArray ());
-			}
+#if GTK
+			ctrl?.LoadPoints (e.Points.Select (p => new NativePoint ((int)p.X, (int)p.Y)).ToArray ());
+#else
+			ctrl?.LoadPoints (e.Points.Select (p => new NativePoint ((float)p.X, (float)p.Y)).ToArray ());
+#endif
 		}
 
 		private void OnStrokesRequested (object sender, SignaturePadCanvasView.StrokesEventArgs e)
@@ -180,7 +185,7 @@ namespace SignaturePad.Forms
 			var ctrl = Control;
 			if (ctrl != null)
 			{
-#if NETFRAMEWORK
+#if WPF
 				e.Strokes = ctrl.Strokes.Select (s => s.StylusPoints.Select (p => new Point (p.X, p.Y)));
 #else
 				e.Strokes = ctrl.Strokes.Select (s => s.Select (p => new Point (p.X, p.Y)));
@@ -191,10 +196,11 @@ namespace SignaturePad.Forms
 		private void OnStrokesSpecified (object sender, SignaturePadCanvasView.StrokesEventArgs e)
 		{
 			var ctrl = Control;
-			if (ctrl != null)
-			{
-				ctrl.LoadStrokes (e.Strokes.Select (s => s.Select (p => new NativePoint ((float)p.X, (float)p.Y)).ToArray ()).ToArray ());
-			}
+#if GTK
+			ctrl?.LoadStrokes (e.Strokes.Select (s => s.Select (p => new NativePoint ((int)p.X, (int)p.Y)).ToArray ()).ToArray ());
+#else
+			ctrl?.LoadStrokes (e.Strokes.Select (s => s.Select (p => new NativePoint ((float)p.X, (float)p.Y)).ToArray ()).ToArray ());
+#endif
 		}
 
 		private void OnClearRequested (object sender, EventArgs e)

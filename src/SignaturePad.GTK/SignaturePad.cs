@@ -6,14 +6,19 @@ namespace Xamarin.Controls
 	using System.Windows;
 	using System.Windows.Controls;
 	using System.Windows.Media;
+	using Gtk;
+	using Brush = System.Drawing.Brush;
+	using Color = Gdk.Color;
+	using Image = System.Windows.Controls.Image;
+	using Stretch = Pango.Stretch;
 
 	[TemplatePart (Name = PartBackgroundImageView, Type = typeof (Image))]
 	[TemplatePart (Name = PartSignaturePadCanvas, Type = typeof (SignaturePadCanvasView))]
-	[TemplatePart (Name = PartCaption, Type = typeof (TextBlock))]
+	[TemplatePart (Name = PartCaption, Type = typeof (TextView))]
 	[TemplatePart (Name = PartSignatureLine, Type = typeof (Border))]
-	[TemplatePart (Name = PartSignaturePrompt, Type = typeof (TextBlock))]
-	[TemplatePart (Name = PartClearLabel, Type = typeof (TextBlock))]
-	public partial class SignaturePad : Control
+	[TemplatePart (Name = PartSignaturePrompt, Type = typeof (TextView))]
+	[TemplatePart (Name = PartClearLabel, Type = typeof (TextView))]
+	public partial class SignaturePad : Widget
 	{
 		private const string PartBackgroundImageView = "BackgroundImageView";
 		private const string PartSignaturePadCanvas = "SignaturePadCanvas";
@@ -42,9 +47,9 @@ namespace Xamarin.Controls
 		
 		static SignaturePad ()
 		{
-			DefaultStyleKeyProperty.OverrideMetadata (
-				typeof (SignaturePad),
-				new FrameworkPropertyMetadata (typeof (SignaturePad)));
+			//DefaultStyleKeyProperty.OverrideMetadata (
+			//	typeof (SignaturePad),
+			//	new FrameworkPropertyMetadata (typeof (SignaturePad)));
 
 
 			StrokeColorProperty = DependencyProperty.Register (
@@ -63,7 +68,7 @@ namespace Xamarin.Controls
 				nameof (SignatureLineBrush),
 				typeof (Brush),
 				typeof (SignaturePad),
-				new PropertyMetadata (new SolidColorBrush (SignaturePadDarkColor)));
+				new PropertyMetadata (new SolidColorBrush (Colors.Black)));
 
 			SignatureLineThicknessProperty = DependencyProperty.Register (
 				nameof (SignatureLineThickness),
@@ -93,7 +98,7 @@ namespace Xamarin.Controls
 				nameof (CaptionForeground),
 				typeof (Brush),
 				typeof (SignaturePad),
-				new PropertyMetadata (new SolidColorBrush (SignaturePadDarkColor)));
+				new PropertyMetadata (new SolidColorBrush (Colors.Black)));
 
 			SignaturePromptTextProperty = DependencyProperty.Register (
 				nameof (SignaturePromptText),
@@ -111,7 +116,7 @@ namespace Xamarin.Controls
 				nameof (SignaturePromptForeground),
 				typeof (Brush),
 				typeof (SignaturePad),
-				new PropertyMetadata (new SolidColorBrush (SignaturePadDarkColor)));
+				new PropertyMetadata (new SolidColorBrush (Colors.Black)));
 
 			ClearLabelTextProperty = DependencyProperty.Register (
 				nameof (ClearLabelText),
@@ -129,7 +134,7 @@ namespace Xamarin.Controls
 				nameof (ClearLabelForeground),
 				typeof (Brush),
 				typeof (SignaturePad),
-				new PropertyMetadata (new SolidColorBrush (SignaturePadDarkColor)));
+				new PropertyMetadata (new SolidColorBrush (Colors.Black)));
 
 			BackgroundImageProperty = DependencyProperty.Register (
 				nameof (BackgroundImage),
@@ -140,7 +145,7 @@ namespace Xamarin.Controls
 			BackgroundImageStretchProperty = DependencyProperty.Register (
 				nameof (BackgroundImageStretch),
 				typeof (Stretch),
-				typeof (SignaturePad), new PropertyMetadata (Stretch.None));
+				typeof (SignaturePad), new PropertyMetadata (Stretch.Normal));
 
 			BackgroundImageOpacityProperty = DependencyProperty.Register (
 				nameof (BackgroundImageOpacity),
@@ -151,223 +156,215 @@ namespace Xamarin.Controls
 
 		public SignaturePad ()
 		{
-			DefaultStyleKey = typeof (SignaturePad);
+			//DefaultStyleKey = typeof (SignaturePad);
 
 			//RegisterPropertyChangedCallback (PaddingProperty, OnPaddingChanged);
-
-			Padding = new Thickness (DefaultWideSpacing, DefaultWideSpacing, DefaultWideSpacing, DefaultNarrowSpacing);
-			OnApplyTemplate();
+			
+			//Padding = new Thickness (DefaultWideSpacing, DefaultWideSpacing, DefaultWideSpacing, DefaultNarrowSpacing);
+			//OnApplyTemplate();
 		}
 
 		/// <inheritdoc />
-		public override void OnApplyTemplate()
-		{
-			base.OnApplyTemplate();
+		//public override void OnApplyTemplate()
+		//{
+		//	base.OnApplyTemplate();
 		
-			SignaturePadCanvas.StrokeCompleted += delegate
-			{
-				OnSignatureStrokeCompleted ();
-			};
-			SignaturePadCanvas.Cleared += delegate
-			{
-				OnSignatureCleared ();
-			};
-			ClearLabel.MouseDown += delegate
-			{
-				OnClearTapped ();
-			};
+		//	SignaturePadCanvas.StrokeCompleted += delegate
+		//	{
+		//		OnSignatureStrokeCompleted ();
+		//	};
+		//	SignaturePadCanvas.Cleared += delegate
+		//	{
+		//		OnSignatureCleared ();
+		//	};
+		//	ClearLabel.MouseDown += delegate
+		//	{
+		//		OnClearTapped ();
+		//	};
 
-			OnPaddingChanged (this, PaddingProperty);
-			UpdateUi ();
-		}
+		//	OnPaddingChanged (this, PaddingProperty);
+		//	UpdateUi ();
+		//}
 
 		/// <summary>
 		/// The real signature canvas view
 		/// </summary>
-		public SignaturePadCanvasView SignaturePadCanvas => GetTemplateChild (PartSignaturePadCanvas) as SignaturePadCanvasView;
+		public SignaturePadCanvasView SignaturePadCanvas => new SignaturePadCanvasView();
 
 		/// <summary>
 		/// The prompt displayed at the beginning of the signature line.
 		/// </summary>
-		public TextBlock SignaturePrompt => GetTemplateChild (PartSignaturePrompt) as TextBlock;
+		public TextView SignaturePrompt => new TextView();
 
 		/// <summary>
 		/// The caption displayed under the signature line.
 		/// </summary>
-		public TextBlock Caption => GetTemplateChild (PartCaption) as TextBlock;
+		public TextView Caption => new TextView ();
 
 		/// <summary>
 		/// An image view that may be used as a watermark or as a texture for the signature pad.
 		/// </summary>
-		public Image BackgroundImageView => GetTemplateChild (PartBackgroundImageView) as Image;
+		public Image BackgroundImageView =>new Image();
 
 		/// <summary>
 		/// Gets the label that clears the pad when clicked.
 		/// </summary>
-		public TextBlock ClearLabel => GetTemplateChild (PartClearLabel) as TextBlock;
+		public TextView ClearLabel => new TextView ();
 
 		/// <summary>
 		/// Gets the horizontal line that goes in the lower part of the pad.
 		/// </summary>
-		public Border SignatureLine => GetTemplateChild (PartSignatureLine) as Border;
+		public Border SignatureLine => new Border();
 
 		public Color StrokeColor
 		{
-			get { return (Color)GetValue (StrokeColorProperty); }
-			set { SetValue (StrokeColorProperty, value); }
+			get;
+			set;
 		}
 
 		public double StrokeWidth
 		{
-			get { return (double)GetValue (StrokeWidthProperty); }
-			set { SetValue (StrokeWidthProperty, value); }
+			get;
+			set;
 		}
 
 		public Brush SignatureLineBrush
 		{
-			get { return (Brush)GetValue (SignatureLineBrushProperty); }
-			set { SetValue (SignatureLineBrushProperty, value); }
+			get;
+			set;
 		}
 
 		public Thickness SignatureLineThickness
 		{
-			get { return (Thickness)GetValue (SignatureLineThicknessProperty); }
-			set { SetValue (SignatureLineThicknessProperty, value); }
+			get;
+			set;
 		}
 
 		public double SignatureLineSpacing
 		{
-			get { return (double)GetValue (SignatureLineSpacingProperty); }
-			set { SetValue (SignatureLineSpacingProperty, value); }
+			get;
+			set;
 		}
 
 		public string CaptionText
 		{
-			get { return (string)GetValue (CaptionTextProperty); }
-			set { SetValue (CaptionTextProperty, value); }
+			get;
+			set;
 		}
 
 		public double CaptionFontSize
 		{
-			get { return (double)GetValue (CaptionFontSizeProperty); }
-			set { SetValue (CaptionFontSizeProperty, value); }
+			get;
+			set;
 		}
 
 		public Brush CaptionForeground
 		{
-			get { return (Brush)GetValue (CaptionForegroundProperty); }
-			set { SetValue (CaptionForegroundProperty, value); }
+			get;
+			set;
 		}
 
 		public string SignaturePromptText
 		{
-			get { return (string)GetValue (SignaturePromptTextProperty); }
-			set { SetValue (SignaturePromptTextProperty, value); }
+			get;
+			set;
 		}
 
 		public double SignaturePromptFontSize
 		{
-			get { return (double)GetValue (SignaturePromptFontSizeProperty); }
-			set { SetValue (SignaturePromptFontSizeProperty, value); }
+			get;
+			set;
 		}
 
 		public Brush SignaturePromptForeground
 		{
-			get { return (Brush)GetValue (SignaturePromptForegroundProperty); }
-			set { SetValue (SignaturePromptForegroundProperty, value); }
+			get;
+			set;
 		}
 
 		public string ClearLabelText
 		{
-			get { return (string)GetValue (ClearLabelTextProperty); }
-			set { SetValue (ClearLabelTextProperty, value); }
+			get;
+			set;
 		}
 
 		public double ClearLabelFontSize
 		{
-			get { return (double)GetValue (ClearLabelFontSizeProperty); }
-			set { SetValue (ClearLabelFontSizeProperty, value); }
+			get;
+			set;
 		}
 
 		public Brush ClearLabelForeground
 		{
-			get { return (Brush)GetValue (ClearLabelForegroundProperty); }
-			set { SetValue (ClearLabelForegroundProperty, value); }
+			get;
+			set;
 		}
 
 		public ImageSource BackgroundImage
 		{
-			get { return (ImageSource)GetValue (BackgroundImageProperty); }
-			set { SetValue (BackgroundImageProperty, value); }
+			get;
+			set;
 		}
 
 		public Stretch BackgroundImageStretch
 		{
-			get { return (Stretch)GetValue (BackgroundImageStretchProperty); }
-			set { SetValue (BackgroundImageStretchProperty, value); }
+			get;
+			set;
 		}
 
 		public double BackgroundImageOpacity
 		{
-			get { return (double)GetValue (BackgroundImageOpacityProperty); }
-			set { SetValue (BackgroundImageOpacityProperty, value); }
+			get;
+			set;
 		}
 
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Use Background instead.")]
 		public Color BackgroundColor
 		{
-			get
-			{
-				var scb = Background as SolidColorBrush;
-				return scb == null ? Colors.Transparent : scb.Color;
-			}
-			set { Background = new SolidColorBrush (value); }
+			get;
+			set;
 		}
 
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Use SignatureLineBrush instead.")]
 		public Color SignatureLineColor
 		{
-			get
-			{
-				var scb = SignatureLineBrush as SolidColorBrush;
-				return scb == null ? Colors.Transparent : scb.Color;
-			}
-			set { SignatureLineBrush = new SolidColorBrush (value); }
+			get;
+			set;
 		}
 
 		private void UpdateUi ()
 		{
-			ClearLabel.Visibility = IsBlank ? Visibility.Collapsed : Visibility.Visible;
+			//ClearLabel.Visibility = IsBlank ? Visibility.Collapsed : Visibility.Visible;
 		}
 
-		private void OnPaddingChanged (DependencyObject sender, DependencyProperty dp)
-		{
-			var padding = Padding;
-			var spacing = SignatureLineSpacing;
+		//private void OnPaddingChanged (DependencyObject sender, DependencyProperty dp)
+		//{
+		//	var padding = Padding;
+		//	var spacing = SignatureLineSpacing;
 
-			if (SignatureLine != null)
-			{
-				SignatureLine.Margin = new Thickness (padding.Left, 0, padding.Right, 0);
-			}
-			if (Caption != null)
-			{
-				Caption.Margin = new Thickness (0, spacing, 0, padding.Bottom);
-			}
-			if (ClearLabel != null)
-			{
-				ClearLabel.Margin = new Thickness (0, padding.Top, padding.Right, 0);
-			}
-			if (SignaturePrompt != null)
-			{
-				SignaturePrompt.Margin = new Thickness (padding.Left, 0, 0, spacing);
-			}
-		}
+		//	if (SignatureLine != null)
+		//	{
+		//		SignatureLine.Margin = new Thickness (padding.Left, 0, padding.Right, 0);
+		//	}
+		//	if (Caption != null)
+		//	{
+		//		Caption.Margin = new Thickness (0, spacing, 0, padding.Bottom);
+		//	}
+		//	if (ClearLabel != null)
+		//	{
+		//		ClearLabel.Margin = new Thickness (0, padding.Top, padding.Right, 0);
+		//	}
+		//	if (SignaturePrompt != null)
+		//	{
+		//		SignaturePrompt.Margin = new Thickness (padding.Left, 0, 0, spacing);
+		//	}
+		//}
 
 		private static void OnPaddingChanged (DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			((SignaturePad)d).OnPaddingChanged (d, e.Property);
+			//((SignaturePad)d).OnPaddingChanged (d, e.Property);
 		}
 	}
 }

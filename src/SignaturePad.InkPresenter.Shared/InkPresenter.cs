@@ -9,7 +9,13 @@ using NativePoint = System.Drawing.PointF;
 using NativeColor = Android.Graphics.Color;
 using NativeImage = Android.Graphics.Bitmap;
 using NativePath = Android.Graphics.Path;
-#elif NETFRAMEWORK
+#elif GTK
+using NativePath = Cairo.Path;
+using NativeRect = System.Drawing.RectangleF;
+using NativePoint = Gdk.Point;
+using NativeColor = Gdk.Color;
+using NativeImage = System.Drawing.Bitmap;
+#elif WPF
 using System.Windows.Input;
 using NativePath = System.Windows.Ink.Stroke;
 using NativeRect = System.Drawing.RectangleF;
@@ -80,7 +86,7 @@ namespace Xamarin.Controls
 				var sizeChanged = false;
 				if (bitmapBuffer != null)
 				{
-#if NETFRAMEWORK
+#if WPF || GTK
 					var s = bitmapBuffer.Size;
 					sizeChanged = s.Width != this.StrokeWidth || s.Height != this.StrokeWidth;
 #else
@@ -161,8 +167,11 @@ namespace Xamarin.Controls
 				return false;
 			}
 
-#if NETFRAMEWORK
+#if WPF
 			var newpath = new NativePath(new StylusPointCollection (strokePoints));
+#elif GTK
+			NativePath newpath = null;
+			return false;
 #else
 			var newpath = new NativePath();
 #endif

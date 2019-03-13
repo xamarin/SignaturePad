@@ -29,6 +29,14 @@
     <PackageTags>xamarin,signature,handwriting,windows,ios,android,uwp</PackageTags>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;WPF</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;WPF</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="MSBuild.Sdk.Extras" Version="1.6.41" PrivateAssets="All" />
     <PackageReference Include="Xamarin.Forms" Version="4.0.0.169046-pre5" />
