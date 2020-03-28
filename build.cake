@@ -104,7 +104,6 @@ Task("nuget")
     .WithCriteria(IsRunningOnWindows())
     .Does(() =>
 {
-    var nuget = Context.Tools.Resolve("nuget.exe");
     var nuspecs = GetFiles("./nuget/*.nuspec");
     var settings = new NuGetPackSettings {
         BasePath = ".",
@@ -134,13 +133,25 @@ Task("samples")
             };
 
     if (IsRunningOnWindows()) {
+        NuGetRestore("./samples/Sample.Android/Sample.Android.sln");
         MSBuild("./samples/Sample.Android/Sample.Android.sln", settings);
+
+        NuGetRestore("./samples/Sample.iOS/Sample.iOS.sln");
         MSBuild("./samples/Sample.iOS/Sample.iOS.sln", settingsIos);
+
+        NuGetRestore("./samples/Sample.UWP/Sample.UWP.sln");
         MSBuild("./samples/Sample.UWP/Sample.UWP.sln", settings);
+
+        NuGetRestore("./samples/Sample.Forms/Sample.Forms.sln");
         MSBuild("./samples/Sample.Forms/Sample.Forms.sln", settingsIos);
     } else {
+        NuGetRestore("./samples/Sample.Android/Sample.Android.sln");
         MSBuild("./samples/Sample.Android/Sample.Android.sln", settings);
+
+        NuGetRestore("./samples/Sample.iOS/Sample.iOS.sln");
         MSBuild("./samples/Sample.iOS/Sample.iOS.sln", settingsIos);
+
+        NuGetRestore("./samples/Sample.Forms/Sample.Forms.Mac.sln");
         MSBuild("./samples/Sample.Forms/Sample.Forms.Mac.sln", settingsIos);
     }
 
@@ -150,8 +161,5 @@ Task("Default")
     .IsDependentOn("libs")
     .IsDependentOn("nuget")
     .IsDependentOn("samples");
-
-Task("CI")
-    .IsDependentOn("Default");
 
 RunTarget(target);
