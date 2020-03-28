@@ -1,7 +1,8 @@
 # Signature Pad
 
 
-[![Build Status](https://jenkins.mono-project.com/buildStatus/icon?job=Components-SignaturePad-Windows)](https://jenkins.mono-project.com/view/Components/job/Components-SignaturePad-Windows/)  [![Build Status](https://jenkins.mono-project.com/buildStatus/icon?job=Components-SignaturePad)](https://jenkins.mono-project.com/view/Components/job/Components-SignaturePad/)
+[![Build status](https://ci.appveyor.com/api/projects/status/qy7aaendnt5n2g3w?svg=true)](https://ci.appveyor.com/project/VladislavAntonyuk/signaturepad)
+
 
 [![SignaturePad NuGet](https://img.shields.io/nuget/v/Xamarin.Controls.SignaturePad.svg?label=SignaturePad%20NuGet)](https://www.nuget.org/packages/Xamarin.Controls.SignaturePad)  [![SignaturePad Xamairn.Forms NuGet](https://img.shields.io/nuget/v/Xamarin.Controls.SignaturePad.Forms.svg?label=SignaturePad.Forms%20NuGet)](https://www.nuget.org/packages/Xamarin.Controls.SignaturePad.Forms)
 

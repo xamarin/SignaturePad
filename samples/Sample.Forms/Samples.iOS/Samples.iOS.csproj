@@ -68,7 +68,7 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.0.0.169046-pre5" />
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.495" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\SignaturePad.Forms.iOS\SignaturePad.Forms.iOS.csproj">

@@ -38,8 +38,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.0.0.169046-pre5" />
-    <PackageReference Include="Xamarin.Forms.Platform.GTK" Version="4.0.0.169046-pre5" />
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.495" />
+    <PackageReference Include="Xamarin.Forms.Platform.GTK" Version="4.5.0.495" />
     <ProjectReference Include="..\SignaturePad.GTK\SignaturePad.GTK.csproj" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />

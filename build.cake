@@ -76,7 +76,7 @@ Task("libs")
     EnsureDirectoryExists("./output/gtk/");
     EnsureDirectoryExists("./output/mac/");
     EnsureDirectoryExists("./output/ios/");
-        EnsureDirectoryExists("./output/uwp/SignaturePad/Themes");    
+    EnsureDirectoryExists("./output/uwp/SignaturePad/Themes");    
     EnsureDirectoryExists("./output/netstandard/");
 
     CopyFiles($"./src/SignaturePad.Android/bin/{configuration}/SignaturePad.*", "./output/android/");
