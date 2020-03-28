@@ -128,16 +128,20 @@ Task("samples")
     .Does(() =>
 {
     var settings = CreateSettings();
+    var settingsIos = CreateSettings();
+    settingsIos.ArgumentCustomization = args => {
+            return args.Append($"/p:Platform=\"iPhoneSimulator\"");
+            };
 
     if (IsRunningOnWindows()) {
         MSBuild("./samples/Sample.Android/Sample.Android.sln", settings);
-        MSBuild("./samples/Sample.iOS/Sample.iOS.sln", settings);
+        MSBuild("./samples/Sample.iOS/Sample.iOS.sln", settingsIos);
         MSBuild("./samples/Sample.UWP/Sample.UWP.sln", settings);
-        MSBuild("./samples/Sample.Forms/Sample.Forms.sln", settings);
+        MSBuild("./samples/Sample.Forms/Sample.Forms.sln", settingsIos);
     } else {
         MSBuild("./samples/Sample.Android/Sample.Android.sln", settings);
-        MSBuild("./samples/Sample.iOS/Sample.iOS.sln", settings);
-        MSBuild("./samples/Sample.Forms/Sample.Forms.Mac.sln", settings);
+        MSBuild("./samples/Sample.iOS/Sample.iOS.sln", settingsIos);
+        MSBuild("./samples/Sample.Forms/Sample.Forms.Mac.sln", settingsIos);
     }
 
 });
