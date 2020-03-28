@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
+using Bitmap = Android.Graphics.Bitmap;
 
 namespace Xamarin.Controls
 {

@@ -1,3 +1,5 @@
+#tool nuget:?package=vswhere
+
 ///////////////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 ///////////////////////////////////////////////////////////////////////////////
@@ -13,6 +15,52 @@ if (!string.IsNullOrEmpty(buildVersion)) {
     buildVersion = $"-{buildVersion}";
 }
 
+
+MSBuildSettings CreateSettings()
+{
+    var ANDROID_HOME = EnvironmentVariable ("ANDROID_HOME") ?? 
+                        (IsRunningOnWindows () ?
+                                Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) + "/Android/android-sdk/" :
+                                "/usr/local/share/android-sdk");
+
+    Information($"ANDROID_HOME: {ANDROID_HOME}");
+
+    var settings = new MSBuildSettings 
+    {
+        Configuration = configuration,
+        MSBuildPlatform = MSBuildPlatform.x86,
+        Properties = {
+            { "AssemblyVersion", new [] { majorVersion } },
+            { "Version", new [] { packageVersion } },
+        },
+        ArgumentCustomization = args => {
+            return args.Append("/restore")
+                    .Append($"/p:AndroidSdkDirectory=\"{ANDROID_HOME}\"")
+                    .Append($"/p:AndroidNdkDirectory=\"{ANDROID_HOME}\\ndk-bundle\"");
+            }
+    };
+
+    if (IsRunningOnWindows())
+    {
+        DirectoryPath vsLatest = VSWhereLatest(new VSWhereLatestSettings{IncludePrerelease = true});
+        FilePath msBuildPath = vsLatest?.CombineWithFilePath("./MSBuild/Current/Bin/MSBuild.exe");       
+
+        if (!FileExists(msBuildPath))
+        {
+            throw new Exception($"Failed to find MSBuild: {msBuildPath}");
+        }
+
+        Information("Building using MSBuild at " + msBuildPath);
+        settings.ToolPath = msBuildPath;
+    }
+    else
+    {
+        settings.ToolPath = Context.Tools.Resolve("msbuild");
+    }
+
+    return settings;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // TASKS
 ///////////////////////////////////////////////////////////////////////////////
@@ -21,27 +69,14 @@ Task("libs")
     .Does(() =>
 {
     var sln = IsRunningOnWindows() ? "./src/SignaturePad.sln" : "./src/SignaturePad.Mac.sln";
-
-    MSBuild(sln, new MSBuildSettings {
-        Verbosity = Verbosity.Minimal,
-        Configuration = configuration,
-        PlatformTarget = PlatformTarget.MSIL,
-        MSBuildPlatform = MSBuildPlatform.x86,
-        ToolVersion = MSBuildToolVersion.VS2019,
-        ArgumentCustomization = args => args.Append("/restore"),
-        Properties = {
-            { "AssemblyVersion", new [] { majorVersion } },
-            { "Version", new [] { packageVersion } },
-        },
-    });
+    MSBuild(sln, CreateSettings());
 
     EnsureDirectoryExists("./output/android/");
     EnsureDirectoryExists("./output/wpf/");
     EnsureDirectoryExists("./output/gtk/");
     EnsureDirectoryExists("./output/mac/");
     EnsureDirectoryExists("./output/ios/");
-    EnsureDirectoryExists("./output/uwp/");
-    EnsureDirectoryExists("./output/uwp/Themes");
+        EnsureDirectoryExists("./output/uwp/SignaturePad/Themes");    
     EnsureDirectoryExists("./output/netstandard/");
 
     CopyFiles($"./src/SignaturePad.Android/bin/{configuration}/SignaturePad.*", "./output/android/");
@@ -50,7 +85,8 @@ Task("libs")
     CopyFiles($"./src/SignaturePad.WPF/bin/{configuration}/SignaturePad.*", "./output/wpf/");
     CopyFiles($"./src/SignaturePad.GTK/bin/{configuration}/SignaturePad.*", "./output/gtk/");
     CopyFiles($"./src/SignaturePad.UWP/bin/{configuration}/SignaturePad.*", "./output/uwp/");
-    CopyFiles($"./src/SignaturePad.UWP/bin/{configuration}/Themes/*", "./output/uwp/Themes");
+    CopyFiles($"./src/SignaturePad.UWP/bin/{configuration}/SignaturePad/*", "./output/uwp/SignaturePad");
+    CopyFiles($"./src/SignaturePad.UWP/bin/{configuration}/SignaturePad/Themes/*", "./output/uwp/SignaturePad/Themes");
 
     CopyFiles($"./src/SignaturePad.Forms.Droid/bin/{configuration}/SignaturePad.Forms.*", "./output/android/");
     CopyFiles($"./src/SignaturePad.Forms.iOS/bin/{configuration}/SignaturePad.Forms.*", "./output/ios/");
@@ -58,7 +94,8 @@ Task("libs")
     CopyFiles($"./src/SignaturePad.Forms.WPF/bin/{configuration}/SignaturePad.Forms.*", "./output/wpf/");
     CopyFiles($"./src/SignaturePad.Forms.GTK/bin/{configuration}/SignaturePad.Forms.*", "./output/gtk/");
     CopyFiles($"./src/SignaturePad.Forms.UWP/bin/{configuration}/SignaturePad.Forms.*", "./output/uwp/");
-    CopyFiles($"./src/SignaturePad.Forms.UWP/bin/{configuration}/Themes/*", "./output/uwp/Themes");
+    CopyFiles($"./src/SignaturePad.Forms.UWP/bin/{configuration}/SignaturePad/*", "./output/uwp/SignaturePad/");
+    CopyFiles($"./src/SignaturePad.Forms.UWP/bin/{configuration}/SignaturePad/Themes/*", "./output/uwp/SignaturePad/Themes");
     CopyFiles($"./src/SignaturePad.Forms/bin/{configuration}/SignaturePad.Forms.*", "./output/netstandard/");
 });
 
@@ -90,13 +127,7 @@ Task("samples")
     .IsDependentOn("libs")
     .Does(() =>
 {
-    var settings = new MSBuildSettings {
-        Verbosity = Verbosity.Minimal,
-        Configuration = configuration,
-        PlatformTarget = PlatformTarget.MSIL,
-        MSBuildPlatform = MSBuildPlatform.x86,
-        ArgumentCustomization = args => args.Append("/restore"),
-    };
+    var settings = CreateSettings();
 
     if (IsRunningOnWindows()) {
         MSBuild("./samples/Sample.Android/Sample.Android.sln", settings);
