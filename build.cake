@@ -1,4 +1,5 @@
 #tool nuget:?package=vswhere
+#addin nuget:?package=Cake.Boots
 
 ///////////////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -64,6 +65,16 @@ MSBuildSettings CreateSettings()
 ///////////////////////////////////////////////////////////////////////////////
 // TASKS
 ///////////////////////////////////////////////////////////////////////////////
+
+Task("InstallSoftware")
+    .WithCriteria(Argument("InstallSoftware", false) == true)
+    .Does(async () =>
+    {
+        await Boots (Product.Mono, ReleaseChannel.Preview);
+        await Boots (Product.XamariniOS, ReleaseChannel.Preview);            
+        await Boots (Product.XamarinMac, ReleaseChannel.Preview);
+        await Boots (Product.XamarinAndroid, ReleaseChannel.Preview);
+    });
 
 Task("libs")
     .Does(() =>
@@ -158,6 +169,7 @@ Task("samples")
 });
 
 Task("Default")
+    .IsDependentOn("InstallSoftware")
     .IsDependentOn("libs")
     .IsDependentOn("nuget")
     .IsDependentOn("samples");

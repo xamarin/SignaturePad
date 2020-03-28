@@ -22,6 +22,11 @@ for:
       only:
         - buildName: Windows
 
+    install:
+      - ps: >-
+          echo "Install software";
+          choco install mono -x86;
+
     build_script:
       - pwsh: >-
           echo "Run build";
@@ -57,7 +62,7 @@ for:
     build_script:
       - sh: >-
           echo "Run build";
-          ./build.sh
+          ./build.sh -InstallSoftware="true"
 
 artifacts:
   - path: output
