@@ -19,7 +19,12 @@ using NativeColor = AppKit.NSColor;
 using Android.Widget;
 using Xamarin.Forms.Platform.Android;
 using NativeColor = Android.Graphics.Color;
-#elif NETFRAMEWORK
+#elif GTK
+using NativeColor = Gdk.Color;
+using TextBlock = Gtk.TextView;
+using SolidColorBrush = System.Windows.Media.SolidColorBrush;
+using Xamarin.Forms.Platform.GTK.Extensions;
+#elif WPF
 using NativeColor = System.Windows.Media.Color;
 using TextBlock = System.Windows.Controls.TextBlock;
 using SolidColorBrush = System.Windows.Media.SolidColorBrush;
@@ -29,7 +34,7 @@ namespace SignaturePad.Forms
 {
 	public static class ColorExtensions
 	{
-#if WINDOWS_PHONE || WINDOWS_UWP || WINDOWS_PHONE_APP || WINDOWS_APP || NETFRAMEWORK
+#if WINDOWS_PHONE || WINDOWS_UWP || WINDOWS_PHONE_APP || WINDOWS_APP || WPF
 		public static NativeColor ToWindows (this Color color)
 		{
 			return NativeColor.FromArgb (
@@ -42,7 +47,7 @@ namespace SignaturePad.Forms
 
 		public static NativeColor ToNative (this Color color)
 		{
-#if WINDOWS_PHONE || WINDOWS_UWP || WINDOWS_PHONE_APP || WINDOWS_APP || NETFRAMEWORK
+#if WINDOWS_PHONE || WINDOWS_UWP || WINDOWS_PHONE_APP || WINDOWS_APP || WPF
 			return color.ToWindows ();
 #elif __IOS__
 			return color.ToUIColor ();
@@ -50,10 +55,12 @@ namespace SignaturePad.Forms
 			return color.ToNSColor ();
 #elif __ANDROID__
 			return color.ToAndroid ();
+#elif GTK
+			return color.ToGtkColor();
 #endif
 		}
 
-#if WINDOWS_PHONE || WINDOWS_UWP || WINDOWS_PHONE_APP || WINDOWS_APP || NETFRAMEWORK
+#if WINDOWS_PHONE || WINDOWS_UWP || WINDOWS_PHONE_APP || WINDOWS_APP || WPF
 		public static void SetTextColor (this TextBlock textBlock, Color color)
 		{
 			textBlock.Foreground = new SolidColorBrush (color.ToNative ());
@@ -80,6 +87,11 @@ namespace SignaturePad.Forms
 		public static void SetTextColor (this TextView label, Color color)
 		{
 			label.SetTextColor (color.ToNative ());
+		}
+#elif GTK
+		public static void SetTextColor (this TextBlock label, Color color)
+		{
+			// todo implement
 		}
 #endif
 	}

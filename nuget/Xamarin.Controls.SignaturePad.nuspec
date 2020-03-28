@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
 
   <metadata>
@@ -19,7 +19,8 @@
 
     <dependencies>
       <group targetFramework="MonoAndroid" />
-      <group targetFramework="net" />
+      <group targetFramework="net472" />
+      <group targetFramework="net471" />
       <group targetFramework="Xamarin.iOS" />
       <group targetFramework="Xamarin.Mac" />
       <group targetFramework="uap10.0">
@@ -33,13 +34,16 @@
     <file src="output/android/SignaturePad.dll" target="lib/MonoAndroid/SignaturePad.dll" />
     <file src="output/android/SignaturePad.xml" target="lib/MonoAndroid/SignaturePad.xml" />
 
-    <file src="output/net/SignaturePad.dll" target="lib/net/SignaturePad.dll" />
-    <file src="output/net/SignaturePad.xml" target="lib/net/SignaturePad.xml" />
+    <file src="output/wpf/SignaturePad.dll" target="lib/net472/SignaturePad.dll" />
+    <file src="output/wpf/SignaturePad.xml" target="lib/net472/SignaturePad.xml" />
+
+    <file src="output/gtk/SignaturePad.dll" target="lib/net471/SignaturePad.dll" />
+    <file src="output/gtk/SignaturePad.xml" target="lib/net471/SignaturePad.xml" />
 
     <file src="output/ios/SignaturePad.dll" target="lib/Xamarin.iOS/SignaturePad.dll" />
     <file src="output/ios/SignaturePad.xml" target="lib/Xamarin.iOS/SignaturePad.xml" />
 	
-	  <file src="output/mac/SignaturePad.dll" target="lib/Xamarin.Mac/SignaturePad.dll" />
+    <file src="output/mac/SignaturePad.dll" target="lib/Xamarin.Mac/SignaturePad.dll" />
     <file src="output/mac/SignaturePad.xml" target="lib/Xamarin.Mac/SignaturePad.xml" />
 
     <file src="output/uwp/SignaturePad.dll" target="lib/uap10.0/SignaturePad.dll" />

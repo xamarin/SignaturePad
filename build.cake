@@ -2,7 +2,7 @@
 // ARGUMENTS
 ///////////////////////////////////////////////////////////////////////////////
 
-var CURRENT_PACKAGE_VERSION = "3.1.0";
+var CURRENT_PACKAGE_VERSION = "3.2.0";
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
@@ -27,6 +27,7 @@ Task("libs")
         Configuration = configuration,
         PlatformTarget = PlatformTarget.MSIL,
         MSBuildPlatform = MSBuildPlatform.x86,
+        ToolVersion = MSBuildToolVersion.VS2019,
         ArgumentCustomization = args => args.Append("/restore"),
         Properties = {
             { "AssemblyVersion", new [] { majorVersion } },
@@ -35,7 +36,8 @@ Task("libs")
     });
 
     EnsureDirectoryExists("./output/android/");
-    EnsureDirectoryExists("./output/net/");
+    EnsureDirectoryExists("./output/wpf/");
+    EnsureDirectoryExists("./output/gtk/");
     EnsureDirectoryExists("./output/mac/");
     EnsureDirectoryExists("./output/ios/");
     EnsureDirectoryExists("./output/uwp/");
@@ -45,14 +47,16 @@ Task("libs")
     CopyFiles($"./src/SignaturePad.Android/bin/{configuration}/SignaturePad.*", "./output/android/");
     CopyFiles($"./src/SignaturePad.iOS/bin/{configuration}/SignaturePad.*", "./output/ios/");
     CopyFiles($"./src/SignaturePad.MacOS/bin/{configuration}/SignaturePad.*", "./output/mac/");
-    CopyFiles($"./src/SignaturePad.WPF/bin/{configuration}/SignaturePad.*", "./output/net/");
+    CopyFiles($"./src/SignaturePad.WPF/bin/{configuration}/SignaturePad.*", "./output/wpf/");
+    CopyFiles($"./src/SignaturePad.GTK/bin/{configuration}/SignaturePad.*", "./output/gtk/");
     CopyFiles($"./src/SignaturePad.UWP/bin/{configuration}/SignaturePad.*", "./output/uwp/");
     CopyFiles($"./src/SignaturePad.UWP/bin/{configuration}/Themes/*", "./output/uwp/Themes");
 
     CopyFiles($"./src/SignaturePad.Forms.Droid/bin/{configuration}/SignaturePad.Forms.*", "./output/android/");
     CopyFiles($"./src/SignaturePad.Forms.iOS/bin/{configuration}/SignaturePad.Forms.*", "./output/ios/");
     CopyFiles($"./src/SignaturePad.Forms.MacOS/bin/{configuration}/SignaturePad.Forms.*", "./output/mac/");
-    CopyFiles($"./src/SignaturePad.Forms.WPF/bin/{configuration}/SignaturePad.Forms.*", "./output/net/");
+    CopyFiles($"./src/SignaturePad.Forms.WPF/bin/{configuration}/SignaturePad.Forms.*", "./output/wpf/");
+    CopyFiles($"./src/SignaturePad.Forms.GTK/bin/{configuration}/SignaturePad.Forms.*", "./output/gtk/");
     CopyFiles($"./src/SignaturePad.Forms.UWP/bin/{configuration}/SignaturePad.Forms.*", "./output/uwp/");
     CopyFiles($"./src/SignaturePad.Forms.UWP/bin/{configuration}/Themes/*", "./output/uwp/Themes");
     CopyFiles($"./src/SignaturePad.Forms/bin/{configuration}/SignaturePad.Forms.*", "./output/netstandard/");

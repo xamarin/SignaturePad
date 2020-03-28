@@ -40,7 +40,15 @@ using NativeSize = Windows.Foundation.Size;
 using NativePoint = Windows.Foundation.Point;
 using NativeColor = Windows.UI.Color;
 using NativeImage = Windows.UI.Xaml.Media.Imaging.WriteableBitmap;
-#elif NETFRAMEWORK
+#elif GTK
+using NativeRect = System.Drawing.RectangleF;
+using NativePoint = Gdk.Point;
+using NativeSize = System.Drawing.SizeF;
+using NativeColor = Gdk.Color;
+using NativeImage = System.Drawing.Bitmap;
+using System.Windows.Ink;
+using System.Windows.Input;
+#elif WPF
 using NativeRect = System.Drawing.RectangleF;
 using NativePoint = System.Windows.Input.StylusPoint;
 using NativeSize = System.Drawing.SizeF;
@@ -60,7 +68,7 @@ namespace Xamarin.Controls
 
 		public bool IsBlank => inkPresenter == null || inkPresenter.GetStrokes ().Count == 0;
 
-#if NETFRAMEWORK
+#if WPF
 		private bool isSingleLine;
 
 		public bool IsSingleLine
@@ -85,7 +93,7 @@ namespace Xamarin.Controls
 		{
 			Clear();
 		}
-#elif WINDOWS_UWP
+#elif WINDOWS_UWP || GTK
 		public bool IsSingleLine { get; set; }
 #else
 		public bool IsSingleLine
@@ -113,7 +121,7 @@ namespace Xamarin.Controls
 			}
 		}
 
-#if NETFRAMEWORK
+#if WPF
 		public new StrokeCollection Strokes
 		{
 			get
@@ -487,7 +495,7 @@ namespace Xamarin.Controls
 					{
 						scaleX = scaleY = Math.Min ((float)scaleX, (float)scaleY);
 					}
-#if NETFRAMEWORK
+#if WPF || GTK
 					scale = new NativeSize ((int)scaleX, (int)scaleY);
 				}
 				else if (sizeOrScale.Type == SizeOrScaleType.Scale)
