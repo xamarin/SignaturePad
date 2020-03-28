@@ -1,8 +1,13 @@
+
+# Important
+
+The packages which are published in nuget support Android, iOS and UWP. If you develop for another platforms (macOS, WPF, GTK), follow the [link](https://ci.appveyor.com/project/VladislavAntonyuk/signaturepad/build/artifacts) and download artifacts.
+
+## If you find any defects, feel free to create a pull request.
+
 # Signature Pad
 
-
-[![Build status](https://ci.appveyor.com/api/projects/status/qy7aaendnt5n2g3w?svg=true)](https://ci.appveyor.com/project/VladislavAntonyuk/signaturepad)
-
+[![Build status](https://ci.appveyor.com/api/projects/status/qy7aaendnt5n2g3w?svg=true)](https://ci.appveyor.com/project/VladislavAntonyuk/signaturepad) ![XamarinSignaturePad](https://github.com/VladislavAntonyuk/SignaturePad/workflows/XamarinSignaturePad/badge.svg)
 
 [![SignaturePad NuGet](https://img.shields.io/nuget/v/Xamarin.Controls.SignaturePad.svg?label=SignaturePad%20NuGet)](https://www.nuget.org/packages/Xamarin.Controls.SignaturePad)  [![SignaturePad Xamairn.Forms NuGet](https://img.shields.io/nuget/v/Xamarin.Controls.SignaturePad.Forms.svg?label=SignaturePad.Forms%20NuGet)](https://www.nuget.org/packages/Xamarin.Controls.SignaturePad.Forms)
 
