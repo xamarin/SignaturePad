@@ -5,8 +5,7 @@ pull_requests:
 
 environment:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
-  DOTNET_CLI_TELEMETRY_OPTOUT: 1 
-  BUILD_NUMBER: $APPVEYOR_BUILD_NUMBER
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
   matrix:
     - buildName: Windows
       appveyor_build_worker_image: Visual Studio 2019 Preview

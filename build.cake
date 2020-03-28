@@ -11,7 +11,7 @@ var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 var packageVersion = Argument("packageVersion", CURRENT_PACKAGE_VERSION);
 var majorVersion = $"{packageVersion.Substring(0, packageVersion.IndexOf("."))}.0.0.0";
-var buildVersion = Argument("buildVersion", EnvironmentVariable("BUILD_NUMBER") ?? "");
+var buildVersion = Argument("buildVersion", EnvironmentVariable("APPVEYOR_BUILD_NUMBER") ?? "");
 if (!string.IsNullOrEmpty(buildVersion)) {
     buildVersion = $"-{buildVersion}";
 }
