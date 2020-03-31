@@ -69,6 +69,8 @@
     <file src="output/uwp/SignaturePad.Forms.dll" target="lib/uap10.0/SignaturePad.Forms.dll" />
     <file src="output/uwp/SignaturePad.Forms.xml" target="lib/uap10.0/SignaturePad.Forms.xml" />
     <file src="output/uwp/SignaturePad.Forms.pri" target="lib/uap10.0/SignaturePad.Forms.pri" />
+    <file src="output/uwp/SignaturePad/Themes/Generic.xaml" target="lib/uap10.0/SignaturePad/Themes/Generic.xaml" />
+    <file src="output/uwp/SignaturePad/SignaturePad.xr.xml" target="lib/uap10.0/SignaturePad/SignaturePad.xr.xml" />
     
     <file src="output/netstandard/SignaturePad.Forms.dll" target="lib/netstandard2.0/SignaturePad.Forms.dll" />
     <file src="output/netstandard/SignaturePad.Forms.xml" target="lib/netstandard2.0/SignaturePad.Forms.xml" />
