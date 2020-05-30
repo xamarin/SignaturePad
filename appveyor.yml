@@ -57,6 +57,12 @@ for:
           dotnet tool run android --home="$ANDROID_HOME" sdk --install="platform-tools";
           dotnet tool run android --home="$ANDROID_HOME" sdk --install="tools";
           dotnet tool run android --home="$ANDROID_HOME" sdk --install="ndk-bundle";
+          echo "install boots";
+          dotnet tool install --global boots;
+          boots --preview Mono;
+          boots --preview XamarinAndroid;
+          boots --preview XamariniOS;
+          boots --preview XamarinMac;
 
     build_script:
       - sh: >-

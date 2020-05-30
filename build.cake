@@ -1,5 +1,4 @@
 #tool nuget:?package=vswhere
-#addin nuget:?package=Cake.Boots
 
 ///////////////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -16,16 +15,17 @@ if (!string.IsNullOrEmpty(buildVersion)) {
     buildVersion = $"-{buildVersion}";
 }
 
-
-MSBuildSettings CreateSettings()
-{
-    var ANDROID_HOME = EnvironmentVariable ("ANDROID_HOME") ?? 
+var ANDROID_HOME = EnvironmentVariable ("ANDROID_HOME") ?? 
                         (IsRunningOnWindows () ?
                                 Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) + "/Android/android-sdk/" :
                                 "/usr/local/share/android-sdk");
 
-    Information($"ANDROID_HOME: {ANDROID_HOME}");
+var NDK_DIR = DirectoryExists($"{ANDROID_HOME}\\ndk-bundle") ? $"{ANDROID_HOME}\\ndk-bundle" : "C:/Microsoft/AndroidNDK64/android-ndk-r16b";
 
+MSBuildSettings CreateSettings()
+{
+    Information($"ANDROID_HOME: {ANDROID_HOME}");
+    Information($"NDK_DIR: {NDK_DIR}");
     var settings = new MSBuildSettings 
     {
         Configuration = configuration,
@@ -36,8 +36,8 @@ MSBuildSettings CreateSettings()
         },
         ArgumentCustomization = args => {
             return args.Append("/restore")
-                    .Append($"/p:AndroidSdkDirectory=\"{ANDROID_HOME}\"")
-                    .Append($"/p:AndroidNdkDirectory=\"{ANDROID_HOME}\\ndk-bundle\"");
+		    		   .Append($"/p:AndroidSdkDirectory=\"{ANDROID_HOME}\"")
+                       .Append($"/p:AndroidNdkDirectory=\"{NDK_DIR}\"");
             }
     };
 
@@ -65,16 +65,6 @@ MSBuildSettings CreateSettings()
 ///////////////////////////////////////////////////////////////////////////////
 // TASKS
 ///////////////////////////////////////////////////////////////////////////////
-
-Task("InstallSoftware")
-    .WithCriteria(Argument("InstallSoftware", false) == true)
-    .Does(async () =>
-    {
-        await Boots (Product.Mono, ReleaseChannel.Preview);
-        await Boots (Product.XamariniOS, ReleaseChannel.Preview);            
-        await Boots (Product.XamarinMac, ReleaseChannel.Preview);
-        await Boots (Product.XamarinAndroid, ReleaseChannel.Preview);
-    });
 
 Task("libs")
     .Does(() =>
@@ -140,7 +130,10 @@ Task("samples")
     var settings = CreateSettings();
     var settingsIos = CreateSettings();
     settingsIos.ArgumentCustomization = args => {
-            return args.Append($"/p:Platform=\"iPhoneSimulator\"");
+            return args.Append($"/p:Platform=\"iPhoneSimulator\"")
+				       .Append("/restore")
+				       .Append($"/p:AndroidSdkDirectory=\"{ANDROID_HOME}\"")
+                       .Append($"/p:AndroidNdkDirectory=\"{NDK_DIR}\"");
             };
 
     if (IsRunningOnWindows()) {
@@ -169,7 +162,6 @@ Task("samples")
 });
 
 Task("Default")
-    .IsDependentOn("InstallSoftware")
     .IsDependentOn("libs")
     .IsDependentOn("nuget")
     .IsDependentOn("samples");
