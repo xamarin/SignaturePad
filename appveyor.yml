@@ -3,71 +3,26 @@ version: 1.0.{build}
 pull_requests:
   do_not_increment_build_number: true
 
+image:
+  - Visual Studio 2019 Preview
+
 environment:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
-  matrix:
-    - buildName: Windows
-      appveyor_build_worker_image: Visual Studio 2019 Preview
-    - buildName: macos
-      appveyor_build_worker_image: macos
 
 nuget:
   disable_publish_on_pr: true
 
-for:
-  -
-    matrix:
-      only:
-        - buildName: Windows
+install:
+  - ps: >-
+      echo "Install software";
+      choco install mono -x86;
 
-    install:
-      - ps: >-
-          echo "Install software";
-          choco install mono -x86;
-
-    build_script:
-      - pwsh: >-
-          echo "Run build";
-          ./build.ps1;
-          $host.SetShouldExit($LastExitCode);
-
-  -
-    matrix:
-      only:
-        - buildName: macos
-
-    install:
-      - sh: >-
-          echo "Install software";
-          brew install create-dmg;
-          brew install wget;
-          echo "Install Android SDK";
-          export JAVA_HOME=`/usr/libexec/java_home -v 1.8`;
-          brew cask install android-sdk;
-          export ANDROID_HOME="/usr/local/share/android-sdk";
-          export ANDROID_SDK_ROOT="/usr/local/share/android-sdk";
-          dotnet new tool-manifest;
-          dotnet tool install --add-source https://www.myget.org/F/xam-dotnet-tools/api/v3/index.json AndroidSdk.Tool;
-          export PATH="$PATH:/Users/appveyor/.dotnet/tools";
-          export DOTNET_ROOT="/Users/appveyor/.dotnet";
-          dotnet tool run android --home="$ANDROID_HOME" sdk download;
-          dotnet tool run android --home="$ANDROID_HOME" sdk --install="platforms;android-29";
-          dotnet tool run android --home="$ANDROID_HOME" sdk --install="build-tools;29.0.2";
-          dotnet tool run android --home="$ANDROID_HOME" sdk --install="platform-tools";
-          dotnet tool run android --home="$ANDROID_HOME" sdk --install="tools";
-          dotnet tool run android --home="$ANDROID_HOME" sdk --install="ndk-bundle";
-          echo "install boots";
-          dotnet tool install --global boots;
-          boots --preview Mono;
-          boots --preview XamarinAndroid;
-          boots --preview XamariniOS;
-          boots --preview XamarinMac;
-
-    build_script:
-      - sh: >-
-          echo "Run build";
-          ./build.sh -InstallSoftware="true"
+build_script:
+  - pwsh: >-
+      echo "Run build";
+      ./build.ps1;
+      $host.SetShouldExit($LastExitCode);
 
 artifacts:
   - path: output

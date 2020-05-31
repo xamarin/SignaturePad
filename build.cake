@@ -15,17 +15,8 @@ if (!string.IsNullOrEmpty(buildVersion)) {
     buildVersion = $"-{buildVersion}";
 }
 
-var ANDROID_HOME = EnvironmentVariable ("ANDROID_HOME") ?? 
-                        (IsRunningOnWindows () ?
-                                Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) + "/Android/android-sdk/" :
-                                "/usr/local/share/android-sdk");
-
-var NDK_DIR = DirectoryExists($"{ANDROID_HOME}\\ndk-bundle") ? $"{ANDROID_HOME}\\ndk-bundle" : "C:/Microsoft/AndroidNDK64/android-ndk-r16b";
-
 MSBuildSettings CreateSettings()
 {
-    Information($"ANDROID_HOME: {ANDROID_HOME}");
-    Information($"NDK_DIR: {NDK_DIR}");
     var settings = new MSBuildSettings 
     {
         Configuration = configuration,
@@ -35,10 +26,8 @@ MSBuildSettings CreateSettings()
             { "Version", new [] { packageVersion } },
         },
         ArgumentCustomization = args => {
-            return args.Append("/restore")
-		    		   .Append($"/p:AndroidSdkDirectory=\"{ANDROID_HOME}\"")
-                       .Append($"/p:AndroidNdkDirectory=\"{NDK_DIR}\"");
-            }
+            return args.Append("/restore");
+        }
     };
 
     if (IsRunningOnWindows())
@@ -130,11 +119,8 @@ Task("samples")
     var settings = CreateSettings();
     var settingsIos = CreateSettings();
     settingsIos.ArgumentCustomization = args => {
-            return args.Append($"/p:Platform=\"iPhoneSimulator\"")
-				       .Append("/restore")
-				       .Append($"/p:AndroidSdkDirectory=\"{ANDROID_HOME}\"")
-                       .Append($"/p:AndroidNdkDirectory=\"{NDK_DIR}\"");
-            };
+            return args.Append($"/p:Platform=\"iPhoneSimulator\"");
+    };
 
     if (IsRunningOnWindows()) {
         NuGetRestore("./samples/Sample.Android/Sample.Android.sln");
