@@ -30,7 +30,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.10" />
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.11" />
     <PackageReference Include="Xamarin.Forms" Version="4.5.0.495" />
     <ProjectReference Include="..\SignaturePad.UWP\SignaturePad.UWP.csproj" />
   </ItemGroup>
