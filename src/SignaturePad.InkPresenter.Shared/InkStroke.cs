@@ -4,10 +4,22 @@
 using NativePoint = System.Drawing.PointF;
 using NativeColor = Android.Graphics.Color;
 using NativePath = Android.Graphics.Path;
+#elif GTK
+using NativePoint = Gdk.Point;
+using NativeColor = Gdk.Color;
+using NativePath = Cairo.Path;
+#elif WPF
+using NativePoint = System.Windows.Input.StylusPoint;
+using NativeColor = System.Windows.Media.Color;
+using NativePath = System.Windows.Ink.Stroke;
 #elif __IOS__
 using NativePoint = CoreGraphics.CGPoint;
 using NativeColor = UIKit.UIColor;
 using NativePath = UIKit.UIBezierPath;
+#elif __MACOS__
+using NativePoint = CoreGraphics.CGPoint;
+using NativeColor = AppKit.NSColor;
+using NativePath = CoreGraphics.CGPath;
 #elif WINDOWS_PHONE_APP
 using NativePoint = Windows.Foundation.Point;
 using NativeColor = Windows.UI.Color;

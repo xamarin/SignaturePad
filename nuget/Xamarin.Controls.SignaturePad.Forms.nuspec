@@ -20,18 +20,32 @@
     <dependencies>
       <group targetFramework="MonoAndroid">
         <dependency id="Xamarin.Controls.SignaturePad" version="$version$" exclude="Build,Analyzers" />
-        <dependency id="Xamarin.Forms" version="2.5.0.280555" exclude="Build,Analyzers" />
+        <dependency id="Xamarin.Forms" version="4.0.0.169046-pre5" exclude="Build,Analyzers" />
       </group>
       <group targetFramework="Xamarin.iOS">
         <dependency id="Xamarin.Controls.SignaturePad" version="$version$" exclude="Build,Analyzers" />
-        <dependency id="Xamarin.Forms" version="2.5.0.280555" exclude="Build,Analyzers" />
+        <dependency id="Xamarin.Forms" version="4.0.0.169046-pre5" exclude="Build,Analyzers" />
+      </group>
+	    <group targetFramework="Xamarin.Mac">
+        <dependency id="Xamarin.Controls.SignaturePad" version="$version$" exclude="Build,Analyzers" />
+        <dependency id="Xamarin.Forms" version="4.0.0.169046-pre5" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net472">
+        <dependency id="Xamarin.Controls.SignaturePad" version="$version$" exclude="Build,Analyzers" />
+        <dependency id="Xamarin.Forms" version="4.0.0.169046-pre5" exclude="Build,Analyzers" />
+        <dependency id="Xamarin.Forms.Platform.WPF" version="4.0.0.169046-pre5" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net471">
+        <dependency id="Xamarin.Controls.SignaturePad" version="$version$" exclude="Build,Analyzers" />
+        <dependency id="Xamarin.Forms" version="4.0.0.169046-pre5" exclude="Build,Analyzers" />
+        <dependency id="Xamarin.Forms.Platform.GTK" version="4.0.0.169046-pre5" exclude="Build,Analyzers" />
       </group>
       <group targetFramework="uap10.0">
         <dependency id="Xamarin.Controls.SignaturePad" version="$version$" exclude="Build,Analyzers" />
-        <dependency id="Xamarin.Forms" version="2.5.0.280555" exclude="Build,Analyzers" />
+        <dependency id="Xamarin.Forms" version="4.0.0.169046-pre5" exclude="Build,Analyzers" />
       </group>
-      <group targetFramework="netstandard1.0">
-        <dependency id="Xamarin.Forms" version="2.5.0.280555" exclude="Build,Analyzers" />
+      <group targetFramework="netstandard2.0">
+        <dependency id="Xamarin.Forms" version="4.0.0.169046-pre5" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>
@@ -39,6 +53,15 @@
   <files>
     <file src="output/android/SignaturePad.Forms.dll" target="lib/MonoAndroid/SignaturePad.Forms.dll" />
     <file src="output/android/SignaturePad.Forms.xml" target="lib/MonoAndroid/SignaturePad.Forms.xml" />
+    
+    <file src="output/gtk/SignaturePad.Forms.dll" target="lib/net471/SignaturePad.Forms.dll" />
+    <file src="output/gtk/SignaturePad.Forms.xml" target="lib/net471/SignaturePad.Forms.xml" />
+        
+    <file src="output/wpf/SignaturePad.Forms.dll" target="lib/net472/SignaturePad.Forms.dll" />
+    <file src="output/wpf/SignaturePad.Forms.xml" target="lib/net472/SignaturePad.Forms.xml" />
+	
+	  <file src="output/mac/SignaturePad.Forms.dll" target="lib/Xamarin.Mac/SignaturePad.Forms.dll" />
+    <file src="output/mac/SignaturePad.Forms.xml" target="lib/Xamarin.Mac/SignaturePad.Forms.xml" />
 
     <file src="output/ios/SignaturePad.Forms.dll" target="lib/Xamarin.iOS/SignaturePad.Forms.dll" />
     <file src="output/ios/SignaturePad.Forms.xml" target="lib/Xamarin.iOS/SignaturePad.Forms.xml" />
@@ -46,9 +69,11 @@
     <file src="output/uwp/SignaturePad.Forms.dll" target="lib/uap10.0/SignaturePad.Forms.dll" />
     <file src="output/uwp/SignaturePad.Forms.xml" target="lib/uap10.0/SignaturePad.Forms.xml" />
     <file src="output/uwp/SignaturePad.Forms.pri" target="lib/uap10.0/SignaturePad.Forms.pri" />
-
-    <file src="output/netstandard/SignaturePad.Forms.dll" target="lib/netstandard1.0/SignaturePad.Forms.dll" />
-    <file src="output/netstandard/SignaturePad.Forms.xml" target="lib/netstandard1.0/SignaturePad.Forms.xml" />
+    <file src="output/uwp/SignaturePad/Themes/Generic.xaml" target="lib/uap10.0/SignaturePad/Themes/Generic.xaml" />
+    <file src="output/uwp/SignaturePad/SignaturePad.xr.xml" target="lib/uap10.0/SignaturePad/SignaturePad.xr.xml" />
+    
+    <file src="output/netstandard/SignaturePad.Forms.dll" target="lib/netstandard2.0/SignaturePad.Forms.dll" />
+    <file src="output/netstandard/SignaturePad.Forms.xml" target="lib/netstandard2.0/SignaturePad.Forms.xml" />
   </files>
 
 </package>

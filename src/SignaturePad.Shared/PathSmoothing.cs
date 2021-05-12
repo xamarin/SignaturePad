@@ -7,6 +7,9 @@ using NativePath = Android.Graphics.Path;
 #elif __IOS__
 using NativePoint = CoreGraphics.CGPoint;
 using NativePath = UIKit.UIBezierPath;
+#elif __MACOS__
+using NativePoint = CoreGraphics.CGPoint;
+using NativePath = CoreGraphics.CGPath;
 #elif WINDOWS_PHONE
 using System.Windows.Ink;
 using NativePoint = System.Windows.Point;
@@ -17,6 +20,18 @@ using Windows.UI.Input.Inking;
 using NativePoint = Windows.Foundation.Point;
 using NativePath = System.Collections.Generic.List<Windows.Foundation.Point>;
 using InkStroke = Windows.UI.Input.Inking.InkStroke;
+#elif GTK
+using NativePath = Cairo.Path;
+using NativePoint = Gdk.Point;
+using NativeSize = System.Drawing.Size;
+using NativeColor = Gdk.Color;
+using NativeImage = System.Drawing.Bitmap;
+#elif WPF
+using NativePath= System.Windows.Ink.Stroke;
+using NativePoint = System.Windows.Input.StylusPoint;
+using NativeSize = System.Drawing.Size;
+using NativeColor = System.Drawing.Color;
+using NativeImage = System.Drawing.Bitmap;
 #elif WINDOWS_PHONE_APP
 using NativePoint = Windows.Foundation.Point;
 using NativePath = Windows.UI.Xaml.Media.PathGeometry;
@@ -24,6 +39,9 @@ using NativePath = Windows.UI.Xaml.Media.PathGeometry;
 
 namespace Xamarin.Controls
 {
+	using System;
+	using System.Windows.Input;
+
 	internal static class PathSmoothing
 	{
 		/// <summary>
@@ -47,7 +65,7 @@ namespace Xamarin.Controls
 			}
 
 			// create the new path with the old attributes
-#if __ANDROID__ || __IOS__ || WINDOWS_PHONE_APP
+#if __ANDROID__ || __IOS__ || WINDOWS_PHONE_APP || WPF || __MACOS__ || GTK
 			return new InkStroke (smoothedPath, smoothedPoints.ToList (), currentPath.Color, currentPath.Width);
 #elif WINDOWS_PHONE
 			var da = currentPath.DrawingAttributes;
@@ -82,8 +100,16 @@ namespace Xamarin.Controls
 			}
 
 			// create a new bezier path to hold the smoothed path.
-			smoothedPath = new NativePath ();
 			smoothedPoints = new List<NativePoint> ();
+#if WPF
+			smoothedPath = new NativePath (new StylusPointCollection(smoothedPoints));
+#elif GTK
+			smoothedPath = null;
+			smoothedPoints = null;
+			return;
+#else
+			smoothedPath = new NativePath ();
+#endif
 
 			// duplicate the first and last points as control points.
 			currentPoints.Insert (0, currentPoints[0]);
@@ -108,6 +134,18 @@ namespace Xamarin.Controls
 					var ttt = tt * t;
 
 					// intermediate point
+#if GTK
+					var mid = new NativePoint
+					{
+						X = Convert.ToInt32(0.5f * (2f * p1.X + (p2.X - p0.X) * t +
+							(2f * p0.X - 5f * p1.X + 4f * p2.X - p3.X) * tt +
+							(3f * p1.X - p0.X - 3f * p2.X + p3.X) * ttt)),
+
+						Y = Convert.ToInt32(0.5f * (2 * p1.Y + (p2.Y - p0.Y) * t +
+							(2 * p0.Y - 5 * p1.Y + 4 * p2.Y - p3.Y) * tt +
+							(3 * p1.Y - p0.Y - 3 * p2.Y + p3.Y) * ttt))
+					};
+#else
 					var mid = new NativePoint
 					{
 						X = 0.5f * (2f * p1.X + (p2.X - p0.X) * t +
@@ -118,6 +156,8 @@ namespace Xamarin.Controls
 							(2 * p0.Y - 5 * p1.Y + 4 * p2.Y - p3.Y) * tt +
 							(3 * p1.Y - p0.Y - 3 * p2.Y + p3.Y) * ttt)
 					};
+#endif
+
 					smoothedPath.LineTo (mid.X, mid.Y);
 					smoothedPoints.Add (mid);
 				}

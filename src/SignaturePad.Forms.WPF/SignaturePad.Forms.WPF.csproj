@@ -1,0 +1,54 @@
+﻿<Project Sdk="MSBuild.Sdk.Extras">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <RootNamespace>SignaturePad.Forms</RootNamespace>
+    <AssemblyName>SignaturePad.Forms</AssemblyName>
+    <AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
+    <DocumentationFile Condition=" '$(Configuration)' == 'Release' ">bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Version>1.0.0</Version>
+    <PackageId>Xamarin.Controls.SignaturePad.Forms</PackageId>
+    <Title>SignaturePad for Xamarin.Forms</Title>
+    <Product>$(AssemblyName) ($(TargetFramework))</Product>
+    <Authors>Microsoft</Authors>
+    <Owners>Microsoft</Owners>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Summary>Makes capturing, saving, and displaying signatures extremely simple.</Summary>
+    <Description>Makes capturing, saving, and displaying signatures extremely simple.</Description>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageIconUrl>https://go.microsoft.com/fwlink/?linkid=874510</PackageIconUrl>
+    <RepositoryUrl>https://go.microsoft.com/fwlink/?linkid=874507</RepositoryUrl>
+    <PackageProjectUrl>https://go.microsoft.com/fwlink/?linkid=874507</PackageProjectUrl>
+    <PackageLicenseUrl>https://go.microsoft.com/fwlink/?linkid=874508</PackageLicenseUrl>
+    <PackageReleaseNotes>https://go.microsoft.com/fwlink/?linkid=874509</PackageReleaseNotes>
+    <PackageTags>xamarin,signature,handwriting,windows,ios,android,uwp</PackageTags>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;WPF</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;WPF</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.495" />
+    <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="4.5.0.495" />
+    <ProjectReference Include="..\SignaturePad.WPF\SignaturePad.WPF.csproj" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\SignaturePad.Forms.Shared\**\*.cs" Link="%(filename).shared%(Extension)" />
+    <Compile Include="..\SignaturePad.Forms.Platform.Shared\**\*.cs" Link="%(filename).platform%(Extension)" />
+  </ItemGroup>
+
+</Project>

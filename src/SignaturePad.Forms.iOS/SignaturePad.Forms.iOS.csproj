@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="MSBuild.Sdk.Extras">
 
   <PropertyGroup>
     <TargetFramework>xamarin.ios1.0</TargetFramework>
@@ -31,8 +31,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.4.0" PrivateAssets="All" />
-    <PackageReference Include="Xamarin.Forms" Version="2.5.0.280555" />
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.495" />
     <ProjectReference Include="..\SignaturePad.iOS\SignaturePad.iOS.csproj" />
   </ItemGroup>
 
@@ -40,7 +39,5 @@
     <Compile Include="..\SignaturePad.Forms.Shared\**\*.cs" Link="%(filename).shared%(Extension)" />
     <Compile Include="..\SignaturePad.Forms.Platform.Shared\**\*.cs" Link="%(filename).platform%(Extension)" />
   </ItemGroup>
-
-  <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
 
 </Project>

@@ -1,0 +1,33 @@
+version: 1.0.{build}
+
+pull_requests:
+  do_not_increment_build_number: true
+
+image:
+  - Visual Studio 2019 Preview
+
+environment:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+
+nuget:
+  disable_publish_on_pr: true
+
+install:
+  - ps: >-
+      echo "Install software";
+      choco install mono -x86;
+
+build_script:
+  - pwsh: >-
+      echo "Run build";
+      ./build.ps1;
+      $host.SetShouldExit($LastExitCode);
+
+artifacts:
+  - path: output
+    name: output
+
+test: off
+
+deploy: off

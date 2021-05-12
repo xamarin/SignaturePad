@@ -1,0 +1,21 @@
+version: 2
+updates:
+- package-ecosystem: nuget
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "03:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: Microsoft.NETCore.UniversalWindowsPlatform
+    versions:
+    - 6.2.11
+  - dependency-name: Xamarin.Forms
+    versions:
+    - 4.3.0.991211
+  - dependency-name: Win2D.uwp
+    versions:
+    - 1.25.0
+  - dependency-name: MSBuild.Sdk.Extras
+    versions:
+    - 3.0.22

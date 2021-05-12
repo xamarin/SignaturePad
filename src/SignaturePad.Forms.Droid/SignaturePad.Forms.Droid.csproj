@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="MSBuild.Sdk.Extras">
 
   <PropertyGroup>
-    <TargetFramework>monoandroid7.1</TargetFramework>
+    <TargetFramework>monoandroid10.0</TargetFramework>
     <RootNamespace>SignaturePad.Forms</RootNamespace>
     <AssemblyName>SignaturePad.Forms</AssemblyName>
     <AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
@@ -31,8 +31,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.4.0" PrivateAssets="All" />
-    <PackageReference Include="Xamarin.Forms" Version="2.5.0.280555" />
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.495" />
     <ProjectReference Include="..\SignaturePad.Android\SignaturePad.Android.csproj" />
   </ItemGroup>
 
@@ -41,7 +40,5 @@
     <Compile Include="..\SignaturePad.Forms.Platform.Shared\**\*.cs" Link="%(filename).platform%(Extension)" />
     <Folder Include="Resources" />
   </ItemGroup>
-
-  <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
 
 </Project>

@@ -1,0 +1,91 @@
+﻿<Project Sdk="MSBuild.Sdk.Extras">
+
+  <PropertyGroup>
+    <TargetFramework>net471</TargetFramework>
+    <RootNamespace>SignaturePad.Forms</RootNamespace>
+    <AssemblyName>SignaturePad.Forms</AssemblyName>
+    <AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
+    <DocumentationFile Condition=" '$(Configuration)' == 'Release' ">bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Version>1.0.0</Version>
+    <PackageId>Xamarin.Controls.SignaturePad.Forms</PackageId>
+    <Title>SignaturePad for Xamarin.Forms</Title>
+    <Product>$(AssemblyName) ($(TargetFramework))</Product>
+    <Authors>Microsoft</Authors>
+    <Owners>Microsoft</Owners>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Summary>Makes capturing, saving, and displaying signatures extremely simple.</Summary>
+    <Description>Makes capturing, saving, and displaying signatures extremely simple.</Description>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageIconUrl>https://go.microsoft.com/fwlink/?linkid=874510</PackageIconUrl>
+    <RepositoryUrl>https://go.microsoft.com/fwlink/?linkid=874507</RepositoryUrl>
+    <PackageProjectUrl>https://go.microsoft.com/fwlink/?linkid=874507</PackageProjectUrl>
+    <PackageLicenseUrl>https://go.microsoft.com/fwlink/?linkid=874508</PackageLicenseUrl>
+    <PackageReleaseNotes>https://go.microsoft.com/fwlink/?linkid=874509</PackageReleaseNotes>
+    <PackageTags>xamarin,signature,handwriting,windows,ios,android,uwp</PackageTags>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;GTK</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;GTK</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.495" />
+    <PackageReference Include="Xamarin.Forms.Platform.GTK" Version="4.5.0.495" />
+    <ProjectReference Include="..\SignaturePad.GTK\SignaturePad.GTK.csproj" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(ProgramFiles)\Mono\lib\gtk-sharp-2.0\atk-sharp.dll</HintPath>
+            <Package>gtk-sharp-2.0</Package>
+        </Reference>
+        <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(ProgramFiles)\Mono\lib\gtk-sharp-2.0\gdk-sharp.dll</HintPath>
+            <Package>gtk-sharp-2.0</Package>
+        </Reference>
+        <Reference Include="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(ProgramFiles)\Mono\lib\gtk-sharp-2.0\glade-sharp.dll</HintPath>
+        </Reference>
+        <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(ProgramFiles)\Mono\lib\gtk-sharp-2.0\glib-sharp.dll</HintPath>
+            <Package>glib-sharp-2.0</Package>
+        </Reference>
+        <Reference Include="gtk-dotnet, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(ProgramFiles)\Mono\lib\gtk-sharp-2.0\gtk-dotnet.dll</HintPath>
+            <Package>gtk-dotnet-2.0</Package>
+        </Reference>
+        <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(ProgramFiles)\Mono\lib\gtk-sharp-2.0\gtk-sharp.dll</HintPath>
+            <Package>gtk-sharp-2.0</Package>
+        </Reference>
+        <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(ProgramFiles)\Mono\lib\gtk-sharp-2.0\pango-sharp.dll</HintPath>
+            <Package>gtk-sharp-2.0</Package>
+        </Reference>
+	    <Reference Include="Mono.Cairo">
+		    <HintPath>$(ProgramFiles)\Mono\lib\mono\4.7.1-api\Mono.Cairo.dll</HintPath>
+	    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\SignaturePad.Forms.Shared\**\*.cs" Link="%(filename).shared%(Extension)" />
+    <Compile Include="..\SignaturePad.Forms.Platform.Shared\**\*.cs" Link="%(filename).platform%(Extension)" />
+  </ItemGroup>
+
+</Project>

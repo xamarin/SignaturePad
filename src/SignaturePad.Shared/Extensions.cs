@@ -8,12 +8,29 @@ using Android.Views;
 #elif __IOS__
 using CoreGraphics;
 using UIKit;
+#elif __MACOS__
+using CoreGraphics;
+using AppKit;
+#elif GTK
+using Gtk;
+using Gdk;
+using Cairo;
+using Color = Gdk.Color;
+using Point = Gdk.Point;
+#elif WPF
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Ink;
+using System.Windows.Input;
+using System.Windows.Media;
+using InkPresenter = System.Windows.Ink.StrokeCollection;
 #elif WINDOWS_PHONE
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Drawing.Drawing2D;
 #elif WINDOWS_UWP || WINDOWS_APP
 using Windows.Foundation;
 using System.Numerics;
@@ -72,6 +89,139 @@ namespace Xamarin.Controls
 			return view.Bounds.Size;
 		}
 
+#elif __MACOS__
+
+		public static CGSize GetSize (this NSImage image)
+		{
+			return image.Size;
+		}
+
+		public static void Invalidate (this NSView view)
+		{
+			view.NeedsDisplay = true;
+		}
+
+		public static void MoveTo (this CGPath path, nfloat x, nfloat y)
+		{
+			path.MoveToPoint (new CGPoint (x, y));
+		}
+
+		public static void LineTo (this CGPath path, nfloat x, nfloat y)
+		{
+			path.AddLineToPoint(new CGPoint (x, y));
+		}
+
+		public static CGSize GetSize (this NSView view)
+		{
+			return view.Bounds.Size;
+		}
+
+#elif GTK
+
+		public static void MoveTo (this Cairo.Path stroke, double x, double y)
+		{
+			//stroke.StylusPoints.Add (new Point ((int)x, (int)y));
+		}
+
+		public static void LineTo (this Cairo.Path stroke, double x, double y)
+		{
+			//stroke.StylusPoints.Add (new Point ((int)x, (int)y));
+		}
+
+		public static void AddStrokes (this DrawingArea inkPresenter, IList<Point[]> strokes, Color color, float width)
+		{
+			foreach (var stroke in strokes.Where (s => s.Length > 0))
+			{
+				var pointCollection = new List<Point> ();
+				foreach (var point in stroke)
+				{
+					pointCollection.Add (new Point (point.X, point.Y));
+				}
+
+				var newStroke = new List<Point> (pointCollection);
+				//strokeCollection.Add (newStroke);
+			}
+
+			//inkPresenter.Strokes = strokeCollection;
+		}
+
+		public static void Invalidate (this InkPresenter control)
+		{
+			
+		}
+
+		public static IList<Cairo.Path> GetStrokes (this DrawingArea canvas)
+		{
+			return new List<Path> ();
+			//return canvas.Strokes;
+		}
+
+		public static IEnumerable<Point> GetPoints (this Cairo.Path stroke)
+		{
+			return new List<Point> ();
+			//return stroke.Select (p => new Point (p.X, p.Y));
+		}
+
+		public static Size GetSize (this SignaturePadCanvasView element)
+		{
+			return new Size (element.inkPresenter.WidthRequest, element.inkPresenter.HeightRequest);
+		}
+#elif WPF
+
+		public static void MoveTo (this Stroke stroke, double x, double y)
+		{
+			stroke.StylusPoints.Add (new StylusPoint (x, y));
+		}
+
+		public static void LineTo (this Stroke stroke, double x, double y)
+		{
+			stroke.StylusPoints.Add (new StylusPoint (x, y));
+		}
+
+		public static void AddStrokes (this InkCanvas inkPresenter, IList<StylusPoint[]> strokes, Color color, float width)
+		{
+			var strokeCollection = new StrokeCollection ();
+			foreach (var stroke in strokes.Where (s => s.Length > 0))
+			{
+				var pointCollection = new StylusPointCollection ();
+				foreach (var point in stroke)
+				{
+					pointCollection.Add (new StylusPoint (point.X, point.Y));
+				}
+
+				var newStroke = new Stroke (pointCollection);
+				strokeCollection.Add (newStroke);
+
+				newStroke.DrawingAttributes = new DrawingAttributes
+				{
+					Color = color,
+					Width = width,
+					Height = width
+				};
+			}
+
+			inkPresenter.Strokes = strokeCollection;
+		}
+
+		public static void Invalidate (this InkPresenter control)
+		{
+			
+		}
+
+		public static IList<Stroke> GetStrokes (this InkCanvas canvas)
+		{
+			return canvas.Strokes;
+		}
+
+		public static IEnumerable<StylusPoint> GetPoints (this Stroke stroke)
+		{
+			return stroke.StylusPoints.Select (p => new StylusPoint (p.X, p.Y));
+		}
+
+		public static Size GetSize (this FrameworkElement element)
+		{
+			return new Size (element.Width, element.Height);
+		}
 #elif WINDOWS_PHONE
 
 		public static void MoveTo (this Stroke stroke, double x, double y)

@@ -7,7 +7,7 @@ using Xamarin.Forms;
 
 namespace SignaturePad.Forms
 {
-	[RenderWith (typeof (SignaturePadCanvasRenderer))]
+	[RenderWith (typeof (SignaturePadCanvasRenderer))] 
 	public class SignaturePadCanvasView : View
 	{
 		public static readonly BindableProperty StrokeColorProperty = BindableProperty.Create (
@@ -15,6 +15,12 @@ namespace SignaturePad.Forms
 			typeof (Color),
 			typeof (SignaturePadView),
 			ImageConstructionSettings.DefaultStrokeColor);
+
+		public static readonly BindableProperty IsSingleLineProperty = BindableProperty.Create(
+			nameof(IsSingleLine),
+			typeof(bool),
+			typeof(SignaturePadView),
+			false);
 
 		public static readonly BindableProperty StrokeWidthProperty = BindableProperty.Create (
 			nameof (StrokeWidth),
@@ -56,6 +62,12 @@ namespace SignaturePad.Forms
 		{
 			get { return (Color)GetValue (StrokeColorProperty); }
 			set { SetValue (StrokeColorProperty, value); }
+		}
+
+		public bool IsSingleLine
+		{
+			get { return (bool)GetValue(IsSingleLineProperty); }
+			set { SetValue(IsSingleLineProperty, value); }
 		}
 
 		public IEnumerable<Point> Points

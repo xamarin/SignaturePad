@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="MSBuild.Sdk.Extras">
 
   <PropertyGroup>
-    <TargetFramework>monoandroid4.0.3</TargetFramework>
+    <TargetFramework>monoandroid10.0</TargetFramework>
     <RootNamespace>Xamarin.Controls</RootNamespace>
     <AssemblyName>SignaturePad</AssemblyName>
     <AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
@@ -32,17 +32,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.4.0" PrivateAssets="All" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Include="*.cs" />
     <Compile Include="..\SignaturePad.Shared\**\*.cs" Link="%(filename).shared%(Extension)" />
     <Compile Include="..\SignaturePad.InkPresenter.Shared\**\*.cs" Link="%(filename).shared%(Extension)" />
     <AndroidResource Include="Resources\**\*.axml" />
     <AndroidResource Include="Resources\**\*.xml" />
   </ItemGroup>
-
-  <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
 
 </Project>

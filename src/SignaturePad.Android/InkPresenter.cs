@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
+using Bitmap = Android.Graphics.Bitmap;
 
 namespace Xamarin.Controls
 {
@@ -56,6 +56,11 @@ namespace Xamarin.Controls
 
 		private void TouchesBegan (MotionEvent e)
 		{
+			if (IsSingleLine)
+			{
+				Clear();
+			}
+
 			// don't allow the event to propagate because we're handling it here
 			Parent?.RequestDisallowInterceptTouchEvent (true);
 
@@ -211,7 +216,7 @@ namespace Xamarin.Controls
 				return null;
 			}
 
-			var size = new SizeF (Width, Height);
+			var size = new System.Drawing.SizeF (Width, Height);
 			var image = Bitmap.CreateBitmap ((int)size.Width, (int)size.Height, Bitmap.Config.Argb8888);
 
 			using (var canvas = new Canvas (image))

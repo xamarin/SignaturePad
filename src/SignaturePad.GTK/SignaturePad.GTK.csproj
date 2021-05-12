@@ -1,0 +1,111 @@
+﻿<Project Sdk="MSBuild.Sdk.Extras">
+
+  <PropertyGroup>
+    <TargetFramework>net471</TargetFramework>
+    <RootNamespace>Xamarin.Controls</RootNamespace>
+    <AssemblyName>SignaturePad</AssemblyName>
+
+    <EnableDefaultCompileItems>False</EnableDefaultCompileItems>
+
+    <AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
+    <DocumentationFile Condition=" '$(Configuration)' == 'Release' ">bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Version>1.0.0</Version>
+    <PackageId>Xamarin.Controls.SignaturePad</PackageId>
+    <Title>SignaturePad for Xamarin and Windows</Title>
+    <Product>$(AssemblyName) ($(TargetFramework))</Product>
+    <Authors>Microsoft</Authors>
+    <Owners>Microsoft</Owners>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Summary>Makes capturing, saving, and displaying signatures extremely simple.</Summary>
+    <Description>Makes capturing, saving, and displaying signatures extremely simple.</Description>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageIconUrl>https://go.microsoft.com/fwlink/?linkid=874510</PackageIconUrl>
+    <RepositoryUrl>https://go.microsoft.com/fwlink/?linkid=874507</RepositoryUrl>
+    <PackageProjectUrl>https://go.microsoft.com/fwlink/?linkid=874507</PackageProjectUrl>
+    <PackageLicenseUrl>https://go.microsoft.com/fwlink/?linkid=874508</PackageLicenseUrl>
+    <PackageReleaseNotes>https://go.microsoft.com/fwlink/?linkid=874509</PackageReleaseNotes>
+    <PackageTags>xamarin,signature,handwriting,windows,ios,android,uwp</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(ProgramFiles)\Mono\lib\gtk-sharp-2.0\atk-sharp.dll</HintPath>
+            <Package>gtk-sharp-2.0</Package>
+        </Reference>
+        <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(ProgramFiles)\Mono\lib\gtk-sharp-2.0\gdk-sharp.dll</HintPath>
+            <Package>gtk-sharp-2.0</Package>
+        </Reference>
+        <Reference Include="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(ProgramFiles)\Mono\lib\gtk-sharp-2.0\glade-sharp.dll</HintPath>
+        </Reference>
+        <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(ProgramFiles)\Mono\lib\gtk-sharp-2.0\glib-sharp.dll</HintPath>
+            <Package>glib-sharp-2.0</Package>
+        </Reference>
+        <Reference Include="gtk-dotnet, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(ProgramFiles)\Mono\lib\gtk-sharp-2.0\gtk-dotnet.dll</HintPath>
+            <Package>gtk-dotnet-2.0</Package>
+        </Reference>
+        <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(ProgramFiles)\Mono\lib\gtk-sharp-2.0\gtk-sharp.dll</HintPath>
+            <Package>gtk-sharp-2.0</Package>
+        </Reference>
+        <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>$(ProgramFiles)\Mono\lib\gtk-sharp-2.0\pango-sharp.dll</HintPath>
+            <Package>gtk-sharp-2.0</Package>
+        </Reference>
+	    <Reference Include="Mono.Cairo">
+		    <HintPath>$(ProgramFiles)\Mono\lib\mono\4.7.1-api\Mono.Cairo.dll</HintPath>
+	    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\SignaturePad.Shared\**\*.cs" Link="%(filename).shared%(Extension)" />
+    <Compile Include="..\SignaturePad.InkPresenter.Shared\**\*.cs" Link="%(filename).shared%(Extension)" />
+    <Compile Include="SignaturePad.cs" />
+    <Compile Include="SignaturePadCanvasView.cs" />
+  </ItemGroup>
+
+<!-- https://github.com/dotnet/sdk/issues/810 - the temporary project has the wrong file extension -->
+  <PropertyGroup>
+    <LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
+    <StartWorkingDirectory Condition="'$(OutputType)' == 'WinExe'">bin/$(Configuration)/$(TargetFramework)</StartWorkingDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;GTK</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;GTK</DefineConstants>
+  </PropertyGroup>
+  
+  <!-- Page items aren't included by the SDK -->
+  <ItemGroup>
+    <Page Include="**\*.xaml" Exclude="@(ApplicationDefinition)" SubType="Designer" Generator="MSBuild:Compile" />
+    <Compile Update="**\*.xaml.cs" SubType="Code" DependentUpon="%(Filename)" />
+    <UpToDateCheckInput Include="**\*.xaml" />
+  </ItemGroup>
+
+  <!-- https://github.com/dotnet/project-system/issues/2488 - .g.cs files don't get built -->
+  <Target Name="WorkaroundForXAMLIntellisenseBuildIssue" AfterTargets="_CheckCompileDesignTimePrerequisite">
+    <PropertyGroup>
+      <BuildingProject>false</BuildingProject>
+    </PropertyGroup>
+  </Target>
+
+</Project>

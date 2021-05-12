@@ -1,7 +1,13 @@
+
+# Important
+
+The packages which are published in nuget support Android, iOS and UWP. If you develop for another platforms (macOS, WPF, GTK), follow the [link](https://ci.appveyor.com/project/VladislavAntonyuk/signaturepad/build/artifacts) and download artifacts.
+
+## If you find any defects, feel free to create a pull request.
+
 # Signature Pad
 
-
-[![Build Status](https://jenkins.mono-project.com/buildStatus/icon?job=Components-SignaturePad-Windows)](https://jenkins.mono-project.com/view/Components/job/Components-SignaturePad-Windows/)  [![Build Status](https://jenkins.mono-project.com/buildStatus/icon?job=Components-SignaturePad)](https://jenkins.mono-project.com/view/Components/job/Components-SignaturePad/)
+[![Build status](https://ci.appveyor.com/api/projects/status/qy7aaendnt5n2g3w?svg=true)](https://ci.appveyor.com/project/VladislavAntonyuk/signaturepad) ![XamarinSignaturePad](https://github.com/VladislavAntonyuk/SignaturePad/workflows/XamarinSignaturePad/badge.svg)
 
 [![SignaturePad NuGet](https://img.shields.io/nuget/vpre/Xamarin.Controls.SignaturePad.svg?label=SignaturePad%20NuGet)](https://www.nuget.org/packages/Xamarin.Controls.SignaturePad)  [![SignaturePad Xamairn.Forms NuGet](https://img.shields.io/nuget/vpre/Xamarin.Controls.SignaturePad.Forms.svg?label=SignaturePad.Forms%20NuGet)](https://www.nuget.org/packages/Xamarin.Controls.SignaturePad.Forms)
 

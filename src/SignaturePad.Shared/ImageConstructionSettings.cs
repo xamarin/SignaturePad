@@ -8,6 +8,10 @@ using NativeNullableColor = System.Nullable<Android.Graphics.Color>;
 using NativeSize = CoreGraphics.CGSize;
 using NativeColor = UIKit.UIColor;
 using NativeNullableColor = UIKit.UIColor;
+#elif __MACOS__
+using NativeSize = CoreGraphics.CGSize;
+using NativeColor = AppKit.NSColor;
+using NativeNullableColor = AppKit.NSColor;
 #elif WINDOWS_PHONE
 using NativeSize = System.Windows.Size;
 using NativeColor = System.Windows.Media.Color;
@@ -20,6 +24,14 @@ using NativeNullableColor = System.Nullable<Windows.UI.Color>;
 using NativeSize = Windows.Foundation.Size;
 using NativeColor = Windows.UI.Color;
 using NativeNullableColor = System.Nullable<Windows.UI.Color>;
+#elif GTK
+using NativeSize = System.Drawing.SizeF;
+using NativeColor = Gdk.Color;
+using NativeNullableColor = System.Nullable<Gdk.Color>;
+#elif WPF
+using NativeSize = System.Drawing.SizeF;
+using NativeColor = System.Windows.Media.Color;
+using NativeNullableColor = System.Nullable<System.Windows.Media.Color>;
 #endif
 
 namespace Xamarin.Controls
@@ -92,6 +104,7 @@ namespace Xamarin.Controls
 
 		public NativeSize GetScale (float width, float height)
 		{
+
 			if (Type == SizeOrScaleType.Scale)
 			{
 				return new NativeSize (X, Y);
@@ -130,9 +143,15 @@ namespace Xamarin.Controls
 #if __IOS__ || __ANDROID__
 		internal static readonly NativeColor Black = NativeColor.Black;
 		internal static readonly NativeColor Transparent = new NativeColor (0, 0, 0, 0);
-#elif WINDOWS_PHONE || WINDOWS_UWP || WINDOWS_PHONE_APP || WINDOWS_APP
+#elif __MACOS__
+		internal static readonly NativeColor Black = NativeColor.Black;
+		internal static readonly NativeColor Transparent = NativeColor.FromRgba(0, 0, 0, 0);
+#elif WINDOWS_PHONE || WINDOWS_UWP || WINDOWS_PHONE_APP || WINDOWS_APP || WPF
 		internal static readonly NativeColor Black = NativeColor.FromArgb (255, 0, 0, 0);
 		internal static readonly NativeColor Transparent = NativeColor.FromArgb (0, 0, 0, 0);
+#elif GTK
+		internal static readonly NativeColor Black = new NativeColor(0, 0, 0);
+		internal static readonly NativeColor Transparent = new NativeColor(0, 0, 0);
 #endif
 
 		public static readonly bool DefaultShouldCrop = true;

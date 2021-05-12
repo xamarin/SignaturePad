@@ -20,10 +20,10 @@
 - Last known good version:  <!-- the version of SkiaSharp that still working -->
 - IDE:  <!-- Visual Studio / Visual Studio for Mac / MonoDevelop / Visual Studio Code -->
 - Platform Target Frameworks: <!-- all that apply, remove the platforms that aren't broken or haven't had any testing -->
-  - Android: <!-- the version of the Android SDK you are compiling against, e.g. 7.1 --> 
+  - Android: <!-- the version of the Android SDK you are compiling against, e.g. 8.1 --> 
   - iOS:  <!-- the version of the iOS SDK you are compiling against, e.g. 11.1 -->
   - UWP:  <!-- the version of the UWP SDK you are compiling against, e.g. 16299 --> 
-  - Xamarin.Forms:  <!-- the version of Xamarin.Forms you are building for, e.g. 2.5.0.280555 -->
+  - Xamarin.Forms:  <!-- the version of Xamarin.Forms you are building for, e.g. 4.0.0.169046-pre5 -->
 - Target Devices:
   -   <!-- the devices that you noticed this on, e.g. iPhone X -->
 

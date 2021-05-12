@@ -9,6 +9,19 @@ using NativePoint = System.Drawing.PointF;
 using NativeColor = Android.Graphics.Color;
 using NativeImage = Android.Graphics.Bitmap;
 using NativePath = Android.Graphics.Path;
+#elif GTK
+using NativePath = Cairo.Path;
+using NativeRect = System.Drawing.RectangleF;
+using NativePoint = Gdk.Point;
+using NativeColor = Gdk.Color;
+using NativeImage = System.Drawing.Bitmap;
+#elif WPF
+using System.Windows.Input;
+using NativePath = System.Windows.Ink.Stroke;
+using NativeRect = System.Drawing.RectangleF;
+using NativePoint = System.Windows.Input.StylusPoint;
+using NativeColor = System.Windows.Media.Color;
+using NativeImage = System.Drawing.Bitmap;
 #elif __IOS__
 using NativeRect = CoreGraphics.CGRect;
 using NativeSize = CoreGraphics.CGSize;
@@ -16,6 +29,13 @@ using NativePoint = CoreGraphics.CGPoint;
 using NativeColor = UIKit.UIColor;
 using NativeImage = UIKit.UIImage;
 using NativePath = UIKit.UIBezierPath;
+#elif __MACOS__
+using NativeRect = CoreGraphics.CGRect;
+using NativeSize = CoreGraphics.CGSize;
+using NativePoint = CoreGraphics.CGPoint;
+using NativeColor = AppKit.NSColor;
+using NativeImage = AppKit.NSImage;
+using NativePath = CoreGraphics.CGPath;
 #elif WINDOWS_PHONE_APP
 using NativeRect = Windows.Foundation.Rect;
 using NativeSize = Windows.Foundation.Size;
@@ -31,7 +51,7 @@ namespace Xamarin.Controls
 	{
 		private const float MinimumPointDistance = 2.0f;
 
-		public static float ScreenDensity;
+		public static float ScreenDensity = 0;
 
 		private readonly List<InkStroke> paths = new List<InkStroke> ();
 		private InkStroke currentPath;
@@ -42,7 +62,7 @@ namespace Xamarin.Controls
 		private float dirtyRectRight;
 		private float dirtyRectBottom;
 
-		private NativeImage bitmapBuffer;
+		private NativeImage bitmapBuffer = null;
 
 		// public properties
 
@@ -50,9 +70,10 @@ namespace Xamarin.Controls
 
 		public float StrokeWidth { get; set; } = 1f;
 
+		public bool IsSingleLine { get; set; }
 		// private properties
 
-#if __IOS__
+#if __IOS__ || __MACOS__
 		private float Width => (float)Bounds.Width;
 
 		private float Height => (float)Bounds.Height;
@@ -65,8 +86,13 @@ namespace Xamarin.Controls
 				var sizeChanged = false;
 				if (bitmapBuffer != null)
 				{
+#if WPF || GTK
+					var s = bitmapBuffer.Size;
+					sizeChanged = s.Width != this.StrokeWidth || s.Height != this.StrokeWidth;
+#else
 					var s = bitmapBuffer.GetSize ();
 					sizeChanged = s.Width != Width || s.Height != Height;
+#endif
 				}
 
 				return sizeChanged ||
@@ -103,7 +129,6 @@ namespace Xamarin.Controls
 		{
 			paths.Clear ();
 			currentPath = null;
-
 			this.Invalidate ();
 		}
 
@@ -142,7 +167,15 @@ namespace Xamarin.Controls
 				return false;
 			}
 
-			var newpath = new NativePath ();
+#if WPF
+			var newpath = new NativePath(new StylusPointCollection (strokePoints));
+#elif GTK
+			NativePath newpath = null;
+			return false;
+#else
+			var newpath = new NativePath();
+#endif
+
 			newpath.MoveTo (strokePoints[0].X, strokePoints[0].Y);
 			foreach (var point in strokePoints.Skip (1))
 			{

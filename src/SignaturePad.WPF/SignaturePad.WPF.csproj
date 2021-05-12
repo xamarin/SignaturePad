@@ -1,0 +1,75 @@
+﻿<Project Sdk="MSBuild.Sdk.Extras">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <RootNamespace>Xamarin.Controls</RootNamespace>
+    <AssemblyName>SignaturePad</AssemblyName>
+
+    <EnableDefaultCompileItems>False</EnableDefaultCompileItems>
+
+    <AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
+    <DocumentationFile Condition=" '$(Configuration)' == 'Release' ">bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Version>1.0.0</Version>
+    <PackageId>Xamarin.Controls.SignaturePad</PackageId>
+    <Title>SignaturePad for Xamarin and Windows</Title>
+    <Product>$(AssemblyName) ($(TargetFramework))</Product>
+    <Authors>Microsoft</Authors>
+    <Owners>Microsoft</Owners>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Summary>Makes capturing, saving, and displaying signatures extremely simple.</Summary>
+    <Description>Makes capturing, saving, and displaying signatures extremely simple.</Description>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageIconUrl>https://go.microsoft.com/fwlink/?linkid=874510</PackageIconUrl>
+    <RepositoryUrl>https://go.microsoft.com/fwlink/?linkid=874507</RepositoryUrl>
+    <PackageProjectUrl>https://go.microsoft.com/fwlink/?linkid=874507</PackageProjectUrl>
+    <PackageLicenseUrl>https://go.microsoft.com/fwlink/?linkid=874508</PackageLicenseUrl>
+    <PackageReleaseNotes>https://go.microsoft.com/fwlink/?linkid=874509</PackageReleaseNotes>
+    <PackageTags>xamarin,signature,handwriting,windows,ios,android,uwp</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.Xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\SignaturePad.Shared\**\*.cs" Link="%(filename).shared%(Extension)" />
+    <Compile Include="..\SignaturePad.InkPresenter.Shared\**\*.cs" Link="%(filename).shared%(Extension)" />
+    <Compile Include="SignaturePad.cs" />
+    <Compile Include="SignaturePadCanvasView.cs" />
+  </ItemGroup>
+
+<!-- https://github.com/dotnet/sdk/issues/810 - the temporary project has the wrong file extension -->
+  <PropertyGroup>
+    <LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
+    <StartWorkingDirectory Condition="'$(OutputType)' == 'WinExe'">bin/$(Configuration)/$(TargetFramework)</StartWorkingDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;WPF</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;WPF</DefineConstants>
+  </PropertyGroup>
+  
+  <!-- Page items aren't included by the SDK -->
+  <ItemGroup>
+    <Page Include="**\*.xaml" Exclude="@(ApplicationDefinition)" SubType="Designer" Generator="MSBuild:Compile" />
+    <Compile Update="**\*.xaml.cs" SubType="Code" DependentUpon="%(Filename)" />
+    <UpToDateCheckInput Include="**\*.xaml" />
+  </ItemGroup>
+
+  <!-- https://github.com/dotnet/project-system/issues/2488 - .g.cs files don't get built -->
+  <Target Name="WorkaroundForXAMLIntellisenseBuildIssue" AfterTargets="_CheckCompileDesignTimePrerequisite">
+    <PropertyGroup>
+      <BuildingProject>false</BuildingProject>
+    </PropertyGroup>
+  </Target>
+
+</Project>

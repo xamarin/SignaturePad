@@ -14,17 +14,37 @@ using NativePoint = CoreGraphics.CGPoint;
 using NativeSize = CoreGraphics.CGSize;
 using NativeColor = UIKit.UIColor;
 using NativeImage = UIKit.UIImage;
+#elif __MACOS__
+using NativeRect = CoreGraphics.CGRect;
+using NativePoint = CoreGraphics.CGPoint;
+using NativeSize = CoreGraphics.CGSize;
+using NativeColor = AppKit.NSColor;
+using NativeImage = AppKit.NSImage;
 #elif WINDOWS_UWP
 using NativeRect = Windows.Foundation.Rect;
 using NativePoint = Windows.Foundation.Point;
 using NativeSize = Windows.Foundation.Size;
 using NativeColor = Windows.UI.Color;
 using NativeImage = Windows.UI.Xaml.Media.Imaging.WriteableBitmap;
+#elif GTK
+using NativeRect = System.Drawing.Rectangle;
+using NativePoint = Gdk.Point;
+using NativeSize = System.Drawing.Size;
+using NativeColor = Gdk.Color;
+using NativeImage = System.Drawing.Bitmap;
+#elif WPF
+using NativeRect = System.Drawing.Rectangle;
+using NativePoint = System.Windows.Input.StylusPoint;
+using NativeSize = System.Drawing.Size;
+using NativeColor = System.Windows.Media.Color;
+using NativeImage = System.Drawing.Bitmap;
 #endif
 
 namespace Xamarin.Controls
 {
-#if WINDOWS_UWP
+	using System.Drawing;
+
+#if WINDOWS_UWP || WPF || GTK
 	partial class SignaturePad
 #else
 	partial class SignaturePadView
@@ -40,18 +60,25 @@ namespace Xamarin.Controls
 		private const string DefaultPromptText = "▶";
 		private const string DefaultCaptionText = "sign above the line";
 
-#if __IOS__
-		private static readonly NativeColor SignaturePadDarkColor = NativeColor.Black;
-		private static readonly NativeColor SignaturePadLightColor = NativeColor.White;
-#elif __ANDROID__
+#if __IOS__ || __MACOS__ || __ANDROID__
 		private static readonly NativeColor SignaturePadDarkColor = NativeColor.Black;
 		private static readonly NativeColor SignaturePadLightColor = NativeColor.White;
 #elif WINDOWS_UWP
 		private static readonly NativeColor SignaturePadDarkColor = Windows.UI.Colors.Black;
 		private static readonly NativeColor SignaturePadLightColor = Windows.UI.Colors.White;
+#elif WPF
+		private static readonly NativeColor SignaturePadDarkColor = System.Windows.Media.Colors.Black;
+		private static readonly NativeColor SignaturePadLightColor = System.Windows.Media.Colors.White;
+#elif GTK
+		private static readonly NativeColor SignaturePadDarkColor = Gdk.Color.Zero;
+		private static readonly NativeColor SignaturePadLightColor = Gdk.Color.Zero;
 #endif
 
+#if WPF
+		public System.Windows.Ink.StrokeCollection Strokes => SignaturePadCanvas.Strokes;
+#else
 		public NativePoint[][] Strokes => SignaturePadCanvas.Strokes;
+#endif
 
 		public NativePoint[] Points => SignaturePadCanvas.Points;
 

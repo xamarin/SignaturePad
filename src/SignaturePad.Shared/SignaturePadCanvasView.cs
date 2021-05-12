@@ -16,6 +16,12 @@ using NativePoint = CoreGraphics.CGPoint;
 using NativeSize = CoreGraphics.CGSize;
 using NativeColor = UIKit.UIColor;
 using NativeImage = UIKit.UIImage;
+#elif __MACOS__
+using NativeRect = CoreGraphics.CGRect;
+using NativePoint = CoreGraphics.CGPoint;
+using NativeSize = CoreGraphics.CGSize;
+using NativeColor = AppKit.NSColor;
+using NativeImage = AppKit.NSImage;
 #elif WINDOWS_PHONE
 using NativeRect = System.Windows.Rect;
 using NativePoint = System.Windows.Point;
@@ -34,6 +40,22 @@ using NativeSize = Windows.Foundation.Size;
 using NativePoint = Windows.Foundation.Point;
 using NativeColor = Windows.UI.Color;
 using NativeImage = Windows.UI.Xaml.Media.Imaging.WriteableBitmap;
+#elif GTK
+using NativeRect = System.Drawing.RectangleF;
+using NativePoint = Gdk.Point;
+using NativeSize = System.Drawing.SizeF;
+using NativeColor = Gdk.Color;
+using NativeImage = System.Drawing.Bitmap;
+using System.Windows.Ink;
+using System.Windows.Input;
+#elif WPF
+using NativeRect = System.Drawing.RectangleF;
+using NativePoint = System.Windows.Input.StylusPoint;
+using NativeSize = System.Drawing.SizeF;
+using NativeColor = System.Windows.Media.Color;
+using NativeImage = System.Drawing.Bitmap;
+using System.Windows.Ink;
+using System.Windows.Input;
 #endif
 
 namespace Xamarin.Controls
@@ -44,7 +66,43 @@ namespace Xamarin.Controls
 
 		public event EventHandler Cleared;
 
-		public bool IsBlank => inkPresenter == null ? true : inkPresenter.GetStrokes ().Count == 0;
+		public bool IsBlank => inkPresenter == null || inkPresenter.GetStrokes ().Count == 0;
+
+#if WPF
+		private bool isSingleLine;
+
+		public bool IsSingleLine
+		{
+			get => isSingleLine;
+			set
+			{
+				if (value && isSingleLine != true)
+				{
+					inkPresenter.PreviewMouseDown += InkPresenter_MouseDown;
+				}
+				else
+				{
+					inkPresenter.PreviewMouseDown -= InkPresenter_MouseDown;
+				}
+
+				isSingleLine = value;
+			}
+		}
+
+		private void InkPresenter_MouseDown (object sender, MouseButtonEventArgs e)
+		{
+			Clear();
+		}
+#elif WINDOWS_UWP || GTK
+		public bool IsSingleLine { get; set; }
+#else
+		public bool IsSingleLine
+		{
+			get => inkPresenter.IsSingleLine;
+			set => inkPresenter.IsSingleLine = value;
+		}
+#endif
+
 
 		public NativePoint[] Points
 		{
@@ -63,6 +121,25 @@ namespace Xamarin.Controls
 			}
 		}
 
+#if WPF
+		public new StrokeCollection Strokes
+		{
+			get
+			{
+				if (IsBlank)
+				{
+					return new StrokeCollection (new List<Stroke> ());
+				}
+
+				// make a deep copy
+				var points = inkPresenter.GetStrokes ().Select (s => s.GetPoints ());
+				var strokes = points.Select (point => new Stroke (new StylusPointCollection (point))).ToList ();
+				var col = new StrokeCollection (strokes);
+				return col;
+			}
+		}
+
+#else
 		public NativePoint[][] Strokes
 		{
 			get
@@ -76,6 +153,7 @@ namespace Xamarin.Controls
 				return inkPresenter.GetStrokes ().Select (s => s.GetPoints ().ToArray ()).ToArray ();
 			}
 		}
+#endif
 
 		public NativeRect GetSignatureBounds (float padding = 5f)
 		{
@@ -398,6 +476,7 @@ namespace Xamarin.Controls
 			}
 
 			var sizeOrScale = settings.DesiredSizeOrScale.Value;
+
 			var viewSize = this.GetSize ();
 
 			imageSize = sizeOrScale.GetSize ((float)viewSize.Width, (float)viewSize.Height);
@@ -416,6 +495,20 @@ namespace Xamarin.Controls
 					{
 						scaleX = scaleY = Math.Min ((float)scaleX, (float)scaleY);
 					}
+#if WPF || GTK
+					scale = new NativeSize ((int)scaleX, (int)scaleY);
+				}
+				else if (sizeOrScale.Type == SizeOrScaleType.Scale)
+				{
+					imageSize.Width = (int)(signatureBounds.Width * scale.Width);
+					imageSize.Height = (int)(signatureBounds.Height * scale.Height);
+				}
+			}
+			else
+			{
+				signatureBounds = new NativeRect (0, 0, (float)viewSize.Width, (float)viewSize.Height);
+			}
+#else
 					scale = new NativeSize ((float)scaleX, (float)scaleY);
 				}
 				else if (sizeOrScale.Type == SizeOrScaleType.Scale)
@@ -428,6 +521,7 @@ namespace Xamarin.Controls
 			{
 				signatureBounds = new NativeRect (0, 0, viewSize.Width, viewSize.Height);
 			}
+#endif
 
 			strokeWidth = settings.StrokeWidth.Value;
 			strokeColor = (NativeColor)settings.StrokeColor;
